@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>学生托管平台｜Phase 1A 批次A低保真原型</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <a class="skip-link" href="#page-main">跳到页面内容</a>
+
+  <div class="prototype-banner" role="note">
+    <strong>低保真审查原型</strong>
+    <span>全部内容均为模拟数据；无真实登录、支付、正式AI、后端或外部请求。</span>
+  </div>
+
+  <div id="app-shell" class="app-shell shell-index">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">PHASE 1A · BATCH A · V0.1</p>
+        <h1>学生托管机构智能化系统平台</h1>
+        <p id="shell-description" class="shell-description">统一入口与跨端页面审查</p>
+      </div>
+      <div class="context-stamp" aria-label="当前审查上下文">
+        <span>审查身份</span>
+        <strong id="role-context">访客</strong>
+      </div>
+    </header>
+
+    <nav class="endpoint-switcher" aria-label="端与流程切换">
+      <button type="button" data-endpoint="index">统一入口</button>
+      <button type="button" data-endpoint="mini">微信小程序 · 20</button>
+      <button type="button" data-endpoint="web">用户网页 · 13</button>
+      <button type="button" data-endpoint="admin">机构管理网页 · 14</button>
+      <button type="button" data-endpoint="flow">关键流程 · 12</button>
+    </nav>
+
+    <div class="workspace">
+      <aside class="route-drawer" aria-label="页面目录">
+        <div class="drawer-heading">
+          <div>
+            <p class="eyebrow">ROUTE CATALOG</p>
+            <h2 id="route-group-title">入口</h2>
+          </div>
+          <span id="route-count" class="count-chip">0</span>
+        </div>
+        <label class="filter-field" for="route-filter">
+          <span>筛选页面</span>
+          <input id="route-filter" type="search" autocomplete="off" placeholder="页面ID或名称">
+        </label>
+        <div id="route-list" class="route-list"></div>
+      </aside>
+
+      <main id="page-main" tabindex="-1">
+        <div id="page-view"></div>
+      </main>
+    </div>
+
+    <footer class="prototype-footer">
+      <span>离线、零依赖、内存态演示</span>
+      <span id="route-receipt">A 级 47 · B 级 12 · C 级不进入原型</span>
+    </footer>
+  </div>
+
+  <div id="live-region" class="sr-only" role="status" aria-live="polite"></div>
+  <noscript>此低保真原型需要启用浏览器内置 JavaScript 才能切换离线页面和模拟状态。</noscript>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
