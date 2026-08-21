@@ -1,0 +1,44 @@
+# 本地环境与密钥
+.env
+# Phase 1A 批次A不纳入环境样例；若出现 .env.example，忽略审计必须报告其路径
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+credentials*.json
+secrets*.json
+
+# JavaScript 依赖与缓存
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+.next/
+dist/
+build/
+
+# Python 环境与缓存
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 仅忽略项目根的 Playwright 输出；artifacts/ 下批准的同名证据故意不忽略
+/playwright-report/
+/test-results/
+/blob-report/
+/.cache/ms-playwright/
+
+# 编辑器、项目根日志与系统垃圾；artifacts/**/*.log 故意不忽略
+.idea/
+.vscode/
+/*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
