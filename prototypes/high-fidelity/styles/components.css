@@ -13,9 +13,9 @@
 .btn--secondary:hover { background: var(--brand-soft); }
 .btn--quiet { background: transparent; color: var(--brand-deep); padding-inline: 8px; }
 .btn--danger { background: var(--danger); color: #fff; }
-.btn--icon { width: 44px; padding: 0; background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
-.btn--small { min-height: 36px; padding: 6px 11px; font-size: 14px; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-1); }
+.btn--icon { width: 44px; min-width: 44px; flex: 0 0 44px; padding: 0; background: var(--surface); color: var(--ink); border: 1px solid var(--border); }
+.btn--small { min-height: 44px; padding: 6px 11px; font-size: 14px; }
+.card { min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-1); }
 .card--pad { padding: var(--space-5); }
 .card--accent { border-top: 4px solid var(--accent, var(--brand-lime)); }
 .card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3); }
@@ -33,6 +33,7 @@
 .field { display: grid; gap: 6px; }
 .field label { font-size: 14px; font-weight: 700; }
 .field input, .field select, .field textarea { width: 100%; min-height: 44px; padding: 9px 11px; color: var(--ink); background: var(--surface); border: 1px solid #aebdaa; border-radius: var(--r-sm); }
+.route-jump { min-height: 44px; padding: 9px 11px; color: var(--ink); background: var(--surface); border: 1px solid #aebdaa; border-radius: var(--r-sm); }
 .field textarea { min-height: 96px; resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--brand-deep); box-shadow: 0 0 0 3px rgba(53,107,50,.18); outline: 0; }
 .field__hint { color: var(--muted); font-size: 13px; }
@@ -56,7 +57,7 @@ tr:last-child td { border-bottom: 0; }
 .step { min-height: 54px; padding: 8px; border: 1px solid var(--border); background: var(--surface); border-radius: var(--r-sm); color: var(--muted); font-size: 12px; text-align: center; }
 .step.is-active { border-color: var(--brand-deep); background: var(--brand-soft); color: var(--brand-deep); font-weight: 700; }
 .step.is-done { border-color: var(--success); color: var(--success); }
-.route-link { display: flex; align-items: flex-start; gap: 10px; padding: 10px; color: var(--ink); border-radius: var(--r-sm); }
+.route-link { display: flex; align-items: flex-start; gap: 10px; min-width: 0; max-width: 100%; min-height: 44px; padding: 10px; color: var(--ink); border-radius: var(--r-sm); }
 .route-link:hover, .route-link.is-current { background: var(--brand-soft); color: var(--brand-deep); }
 .route-link__body { min-width: 0; }
 .route-link__title { display: block; font-weight: 700; line-height: 1.25; }
@@ -65,7 +66,7 @@ tr:last-child td { border-bottom: 0; }
 .empty-state svg { width: 72px; height: 72px; color: var(--brand-deep); }
 .illustration { width: 100%; max-width: 260px; height: auto; }
 .segmented { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: #edf2eb; border-radius: var(--r-sm); }
-.segmented button { min-height: 36px; padding: 6px 12px; color: var(--muted); background: transparent; border-radius: 4px; font-weight: 700; }
+.segmented button { min-height: 44px; padding: 6px 12px; color: var(--muted); background: transparent; border-radius: 4px; font-weight: 700; }
 .segmented button.is-selected { color: var(--brand-deep); background: var(--surface); box-shadow: var(--shadow-1); }
 .toast-region { position: fixed; right: 20px; bottom: 20px; z-index: 80; display: grid; gap: 8px; width: min(360px, calc(100vw - 32px)); }
 .toast { padding: 12px 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--success); border-radius: var(--r-sm); box-shadow: var(--shadow-2); }

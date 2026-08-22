@@ -10,8 +10,8 @@
     toast: null,
     binding: { step: 0, contact: '', invite: '', learner: '', group: '', error: '' },
     report: { stage: 'draft', note: '', error: '' },
-    ai: { status: 'idle', attempted: '', unlocked: -1, needsRetry: false, completed: [], consolidation: 0, summary: false, error: '' },
-    supervision: { consent: '未同意', enabled: false, deletion: '未申请' },
+    ai: { status: 'idle', attempted: '', unlocked: -1, needsRetry: false, awaiting: -1, completed: [], understood: [], consolidation: 0, summary: false, error: '', guardError: '', role: 'guardian' },
+    supervision: { consent: '未同意', enabled: false, institutionEnabled: false, relationshipValid: true, teacherScopeValid: false, deletion: '未申请' },
     genericFlows: {},
     adminActions: {},
     signedIn: false
@@ -183,7 +183,9 @@
     }
     if (page.title === '内部工作台') {
       const staffPrefix = page.route.startsWith('/web/') ? '/web/staff' : '/mini/staff';
-      const staffSuffixes = ['/guides','/resources','/resources/search','/partner-cloud','/account'];
+      const staffSuffixes = page.route.startsWith('/web/')
+        ? ['/guides','/resources','/partner-cloud','/account']
+        : ['/guides','/resources','/resources/search','/partner-cloud','/account'];
       const links = staffSuffixes.map((suffix) => staffPrefix + suffix);
       return '<section class="section"><div class="content-grid content-grid--3">' + links.map((route, index) => {
         const item = CATALOG.find((candidate) => candidate.route === route) || CATALOG.find((candidate) => candidate.route === route.replace('/mini/', '/web/'));
@@ -224,6 +226,12 @@
     'B-FLOW-11': ['待生成', '待教师查看', '已阅', '需介入']
   };
 
+  const flowContinuations = {
+    'B-FLOW-06': ['/flow/teacher-tasks', '进入教师任务'],
+    'B-FLOW-07': ['/flow/class-student-status', '查看班级学生情况'],
+    'B-FLOW-08': ['/flow/teacher-daily-report', '生成教师工作日报']
+  };
+
   const flowStatus = (page) => {
     if (page.id === 'B-FLOW-01' && state.binding.step >= 5) return '已解除';
     if (page.id === 'B-FLOW-01') return ['未提交','待审核','已通过','已解除'][state.binding.step === 2 ? 1 : state.binding.step >= 4 ? 2 : 0];
@@ -233,11 +241,31 @@
     return (flowStages[page.id] || ['准备中'])[state.genericFlows[page.id] || 0];
   };
 
+  const aiRoleLabel = (role) => ({ guardian: '家长监护角色', teacher: '授权教师角色', visitor: '访客角色' }[role] || role);
+  const aiGuardError = () => {
+    const s = state.supervision;
+    if (s.consent !== '已同意') return '无法开启：需要有效的监护人同意。';
+    if (!s.institutionEnabled) return '无法开启：机构 AI 能力开关未开启。';
+    if (!s.enabled) return '无法开启：监督会话开关未开启。';
+    if (!s.relationshipValid && !s.teacherScopeValid) return '无法开启：家长关系和授权教师范围均无效。';
+    if (!['guardian', 'teacher'].includes(state.ai.role)) return '无法开启：当前角色未获授权。';
+    if (state.ai.role === 'guardian' && !s.relationshipValid) return '无法开启：家长与学生关系无效。';
+    if (state.ai.role === 'teacher' && !s.teacherScopeValid) return '无法开启：教师未获授权班级范围。';
+    return '';
+  };
+
+  const renderAiGuards = () => {
+    const s = state.supervision;
+    const ok = (value) => statusBadge(value ? '已满足' : '未满足', value ? 'success' : 'warning');
+    return '<div class="card card--pad" data-testid="ai-guards"><div class="card__head"><div><span class="eyebrow">START GUARDS</span><h2 class="section-title">开启前置条件</h2></div>' + statusBadge(aiRoleLabel(state.ai.role), 'info') + '</div><ul class="list" style="margin-top:12px"><li class="list-item"><span>监护人同意</span>' + ok(s.consent === '已同意') + '</li><li class="list-item"><span>机构能力开关</span>' + ok(s.institutionEnabled) + '</li><li class="list-item"><span>关系或教师范围</span>' + ok(s.relationshipValid || s.teacherScopeValid) + '</li><li class="list-item"><span>允许角色</span>' + ok(state.ai.role === 'guardian' ? s.relationshipValid : state.ai.role === 'teacher' && s.teacherScopeValid) + '</li></ul><div class="flow-actions" style="margin-top:14px">' + actionButton('模拟家长关系', 'ai-context', 'quiet', ' data-role="guardian"') + actionButton('模拟授权教师', 'ai-context', 'quiet', ' data-role="teacher"') + actionButton('模拟无权角色', 'ai-context', 'danger', ' data-role="visitor"') + '<a class="btn btn--secondary" href="#/flow/guardian-ai-supervision">打开监督设置</a></div>' + (state.ai.guardError ? '<div class="field__error" role="alert" style="margin-top:12px">' + esc(state.ai.guardError) + '</div>' : '') + '</div>';
+  };
+
   const renderGenericFlow = (page) => {
     const stages = flowStages[page.id] || ['准备', '处理中', '待确认', '已完成'];
     const index = state.genericFlows[page.id] || 0;
     const isAdmin = page.role.indexOf('管理') >= 0;
-    return '<section class="section"><div class="card flow-panel" style="--accent: var(--' + page.accent + ')"><div class="flow-panel__status"><strong>流程状态</strong>' + statusBadge(stages[index], index === stages.length - 1 ? 'success' : 'info') + '<span class="muted">角色守卫：' + esc(page.role) + '</span></div><div class="card--pad"><div class="stepper">' + stages.map((stage, step) => '<div class="step ' + (step === index ? 'is-active' : step < index ? 'is-done' : '') + '"><strong>' + (step + 1) + '</strong><br>' + esc(stage) + '</div>').join('') + '</div><div class="content-grid content-grid--2" style="margin-top:22px"><div><h2 class="section-title">可操作状态转换</h2><p class="muted">每次动作只推进一个合法状态；越权或跳步不会被接受。</p><ul class="list">' + stages.map((stage, step) => '<li class="list-item"><span>' + (step + 1) + '. ' + esc(stage) + '</span>' + statusBadge(step <= index ? '可追溯' : '锁定', step <= index ? 'success' : 'neutral') + '</li>').join('') + '</ul></div><div class="card card--pad"><img class="illustration" src="' + illustrationFor(page) + '" alt="流程原创插画"><p class="card__meta">输入、错误、加载、空状态与终态均在此离线原型中模拟。</p></div></div><div class="flow-actions" style="margin-top:22px">' + actionButton(index < stages.length - 1 ? '推进到下一合法状态' : '已完成 · 重新演示', index < stages.length - 1 ? 'generic-next' : 'generic-reset', index < stages.length - 1 ? 'primary' : 'secondary') + (isAdmin ? actionButton('模拟越权动作', 'reject-unauthorized', 'danger') : '') + actionButton('重置流程', 'generic-reset', 'quiet') + '</div></div></div></section>';
+    const continuation = flowContinuations[page.id] ? '<nav class="flow-actions" aria-label="教师日报闭环" style="margin-top:14px"><span class="muted">下一步：</span><a class="btn btn--secondary" href="#' + flowContinuations[page.id][0] + '">' + flowContinuations[page.id][1] + '</a></nav>' : '';
+    return '<section class="section"><div class="card flow-panel" style="--accent: var(--' + page.accent + ')"><div class="flow-panel__status"><strong>流程状态</strong>' + statusBadge(stages[index], index === stages.length - 1 ? 'success' : 'info') + '<span class="muted">角色守卫：' + esc(page.role) + '</span></div><div class="card--pad"><div class="stepper">' + stages.map((stage, step) => '<div class="step ' + (step === index ? 'is-active' : step < index ? 'is-done' : '') + '"><strong>' + (step + 1) + '</strong><br>' + esc(stage) + '</div>').join('') + '</div><div class="content-grid content-grid--2" style="margin-top:22px"><div><h2 class="section-title">可操作状态转换</h2><p class="muted">每次动作只推进一个合法状态；越权或跳步不会被接受。</p><ul class="list">' + stages.map((stage, step) => '<li class="list-item"><span>' + (step + 1) + '. ' + esc(stage) + '</span>' + statusBadge(step <= index ? '可追溯' : '锁定', step <= index ? 'success' : 'neutral') + '</li>').join('') + '</ul></div><div class="card card--pad"><img class="illustration" src="' + illustrationFor(page) + '" alt="流程原创插画"><p class="card__meta">输入、错误、加载、空状态与终态均在此离线原型中模拟。</p></div></div><div class="flow-actions" style="margin-top:22px">' + actionButton(index < stages.length - 1 ? '推进到下一合法状态' : '已完成 · 重新演示', index < stages.length - 1 ? 'generic-next' : 'generic-reset', index < stages.length - 1 ? 'primary' : 'secondary') + (isAdmin ? actionButton('模拟越权动作', 'reject-unauthorized', 'danger') : '') + actionButton('重置流程', 'generic-reset', 'quiet') + '</div>' + continuation + '</div></div></section>';
   };
 
   const bindingSteps = ['未开始', '填写必要信息', '待审核', '审核结果', '关系终态'];
@@ -267,7 +295,7 @@
     const index = r.stage === 'draft' ? 0 : r.stage === 'submitted' ? 2 : r.stage === 'returned' ? 1 : 3;
     let body = '';
     if (r.stage === 'draft' || r.stage === 'returned') {
-      body = '<div class="notice' + (r.stage === 'returned' ? ' notice--warning' : '') + '"><p>' + (r.stage === 'returned' ? '负责人已退回，请补充事实并重新提交。' : '系统只生成必要事实摘要，教师负责补充工作总结。') + '</p></div><form class="stack" data-form="report"><div class="field"><label for="report-note">教师总结 / 交接 / 次日重点</label><textarea id="report-note" name="note" placeholder="只填写模拟事实和下一步安排">' + esc(r.note) + '</textarea><span class="field__hint">不用于自动绩效结论，不写敏感诊断。</span></div>' + (r.error ? '<div class="field__error" role="alert">' + esc(r.error) + '</div>' : '') + '<div class="flow-actions"><button class="btn btn--primary" type="submit">提交工作日报</button>' + actionButton('重新生成模拟汇总', 'report-generate', 'secondary') + '</div></form>';
+      body = '<div class="notice' + (r.stage === 'returned' ? ' notice--warning' : '') + '"><p>' + (r.stage === 'returned' ? '负责人已退回，请补充事实并重新提交。' : '系统只生成必要事实摘要，教师负责补充工作总结。') + '</p></div><form class="stack" data-form="report"><div class="field"><label for="report-note">教师总结 / 交接 / 次日重点</label><textarea id="report-note" name="note" placeholder="只填写模拟事实和下一步安排">' + esc(r.note) + '</textarea><span class="field__hint">不用于自动绩效结论，不写敏感诊断。</span></div>' + (r.error ? '<div class="field__error" role="alert">' + esc(r.error) + '</div>' : '') + '<div class="flow-actions"><button class="btn btn--primary" type="submit">提交工作日报</button>' + actionButton('重新生成模拟汇总', 'report-generate', 'secondary') + (r.stage === 'returned' ? '<a class="btn btn--quiet" href="#/flow/teacher-workbench">返回教师工作台</a>' : '') + '</div></form>';
     } else if (r.stage === 'submitted') {
       body = '<div class="notice notice--success"><p><strong>日报已提交（模拟）。</strong>机构管理员或校区负责人可以按范围退回或确认。</p></div><div class="flow-actions">' + actionButton('负责人确认', 'report-confirm', 'primary') + actionButton('退回修改', 'report-return', 'secondary') + '</div>';
     } else {
@@ -287,20 +315,23 @@
       ['3', '必要时讲解完整过程', '只在仍然需要时展开完整的模拟讲解。']
     ];
     let intro = '';
-    if (a.status === 'idle') intro = '<div class="notice"><p>家长或教师从学生档案开启；学生没有独立注册入口。</p></div>' + actionButton('开启受监督学习', 'ai-start', 'primary');
+    if (a.status === 'idle') intro = renderAiGuards() + '<div class="notice" style="margin-top:14px"><p>家长或教师从学生档案开启；学生没有独立注册入口。</p></div>' + actionButton('开启受监督学习', 'ai-start', 'primary');
     else if (!a.attempted) intro = '<form class="stack" data-form="ai-attempt"><div class="notice notice--warning"><p><strong>先尝试。</strong>没有学生尝试，任何提示层都不能打开。</p></div><div class="field"><label for="ai-attempt">学生的模拟尝试</label><textarea id="ai-attempt" name="attempt" placeholder="例如：我先把 12 分成 3 份……">' + esc(a.attempted) + '</textarea></div>' + (a.error ? '<div class="field__error" role="alert">' + esc(a.error) + '</div>' : '') + '<button class="btn btn--primary" type="submit">记录尝试并进入第0层</button></form>';
     else intro = '<div class="notice notice--success"><p><strong>已记录学生尝试。</strong>提示按层级解锁，不能跳过第0层直接查看答案。</p></div>';
     const layerHtml = layers.map((layer, index) => {
-      const available = a.attempted && a.unlocked >= index;
+      const lastUnderstood = a.understood.length ? a.understood[a.understood.length - 1] : -1;
+      const skipped = lastUnderstood >= 0 && index > lastUnderstood;
+      const available = a.attempted && a.unlocked >= index && !skipped;
       const complete = a.completed.indexOf(index) >= 0;
-      const canOpen = available && !complete && !a.needsRetry;
+      const canOpen = available && !complete && !a.needsRetry && a.awaiting < 0;
+      const branch = a.awaiting === index ? '<div class="flow-actions" style="margin-top:8px">' + actionButton('我已理解，进入巩固', 'ai-understood', 'primary', ' data-layer="' + index + '"') + actionButton('还需要帮助', 'ai-need-more', 'secondary', ' data-layer="' + index + '"') + '</div>' : '';
       return '<div class="ai-layer ' + (!available && !complete ? 'is-locked ' : '') + (complete ? 'is-complete' : '') + '"><span class="ai-layer__number">' + (complete ? icon('check', 'icon icon--sm') : layer[0]) + '</span><div><strong>' + esc(layer[1]) + '</strong><p class="card__meta">' + esc(layer[2]) + '</p>' + (a.needsRetry && complete && index < 3 ? '<p class="field__hint">等待学生重新尝试后解锁下一层。</p>' : '') + '</div>' +
-        (complete ? statusBadge('已完成', 'success') : canOpen ? actionButton('打开提示', 'ai-hint', 'secondary', ' data-layer="' + index + '"') : statusBadge(available ? '等待重新尝试' : '锁定', 'neutral')) + '</div>';
+        (complete ? statusBadge('已完成', 'success') + branch : canOpen ? actionButton('打开提示', 'ai-hint', 'secondary', ' data-layer="' + index + '"') : statusBadge(skipped ? '已理解，跳过' : available ? '等待重新尝试' : '锁定', 'neutral')) + '</div>';
     }).join('');
     const retry = a.needsRetry ? actionButton('记录一次重新尝试', 'ai-retry', 'primary') : '';
-    const consolidation = '<div class="card card--pad" style="margin-top:14px"><div class="card__head"><div><span class="eyebrow">CONSOLIDATION</span><h2 class="section-title">巩固层 · 1—3 道同类题</h2></div>' + statusBadge(a.consolidation + ' / 3', a.consolidation > 0 ? 'success' : 'neutral') + '</div><p class="muted">完成至少 1 道即可生成最小学习摘要；不生成能力、纪律或绩效结论。</p><div class="flow-actions">' + actionButton('完成一道模拟巩固题', 'ai-consolidate', 'primary', a.unlocked < 4 || a.needsRetry ? ' disabled' : '') + (a.consolidation > 0 ? actionButton('转教师介入', 'ai-transfer', 'secondary') + actionButton('关闭会话', 'ai-close', 'quiet') : '') + '</div></div>';
+    const consolidation = '<div class="card card--pad" style="margin-top:14px"><div class="card__head"><div><span class="eyebrow">CONSOLIDATION</span><h2 class="section-title">巩固层 · 1—3 道同类题</h2></div>' + statusBadge(a.consolidation + ' / 3', a.consolidation > 0 ? 'success' : 'neutral') + '</div><p class="muted">完成至少 1 道即可生成最小学习摘要；不生成能力、纪律或绩效结论。</p><div class="flow-actions">' + actionButton('完成一道模拟巩固题', 'ai-consolidate', 'primary', a.unlocked < 4 || a.needsRetry || a.awaiting >= 0 ? ' disabled' : '') + (a.consolidation > 0 ? actionButton('转教师介入', 'ai-transfer', 'secondary') + actionButton('关闭会话', 'ai-close', 'quiet') : '') + '</div></div>';
     const end = a.status === 'teacher' ? '<div class="notice notice--success"><p><strong>已转教师介入。</strong>摘要正文只对授权教师可见。</p></div>' : a.status === 'closed' ? '<div class="notice notice--warning"><p><strong>会话已关闭。</strong>没有继续生成内容。</p></div>' : a.status === 'complete' ? '<div class="notice notice--success"><p><strong>巩固完成。</strong>可进入教师摘要回流页面。</p><a class="btn btn--primary" href="#/flow/ai-teacher-summary">查看教师摘要入口</a></div>' : '';
-    return '<section class="section"><div class="card flow-panel" style="--accent: var(--coral)"><div class="flow-panel__status"><strong>监督式学习流程</strong>' + statusBadge(flowStatus(CATALOG.find((p) => p.id === 'B-FLOW-10')), a.status === 'complete' ? 'success' : 'info') + '<span class="muted">家长或教师监督 · 模拟题</span></div><div class="card--pad"><div class="stepper">' + aiSteps.map((label, i) => '<div class="step ' + (i === active ? 'is-active' : i < active ? 'is-done' : '') + '"><strong>' + (i + 1) + '</strong><br>' + label + '</div>').join('') + '</div><div style="margin-top:22px">' + intro + '</div><div class="card card--pad" style="margin-top:18px"><div class="card__head"><div><span class="eyebrow">HINT LADDER</span><h2 class="section-title">按需打开提示</h2></div>' + statusBadge('不调用正式 AI', 'warning') + '</div>' + layerHtml + retry + '</div>' + consolidation + end + '</div></div></section>';
+    return '<section class="section"><div class="card flow-panel" style="--accent: var(--coral)"><div class="flow-panel__status"><strong>监督式学习流程</strong>' + statusBadge(flowStatus(CATALOG.find((p) => p.id === 'B-FLOW-10')), a.status === 'complete' ? 'success' : 'info') + '<span class="muted">家长或教师监督 · 模拟题</span></div><div class="card--pad"><div class="stepper">' + aiSteps.map((label, i) => '<div class="step ' + (i === active ? 'is-active' : i < active ? 'is-done' : '') + '"><strong>' + (i + 1) + '</strong><br>' + label + '</div>').join('') + '</div><div style="margin-top:22px">' + (a.status === 'idle' ? intro : renderAiGuards() + intro) + '</div><div class="card card--pad" style="margin-top:18px"><div class="card__head"><div><span class="eyebrow">HINT LADDER</span><h2 class="section-title">按需打开提示</h2></div>' + statusBadge('不调用正式 AI', 'warning') + '</div>' + layerHtml + retry + '</div>' + consolidation + end + '</div></div></section>';
   };
 
   const renderAiSummary = () => {
@@ -310,7 +341,7 @@
 
   const renderSupervision = () => {
     const s = state.supervision;
-    return '<section class="section"><div class="content-grid content-grid--2"><div class="card card--pad"><span class="eyebrow">GUARDIAN CONTROL</span><h2 class="section-title">监督与同意</h2><p class="muted">同意、机构开关和学生关系必须同时有效；关闭后不再创建会话。</p><div class="stack" style="margin-top:16px"><div class="list-item"><span>监护人同意</span>' + statusBadge(s.consent, s.consent === '已同意' ? 'success' : 'warning') + '</div><div class="list-item"><span>机构能力开关</span>' + statusBadge('已开启（模拟）', 'info') + '</div><div class="list-item"><span>会话开关</span>' + statusBadge(s.enabled ? '已开启' : '未开启', s.enabled ? 'success' : 'neutral') + '</div></div><div class="flow-actions" style="margin-top:18px">' + actionButton('同意并开启', 'supervision-enable', 'primary') + actionButton('暂停会话', 'supervision-pause', 'secondary') + actionButton('关闭能力', 'supervision-close', 'danger') + '</div></div><div class="card card--pad"><span class="eyebrow">DATA CONTROL</span><h2 class="section-title">模拟数据删除请求</h2><p class="muted">删除请求与监督开关独立；不在原型中写入持久化数据。</p><div class="notice ' + (s.deletion === '已完成' ? 'notice--success' : '') + '"><p>当前状态：<strong>' + esc(s.deletion) + '</strong></p></div><div class="flow-actions" style="margin-top:18px">' + actionButton('提交删除请求', 'deletion-request', 'primary') + actionButton('模拟完成处理', 'deletion-complete', 'secondary') + actionButton('模拟拒绝并返回原因', 'deletion-reject', 'quiet') + '</div></div></div></section>';
+    return '<section class="section"><div class="content-grid content-grid--2"><div class="card card--pad"><span class="eyebrow">GUARDIAN CONTROL</span><h2 class="section-title">监督与同意</h2><p class="muted">同意、机构开关和学生关系必须同时有效；关闭后不再创建会话。</p><div class="stack" style="margin-top:16px"><div class="list-item"><span>监护人同意</span>' + statusBadge(s.consent, s.consent === '已同意' ? 'success' : 'warning') + '</div><div class="list-item"><span>机构能力开关</span>' + statusBadge(s.institutionEnabled ? '已开启' : '未开启', s.institutionEnabled ? 'info' : 'warning') + '</div><div class="list-item"><span>会话开关</span>' + statusBadge(s.enabled ? '已开启' : '未开启', s.enabled ? 'success' : 'neutral') + '</div><div class="list-item"><span>学生关系</span>' + statusBadge(s.relationshipValid ? '有效' : '无效', s.relationshipValid ? 'success' : 'warning') + '</div><div class="list-item"><span>教师范围</span>' + statusBadge(s.teacherScopeValid ? '已授权' : '未授权', s.teacherScopeValid ? 'success' : 'neutral') + '</div></div><div class="flow-actions" style="margin-top:18px">' + actionButton('同意并开启', 'supervision-enable', 'primary') + actionButton('暂停会话', 'supervision-pause', 'secondary') + actionButton('关闭能力', 'supervision-close', 'danger') + '</div></div><div class="card card--pad"><span class="eyebrow">DATA CONTROL</span><h2 class="section-title">模拟数据删除请求</h2><p class="muted">删除请求与监督开关独立；不在原型中写入持久化数据。</p><div class="notice ' + (s.deletion === '已完成' ? 'notice--success' : '') + '"><p>当前状态：<strong>' + esc(s.deletion) + '</strong></p></div><div class="flow-actions" style="margin-top:18px">' + actionButton('提交删除请求', 'deletion-request', 'primary') + actionButton('模拟完成处理', 'deletion-complete', 'secondary') + actionButton('模拟拒绝并返回原因', 'deletion-reject', 'quiet') + '</div></div></div></section>';
   };
 
   const renderFlowPage = (page) => {
@@ -375,29 +406,55 @@
     if (action === 'report-confirm') { state.report.stage = 'confirmed'; render(); return; }
     if (action === 'report-return') { state.report.stage = 'returned'; render(); return; }
     if (action === 'report-reset') { state.report = { stage: 'draft', note: '', error: '' }; render(); return; }
-    if (action === 'ai-start') { state.ai.status = 'active'; render(); return; }
+    if (action === 'ai-context') {
+      state.ai.role = element.dataset.role || 'visitor';
+      state.supervision.relationshipValid = state.ai.role === 'guardian';
+      state.supervision.teacherScopeValid = state.ai.role === 'teacher';
+      state.ai.guardError = '';
+      render(); return;
+    }
+    if (action === 'ai-start') {
+      const guardError = aiGuardError();
+      if (guardError) { state.ai.guardError = guardError; render(); return; }
+      state.ai.guardError = ''; state.ai.status = 'active'; render(); return;
+    }
     if (action === 'ai-hint') {
       const layer = Number(element.dataset.layer);
-      if (!state.ai.attempted || layer !== state.ai.unlocked || state.ai.needsRetry) { rejectUnauthorized(); return; }
+      if (aiGuardError() || !state.ai.attempted || layer !== state.ai.unlocked || state.ai.needsRetry || state.ai.awaiting >= 0) { state.ai.guardError = aiGuardError() || '当前提示层不在合法状态。'; render(); return; }
       state.ai.completed.push(layer);
-      state.ai.needsRetry = layer < 3;
+      state.ai.needsRetry = layer === 0;
+      state.ai.awaiting = layer === 1 || layer === 2 ? layer : -1;
       if (layer === 3) { state.ai.unlocked = 4; state.ai.needsRetry = false; }
       render(); return;
     }
-    if (action === 'ai-retry') { state.ai.needsRetry = false; state.ai.unlocked = Math.min(4, state.ai.unlocked + 1); render(); return; }
+    if (action === 'ai-retry') {
+      if (aiGuardError() || !state.ai.needsRetry) { state.ai.guardError = aiGuardError() || '当前没有等待重新尝试的提示层。'; render(); return; }
+      state.ai.needsRetry = false; state.ai.unlocked = Math.min(4, state.ai.unlocked + 1); render(); return;
+    }
+    if (action === 'ai-understood' || action === 'ai-need-more') {
+      const layer = Number(element.dataset.layer);
+      if (aiGuardError() || ![1, 2].includes(layer) || state.ai.awaiting !== layer) { state.ai.guardError = aiGuardError() || '理解分支不在合法状态。'; render(); return; }
+      state.ai.awaiting = -1;
+      if (action === 'ai-understood') { state.ai.understood.push(layer); state.ai.unlocked = 4; }
+      else state.ai.unlocked = layer + 1;
+      render(); return;
+    }
     if (action === 'ai-consolidate') {
-      if (state.ai.unlocked < 4 || state.ai.needsRetry) { rejectUnauthorized(); return; }
+      if (aiGuardError() || state.ai.unlocked < 4 || state.ai.needsRetry || state.ai.awaiting >= 0) { state.ai.guardError = aiGuardError() || '必须完成合法提示路径后才能进入巩固层。'; render(); return; }
       state.ai.consolidation = Math.min(3, state.ai.consolidation + 1);
       state.ai.status = state.ai.consolidation > 0 ? 'complete' : 'active';
       state.ai.summary = true;
       render(); return;
     }
-    if (action === 'ai-transfer') { state.ai.status = 'teacher'; state.ai.summary = true; location.hash = '/flow/ai-teacher-summary'; return; }
+    if (action === 'ai-transfer') {
+      if (aiGuardError() || state.ai.consolidation < 1) { state.ai.guardError = aiGuardError() || '必须先完成至少一道巩固题。'; render(); return; }
+      state.ai.status = 'teacher'; state.ai.summary = true; location.hash = '/flow/ai-teacher-summary'; return;
+    }
     if (action === 'ai-close') { state.ai.status = 'closed'; render(); return; }
     if (action === 'summary-read' || action === 'summary-intervene') { notify(action === 'summary-read' ? '已记录教师确认（模拟）。' : '已创建教师介入待办（模拟）。'); return; }
-    if (action === 'supervision-enable') { state.supervision.consent = '已同意'; state.supervision.enabled = true; render(); return; }
+    if (action === 'supervision-enable') { state.supervision.consent = '已同意'; state.supervision.institutionEnabled = true; state.supervision.enabled = true; render(); return; }
     if (action === 'supervision-pause') { state.supervision.enabled = false; render(); return; }
-    if (action === 'supervision-close') { state.supervision.enabled = false; state.supervision.consent = '已关闭'; render(); return; }
+    if (action === 'supervision-close') { state.supervision.enabled = false; state.supervision.institutionEnabled = false; state.supervision.consent = '已关闭'; render(); return; }
     if (action === 'deletion-request') { state.supervision.deletion = '待处理'; render(); return; }
     if (action === 'deletion-complete') { state.supervision.deletion = '已完成'; render(); return; }
     if (action === 'deletion-reject') { state.supervision.deletion = '已拒绝，可重提'; render(); return; }
@@ -430,7 +487,7 @@
       state.ai.error = ''; state.ai.unlocked = 0; state.ai.status = 'active'; render(); return;
     }
     if (type === 'contact') { notify('模拟意向已提交；未保存真实信息，也未发送请求。'); return; }
-    if (type === 'staff-login') { state.signedIn = true; location.hash = '/web/staff/workbench'; return; }
+    if (type === 'staff-login') { state.signedIn = true; location.hash = state.route.startsWith('/mini/') ? '/mini/staff/workbench' : '/web/staff/workbench'; return; }
     if (type === 'admin-login') { state.signedIn = true; location.hash = '/admin/dashboard'; return; }
   };
 
@@ -439,6 +496,9 @@
     if (action) handleAction(action);
   });
   document.addEventListener('submit', handleSubmit);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && state.toast) { state.toast = null; render(); }
+  });
   window.addEventListener('hashchange', render);
 
   if (!location.hash) history.replaceState(null, '', '#/web/visitor/home');
