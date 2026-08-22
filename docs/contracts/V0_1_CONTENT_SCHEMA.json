@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tongxin:v0.1:content-item",
+  "title": "Tongxin V0.1 Content Item",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "tenant_id", "type", "status", "title", "version", "visibility", "body", "synthetic_data"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[0-9a-f-]{36}$" },
+    "tenant_id": { "type": "string", "pattern": "^[0-9a-f-]{36}$" },
+    "campus_id": { "type": ["string", "null"], "pattern": "^[0-9a-f-]{36}$" },
+    "type": { "type": "string", "enum": ["INSTITUTION", "HOME_BLOCK", "PUBLIC_TEACHER", "ACTIVITY", "MEAL", "GUIDE", "RESOURCE", "PARTNER_LINK"] },
+    "status": { "type": "string", "enum": ["DRAFT", "PUBLISHED", "UNPUBLISHED", "ARCHIVED"] },
+    "title": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "version": { "type": "integer", "minimum": 1 },
+    "visibility": { "type": "string", "enum": ["PUBLIC", "MEMBERS", "STAFF", "ADMIN"] },
+    "body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "blocks"],
+      "properties": {
+        "summary": { "type": "string", "maxLength": 500 },
+        "blocks": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "text"],
+            "properties": {
+              "kind": { "type": "string", "enum": ["TEXT", "HEADING", "IMAGE_REF", "LINK_REF", "LIST"] },
+              "text": { "type": "string", "maxLength": 2000 },
+              "file_id": { "type": ["string", "null"], "pattern": "^[0-9a-f-]{36}$" },
+              "href": { "type": ["string", "null"], "maxLength": 500 }
+            }
+          }
+        }
+      }
+    },
+    "published_at": { "type": ["string", "null"], "format": "date-time" },
+    "synthetic_data": { "const": true },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "PUBLISHED" } } },
+      "then": { "required": ["published_at"] }
+    },
+    {
+      "if": { "properties": { "visibility": { "const": "PUBLIC" } } },
+      "then": { "properties": { "campus_id": { "type": ["string", "null"] } } }
+    }
+  ]
+}

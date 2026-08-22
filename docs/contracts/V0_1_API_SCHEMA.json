@@ -1,0 +1,127 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tongxin V0.1 API",
+    "version": "0.1.0",
+    "description": "Design-only API contract. Batch B makes no network calls."
+  },
+  "servers": [{ "url": "/api/v1" }],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/me": {
+      "get": {
+        "operationId": "getMe",
+        "responses": { "200": { "$ref": "#/components/responses/AccountResponse" }, "401": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/memberships": {
+      "get": {
+        "operationId": "listMemberships",
+        "responses": { "200": { "$ref": "#/components/responses/MembershipListResponse" }, "401": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/public/institution": {
+      "get": {
+        "operationId": "getPublicInstitution",
+        "security": [],
+        "responses": { "200": { "$ref": "#/components/responses/ContentResponse" }, "404": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/public/teachers": {
+      "get": {
+        "operationId": "listPublicTeachers",
+        "security": [],
+        "parameters": [{ "$ref": "#/components/parameters/PageSize" }, { "$ref": "#/components/parameters/Cursor" }],
+        "responses": { "200": { "$ref": "#/components/responses/ContentListResponse" }, "400": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/admin/content": {
+      "post": {
+        "operationId": "createContent",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ContentInput" } } } },
+        "responses": { "201": { "$ref": "#/components/responses/ContentResponse" }, "400": { "$ref": "#/components/responses/ErrorResponse" }, "403": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/care-records": {
+      "get": {
+        "operationId": "listCareRecords",
+        "parameters": [{ "$ref": "#/components/parameters/CampusId" }, { "$ref": "#/components/parameters/PageSize" }],
+        "responses": { "200": { "$ref": "#/components/responses/CareListResponse" }, "403": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/daily-reports": {
+      "post": {
+        "operationId": "submitDailyReport",
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }, { "$ref": "#/components/parameters/IfMatch" }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DailyReportInput" } } } },
+        "responses": { "200": { "$ref": "#/components/responses/DailyReportResponse" }, "400": { "$ref": "#/components/responses/ErrorResponse" }, "409": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/guardian/relationships": {
+      "post": {
+        "operationId": "requestGuardianRelationship",
+        "parameters": [{ "$ref": "#/components/parameters/IdempotencyKey" }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RelationshipInput" } } } },
+        "responses": { "201": { "$ref": "#/components/responses/RelationshipResponse" }, "400": { "$ref": "#/components/responses/ErrorResponse" }, "403": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/learning/sessions": {
+      "post": {
+        "operationId": "startLearningSession",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LearningStartInput" } } } },
+        "responses": { "201": { "$ref": "#/components/responses/LearningSessionResponse" }, "403": { "$ref": "#/components/responses/ErrorResponse" }, "409": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/learning/hints": {
+      "post": {
+        "operationId": "openLearningHint",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HintInput" } } } },
+        "responses": { "200": { "$ref": "#/components/responses/HintResponse" }, "403": { "$ref": "#/components/responses/ErrorResponse" }, "409": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    },
+    "/learning/summaries": {
+      "get": {
+        "operationId": "listTeacherLearningSummaries",
+        "responses": { "200": { "$ref": "#/components/responses/SummaryListResponse" }, "403": { "$ref": "#/components/responses/ErrorResponse" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } },
+    "parameters": {
+      "PageSize": { "name": "page_size", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 } },
+      "Cursor": { "name": "cursor", "in": "query", "schema": { "type": "string", "maxLength": 500 } },
+      "CampusId": { "name": "campus_id", "in": "query", "schema": { "type": "string", "format": "uuid" } },
+      "IdempotencyKey": { "name": "Idempotency-Key", "in": "header", "required": true, "schema": { "type": "string", "minLength": 16, "maxLength": 128 } },
+      "IfMatch": { "name": "If-Match", "in": "header", "schema": { "type": "string", "maxLength": 80 } }
+    },
+    "schemas": {
+      "ContentInput": { "type": "object", "required": ["type", "title", "body"], "additionalProperties": false, "properties": { "type": { "type": "string" }, "title": { "type": "string", "maxLength": 120 }, "body": { "type": "object" }, "campus_id": { "type": ["string", "null"], "format": "uuid" } } },
+      "DailyReportInput": { "type": "object", "required": ["report_id", "note", "version"], "additionalProperties": false, "properties": { "report_id": { "type": "string", "format": "uuid" }, "note": { "type": "string", "maxLength": 4000 }, "version": { "type": "integer", "minimum": 1 } } },
+      "RelationshipInput": { "type": "object", "required": ["student_id", "consent"], "additionalProperties": false, "properties": { "student_id": { "type": "string", "format": "uuid" }, "consent": { "const": true } } },
+      "LearningStartInput": { "type": "object", "required": ["student_id", "supervision"], "additionalProperties": false, "properties": { "student_id": { "type": "string", "format": "uuid" }, "supervision": { "const": true } } },
+      "HintInput": { "type": "object", "required": ["session_id", "level"], "additionalProperties": false, "properties": { "session_id": { "type": "string", "format": "uuid" }, "level": { "type": "integer", "minimum": 0, "maximum": 3 } } },
+      "Account": { "type": "object", "required": ["id", "status"], "properties": { "id": { "type": "string", "format": "uuid" }, "status": { "type": "string" } } },
+      "Membership": { "type": "object", "required": ["id", "tenant_id", "status", "roles"], "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "roles": { "type": "array", "items": { "type": "string" } } } },
+      "Content": { "type": "object", "required": ["id", "tenant_id", "status", "version"], "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "status": { "type": "string" }, "version": { "type": "integer" } } },
+      "CareRecord": { "type": "object", "required": ["id", "tenant_id", "campus_id"], "properties": { "id": { "type": "string", "format": "uuid" }, "tenant_id": { "type": "string", "format": "uuid" }, "campus_id": { "type": "string", "format": "uuid" } } },
+      "DailyReport": { "type": "object", "required": ["id", "state", "version"], "properties": { "id": { "type": "string", "format": "uuid" }, "state": { "type": "string", "enum": ["DRAFT", "SUBMITTED", "RETURNED", "CONFIRMED"] }, "version": { "type": "integer" } } },
+      "Relationship": { "type": "object", "required": ["id", "state"], "properties": { "id": { "type": "string", "format": "uuid" }, "state": { "type": "string", "enum": ["PENDING", "ACTIVE", "RELEASE_REQUESTED", "RELEASED"] } } },
+      "LearningSession": { "type": "object", "required": ["id", "state", "hint_level"], "properties": { "id": { "type": "string", "format": "uuid" }, "state": { "type": "string" }, "hint_level": { "type": "integer", "minimum": 0, "maximum": 3 } } },
+      "Error": { "type": "object", "required": ["error", "request_id"], "properties": { "error": { "type": "object", "required": ["code", "message"], "properties": { "code": { "type": "string" }, "message": { "type": "string" }, "details": { "type": "object" } } }, "request_id": { "type": "string" } } }
+    },
+    "responses": {
+      "AccountResponse": { "description": "Account", "content": { "application/json": { "schema": { "type": "object", "required": ["data", "request_id"], "properties": { "data": { "$ref": "#/components/schemas/Account" }, "request_id": { "type": "string" } } } } } },
+      "MembershipListResponse": { "description": "Memberships", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "type": "array", "items": { "$ref": "#/components/schemas/Membership" } }, "request_id": { "type": "string" } } } } } },
+      "ContentResponse": { "description": "Content", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "$ref": "#/components/schemas/Content" }, "request_id": { "type": "string" } } } } } },
+      "ContentListResponse": { "description": "Content list", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "type": "array", "items": { "$ref": "#/components/schemas/Content" } }, "page": { "type": "object" }, "request_id": { "type": "string" } } } } } },
+      "CareListResponse": { "description": "Care records", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "type": "array", "items": { "$ref": "#/components/schemas/CareRecord" } }, "request_id": { "type": "string" } } } } } },
+      "DailyReportResponse": { "description": "Daily report", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "$ref": "#/components/schemas/DailyReport" }, "request_id": { "type": "string" } } } } } },
+      "RelationshipResponse": { "description": "Relationship", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "$ref": "#/components/schemas/Relationship" }, "request_id": { "type": "string" } } } } } },
+      "LearningSessionResponse": { "description": "Learning session", "content": { "application/json": { "schema": { "type": "object", "properties": { "data": { "$ref": "#/components/schemas/LearningSession" }, "request_id": { "type": "string" } } } } } },
+      "HintResponse": { "$ref": "#/components/responses/LearningSessionResponse" },
+      "SummaryListResponse": { "$ref": "#/components/responses/ContentListResponse" },
+      "ErrorResponse": { "description": "Error", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+    }
+  }
+}
