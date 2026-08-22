@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+
+engineStrict: true
+strictPeerDependencies: true
+sharedWorkspaceLockfile: true
+ignoreScripts: true
