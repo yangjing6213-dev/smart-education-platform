@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title desc">
+  <title id="title">安全接送</title><desc id="desc">门禁、时间和确认标记。</desc>
+  <rect width="320" height="180" rx="16" fill="#f3f8fc"/>
+  <rect x="67" y="36" width="102" height="108" rx="8" fill="#fff" stroke="#356b32" stroke-width="5"/><rect x="92" y="62" width="50" height="30" rx="4" fill="#eff8df" stroke="#9fd246" stroke-width="4"/><circle cx="118" cy="77" r="7" fill="#356b32"/>
+  <path d="M176 108h76" stroke="#7ec8f5" stroke-width="8" stroke-linecap="round"/><circle cx="211" cy="108" r="25" fill="#ffd84d" stroke="#356b32" stroke-width="4"/><path d="M211 94v16l10 6" fill="none" stroke="#356b32" stroke-width="4" stroke-linecap="round"/>
+  <path d="m217 50 12 12 25-27" fill="none" stroke="#247a42" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

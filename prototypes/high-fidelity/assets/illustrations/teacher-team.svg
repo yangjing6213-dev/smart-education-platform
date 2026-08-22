@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title desc">
+  <title id="title">教师团队</title><desc id="desc">三个抽象人物围绕一张协作桌。</desc>
+  <rect width="320" height="180" rx="16" fill="#f3f8fc"/>
+  <circle cx="88" cy="62" r="22" fill="#7ec8f5"/><circle cx="160" cy="50" r="24" fill="#9fd246"/><circle cx="232" cy="62" r="22" fill="#ff9a86"/>
+  <path d="M52 137c2-29 18-44 36-44s34 15 36 44M117 137c3-34 18-52 43-52s40 18 43 52M196 137c2-29 18-44 36-44s34 15 36 44" fill="#fff" stroke="#356b32" stroke-width="5" stroke-linecap="round"/>
+  <path d="M128 121h64v22h-64z" fill="#ffd84d" stroke="#356b32" stroke-width="4"/><path d="M140 121v-14h40v14" fill="none" stroke="#356b32" stroke-width="4"/>
+  <path d="M148 115h24" stroke="#356b32" stroke-width="3" stroke-linecap="round"/>
+</svg>

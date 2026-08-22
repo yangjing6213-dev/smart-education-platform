@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">空状态</title><desc id="desc">一个等待内容的收纳盒。</desc>
+  <rect width="240" height="160" rx="14" fill="#fbfdf9"/>
+  <path d="M58 62h124l-12 62H70z" fill="#eff8df" stroke="#356b32" stroke-width="5"/><path d="M58 62h124l-17-25H75z" fill="#9fd246" stroke="#356b32" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M101 91h38" stroke="#356b32" stroke-width="6" stroke-linecap="round"/><path d="M120 72v39" stroke="#356b32" stroke-width="4" stroke-linecap="round"/>
+</svg>

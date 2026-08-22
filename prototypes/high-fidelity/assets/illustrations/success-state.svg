@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="title desc">
+  <title id="title">完成状态</title><desc id="desc">一条完成的路径和确认标记。</desc>
+  <rect width="240" height="160" rx="14" fill="#f0faf3"/>
+  <path d="M44 111c34-48 62-5 87-36 20-24 37-25 66-9" fill="none" stroke="#8fd9b6" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="184" cy="61" r="30" fill="#247a42"/><path d="m169 61 10 10 22-24" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M55 45h42M55 61h28" stroke="#356b32" stroke-width="5" stroke-linecap="round"/>
+</svg>
