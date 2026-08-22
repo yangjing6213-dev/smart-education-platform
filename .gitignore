@@ -2,6 +2,9 @@
 .env
 # Phase 1A 批次A不纳入环境样例；若出现 .env.example，忽略审计必须报告其路径
 .env.*
+
+# Phase 1A 批次B批准的只读视觉输入；不得提交或进入审查包
+/phase-inputs/
 *.pem
 *.key
 *.p12

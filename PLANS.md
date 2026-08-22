@@ -1,40 +1,85 @@
-# Phase 1A 批次A总计划
+# Phase 1A 批次B执行计划
 
-## 计划约束
+## 权威与状态
 
-本计划已由项目负责人在当前目标中批准，只适用于 Phase 1A 批次A。顺序不得跳过；每个阶段必须有任务合同、验证证据和停止点。A2—A7 不因 A1 完成而自动获得执行授权。
+- 当前阶段：`PHASE_1A_BATCH_B`
+- 执行合同：`PHASE_1A_BATCH_B_CODEX_EXECUTION.md`
+- 合同 SHA-256：`8DE2E96EB129E05950F8BC3832C5CEB842A1565BC5512E201F7EB233AC6DE04E`
+- 源分支/源 HEAD：`planning/phase-1a-batch-a` / `f698f87150dce3376fb96d1bbb330d28d0d73b81`
+- 目标分支：`planning/phase-1a-batch-b`
+- `PHASE_1B_STARTED=NO`
+- `PROJECT_OWNER_ACCEPTANCE=PENDING`
 
-## A0—A7 顺序
+Batch A 已由项目负责人验收为 `PASS`，其 ZIP、根清单、报告、文件清单、验证器、低保真原型、截图和既有产品/架构/AI文档均为冻结输入。Batch B 只增加合同白名单内的治理、设计、原型、基线、验证和证据文件。
 
-| 编号 | 名称 | 主要产物 | 退出证据 | 当前状态 |
-|---|---|---|---|---|
-| A0 | 执行前硬门禁 | 根路径、合同哈希、文件边界、`.git` 不存在检查 | 路径正确；合同 SHA 匹配；仅有源合同；`.git` 不存在 | 已核验 |
-| A1 | Git与项目治理基线 | 根治理文件、项目治理文件、角色卡、任务与回执模板、执行计划 | 文件清单、UTF-8、差异检查、Commit 1 SHA | 当前节点 |
-| A2 | 产品规格基线 | 总 PRD、V0.1 PRD、角色/端侧矩阵、页面、流程、内容、状态、验收 | 需求覆盖矩阵、V0.1 不删减、B级12项状态与三条闭环 | 未开始 |
-| A3 | 架构、数据、权限与AI安全草案 | 系统/模块/多租户/身份/数据/API/文件/环境/安全及 AI 草案 | 租户隔离检查、AI第0—3层与巩固层、安全边界 | 未开始 |
-| A4 | 三端低保真可点击原型 | A级页面、B级关键流程、三端入口与离线导航 | 静态链接、模拟数据、三条完整闭环 | 未开始 |
-| A5 | 自动验证与原型验证 | 验证脚本、浏览器或静态验证、真实生成的截图 | 命令结果、链接结果、截图来源说明 | 未开始 |
-| A6 | 审查证据与压缩包 | 评审、清单、校验和、显式白名单 ZIP | 包内载荷清单、根最终清单、ZIP 哈希 | 未开始 |
-| A7 | Commit 4、最终门禁与停止 | Commit 4、最终回执、停止声明 | 四提交证据、干净工作区、负责人待验收 | 未开始 |
+## 执行顺序
 
-## 四个提交节点
+| 阶段 | 任务合同 | 主要产物 | 固定提交 |
+|---|---|---|---|
+| B0 | `PHASE_1A_BATCH_B_B0` | 只读门禁回执 | 无 |
+| B1 | `PHASE_1A_BATCH_B_B1` | 验收记录、决策基线、范围、执行计划、根治理更新 | `chore: activate phase 1a batch b design baseline` |
+| B2 | `PHASE_1A_BATCH_B_B2` | 视觉分析、品牌 UI 规范、组件和响应式规则 | `docs: define tongxin cross-end design system` |
+| B3 | `PHASE_1A_BATCH_B_B3` | 59 路由高保真原型、原创 SVG、模拟数据 | `feat: add phase 1a high fidelity prototypes` |
+| B4 | `PHASE_1A_BATCH_B_B4` | V0.1 技术基线、契约、追踪矩阵、Phase 1B 计划 | `docs: finalize v0.1 technical baseline and phase 1b plan` |
+| B5 | `PHASE_1A_BATCH_B_B5` | 标准库验证器、浏览器验证和响应式/负测证据 | 无 |
+| B6 | `PHASE_1A_BATCH_B_B6` | 15 张截图、评审报告、清单、独立 manifest、审查 ZIP | 无 |
+| B7 | `PHASE_1A_BATCH_B_B7` | 最终门禁与回执 | `test: add phase 1a batch b review evidence` |
 
-1. A1：`chore: establish phase 1a project governance`
-2. A2：`docs: define phase 1a batch a product baseline`
-3. A3：`docs: draft platform architecture and ai safety`
-4. A4—A7：`feat: add phase 1a low fidelity review prototype`
+每个任务都必须先完成合同实例中的目标、白名单、验收点、命令和停止条件，再实施、验证、显式暂存和提交。禁止 `git add .`、`git add -A`、amend、rebase、reset、remote、push 和部署。
 
-每次提交前只显式暂存当次白名单文件，运行相关验证并检查 `git diff --cached`。禁止 `git add .`、`git add -A`、推送和部署。
+## B0 硬门禁
 
-## 全批次完成门禁
+只读核验项目根、合同 SHA、源分支、源 HEAD、目标分支 provenance、工作区和 index、忽略路径、Git remote、Batch A 冻结证据、Batch A ZIP 三项指标、四个视觉输入、根目录额外 ZIP、Batch B 固定 ZIP和精确未跟踪输入集。旧 Batch A 阶段敏感验证器不得在 Commit 4 上运行；冻结报告的历史 `PENDING` 字段不得回写。任何合同、哈希、归属、权限或文件边界异常立即停止。
 
-- 合同12项交付全部有文件与验收证据；
-- 术语、三端、多租户、未成年人、模拟数据和 AI 边界通过检查；
-- V0.1 锁定内容仅合并映射，不删弱漏；
-- B级12项均具备可操作状态转换，家长绑定、教师任务到日报、AI学习助手形成完整闭环；
-- 审查包与两份职责不同的 `SHA256SUMS.txt` 规则得到执行；
-- Git 仅有计划内四个提交，无远程、无推送、无部署、无真实数据、无正式 AI；
-- `PASS` 有证据且明确“待项目负责人验收”；
-- 输出最终回执后停止，不进入下一阶段。
+## B1 治理基线
 
-详细任务、验证和强制停止规则见 `docs/plans/PHASE_1A_BATCH_A_EXEC_PLAN.md`。
+允许文件：
+
+- `.gitignore`
+- `AGENTS.md`
+- `README.md`
+- `PLANS.md`
+- `docs/project/PHASE_1A_BATCH_A_ACCEPTANCE.md`
+- `docs/project/PHASE_1A_BATCH_B_DECISION_BASELINE.md`
+- `docs/project/PHASE_1A_BATCH_B_SCOPE_AND_NON_SCOPE.md`
+- `docs/plans/PHASE_1A_BATCH_B_EXEC_PLAN.md`
+
+`phase-inputs/phase1a-batch-b/` 只读、忽略、未跟踪，不进入提交。Batch A 冻结路径不在 B1 白名单中。
+
+## B2 设计系统
+
+读取四个批准视觉输入，仅提取布局、卡片、留白、信息层级和跨端结构；不得复制原配色、人物、机器人、图标、水印、文案或完整页面。输出设计文档、组件清单、可访问性、响应式和原创插画规则。所有新插画和图标必须为本地原创 SVG；批准的机构 Logo 是唯一可直接使用的输入图像。
+
+## B3 高保真原型
+
+创建 `prototypes/high-fidelity/`，只使用原生 HTML、CSS Custom Properties、原生 JavaScript、本地 PNG/SVG、hash 路由和内存模拟数据。不得创建 `package.json`、应用脚手架、网络请求、外部字体、持久化存储或正式服务。
+
+路由集合必须与 Batch A `PAGE_INVENTORY.md` 保持一致：A 级 47 个（小程序 20、用户网页 13、管理网页 14），B 级流程 12 个，C 级 10 个只作未来预留，不进入可执行原型。三条闭环必须可点击完成：家长绑定、教师任务至工作日报、监督式 AI 学习至教师摘要。AI 必须按“先尝试、第 0/1/2/3 层、1—3 道巩固题、转教师或关闭”推进。
+
+## B4 基线与 Phase 1B 计划
+
+创建合同白名单中的 `*_BASELINE.md`、V0.1 JSON/Markdown 契约、追踪矩阵和包含 18 个独立 TDD 任务的 `PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md`。明确技术栈、未来 monorepo 结构、多租户、Membership、对象级权限、数据模型、API 错误、文件/COS 边界、环境、测试、日志审计、迁移回滚、隐私和 AI 网关。只写计划，不创建 `apps/`、`packages/`、数据库迁移或正式代码。
+
+## B5 验证
+
+验证器只能使用 Python 标准库和现有运行时。验证页面集合、59 路由、12 流程状态守卫、三条闭环、AI 层级、原创 SVG、禁止外部请求/持久化、模拟数据、可访问性静态约束和合同白名单。浏览器验证优先使用当前已有 Chrome/Playwright；不得安装依赖。记录浏览器版本、Playwright 版本、页面错误、严重控制台错误、外部请求和失败请求。
+
+## B6 证据包
+
+固定生成 15 张真实浏览器截图。固定 ZIP：`artifacts/review-package/student-care-platform-phase1a-batch-b-review-pack-v1.0.zip`。独立根清单：`SHA256SUMS_PHASE_1A_BATCH_B.txt`，不得覆盖 Batch A 的 `SHA256SUMS.txt`。ZIP 成员必须精确为合同列出的 86 项，路径按 POSIX Unicode 升序、UTF-8 无 BOM、LF 和单一末尾 LF 计算名单 SHA：`B6ED195F1F41AB731F53AFA65071037BE23A56F3547B543160A41F0CE6A33C30`。运行时集合不匹配时不得生成或覆盖 ZIP。
+
+## B7 最终门禁与停止
+
+最终验证五个提交顺序、冻结证据无漂移、合同 SHA、工作区/index/remote、59/59 路由、15 张截图、86 成员和两份清单。最终回执必须保留：
+
+```text
+PHASE_1A_BATCH_B_STATUS=PASS|BLOCKED
+PHASE_1B_STARTED=NO
+PRODUCTION_DEPLOYMENT_EXECUTED=NO
+GIT_PUSH_EXECUTED=NO
+REAL_PERSONAL_DATA_USED=NO
+LIVE_AI_MODEL_USED=NO
+PROJECT_OWNER_ACCEPTANCE=PENDING
+```
+
+`PASS` 只表示内部证据门禁通过。输出最终回执后立即停止，等待项目负责人验收，不进入 Phase 1B。
