@@ -2,6 +2,15 @@
 
 Status: planned work only. No task in this document has been executed by Phase 1A Batch B.
 
+## Dependency authority
+
+The T10/T12 dependency order is governed by
+`docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md` with
+`SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`.
+The authority is stable for this formalization but still requires explicit project-owner
+approval of its identified SHA before `/goal` or Task 03 implementation. Task 12 depends on
+`T02 -> T03 -> T05`; Task 10 depends on `T05 -> T08 -> T12`.
+
 ## Working contract
 
 Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. A task cannot start until its dependencies and the Phase 1B start gate are approved.
@@ -107,7 +116,8 @@ Every task follows `red -> green -> focused regression -> explicit commit`. The 
 
 ## Task 10 - Teaching resources and search
 
-- Dependencies: Tasks 05, 08, and 12.
+- Dependencies: Tasks 05, 08, and 12 (`T05 -> T08 -> T12`).
+- Dependency authority: `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`.
 - Future files: `apps/api/src/modules/resources/resource.service.ts`, `apps/api/src/routes/staff-resources.route.ts`, `apps/user-web/src/pages/resources.tsx`, `apps/api/src/modules/resources/resource.test.ts`.
 - Input: resource categories, file metadata, role and campus scope.
 - Output: filtered resource list, detail, and empty-result behavior.
@@ -129,7 +139,8 @@ Every task follows `red -> green -> focused regression -> explicit commit`. The 
 
 ## Task 12 - File upload and COS adapter boundary
 
-- Dependencies: Tasks 02-03, 05, and 10.
+- Dependencies: Tasks 02, 03, and 05 (`T02 -> T03 -> T05`).
+- Dependency authority: `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`.
 - Future files: `apps/api/src/modules/files/file.service.ts`, `apps/api/src/adapters/cos.storage.ts`, `apps/api/src/routes/file-intent.route.ts`, `apps/api/src/modules/files/file.test.ts`.
 - Input: file storage baseline, declared purpose, checksum, and scope.
 - Output: pending file record, short-lived upload intent, scan state, and scoped read link.

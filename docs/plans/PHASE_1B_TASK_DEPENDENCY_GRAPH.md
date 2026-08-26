@@ -2,6 +2,12 @@
 
 Status: planned graph only; no node has been executed in Batch B.
 
+Dependency authority: `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`
+(`SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`).
+The T10 and T12 edges below must remain consistent with that authority. The authority SHA is
+identified but remains pending explicit project-owner approval before `/goal` or Task 03
+implementation.
+
 ## Nodes
 
 ```text
