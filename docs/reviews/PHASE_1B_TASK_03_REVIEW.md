@@ -3,7 +3,7 @@
 ## Gate and scope
 
 ```text
-PHASE_1B_TASK_03_STATUS=INTERNAL_EVIDENCE_READY
+PHASE_1B_TASK_03_STATUS=FINAL_EVIDENCE_READY
 TASK_03_IMPLEMENTATION_SLICE_OWNER_ACCEPTANCE=PASS
 TASK_03_STARTED=YES
 TASK_04_STARTED=NO
@@ -11,7 +11,11 @@ TASK_05_PLUS_STARTED=NO
 SOURCE_HEAD=d122cb693de9cbc5782ee006b094ce410c76f365
 TARGET_BRANCH=feature/phase-1b-task-03-tenant-campus-scope
 TASK_03_CONTRACT_SHA256=5DACCFDABCE2EF597F852D0DAB00ACC2FC7388FB25D58551199586A4CE6152D9
-PROJECT_OWNER_ACCEPTANCE=PENDING
+TASK_03_IMPLEMENTATION_COMMIT=dd72ddcb2975e237dce95dfb81238d9367d7be99
+TASK_03_ACCEPTANCE_COMMIT=314b8dbbe15ea32300a2b253b287151005db4cec
+TASK_03_ACCEPTANCE_RECORD=docs/project/PHASE_1B_TASK_03_ACCEPTANCE.md
+TASK_03_ACCEPTANCE_RECORD_STATUS=COMMITTED
+PROJECT_OWNER_ACCEPTANCE=PASS
 ```
 
 This report covers only the approved Task 03 tenant/campus scope slice and its final evidence
@@ -47,7 +51,7 @@ versions remain unchanged except for the previously authorized workspace links.
 | Package tests | PASS: contracts 2/2, validation 11/11, tenant 10/10, API 4/4 |
 | Coverage | PASS: tenant and scope plugin line/branch/function coverage 100% |
 | Workspace and package boundaries | PASS: 8/8 Node tests |
-| Task 03 verifier | PASS: tri-state evidence gate and final-review verification |
+| Task 03 verifier | PASS: tri-state evidence gate, committed-state ancestry, and final-review verification |
 | Git diff check | PASS: `git diff --check`; index remains clean |
 | Format gate | BLOCKED: the approved root format command references `SHA256SUMS_PHASE_1B_TASK_03.txt`, which is forbidden during implementation mode and therefore cannot be treated as a passing gate before final evidence generation |
 | Network, service, and secret boundary | PASS: no external request, listener, real data, or credential pattern |
@@ -60,13 +64,14 @@ REVIEW_PACKAGE_MEMBER_COUNT=64
 REVIEW_PACKAGE_INTERNAL_MANIFEST_PAYLOAD_COUNT=63
 REVIEW_PACKAGE_MEMBER_LIST_BYTES=2199
 REVIEW_PACKAGE_MEMBER_LIST_SHA256=23EF5FC311BC2B64F15E617EA91FEA91BC9102992D89688CAC4022F72785AC1D
-PROJECT_OWNER_ACCEPTANCE=PENDING
+PROJECT_OWNER_ACCEPTANCE=PASS
 ```
 
 The root SHA manifest covers the other 63 canonical members and records the ZIP digest after the
 archive is created. The archive contains exactly the 64 canonical paths, with no parent traversal,
-generated output, dependency cache, secret, real-data, or unrelated file. Owner acceptance remains
-pending until an independent review confirms every recorded digest.
+generated output, dependency cache, secret, real-data, or unrelated file. The verifier now checks
+that the current HEAD descends from the source baseline and contains the committed implementation
+and acceptance-record anchors before validating the final evidence package.
 
 ## Stop and safety invariants
 
@@ -80,5 +85,6 @@ REAL_PERSONAL_DATA_USED=NO
 LIVE_AI_MODEL_USED=NO
 PAYMENT_INTEGRATION_EXECUTED=NO
 TASK_04_ARTIFACTS_PRESENT=NO
-PROJECT_OWNER_ACCEPTANCE=PENDING
+TASK_03_ACCEPTANCE_RECORD_STATUS=COMMITTED
+PROJECT_OWNER_ACCEPTANCE=PASS
 ```

@@ -12,6 +12,9 @@ const SOURCE_HEAD = "d122cb693de9cbc5782ee006b094ce410c76f365";
 const TARGET_BRANCH = "feature/phase-1b-task-03-tenant-campus-scope";
 const CONTRACT = "PHASE_1B_TASK_03_CODEX_EXECUTION.md";
 const CONTRACT_SHA = "5DACCFDABCE2EF597F852D0DAB00ACC2FC7388FB25D58551199586A4CE6152D9";
+const TASK_03_IMPLEMENTATION_COMMIT = "dd72ddcb2975e237dce95dfb81238d9367d7be99";
+const TASK_03_ACCEPTANCE_COMMIT = "314b8dbbe15ea32300a2b253b287151005db4cec";
+const TASK_03_ACCEPTANCE_RECORD = "docs/project/PHASE_1B_TASK_03_ACCEPTANCE.md";
 const AUTHORITY = "docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md";
 const TASK_02_CONTRACT = "PHASE_1B_TASK_02_CODEX_EXECUTION.md";
 const TASK_02_ACCEPTANCE = "docs/project/PHASE_1B_TASK_02_ACCEPTANCE.md";
@@ -122,6 +125,30 @@ function git(args) {
   return command("git", args);
 }
 
+function commitExists(commit) {
+  try {
+    execFileSync("git", ["cat-file", "-e", `${commit}^{commit}`], {
+      cwd: ROOT,
+      stdio: "ignore",
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function commitIsAncestor(ancestor, descendant) {
+  try {
+    execFileSync("git", ["merge-base", "--is-ancestor", ancestor, descendant], {
+      cwd: ROOT,
+      stdio: "ignore",
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function sourceFiles(relativeDirectory) {
   const directory = absolute(relativeDirectory);
   if (!existsSync(directory)) return [];
@@ -182,11 +209,57 @@ function checkGitAndWorkspace() {
   const branch = git(["branch", "--show-current"]);
   const head = git(["rev-parse", "HEAD"]);
   if (branch !== TARGET_BRANCH) fail("git branch", branch);
-  if (head !== SOURCE_HEAD) fail("git HEAD", head);
+  if (!commitIsAncestor(SOURCE_HEAD, head))
+    fail("git HEAD", `${head} is not descended from ${SOURCE_HEAD}`);
+  if (!commitExists(TASK_03_IMPLEMENTATION_COMMIT))
+    fail("committed Task 03 state", `missing implementation commit ${TASK_03_IMPLEMENTATION_COMMIT}`);
+  else if (!commitIsAncestor(TASK_03_IMPLEMENTATION_COMMIT, head))
+    fail(
+      "committed Task 03 state",
+      `implementation commit ${TASK_03_IMPLEMENTATION_COMMIT} is not an ancestor of ${head}`,
+    );
+  if (!commitExists(TASK_03_ACCEPTANCE_COMMIT))
+    fail("committed Task 03 state", `missing acceptance commit ${TASK_03_ACCEPTANCE_COMMIT}`);
+  else if (!commitIsAncestor(TASK_03_ACCEPTANCE_COMMIT, head))
+    fail(
+      "committed Task 03 state",
+      `acceptance commit ${TASK_03_ACCEPTANCE_COMMIT} is not an ancestor of ${head}`,
+    );
+  if (!existsSync(absolute(TASK_03_ACCEPTANCE_RECORD))) {
+    fail("committed Task 03 state", `missing ${TASK_03_ACCEPTANCE_RECORD}`);
+  } else {
+    const acceptanceText = text(TASK_03_ACCEPTANCE_RECORD);
+    const requiredAcceptanceFields = [
+      "TASK_03_PROJECT_OWNER_ACCEPTANCE=PASS",
+      `TASK_03_IMPLEMENTATION_COMMIT=${TASK_03_IMPLEMENTATION_COMMIT}`,
+      "TASK_03_IMPLEMENTATION_STATE=COMMITTED",
+      `TASK_03_ACCEPTANCE_COMMIT=${TASK_03_ACCEPTANCE_COMMIT}`,
+      "TASK_03_ACCEPTANCE_RECORD_STATUS=COMMITTED",
+      `TASK_03_SOURCE_HEAD=${SOURCE_HEAD}`,
+    ];
+    for (const field of requiredAcceptanceFields) {
+      if (!acceptanceText.split("\n").includes(field))
+        fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} is missing ${field}`);
+    }
+    try {
+      if (git(["ls-files", "--error-unmatch", TASK_03_ACCEPTANCE_RECORD]) !== TASK_03_ACCEPTANCE_RECORD)
+        fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} is not tracked`);
+    } catch {
+      fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} is not tracked`);
+    }
+    if (git(["diff", "--name-only", "--", TASK_03_ACCEPTANCE_RECORD]))
+      fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} has uncommitted changes`);
+  }
   if (git(["remote"])) fail("git remote", "a remote is configured");
   if (git(["diff", "--cached", "--name-only"])) fail("git index", "staged paths exist");
   if (!failures.some((entry) => entry.startsWith("git branch"))) ok("git branch", branch);
-  if (!failures.some((entry) => entry.startsWith("git HEAD"))) ok("git HEAD", head);
+  if (!failures.some((entry) => entry.startsWith("git HEAD")))
+    ok("git HEAD", `${head} descends from ${SOURCE_HEAD}`);
+  if (!failures.some((entry) => entry.startsWith("committed Task 03 state")))
+    ok(
+      "committed Task 03 state",
+      `implementation ${TASK_03_IMPLEMENTATION_COMMIT}; acceptance ${TASK_03_ACCEPTANCE_COMMIT}; HEAD ${head}`,
+    );
   if (!failures.some((entry) => entry.startsWith("git remote"))) ok("git remote", "count 0");
   if (!failures.some((entry) => entry.startsWith("git index"))) ok("git index", "clean");
 
@@ -563,8 +636,8 @@ function checkFinalEvidence() {
     fail("review package", "root SHA manifest ZIP digest is incorrect");
 
   const reviewText = text(TASK_03_REVIEW);
-  if (!reviewText.includes("PROJECT_OWNER_ACCEPTANCE=PENDING"))
-    fail("review package", "review report must retain PROJECT_OWNER_ACCEPTANCE=PENDING");
+  if (!reviewText.includes("PROJECT_OWNER_ACCEPTANCE=PASS"))
+    fail("review package", "review report must record PROJECT_OWNER_ACCEPTANCE=PASS");
 
   let zipMembers;
   try {

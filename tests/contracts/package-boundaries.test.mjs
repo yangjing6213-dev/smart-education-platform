@@ -131,10 +131,12 @@ test("API workspace can resolve and use all explicit package exports", () => {
   assert.equal(output, "");
 });
 
-test("Task 03 verifier accepts the current uncommitted implementation boundary", () => {
+test("Task 03 verifier accepts the committed implementation boundary", () => {
   const output = execFileSync(process.execPath, ["scripts/verify_task_03.mjs"], {
     cwd: root,
     encoding: "utf8",
   });
+  assert.doesNotMatch(output, /FAIL git HEAD:/);
+  assert.match(output, /OK committed Task 03 state:/);
   assert.match(output, /TASK_03_(?:IMPLEMENTATION|FINAL_REVIEW)_VERIFY=PASS/);
 });

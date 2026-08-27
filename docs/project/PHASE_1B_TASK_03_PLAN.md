@@ -23,8 +23,11 @@ Zod 3.25.76 only through `@student-care/validation`.
 - Contract SHA-256: `5DACCFDABCE2EF597F852D0DAB00ACC2FC7388FB25D58551199586A4CE6152D9`
 - Source HEAD: `d122cb693de9cbc5782ee006b094ce410c76f365`
 - Branch: `feature/phase-1b-task-03-tenant-campus-scope`
-- No staging, commit, push, PR, deployment, service startup, registry, external request, real data,
-  or Task 04 implementation.
+- Implementation commit: `dd72ddcb2975e237dce95dfb81238d9367d7be99`
+- Acceptance record commit: `314b8dbbe15ea32300a2b253b287151005db4cec`
+- The implementation and acceptance record are committed; no Task 04 work is authorized.
+- No push, PR, deployment, service startup, registry, external request, real data, or Task 04
+  implementation.
 - `apps/api/src/index.ts`, `apps/api/src/server.ts`, the contract, and all Task 02 evidence remain
   byte-for-byte unchanged. Task 03 evidence artifacts are writable only in the separately approved
   final evidence slice below.
@@ -234,8 +237,9 @@ Zod 3.25.76 only through `@student-care/validation`.
 
 - Create: `scripts/verify_task_03.mjs`
 
-- [x] Verify root, branch, unchanged HEAD, clean index, zero remotes, contract/authority/Task 02
-      hashes, exact whitelist status, frozen API entry/server/health, package scripts/dependencies,
+- [x] Verify root, branch, source-baseline ancestry, committed Task 03 implementation and acceptance
+      anchors, clean index, zero remotes, contract/authority/Task 02 hashes, exact whitelist status,
+      frozen API entry/server/health, package scripts/dependencies,
       lockfile-only diff, package direction, synthetic/no-network/no-secret boundaries, and absence
       of Task 04 artifacts.
 - [x] Parse the contract's 64 candidate member lines and verify continuous numbering, unique
@@ -251,7 +255,7 @@ Zod 3.25.76 only through `@student-care/validation`.
   TASK_03_FINAL_REVIEW_VERIFY=PASS
   ```
 
-### Task 7: Final verification and uncommitted handoff
+### Task 7: Final verification and committed handoff
 
 - [x] Run Node, Corepack, and pnpm version checks.
 - [x] Run focused tenant/API lint, tests, and coverage with the existing local executables.
@@ -262,5 +266,5 @@ Zod 3.25.76 only through `@student-care/validation`.
 - [x] Record the historical format-gate conflict: before final evidence generation, the exact
       command was blocked solely by the explicitly forbidden/missing
       `SHA256SUMS_PHASE_1B_TASK_03.txt`; the path was not used to weaken the contract.
-- [x] Leave every implementation and evidence change unstaged and uncommitted for project-owner
-      review.
+- [x] Leave the implementation, evidence, and acceptance record in explicit commits for the
+      project-owner's audit; do not start Task 04.
