@@ -19,14 +19,30 @@ const requiredPaths = [
   "apps/api/src/health/health.route.ts",
   "apps/api/src/server.ts",
   "apps/api/src/index.ts",
+  "apps/api/src/plugins/scope.plugin.ts",
+  "apps/api/test/scope.plugin.test.ts",
   "apps/api/test/health.route.test.ts",
+  "packages/tenant/package.json",
+  "packages/tenant/tsconfig.json",
+  "packages/tenant/src/index.ts",
+  "packages/tenant/src/resolve-scope.ts",
+  "packages/tenant/src/scope-context.ts",
+  "packages/tenant/test/isolation.test.ts",
   "scripts/verify_task_01.mjs",
+  "scripts/verify_task_02.mjs",
+  "scripts/verify_task_03.mjs",
+  "PHASE_1B_TASK_03_CODEX_EXECUTION.md",
+  "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
+  "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
+  "docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md",
+  "docs/project/PHASE_1B_TASK_02_ACCEPTANCE.md",
+  "docs/project/PHASE_1B_TASK_03_PLAN.md",
   "docs/project/PHASE_1B_RUNTIME_BASELINE_DECISION.md",
   "docs/reviews/PHASE_1B_TASK_01_REVIEW.md",
   "SHA256SUMS_PHASE_1B_TASK_01.txt",
 ];
 
-test("required Task 01 workspace paths resolve from the repository root", () => {
+test("required Task 03 implementation paths resolve from the repository root", () => {
   for (const relativePath of requiredPaths) {
     assert.equal(existsSync(path.join(root, relativePath)), true, relativePath);
   }

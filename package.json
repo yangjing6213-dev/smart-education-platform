@@ -7,12 +7,13 @@
     "pnpm": ">=11.22.0 <12.0.0"
   },
   "scripts": {
-    "typecheck": "corepack pnpm --filter @student-care/contracts typecheck && corepack pnpm --filter @student-care/validation typecheck && corepack pnpm --filter @student-care/api typecheck",
-    "lint": "corepack pnpm --filter @student-care/contracts lint && corepack pnpm --filter @student-care/validation lint && corepack pnpm --filter @student-care/api lint && eslint eslint.config.mjs tests scripts",
-    "format:check": "prettier --check --ignore-unknown package.json pnpm-workspace.yaml tsconfig.base.json eslint.config.mjs .prettierrc.json apps/api/package.json apps/api/tsconfig.json apps/api/src/**/*.ts apps/api/test/**/*.ts packages/*/package.json packages/*/tsconfig.json packages/*/src/**/*.ts packages/*/test/**/*.ts tests/**/*.mjs scripts/**/*.mjs docs/project/PHASE_1B_RUNTIME_BASELINE_DECISION.md docs/project/PHASE_1B_TASK_01_ACCEPTANCE.md docs/project/PHASE_1B_TASK_02_PLAN.md docs/reviews/PHASE_1B_TASK_01_REVIEW.md docs/reviews/PHASE_1B_TASK_02_REVIEW.md",
-    "test": "corepack pnpm --filter @student-care/contracts test && corepack pnpm --filter @student-care/validation test && corepack pnpm --filter @student-care/api test && node --test tests/workspace/paths.test.mjs tests/contracts/package-boundaries.test.mjs",
-    "build": "corepack pnpm --filter @student-care/contracts build && corepack pnpm --filter @student-care/validation build && corepack pnpm --filter @student-care/api build",
-    "verify": "corepack pnpm typecheck && corepack pnpm lint && corepack pnpm format:check && corepack pnpm test && corepack pnpm build && node scripts/verify_task_02.mjs"
+    "typecheck": "corepack pnpm --filter @student-care/contracts typecheck && corepack pnpm --filter @student-care/validation typecheck && corepack pnpm --filter @student-care/tenant typecheck && corepack pnpm --filter @student-care/api typecheck",
+    "lint": "corepack pnpm --filter @student-care/contracts lint && corepack pnpm --filter @student-care/validation lint && eslint eslint.config.mjs tests scripts",
+    "format:check": "prettier --check --ignore-unknown package.json pnpm-workspace.yaml tsconfig.base.json eslint.config.mjs .prettierrc.json apps/api/package.json apps/api/tsconfig.json apps/api/src/**/*.ts apps/api/test/**/*.ts packages/*/package.json packages/*/tsconfig.json packages/*/src/**/*.ts packages/*/test/**/*.ts tests/**/*.mjs scripts/**/*.mjs PHASE_1B_TASK_03_CODEX_EXECUTION.md SHA256SUMS_PHASE_1B_TASK_03.txt docs/project/PHASE_1B_RUNTIME_BASELINE_DECISION.md docs/project/PHASE_1B_TASK_01_ACCEPTANCE.md docs/project/PHASE_1B_TASK_02_PLAN.md docs/project/PHASE_1B_TASK_03_PLAN.md docs/reviews/PHASE_1B_TASK_01_REVIEW.md",
+    "test": "corepack pnpm --filter @student-care/contracts test && corepack pnpm --filter @student-care/validation test && corepack pnpm --filter @student-care/tenant test && corepack pnpm --filter @student-care/api test && node --test tests/workspace/paths.test.mjs tests/contracts/package-boundaries.test.mjs",
+    "test:coverage": "corepack pnpm --filter @student-care/tenant test:coverage && corepack pnpm --filter @student-care/api test:coverage && node --test tests/workspace/paths.test.mjs tests/contracts/package-boundaries.test.mjs",
+    "build": "corepack pnpm --filter @student-care/contracts build && corepack pnpm --filter @student-care/validation build && corepack pnpm --filter @student-care/tenant build && corepack pnpm --filter @student-care/api build",
+    "verify": "corepack pnpm typecheck && corepack pnpm lint && corepack pnpm format:check && corepack pnpm test && corepack pnpm test:coverage && corepack pnpm build && node scripts/verify_task_03.mjs"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",

@@ -32,6 +32,9 @@ importers:
       '@student-care/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
+      '@student-care/tenant':
+        specifier: workspace:*
+        version: link:../../packages/tenant
       '@student-care/validation':
         specifier: workspace:*
         version: link:../../packages/validation
@@ -40,6 +43,12 @@ importers:
         version: 5.12.1
 
   packages/contracts: {}
+
+  packages/tenant:
+    dependencies:
+      '@student-care/validation':
+        specifier: workspace:*
+        version: link:../validation
 
   packages/validation:
     dependencies:

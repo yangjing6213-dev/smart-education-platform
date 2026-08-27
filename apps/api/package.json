@@ -9,11 +9,13 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
-    "test": "tsc -p tsconfig.json && node --test dist/test/health.route.test.js",
+    "test": "tsc -p tsconfig.json && node --test dist/test/health.route.test.js dist/test/scope.plugin.test.js",
+    "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=100 --test-coverage-include=dist/src/plugins/scope.plugin.js --test dist/test/scope.plugin.test.js",
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@student-care/contracts": "workspace:*",
+    "@student-care/tenant": "workspace:*",
     "@student-care/validation": "workspace:*",
     "fastify": "5.12.1"
   }
