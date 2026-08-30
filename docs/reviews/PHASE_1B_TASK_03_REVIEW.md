@@ -34,27 +34,27 @@ versions remain unchanged except for the previously authorized workspace links.
 
 ## TDD evidence
 
-| Area | Red evidence | Green evidence |
-| --- | --- | --- |
-| Tenant scope and cache | TypeScript test compilation failed while `../src/index.js` was absent | 10/10 isolation tests; line, branch, and function coverage 100% |
-| Fastify boundary | API tests failed while the scope plugin module was absent | 4/4 API tests including health regression; plugin line, branch, and function coverage 100% |
-| Task 4/6 boundaries | Workspace/boundary tests failed while verifier and Task 03 scripts were absent | 8/8 Node tests and verifier final-review check |
-| Evidence gate | Tri-state test failed because `determineEvidenceMode` was not exported | 6 partial combinations throw; all-absent and all-present modes are distinct |
+| Area                   | Red evidence                                                                   | Green evidence                                                                             |
+| ---------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Tenant scope and cache | TypeScript test compilation failed while `../src/index.js` was absent          | 10/10 isolation tests; line, branch, and function coverage 100%                            |
+| Fastify boundary       | API tests failed while the scope plugin module was absent                      | 4/4 API tests including health regression; plugin line, branch, and function coverage 100% |
+| Task 4/6 boundaries    | Workspace/boundary tests failed while verifier and Task 03 scripts were absent | 9/9 Node tests, verifier final-review, and committed change-boundary checks                 |
+| Evidence gate          | Tri-state test failed because `determineEvidenceMode` was not exported         | 6 partial combinations throw; all-absent and all-present modes are distinct                |
 
 ## Verification ledger
 
-| Check | Result |
-| --- | --- |
-| TypeScript | PASS: contracts, validation, tenant, and API `tsc --noEmit` |
-| ESLint | PASS: contracts, validation, tenant, API, workspace tests, and scripts |
-| Prettier for existing files | PASS: all selected Task 03 files formatted |
-| Package tests | PASS: contracts 2/2, validation 11/11, tenant 10/10, API 4/4 |
-| Coverage | PASS: tenant and scope plugin line/branch/function coverage 100% |
-| Workspace and package boundaries | PASS: 8/8 Node tests |
-| Task 03 verifier | PASS: tri-state evidence gate, committed-state ancestry, and final-review verification |
-| Git diff check | PASS: `git diff --check`; index remains clean |
-| Format gate | BLOCKED: the approved root format command references `SHA256SUMS_PHASE_1B_TASK_03.txt`, which is forbidden during implementation mode and therefore cannot be treated as a passing gate before final evidence generation |
-| Network, service, and secret boundary | PASS: no external request, listener, real data, or credential pattern |
+| Check                                 | Result                                                                                                                                                                                                                   |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| TypeScript                            | PASS: contracts, validation, tenant, and API `tsc --noEmit`                                                                                                                                                              |
+| ESLint                                | PASS: contracts, validation, tenant, API, workspace tests, and scripts                                                                                                                                                   |
+| Prettier for existing files           | PASS: all selected Task 03 files formatted                                                                                                                                                                               |
+| Package tests                         | PASS: contracts 2/2, validation 11/11, tenant 10/10, API 4/4                                                                                                                                                             |
+| Coverage                              | PASS: tenant and scope plugin line/branch/function coverage 100%                                                                                                                                                         |
+| Workspace and package boundaries      | PASS: 9/9 Node tests; committed change boundary verified for 19 approved paths                                                                                                                                          |
+| Task 03 verifier                      | PASS: tri-state evidence gate, committed-state ancestry, and final-review verification                                                                                                                                   |
+| Git diff check                        | PASS: `git diff --check`; index remains clean                                                                                                                                                                            |
+| Format gate                           | BLOCKED: the approved root format command references `SHA256SUMS_PHASE_1B_TASK_03.txt`, which is forbidden during implementation mode and therefore cannot be treated as a passing gate before final evidence generation |
+| Network, service, and secret boundary | PASS: no external request, listener, real data, or credential pattern                                                                                                                                                    |
 
 ## Final evidence package
 

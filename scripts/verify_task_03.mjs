@@ -77,6 +77,8 @@ const ALLOWED_CHANGED_PATHS = new Set([
   "tests/workspace/paths.test.mjs",
 ]);
 
+const COMMITTED_ALLOWED_PATHS = new Set([...ALLOWED_CHANGED_PATHS, TASK_03_ACCEPTANCE_RECORD]);
+
 const EVIDENCE_PATHS = new Set([TASK_03_MANIFEST, TASK_03_REVIEW, TASK_03_ZIP]);
 const REQUIRED_IMPLEMENTATION_PATHS = [...ALLOWED_CHANGED_PATHS].filter(
   (relativePath) => relativePath !== "pnpm-lock.yaml" && !EVIDENCE_PATHS.has(relativePath),
@@ -212,7 +214,10 @@ function checkGitAndWorkspace() {
   if (!commitIsAncestor(SOURCE_HEAD, head))
     fail("git HEAD", `${head} is not descended from ${SOURCE_HEAD}`);
   if (!commitExists(TASK_03_IMPLEMENTATION_COMMIT))
-    fail("committed Task 03 state", `missing implementation commit ${TASK_03_IMPLEMENTATION_COMMIT}`);
+    fail(
+      "committed Task 03 state",
+      `missing implementation commit ${TASK_03_IMPLEMENTATION_COMMIT}`,
+    );
   else if (!commitIsAncestor(TASK_03_IMPLEMENTATION_COMMIT, head))
     fail(
       "committed Task 03 state",
@@ -242,7 +247,10 @@ function checkGitAndWorkspace() {
         fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} is missing ${field}`);
     }
     try {
-      if (git(["ls-files", "--error-unmatch", TASK_03_ACCEPTANCE_RECORD]) !== TASK_03_ACCEPTANCE_RECORD)
+      if (
+        git(["ls-files", "--error-unmatch", TASK_03_ACCEPTANCE_RECORD]) !==
+        TASK_03_ACCEPTANCE_RECORD
+      )
         fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} is not tracked`);
     } catch {
       fail("committed Task 03 state", `${TASK_03_ACCEPTANCE_RECORD} is not tracked`);
@@ -271,6 +279,17 @@ function checkGitAndWorkspace() {
   }
   if (!failures.some((entry) => entry.startsWith("workspace whitelist")))
     ok("workspace whitelist", `${ALLOWED_CHANGED_PATHS.size} approved paths only`);
+
+  const committedPaths = git(["diff", "--name-only", SOURCE_HEAD, head])
+    .split("\n")
+    .map((relativePath) => relativePath.trim())
+    .filter(Boolean);
+  for (const relativePath of committedPaths) {
+    if (!COMMITTED_ALLOWED_PATHS.has(relativePath))
+      fail("committed change boundary", `unapproved committed path ${relativePath}`);
+  }
+  if (!failures.some((entry) => entry.startsWith("committed change boundary")))
+    ok("committed change boundary", `${committedPaths.length} approved paths only`);
 
   for (const relativePath of REQUIRED_IMPLEMENTATION_PATHS) {
     if (!existsSync(absolute(relativePath))) fail("workspace structure", `missing ${relativePath}`);

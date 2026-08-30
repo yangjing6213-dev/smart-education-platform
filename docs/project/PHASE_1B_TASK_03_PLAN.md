@@ -2,7 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: use `test-driven-development` for every
 > behavior change and `verification-before-completion` before reporting results. This execution
-> is explicitly inline, uncommitted, and limited to the project-owner-approved whitelist.
+> is explicitly inline, committed in separate implementation/evidence records, and limited to the
+> project-owner-approved whitelist.
 
 **Goal:** Implement deterministic fail-closed tenant/campus scope resolution, scope-aware cache
 keys, and an isolated Fastify scope boundary using synthetic data only.
@@ -248,7 +249,7 @@ Zod 3.25.76 only through `@student-care/validation`.
 - [x] Implement a tri-state evidence gate: all absent selects implementation mode, all present
       selects final-review mode, and partial presence fails closed with exit code 1.
 - [x] Generate and validate the Task 03 SHA manifest, review report, and exact 64-member ZIP;
-      owner acceptance remains pending.
+      the owner acceptance record is committed and the verifier checks its acceptance anchor.
 - [x] Run `node scripts/verify_task_03.mjs`; expected final line:
 
   ```text

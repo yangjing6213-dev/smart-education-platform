@@ -140,3 +140,11 @@ test("Task 03 verifier accepts the committed implementation boundary", () => {
   assert.match(output, /OK committed Task 03 state:/);
   assert.match(output, /TASK_03_(?:IMPLEMENTATION|FINAL_REVIEW)_VERIFY=PASS/);
 });
+
+test("Task 03 verifier audits the committed change boundary", () => {
+  const output = execFileSync(process.execPath, ["scripts/verify_task_03.mjs"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+  assert.match(output, /OK committed change boundary: 19 approved paths only/);
+});
