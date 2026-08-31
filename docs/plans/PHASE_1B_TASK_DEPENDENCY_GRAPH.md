@@ -1,12 +1,28 @@
 # Phase 1B V0.1 Task Dependency Graph
 
-Status: planned graph only; no node has been executed in Batch B.
+Status: active planned graph. Task 01, Task 02, and Task 03 are completed and
+remain frozen evidence. Task 04 has not started and has no implementation
+authorization.
 
-Dependency authority: `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`
+Current governance authority:
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md`
+(`SHA-256=FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`).
+Dependency authority:
+`docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`
 (`SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`).
 The T10 and T12 edges below must remain consistent with that authority. The authority SHA is
-identified but remains pending explicit project-owner approval before `/goal` or Task 03
+historical dependency evidence; it does not authorize `/goal`, Task 04, or any
 implementation.
+
+```text
+PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_03_ONLY
+PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03
+TASK_04_STARTED=NO
+TASK_04_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK_04_PRECONDITION=NEW_INDEPENDENT_CONTRACT_AND_SEPARATE_IMPLEMENTATION_AUTHORIZATION
+PHASE_1B_API_FRAMEWORK=FASTIFY_5.12.1
+NESTJS_REFERENCE_POLICY=HISTORICAL_DRAFT_ONLY
+```
 
 ## Nodes
 

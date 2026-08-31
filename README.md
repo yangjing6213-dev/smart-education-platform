@@ -1,16 +1,16 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A 已完成并冻结；当前执行 **Phase 1A 批次B**，用于产出可审查的品牌设计系统、高保真离线原型、V0.1 技术基线、验证证据和 Phase 1B 实施计划。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—03 已完成并经当前 authority 追认，Task 04 仍未启动。
 
-当前内容不是正式系统，不包含正式业务代码，不连接真实服务，不使用真实学生数据，不调用正式 AI 模型。
+当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
 ## 当前状态
 
 - 项目根路径：`C:\Users\HU\Documents\student-care-saas-platform`
-- 工作分支：`planning/phase-1a-batch-b`
-- 当前节点：B1 批次B治理基线
-- 允许阶段：Phase 1A 批次B
-- 禁止阶段：Phase 1B 正式开发及后续阶段
+- 工作分支：`feature/phase-1b-task-03-tenant-campus-scope`
+- 当前节点：Phase 1B Task 01—03 已完成，Task 04 停止
+- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_03_ONLY`
+- 禁止阶段：Task 04 及后续正式开发，除非获得新的独立合同和单独实施授权
 - 远程推送与部署：禁止
 
 ## 先读顺序
@@ -49,4 +49,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体执行顺序与五个提交节点见 `PLANS.md`。`PASS` 仅表示内部证据门禁通过，`PROJECT_OWNER_ACCEPTANCE` 必须保持 `PENDING`，最终验收权属于项目负责人。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md` 为准（SHA-256：`FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。

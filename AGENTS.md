@@ -1,12 +1,12 @@
 # 项目执行规则
 
-## 项目定位与当前边界
+## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划与原型交付。Batch A 已由项目负责人验收冻结；当前唯一执行阶段是 **Phase 1A 批次B**。本批次只产出治理、设计规范、高保真离线原型、技术基线、验证证据和 Phase 1B 计划，不是正式业务开发。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；当前只追认 Phase 1B Task 01、Task 02、Task 03 已完成。Task 04 未启动且未获实现授权。
 
-禁止自动进入 Phase 1B 正式开发或其他阶段。Phase 1A 批次B结束后必须验证、提交证据并停止，等待项目负责人验收。
+当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md` 为准（SHA-256：`FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`）。任何新任务仍须独立合同、稳定 SHA、项目负责人批准和单独实现授权；不得从已完成 Task 01—03 自动推导 Task 04 或其他任务授权。
 
-## 自举与必读顺序
+## HISTORICAL/FROZEN：Phase 1A 自举与必读顺序
 
 - A0合法初始态为项目根只有指定SHA源合同，`.git`、决策基线、范围、术语、计划、仓库任务合同和 `docs/reviews/BLOCKERS.md` 均不存在。A0只读取源合同与外部active goal，不要求任何尚未存在的仓库文件。
 - A1仅凭A0线程回执 `PASS`、外部active goal与未变的初始目录激活；激活后初始化Git、创建治理文件与单一 `NO_BLOCKERS`，并把A0/A1自举记录固化进Commit 1。
@@ -22,7 +22,7 @@
 
 指定 SHA 的源合同与已批准的 `docs/project/DECISION_BASELINE.md` 共同构成本批次权威；后续直接指令只有在稳定记录且不与二者冲突时才可补充。不得用“当前指令”或聊天记录代替稳定授权证据，也不得削弱、替换或扩张权威内容。任何改变范围、阶段、交付或与源合同冲突的变更，必须建立新版权威执行合同、新 SHA、原子更新全部引用并重新批准；否则先登记阻塞并停止，不得猜测。
 
-## Phase 1A 批次B预读与执行边界
+## HISTORICAL/FROZEN：Phase 1A 批次B预读与执行边界
 
 Batch B 的权威合同为 `PHASE_1A_BATCH_B_CODEX_EXECUTION.md`，SHA-256 必须为 `8DE2E96EB129E05950F8BC3832C5CEB842A1565BC5512E201F7EB233AC6DE04E`。执行前必须读取该合同、当前 Batch A 冻结基线、四个只读视觉输入和 `docs/plans/PHASE_1A_BATCH_B_EXEC_PLAN.md`，并重新执行 B0 硬门禁。
 
@@ -30,7 +30,7 @@ Batch A 的审查 ZIP、根 `SHA256SUMS.txt`、评审报告、文件清单、验
 
 `phase-inputs/phase1a-batch-b/` 是只读输入，必须保持忽略、未跟踪、不进入 Git 或审查包。Batch B 原型只能使用原生 HTML、CSS 和 JavaScript、内存模拟数据、本地 PNG/SVG 与 hash 路由；不得安装依赖、创建 `package.json`、访问外网、使用持久化存储或接入正式服务。
 
-Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。`PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING` 是最终停止不变量。
+Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md` 为准（SHA-256：`FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`）：仅追认 Task 01—03，`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_03_ONLY`，`TASK_04_STARTED=NO`，`TASK_04_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED`。本文件及其他冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING` 仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
 
 ## 锁定产品规则
 

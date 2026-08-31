@@ -1,14 +1,19 @@
-# Phase 1A 批次B执行计划
+# Phase 1A 批次B执行计划（历史冻结）
 
 ## 权威与状态
 
-- 当前阶段：`PHASE_1A_BATCH_B`
+- 当前阶段：`PHASE_1A_BATCH_B`（历史计划）
 - 执行合同：`PHASE_1A_BATCH_B_CODEX_EXECUTION.md`
 - 合同 SHA-256：`8DE2E96EB129E05950F8BC3832C5CEB842A1565BC5512E201F7EB233AC6DE04E`
 - 源分支/源 HEAD：`planning/phase-1a-batch-a` / `f698f87150dce3376fb96d1bbb330d28d0d73b81`
 - 目标分支：`planning/phase-1a-batch-b`
-- `PHASE_1B_STARTED=NO`
-- `PROJECT_OWNER_ACCEPTANCE=PENDING`
+- 历史停止字段：`PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`（`HISTORICAL/FROZEN`）
+- 当前 Phase 1B 活动治理：`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md`（SHA-256：`FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`）
+- 当前状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_03_ONLY`；仅追认 Task 01—03 已完成
+- `TASK_04_STARTED=NO`
+- `TASK_04_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED`
+- 当前 API/runtime：Fastify 5.12.1；Node 24.14.0；pnpm 11.22.0
+- 当前依赖裁决：T12=`T02 -> T03 -> T05`；T10=`T05 -> T08 -> T12`
 
 Batch A 已由项目负责人验收为 `PASS`，其 ZIP、根清单、报告、文件清单、验证器、低保真原型、截图和既有产品/架构/AI文档均为冻结输入。Batch B 只增加合同白名单内的治理、设计、原型、基线、验证和证据文件。
 
@@ -68,9 +73,9 @@ Batch A 已由项目负责人验收为 `PASS`，其 ZIP、根清单、报告、�
 
 固定生成 15 张真实浏览器截图。固定 ZIP：`artifacts/review-package/student-care-platform-phase1a-batch-b-review-pack-v1.0.zip`。独立根清单：`SHA256SUMS_PHASE_1A_BATCH_B.txt`，不得覆盖 Batch A 的 `SHA256SUMS.txt`。ZIP 成员必须精确为合同列出的 86 项，路径按 POSIX Unicode 升序、UTF-8 无 BOM、LF 和单一末尾 LF 计算名单 SHA：`B6ED195F1F41AB731F53AFA65071037BE23A56F3547B543160A41F0CE6A33C30`。运行时集合不匹配时不得生成或覆盖 ZIP。
 
-## B7 最终门禁与停止
+## HISTORICAL/FROZEN：B7 最终门禁与停止
 
-最终验证五个提交顺序、冻结证据无漂移、合同 SHA、工作区/index/remote、59/59 路由、15 张截图、86 成员和两份清单。最终回执必须保留：
+以下内容是 Batch B 当时的历史停止回执，不是当前 Phase 1B 活动治理。历史上最终验证五个提交顺序、冻结证据无漂移、合同 SHA、工作区/index/remote、59/59 路由、15 张截图、86 成员和两份清单，并要求最终回执保留：
 
 ```text
 PHASE_1A_BATCH_B_STATUS=PASS|BLOCKED
@@ -82,4 +87,4 @@ LIVE_AI_MODEL_USED=NO
 PROJECT_OWNER_ACCEPTANCE=PENDING
 ```
 
-`PASS` 只表示内部证据门禁通过。输出最终回执后立即停止，等待项目负责人验收，不进入 Phase 1B。
+在该 `HISTORICAL/FROZEN` Batch B 语境中，`PASS` 只表示内部证据门禁通过；当时要求输出最终回执后立即停止，等待项目负责人验收，不进入 Phase 1B。上述 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING` 和“不进入 Phase 1B”均是负责人验收前的历史快照，不覆盖本文件顶部引用的当前 authority。

@@ -1,19 +1,27 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: planned work only. No task in this document has been executed by Phase 1A Batch B.
+Status: active plan. Task 01, Task 02, and Task 03 are completed and remain
+frozen evidence. Task 04 and later tasks are not authorized by this authority.
+
+Current governance authority:
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md`
+(`SHA-256=FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`).
+The authority uses a whole-file SHA with no self-reference; its current file is
+untracked and awaits independent review.
 
 ## Dependency authority
 
 The T10/T12 dependency order is governed by
 `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md` with
 `SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`.
-The authority is stable for this formalization but still requires explicit project-owner
-approval of its identified SHA before `/goal` or Task 03 implementation. Task 12 depends on
-`T02 -> T03 -> T05`; Task 10 depends on `T05 -> T08 -> T12`.
+The dependency authority is a frozen referenced record. Its approved order is
+adopted for current active planning; it does not authorize `/goal`, Task 04,
+or any implementation. Task 12 depends only on `T02 -> T03 -> T05`; Task 10
+depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. A task cannot start until its dependencies and the Phase 1B start gate are approved.
+Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—03 are historical completed increments. Task 04 requires a new independent contract and separate implementation authorization.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -215,6 +223,15 @@ Every task follows `red -> green -> focused regression -> explicit commit`. The 
 - Green test: all critical flows and deny tests pass with zero unexpected requests and a recorded rollback target.
 - Commit step: `test: certify phase 1b v0.1 release candidate`.
 
-## Phase 1B start gate
+## Historical Phase 1B start gate
 
-Before Task 01, the project owner must approve a new Phase 1B contract and hash, confirm the dependency/runtime policy, authorize the minimum validation dependencies, confirm no real data or production keys, and explicitly set `PHASE_1B_STARTED=YES`. Until then this plan remains documentation only and `PHASE_1B_STARTED=NO`.
+The original Task 01 start gate remains a historical record and is not rewritten.
+Current active governance recognizes only Task 01—03:
+
+```text
+PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_03_ONLY
+PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03
+TASK_04_STARTED=NO
+TASK_04_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK_04_PRECONDITION=NEW_INDEPENDENT_CONTRACT_AND_SEPARATE_IMPLEMENTATION_AUTHORIZATION
+```
