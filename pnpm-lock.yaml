@@ -29,6 +29,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@student-care/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@student-care/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts
@@ -41,6 +44,12 @@ importers:
       fastify:
         specifier: 5.12.1
         version: 5.12.1
+
+  packages/auth:
+    dependencies:
+      '@student-care/contracts':
+        specifier: workspace:*
+        version: link:../contracts
 
   packages/contracts: {}
 

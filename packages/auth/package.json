@@ -1,0 +1,22 @@
+{
+  "name": "@student-care/auth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src test",
+    "test": "tsc -p tsconfig.json && node --test dist/test/policy.test.js",
+    "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 --test-coverage-include=dist/src/**/*.js --test dist/test/policy.test.js",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@student-care/contracts": "workspace:*"
+  }
+}
