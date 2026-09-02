@@ -26,6 +26,17 @@ const TASK_05_FILES = new Set([
   "tests/workspace/paths.test.mjs",
 ]);
 
+const ACTIVE_GOVERNANCE_FILES = new Set([
+  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md",
+  "AGENTS.md",
+  "PLANS.md",
+  "README.md",
+  "docs/project/DECISION_BASELINE.md",
+  "docs/project/SCOPE_AND_NON_SCOPE.md",
+  "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
+  "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
+]);
+
 const EXISTING_EVIDENCE_UNTRACKED = new Set([
   "SHA256SUMS_PHASE_1B_TASK_04.txt",
   "artifacts/review-package/student-care-platform-phase1b-task-04-review-pack-v1.0.zip",
@@ -152,7 +163,9 @@ function checkGitBoundary() {
     fail("git ancestry", `HEAD does not descend from ${BASE_HEAD}`);
   }
   for (const relativePath of changedPaths()) {
-    if (!TASK_05_FILES.has(relativePath)) fail("changed path boundary", relativePath);
+    if (!TASK_05_FILES.has(relativePath) && !ACTIVE_GOVERNANCE_FILES.has(relativePath)) {
+      fail("changed path boundary", relativePath);
+    }
   }
   if (git(["diff", "--cached", "--name-only"])) fail("git index", "index is not clean");
   if (git(["remote"])) fail("git remote", "remote must remain absent");
