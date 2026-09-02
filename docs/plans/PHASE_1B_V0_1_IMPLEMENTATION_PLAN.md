@@ -1,13 +1,14 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01, Task 02, and Task 03 are completed and remain
-frozen evidence. Task 04 and later tasks are not authorized by this authority.
+Status: active plan. Task 01—04 are completed and remain frozen evidence. Task
+05 has only completed Stage A formalization; Task 05 implementation and later
+tasks are not authorized by this authority.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md`
-(`SHA-256=FD9DC8D4FA11222B70ED549818C431FD12B7E87B0F045EFAE856991EE008F051`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V2.md`
+(`SHA-256=5C9FA63960F47AC3986C18D36069D395086A2E7C4FD23A56412D5232589299AA`).
 The authority uses a whole-file SHA with no self-reference; its current file is
-untracked and awaits independent review.
+untracked pending the atomic reference update and independent review.
 
 ## Dependency authority
 
@@ -21,7 +22,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—03 are historical completed increments. Task 04 requires a new independent contract and separate implementation authorization.
+Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—04 are completed increments. Task 05 requires Stage A owner review and separate implementation authorization before any implementation.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -226,12 +227,14 @@ Every task follows `red -> green -> focused regression -> explicit commit`. The 
 ## Historical Phase 1B start gate
 
 The original Task 01 start gate remains a historical record and is not rewritten.
-Current active governance recognizes only Task 01—03:
+Current active governance recognizes Task 01—04:
 
 ```text
-PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_03_ONLY
-PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03
-TASK_04_STARTED=NO
-TASK_04_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
-TASK_04_PRECONDITION=NEW_INDEPENDENT_CONTRACT_AND_SEPARATE_IMPLEMENTATION_AUTHORIZATION
+PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_04_ONLY
+PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03|TASK_04
+TASK_04_STARTED=YES
+TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_05_STARTED=NO
+TASK_05_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK_05_PRECONDITION=STAGE_A_OWNER_REVIEW_AND_SEPARATE_IMPLEMENTATION_AUTHORIZATION
 ```
