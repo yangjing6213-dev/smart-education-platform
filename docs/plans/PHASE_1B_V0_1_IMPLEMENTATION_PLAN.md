@@ -1,14 +1,14 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—04 are completed and remain frozen evidence. Task
-05 Stage B is implemented and Stage C1 evidence is waiting at the
-project-owner review gate; Task 06 and later tasks are not authorized.
+Status: active plan. Task 01—05 are completed and remain frozen evidence. Task
+05 Stage B, C1, and C2 are accepted and frozen; Task 06 and later tasks are not
+authorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md`
-(`SHA-256=0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md`
+(`SHA-256=11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
-computed independently after the atomic reference update.
+recorded after independent Node and .NET verification.
 
 ## Dependency authority
 

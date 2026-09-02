@@ -1,7 +1,7 @@
 # Phase 1B Task 05 Content and Publishing Model Plan
 
-> **For agentic workers:** This plan records the authorized Stage B and C1
-> boundaries but does not authorize Stage C2 or later tasks. Before any later stage, use `long-horizon-development`,
+> **For agentic workers:** This plan records the authorized Stage B, C1, and C2
+> boundaries but does not authorize Task 06 or later tasks. Before any later stage, use `long-horizon-development`,
 > `using-superpowers`, `brainstorming`, `writing-plans`,
 > `test-driven-development`, `verification-before-completion`, and
 > `requesting-code-review`; use `systematic-debugging` before any retry after
@@ -9,7 +9,7 @@
 
 **Goal:** Define and verify a tenant- and campus-scoped content lifecycle with
 versioned drafts, publication transitions, and a public published projection,
-then stop at the project-owner review gate before Stage C2.
+then stop after the separately authorized Stage C2 acceptance and before Task 06.
 
 **Architecture:** Task 05 will place content lifecycle policy in a focused API
 module and expose a public projection route. A scoped repository owns version
@@ -29,28 +29,34 @@ TASK_ID=PHASE_1B_TASK_05
 TASK_NAME=CONTENT_AND_PUBLISHING_MODEL
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
 SOURCE_HEAD=5cf293d13f764517a13f8ce25c379cbbf2b38ebd
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md
-GOVERNANCE_AUTHORITY_SHA256=0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md
+GOVERNANCE_AUTHORITY_SHA256=11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E
 TASK04_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md
 TASK04_ACCEPTANCE_SHA256=113870DB0895145A183740F1B97D2F4102E3D6EEC4806A12A017C41C7CAE4202
 TASK04_ACCEPTANCE=PROJECT_OWNER_ACCEPTANCE=PASS|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
-ACTIVE_GOVERNANCE=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=YES|TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY|TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
+ACTIVE_GOVERNANCE=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=YES|TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY|TASK_05_STAGE_C2_STATUS=ACCEPTED|TASK_05_OWNER_REVIEW=ACCEPTED_AND_FROZEN|TASK_06_STARTED=NO|TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
 DEPENDENCIES=T02 -> T03 -> T04
 TASK_05_STARTED=YES
 TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_GOAL_AUTHORIZATION=NOT_USED
 TASK_05_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
-TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
-STATUS=OWNER_REVIEW_GATE
-STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_C1
+TASK_05_STAGE_C2_STATUS=ACCEPTED
+TASK_05_STAGE_C2_AUTHORIZATION=OWNER_CONFIRMED_2026-09-02
+TASK_05_ACCEPTANCE_RECORD=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
+TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
+TASK_05_OWNER_REVIEW=ACCEPTED_AND_FROZEN
+TASK_06_STARTED=NO
+TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+STATUS=ACCEPTED_STOP_BEFORE_TASK06
+STOP_REASON=TASK05_C2_ACCEPTED_STOP_BEFORE_TASK06
 ```
 
 The Task 04 acceptance remains read-only frozen evidence. The owner-approved
-V3 authority reconciles its status for current active governance without
-rewriting that acceptance record. Task 05 Stage B was separately authorized,
-implemented, and verified; Stage C1 evidence is ready for owner review. Stage
-C2 remains unauthorized until an explicit project-owner PASS.
+V4 authority reconciles current active governance without rewriting the Task 04
+or Task 05 acceptance records. Task 05 Stage B was separately authorized,
+implemented, and verified; Stage C1 evidence was reviewed, and Stage C2 was
+separately accepted and frozen. Task 06 remains unauthorized.
 
 ## Lifecycle
 
@@ -60,12 +66,13 @@ STAGE_A_FORMAT_GATE=CHECK_ONLY_EXISTING_TASK05_CONTRACT_AND_PLAN
 STAGE_B=AUTHORIZED_IMPLEMENTATION_AND_VERIFICATION_COMPLETED
 STAGE_C1=FINAL_REVIEW_MANIFEST_AND_ZIP_GENERATED_AND_VALIDATED
 OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_ACCEPTANCE
-STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
+STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS|COMPLETED_AND_FROZEN
 ```
 
 The original Stage A execution was restricted to its two formalization files.
 The separately authorized Stage B and Stage C1 actions created only their
-listed files and did not create the Stage C2 acceptance record.
+listed files. The separately authorized Stage C2 action created only the
+acceptance record, which is now frozen.
 
 ## Exact file boundaries
 
@@ -263,9 +270,7 @@ silently repair unrelated user changes.
 
 ## Stage A completion boundary
 
-Task 05 Stage B and Stage C1 are complete within their exact boundaries. The
-current status is `OWNER_REVIEW_GATE` because C1 evidence awaits project-owner
-review. Stop with
-`STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_C1`; do not
-create `docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md` or start Task 06 before
-an explicit owner PASS and separate authorization.
+Task 05 Stage B, Stage C1, and Stage C2 are complete within their exact
+boundaries. The current status is `ACCEPTED_STOP_BEFORE_TASK06`; the acceptance
+record is frozen and Task 06 requires its own Stage A contract, owner review,
+and separate implementation authorization.

@@ -2,42 +2,48 @@
 
 This is the Phase 1B Task 05 execution contract for Content and Publishing
 Model. It records the Stage A formalization, the separately authorized Stage B
-implementation, and the Stage C1 evidence boundary. It does not authorize
-Stage C2 acceptance or any later task.
+implementation, the Stage C1 evidence boundary, and the separately authorized
+Stage C2 acceptance. It does not authorize Task 06 or any later task.
 
 ## Contract status and authority
 
 ```text
 TASK_ID=PHASE_1B_TASK_05
 TASK_NAME=CONTENT_AND_PUBLISHING_MODEL
-TASK_STATUS=STAGE_C1_FINAL_EVIDENCE_READY_AWAITING_OWNER_REVIEW
+TASK_STATUS=STAGE_C2_ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
 SOURCE_HEAD=5cf293d13f764517a13f8ce25c379cbbf2b38ebd
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK05_STAGE_B_AND_STAGE_C1_AUTHORIZATION_2026-09-02
 OWNER_AUTHORIZATION_STABILITY=CHAT_AUTHORIZATION_IS_NOT_A_STABLE_GOVERNANCE_SHA
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md
-GOVERNANCE_AUTHORITY_SHA256=0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md
+GOVERNANCE_AUTHORITY_SHA256=11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E
 TASK_04_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md
 TASK_04_ACCEPTANCE_SHA256=113870DB0895145A183740F1B97D2F4102E3D6EEC4806A12A017C41C7CAE4202
 TASK_04_ACCEPTANCE_STATUS=PROJECT_OWNER_ACCEPTANCE_PASS|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
-ACTIVE_GOVERNANCE_STATUS=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=YES|TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY|TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
+ACTIVE_GOVERNANCE_STATUS=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=YES|TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY|TASK_05_STAGE_C2_STATUS=ACCEPTED|TASK_05_OWNER_REVIEW=ACCEPTED_AND_FROZEN|TASK_06_STARTED=NO|TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
 TASK_05_STARTED=YES
 TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_GOAL_AUTHORIZATION=NOT_GRANTED
 TASK_05_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
-TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
-STATUS=OWNER_REVIEW_GATE
-STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_C1
+TASK_05_STAGE_C2_STATUS=ACCEPTED
+TASK_05_STAGE_C2_AUTHORIZATION=OWNER_CONFIRMED_2026-09-02
+TASK_05_ACCEPTANCE_RECORD=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
+TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
+TASK_05_OWNER_REVIEW=ACCEPTED_AND_FROZEN
+TASK_06_STARTED=NO
+TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+STATUS=ACCEPTED_STOP_BEFORE_TASK06
+STOP_REASON=TASK05_C2_ACCEPTED_STOP_BEFORE_TASK06
 ```
 
-The Task 04 acceptance record remains frozen evidence. The owner-approved V3
-authority reconciles current active governance without rewriting the
-acceptance record. Task 05 Stage B was separately authorized and is represented
-by the implementation and support commits recorded below. Stage C1 evidence is
-ready for owner review; Stage C2 remains unauthorized until an explicit owner
-PASS.
+The Task 04 acceptance record remains frozen evidence. The owner-approved V4
+authority reconciles current active governance without rewriting the Task 04 or
+Task 05 acceptance records. Task 05 Stage B was separately authorized and is
+represented by the implementation and support commits recorded below. Stage C1
+evidence was reviewed, and the separate Stage C2 acceptance record is now
+accepted and frozen. Task 06 remains unauthorized.
 
 ## Dependency and scope contract
 
@@ -173,7 +179,8 @@ Required evidence consists of the actual changed-file list, deterministic
 file hashes, text encoding checks, test and verifier output, scope and
 security scans, Stage C1 review/manifest/ZIP evidence, and a separately
 authorized Stage C2 acceptance record. Stage C1 evidence is present in its
-three exact paths; the Stage C2 acceptance record remains absent.
+three exact paths; the Stage C2 acceptance record is present at its exact path
+and is frozen as the owner decision.
 
 ## Verification contract
 
@@ -188,9 +195,9 @@ TASK05_FROZEN_EVIDENCE_CHECK=VERIFY_TASK04_ACCEPTANCE_AND_C1_EVIDENCE_HASHES_WIT
 ```
 
 The command group above is the recorded Stage B acceptance gate. Stage B and
-Stage C1 verification was executed and is summarized in the C1 review; Stage
-C2 verification is intentionally not run because its acceptance record is not
-authorized or present.
+Stage C1 verification was executed and is summarized in the C1 review. Stage C2
+was separately authorized after owner PASS and recorded in the acceptance file;
+no Task 06 or later task is authorized by that record.
 
 ## Stop conditions
 
@@ -200,8 +207,7 @@ ROLLBACK_POLICY=DO_NOT_RESET_CLEAN_RESTORE_CHECKOUT_REBASE_OR_AMEND|PRESERVE_ACT
 OWNER_APPROVAL_REQUIRED=YES_FOR_GOVERNANCE_RECONCILIATION|TASK05_IMPLEMENTATION|STAGE_C1|STAGE_C2
 ```
 
-The governance reconciliation is represented by the owner-approved V3
-authority and its atomic active references. The current stop point is the
-project-owner review of Task 05 Stage C1; preserve the evidence, do not create
-the Stage C2 acceptance record, and do not start Task 06 or later tasks from
-this document.
+The governance reconciliation is represented by the owner-approved V4
+authority and its atomic active references. The current stop point is after
+Task 05 Stage C2 acceptance and before Task 06 Stage A; preserve all evidence,
+do not start Task 06 or later tasks from this document.
