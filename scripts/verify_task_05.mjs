@@ -9,6 +9,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BASE_HEAD = "9dd4d54aecb92f41ca8c4fcd59f4e0f8cba4141f";
 const TARGET_BRANCH = "feature/phase-1b-task-04-identity-membership";
+const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md";
+const ACTIVE_AUTHORITY_SHA256 = "0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5";
 
 const TASK_05_FILES = new Set([
   "apps/api/src/modules/content/content.service.ts",
@@ -27,7 +29,7 @@ const TASK_05_FILES = new Set([
 ]);
 
 const ACTIVE_GOVERNANCE_FILES = new Set([
-  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md",
+  ACTIVE_AUTHORITY_PATH,
   "AGENTS.md",
   "PLANS.md",
   "README.md",
@@ -35,6 +37,8 @@ const ACTIVE_GOVERNANCE_FILES = new Set([
   "docs/project/SCOPE_AND_NON_SCOPE.md",
   "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
   "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
+  "PHASE_1B_TASK_05_CODEX_EXECUTION.md",
+  "docs/project/PHASE_1B_TASK_05_PLAN.md",
 ]);
 
 const EXISTING_EVIDENCE_UNTRACKED = new Set([
@@ -180,6 +184,14 @@ function checkRequiredFiles() {
   }
 }
 
+function checkActiveAuthority() {
+  if (!existsSync(absolute(ACTIVE_AUTHORITY_PATH))) {
+    fail("active authority", `missing ${ACTIVE_AUTHORITY_PATH}`);
+  } else if (sha256File(ACTIVE_AUTHORITY_PATH) !== ACTIVE_AUTHORITY_SHA256) {
+    fail("active authority", `${ACTIVE_AUTHORITY_PATH} differs`);
+  }
+}
+
 function checkFrozenHashes() {
   for (const [relativePath, expectedSha] of FROZEN_HASHES) {
     if (!existsSync(absolute(relativePath))) {
@@ -265,6 +277,7 @@ function main() {
   }
   checkGitBoundary();
   checkRequiredFiles();
+  checkActiveAuthority();
   checkFrozenHashes();
   checkScripts();
   checkSafety();

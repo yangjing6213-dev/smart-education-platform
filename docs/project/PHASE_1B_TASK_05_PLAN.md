@@ -1,15 +1,15 @@
 # Phase 1B Task 05 Content and Publishing Model Plan
 
-> **For agentic workers:** This plan is not an implementation authorization.
-> Before any later stage, use `long-horizon-development`,
+> **For agentic workers:** This plan records the authorized Stage B and C1
+> boundaries but does not authorize Stage C2 or later tasks. Before any later stage, use `long-horizon-development`,
 > `using-superpowers`, `brainstorming`, `writing-plans`,
 > `test-driven-development`, `verification-before-completion`, and
 > `requesting-code-review`; use `systematic-debugging` before any retry after
 > a failure.
 
-**Goal:** Formalize a future, tenant- and campus-scoped content lifecycle with
+**Goal:** Define and verify a tenant- and campus-scoped content lifecycle with
 versioned drafts, publication transitions, and a public published projection,
-then stop at the project-owner review gate.
+then stop at the project-owner review gate before Stage C2.
 
 **Architecture:** Task 05 will place content lifecycle policy in a focused API
 module and expose a public projection route. A scoped repository owns version
@@ -20,7 +20,7 @@ an interface boundary; durable Task 17 audit infrastructure is excluded.
 
 **Tech Stack:** Fastify 5.12.1, Node.js 24.14.0, Corepack pnpm 11.22.0
 offline, TypeScript 5.7.3, the existing workspace packages, and the Node test
-runner. No new runtime dependency is authorized by this Stage A plan.
+runner. No new runtime dependency was authorized for Task 05.
 
 ## Current status and fixed anchors
 
@@ -28,39 +28,44 @@ runner. No new runtime dependency is authorized by this Stage A plan.
 TASK_ID=PHASE_1B_TASK_05
 TASK_NAME=CONTENT_AND_PUBLISHING_MODEL
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
-SOURCE_HEAD=c20d12d3982e065db4bcba368e6e85319ad1839e
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V2.md
-GOVERNANCE_AUTHORITY_SHA256=5C9FA63960F47AC3986C18D36069D395086A2E7C4FD23A56412D5232589299AA
+SOURCE_HEAD=5cf293d13f764517a13f8ce25c379cbbf2b38ebd
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md
+GOVERNANCE_AUTHORITY_SHA256=0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5
 TASK04_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md
 TASK04_ACCEPTANCE_SHA256=113870DB0895145A183740F1B97D2F4102E3D6EEC4806A12A017C41C7CAE4202
-TASK04_ACCEPTANCE=PROJECT_OWNER_ACCEPTANCE=PASS|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=NO
-ACTIVE_GOVERNANCE=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_04_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=NO|TASK_05_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
-DEPENDENCIES=T02 -> T04
-TASK_05_STARTED=NO
-TASK_05_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK04_ACCEPTANCE=PROJECT_OWNER_ACCEPTANCE=PASS|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
+ACTIVE_GOVERNANCE=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=YES|TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY|TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
+DEPENDENCIES=T02 -> T03 -> T04
+TASK_05_STARTED=YES
+TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_05_GOAL_AUTHORIZATION=NOT_USED
+TASK_05_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
 STATUS=OWNER_REVIEW_GATE
-STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_A
+STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_C1
 ```
 
 The Task 04 acceptance remains read-only frozen evidence. The owner-approved
-V2 authority reconciles its status for current active governance without
-rewriting that acceptance record. This Task 05 owner instruction authorizes
-only Stage A formalization. No Stage B implementation may begin.
+V3 authority reconciles its status for current active governance without
+rewriting that acceptance record. Task 05 Stage B was separately authorized,
+implemented, and verified; Stage C1 evidence is ready for owner review. Stage
+C2 remains unauthorized until an explicit project-owner PASS.
 
 ## Lifecycle
 
 ```text
-STAGE_A=CREATE_ONLY_THE_TASK05_CONTRACT_AND_THIS_PLAN
+STAGE_A=CREATE_ONLY_THE_TASK05_CONTRACT_AND_THIS_PLAN_COMPLETED
 STAGE_A_FORMAT_GATE=CHECK_ONLY_EXISTING_TASK05_CONTRACT_AND_PLAN
-STAGE_B=FUTURE_IMPLEMENTATION_AND_VERIFICATION_AFTER_STABLE_RECONCILIATION_AND_SEPARATE_AUTHORIZATION
-STAGE_C1=FUTURE_REVIEW_MANIFEST_AND_ZIP_AFTER_STAGE_B
+STAGE_B=AUTHORIZED_IMPLEMENTATION_AND_VERIFICATION_COMPLETED
+STAGE_C1=FINAL_REVIEW_MANIFEST_AND_ZIP_GENERATED_AND_VALIDATED
 OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_ACCEPTANCE
-STAGE_C2=FUTURE_ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
+STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
 ```
 
-This Stage A execution must not inspect future files as required gates, create
-implementation code or tests, update dependencies, start a service, or create
-review, manifest, ZIP, or acceptance evidence.
+The original Stage A execution was restricted to its two formalization files.
+The separately authorized Stage B and Stage C1 actions created only their
+listed files and did not create the Stage C2 acceptance record.
 
 ## Exact file boundaries
 
@@ -74,7 +79,7 @@ Only these two files may be created in this stage. They must be UTF-8 without
 BOM, LF-only, and contain exactly one trailing LF. They must not contain their
 own SHA-256 values.
 
-### Future Stage B proposed whitelist
+### Stage B exact whitelist
 
 ```text
 NEW_TASK05_FILES=apps/api/src/modules/content/content.service.ts|apps/api/src/modules/content/content.repository.ts|apps/api/src/routes/public-content.route.ts|apps/api/src/modules/content/content.test.ts|scripts/verify_task_05.mjs
@@ -82,14 +87,14 @@ ACTIVE_SHARED_FILES=apps/api/src/server.ts|apps/api/package.json|packages/contra
 FROZEN_FILES=PHASE_1B_TASK_04_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_04_PLAN.md|docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md|scripts/verify_task_03.mjs|SHA256SUMS_PHASE_1B_TASK_03.txt|SHA256SUMS_PHASE_1B_TASK_04.txt|docs/reviews/PHASE_1B_TASK_03_REVIEW.md|docs/reviews/PHASE_1B_TASK_04_REVIEW.md|artifacts/review-package/student-care-platform-phase1b-task-03-review-pack-v1.0.zip|artifacts/review-package/student-care-platform-phase1b-task-04-review-pack-v1.0.zip|docs/project/PHASE_1B_TASK_01_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_02_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_03_ACCEPTANCE.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V1.md
 ```
 
-The future whitelist is exact and bounded. If implementation inspection shows
+The whitelist is exact and bounded. If implementation inspection shows
 that another path is necessary, implementation must stop and obtain a new
 stable contract before touching that path. No wildcard or implicit file
 authorization is granted. The existing Task 04 C1 files remain untracked
 evidence and must not be modified, moved, deleted, or added to a Task 05
 commit.
 
-### Future Stage C1 and C2
+### Stage C1 and C2
 
 ```text
 STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_05_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_05.txt|artifacts/review-package/student-care-platform-phase1b-task-05-review-pack-v1.0.zip
@@ -188,10 +193,11 @@ are excluded.
   network. An offline lockfile change would require a separate explicit
   authorization and reproducibility evidence.
 
-## Future TDD and verification sequence
+## Recorded TDD and verification sequence
 
-No future command is run during this Stage A execution. After separate
-authorization, execute the sequence below and record actual exit codes.
+The Stage A action did not run future commands. The separately authorized
+Stage B execution ran the sequence below and recorded actual exit codes in the
+Stage C1 review.
 
 ### Red
 
@@ -220,7 +226,7 @@ Run the focused tests again, then the existing contracts, validation, tenant,
 API, workspace, and package-boundary suites. Confirm that all deny branches
 remain fail closed and changed server-module coverage is 100 percent.
 
-### Exact future gates
+### Exact recorded gates
 
 ```text
 VERIFICATION_COMMANDS=corepack pnpm typecheck|corepack pnpm lint|corepack pnpm format:check|corepack pnpm test|corepack pnpm test:coverage|corepack pnpm build|node scripts/verify_task_05.mjs --mode=structure|node scripts/verify_task_05.mjs --mode=final-review
@@ -230,11 +236,9 @@ STAGE_C1_FORMAT_GATE=AFTER_GENERATION_CHECK_REVIEW_TEXT_AND_VALIDATE_MANIFEST_DE
 STAGE_C2_FORMAT_GATE=AFTER_OWNER_PASS_CHECK_ACCEPTANCE_RECORD
 ```
 
-The first command group is a future Stage B acceptance gate, not a Stage A
-requirement. Exact additional shell composition must be rendered from the
-actual package scripts and local verifier when Stage B is separately
-authorized; this plan does not invent a command output or claim a future
-pass.
+The first command group is the Stage B acceptance gate. The C1 review records
+the actual results and the additional local verifier and security checks; this
+plan does not substitute a future command result for that evidence.
 
 ## Acceptance and stop criteria
 
@@ -259,10 +263,9 @@ silently repair unrelated user changes.
 
 ## Stage A completion boundary
 
-This Stage A action creates only the two files listed in
-`STAGE_A_EXACT_FILES`. It does not create a receipt, hash manifest, review,
-ZIP, acceptance record, branch, worktree, goal, implementation, test, or
-dependency change. The current status is `OWNER_REVIEW_GATE` because Stage A
-formalization is complete and awaits project-owner review. Stop with
-`STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_A`; no Task 05
-Stage B request may proceed before separate implementation authorization.
+Task 05 Stage B and Stage C1 are complete within their exact boundaries. The
+current status is `OWNER_REVIEW_GATE` because C1 evidence awaits project-owner
+review. Stop with
+`STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_C1`; do not
+create `docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md` or start Task 06 before
+an explicit owner PASS and separate authorization.

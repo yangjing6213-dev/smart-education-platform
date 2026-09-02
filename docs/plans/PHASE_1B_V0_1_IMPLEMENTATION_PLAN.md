@@ -1,14 +1,14 @@
 # Phase 1B V0.1 Implementation Plan
 
 Status: active plan. Task 01—04 are completed and remain frozen evidence. Task
-05 has only completed Stage A formalization; Task 05 implementation and later
-tasks are not authorized by this authority.
+05 Stage B is implemented and Stage C1 evidence is waiting at the
+project-owner review gate; Task 06 and later tasks are not authorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V2.md`
-(`SHA-256=5C9FA63960F47AC3986C18D36069D395086A2E7C4FD23A56412D5232589299AA`).
-The authority uses a whole-file SHA with no self-reference; its current file is
-untracked pending the atomic reference update and independent review.
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md`
+(`SHA-256=0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5`).
+The authority uses a whole-file SHA with no self-reference; its final SHA is
+computed independently after the atomic reference update.
 
 ## Dependency authority
 
@@ -16,13 +16,13 @@ The T10/T12 dependency order is governed by
 `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md` with
 `SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`.
 The dependency authority is a frozen referenced record. Its approved order is
-adopted for current active planning; it does not authorize `/goal`, Task 04,
-or any implementation. Task 12 depends only on `T02 -> T03 -> T05`; Task 10
+adopted for current active planning; it does not authorize `/goal`, Task 06,
+or any later implementation. Task 12 depends only on `T02 -> T03 -> T05`; Task 10
 depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—04 are completed increments. Task 05 requires Stage A owner review and separate implementation authorization before any implementation.
+Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—04 are completed increments. Task 05 Stage B is an implemented increment with separate C1 evidence; Task 06 and later tasks require their own approved contract and authorization.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -227,7 +227,7 @@ Every task follows `red -> green -> focused regression -> explicit commit`. The 
 ## Historical Phase 1B start gate
 
 The original Task 01 start gate remains a historical record and is not rewritten.
-Current active governance recognizes Task 01—04:
+The following block is the historical pre-Task-05 snapshot:
 
 ```text
 PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_04_ONLY

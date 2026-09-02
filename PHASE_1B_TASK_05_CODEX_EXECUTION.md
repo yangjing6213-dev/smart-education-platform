@@ -1,43 +1,48 @@
 # Phase 1B Task 05 Codex Execution Contract
 
-This is the Stage A formalization contract for Phase 1B Task 05, Content and
-Publishing Model. It records a future implementation boundary only. It does
-not start Task 05, grant implementation authorization, or authorize any later
-phase.
+This is the Phase 1B Task 05 execution contract for Content and Publishing
+Model. It records the Stage A formalization, the separately authorized Stage B
+implementation, and the Stage C1 evidence boundary. It does not authorize
+Stage C2 acceptance or any later task.
 
 ## Contract status and authority
 
 ```text
 TASK_ID=PHASE_1B_TASK_05
 TASK_NAME=CONTENT_AND_PUBLISHING_MODEL
-TASK_STATUS=STAGE_A_FORMALIZED_AWAITING_OWNER_REVIEW
+TASK_STATUS=STAGE_C1_FINAL_EVIDENCE_READY_AWAITING_OWNER_REVIEW
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
-SOURCE_HEAD=c20d12d3982e065db4bcba368e6e85319ad1839e
-OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_CURRENT_TASK_INSTRUCTION_STAGE_A_ONLY
+SOURCE_HEAD=5cf293d13f764517a13f8ce25c379cbbf2b38ebd
+OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK05_STAGE_B_AND_STAGE_C1_AUTHORIZATION_2026-09-02
 OWNER_AUTHORIZATION_STABILITY=CHAT_AUTHORIZATION_IS_NOT_A_STABLE_GOVERNANCE_SHA
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V2.md
-GOVERNANCE_AUTHORITY_SHA256=5C9FA63960F47AC3986C18D36069D395086A2E7C4FD23A56412D5232589299AA
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V3.md
+GOVERNANCE_AUTHORITY_SHA256=0B7EDB113CBD6D3DA02B535176E63ED53AEA1571C7047D1ADDE605811508A4E5
 TASK_04_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md
 TASK_04_ACCEPTANCE_SHA256=113870DB0895145A183740F1B97D2F4102E3D6EEC4806A12A017C41C7CAE4202
-TASK_04_ACCEPTANCE_STATUS=PROJECT_OWNER_ACCEPTANCE_PASS|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=NO
-ACTIVE_GOVERNANCE_STATUS=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_04_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=NO|TASK_05_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
-TASK_05_STARTED=NO
-TASK_05_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK_04_ACCEPTANCE_STATUS=PROJECT_OWNER_ACCEPTANCE_PASS|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
+ACTIVE_GOVERNANCE_STATUS=PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY|TASK_04_STARTED=YES|TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STARTED=YES|TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED|TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY|TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
+TASK_05_STARTED=YES
+TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_GOAL_AUTHORIZATION=NOT_GRANTED
+TASK_05_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_05_STAGE_C2_AUTHORIZATION=NOT_GRANTED_UNTIL_EXPLICIT_OWNER_PASS
 STATUS=OWNER_REVIEW_GATE
-STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_A
+STOP_REASON=WAITING_FOR_PROJECT_OWNER_REVIEW_OF_TASK05_STAGE_C1
 ```
 
-The Task 04 acceptance record remains frozen evidence. The owner-approved V2
-authority reconciles its status for current active governance without rewriting
-the acceptance record. Task 05 remains outside implementation authorization
-until its Stage A owner review and a separate implementation authorization.
+The Task 04 acceptance record remains frozen evidence. The owner-approved V3
+authority reconciles current active governance without rewriting the
+acceptance record. Task 05 Stage B was separately authorized and is represented
+by the implementation and support commits recorded below. Stage C1 evidence is
+ready for owner review; Stage C2 remains unauthorized until an explicit owner
+PASS.
 
 ## Dependency and scope contract
 
 ```text
-DEPENDENCIES=T02 -> T04
+DEPENDENCIES=T02 -> T03 -> T04
 DEPENDENCY_PLAN_EVIDENCE=docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md:T05
 DEPENDENCY_IMPLEMENTATION_PLAN_EVIDENCE=docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md:Task_05
 DEPENDENCY_ACCEPTANCE_REQUIREMENT=T02_AND_T03_ACCEPTED_AND_T04_C2_ACCEPTED_WITH_RECONCILED_ACTIVE_GOVERNANCE
@@ -99,11 +104,11 @@ references, and concurrency tokens.
 
 ```text
 STAGE_A_EXACT_FILES=PHASE_1B_TASK_05_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_05_PLAN.md
-STAGE_A_AUTHORIZATION=OWNER_AUTHORIZED_FORMALIZATION_ONLY
+STAGE_A_AUTHORIZATION=OWNER_AUTHORIZED_FORMALIZATION_COMPLETED
 STAGE_A_FORMAT_GATE=CHECK_ONLY_THE_TWO_EXISTING_STAGE_A_TEXT_FILES
 STAGE_B_NEW_FILES=apps/api/src/modules/content/content.service.ts|apps/api/src/modules/content/content.repository.ts|apps/api/src/routes/public-content.route.ts|apps/api/src/modules/content/content.test.ts|scripts/verify_task_05.mjs
 STAGE_B_ACTIVE_SHARED_FILES=apps/api/src/server.ts|apps/api/package.json|packages/contracts/src/index.ts|packages/contracts/package.json|package.json|pnpm-lock.yaml|tests/contracts/package-boundaries.test.mjs|tests/workspace/paths.test.mjs
-STAGE_B_FROZEN_FILES=PHASE_1B_TASK_04_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_04_PLAN.md|PHASE_1B_TASK_04_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md|scripts/verify_task_03.mjs|SHA256SUMS_PHASE_1B_TASK_03.txt|SHA256SUMS_PHASE_1B_TASK_04.txt|docs/reviews/PHASE_1B_TASK_03_REVIEW.md|docs/reviews/PHASE_1B_TASK_04_REVIEW.md|artifacts/review-package/student-care-platform-phase1b-task-03-review-pack-v1.0.zip|artifacts/review-package/student-care-platform-phase1b-task-04-review-pack-v1.0.zip|docs/project/PHASE_1B_TASK_01_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_02_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_03_ACCEPTANCE.md
+STAGE_B_FROZEN_FILES=PHASE_1B_TASK_04_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_04_PLAN.md|PHASE_1B_TASK_04_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md|scripts/verify_task_03.mjs|SHA256SUMS_PHASE_1B_TASK_03.txt|SHA256SUMS_PHASE_1B_TASK_04.txt|docs/reviews/PHASE_1B_TASK_03_REVIEW.md|docs/reviews/PHASE_1B_TASK_04_REVIEW.md|artifacts/review-package/student-care-platform-phase1b-task-03-review-pack-v1.0.zip|artifacts/review-package/student-care-platform-phase1b-task-04-review-pack-v1.0.zip|docs/project/PHASE_1B_TASK_01_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_02_ACCEPTANCE.md|docs/project/PHASE_1B_TASK_03_ACCEPTANCE.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V2.md
 STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_05_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_05.txt|artifacts/review-package/student-care-platform-phase1b-task-05-review-pack-v1.0.zip
 STAGE_C2_EXACT_FILES=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 OWNER_REVIEW_GATE=after_StageC1_evidence_before_StageC2_acceptance
@@ -111,18 +116,18 @@ ACCEPTANCE_RECORD_POLICY=CREATE_ONLY_AFTER_EXPLICIT_PROJECT_OWNER_PASS|RECORD_AC
 COMMIT_BOUNDARIES=StageA_contract_formalization|StageB_implementation_verification|StageC1_final_evidence|OWNER_REVIEW_GATE|StageC2_acceptance_record_only
 ```
 
-The Stage B list is a proposed exact whitelist for a separately authorized
-future implementation. The existing Task 04 Stage A and C2 files, Task 01-04
-historical evidence, and the existing Task 04 C1 files remain frozen and are
-not changed by this Stage A action. The Stage C1 ZIP must use the
+The Stage B list is the exact whitelist used by the separately authorized
+implementation. The existing Task 04 Stage A and C2 files, Task 01-04
+historical evidence, and the existing Task 04 C1 files remain frozen and were
+not changed by Task 05. The Stage C1 ZIP must use the
 `student-care-platform-*` naming convention.
 
 Stage C2 remains unauthorized until an explicit project-owner PASS after C1.
 An acceptance record must never be prewritten into Stage B or C1 evidence.
 
-## Future implementation contract
+## Implemented Stage B contract
 
-The future service boundary must provide exact operations equivalent to:
+The Stage B service boundary provides exact operations equivalent to:
 
 ```text
 CREATE_DRAFT=(scopedContentIdentity, draftPayload, expectedVersionOrCreate)
@@ -167,24 +172,25 @@ ACCEPTANCE_12=STAGE_C1_EVIDENCE_PRECEDES_OWNER_PASS_AND_STAGE_C2_ACCEPTANCE
 Required evidence consists of the actual changed-file list, deterministic
 file hashes, text encoding checks, test and verifier output, scope and
 security scans, Stage C1 review/manifest/ZIP evidence, and a separately
-authorized Stage C2 acceptance record. No evidence artifact is created during
-this blocked Stage A action.
+authorized Stage C2 acceptance record. Stage C1 evidence is present in its
+three exact paths; the Stage C2 acceptance record remains absent.
 
 ## Verification contract
 
 ```text
 STAGE_A_VERIFICATION=FORMAT_AND_HASH_ONLY_FOR_THE_TWO_STAGE_A_FILES|READ_ONLY_GIT_STATUS|NO_FUTURE_FILE_REQUIREMENT
-FUTURE_TDD_ORDER=CONTENT_POLICY_RED|CONTENT_POLICY_GREEN|PUBLIC_ROUTE_RED|PUBLIC_ROUTE_GREEN|STALE_VERSION_REGRESSION|SCOPE_REGRESSION|SECURITY_REGRESSION|FULL_VERIFICATION
-FUTURE_VERIFICATION_COMMANDS=corepack pnpm typecheck|corepack pnpm lint|corepack pnpm format:check|corepack pnpm test|corepack pnpm test:coverage|corepack pnpm build|node scripts/verify_task_05.mjs --mode=structure|node scripts/verify_task_05.mjs --mode=final-review
-FUTURE_TEST_COVERAGE=ALL_DENY_BRANCHES_AND_CHANGED_SERVER_MODULES_100_PERCENT
-FUTURE_SECURITY_SCANS=REAL_DATA|SECRET|NETWORK|TASK06_PLUS|PUBLIC_PROJECTION_FIELD_LEAKAGE
+STAGE_B_TDD_ORDER=CONTENT_POLICY_RED|CONTENT_POLICY_GREEN|PUBLIC_ROUTE_RED|PUBLIC_ROUTE_GREEN|STALE_VERSION_REGRESSION|SCOPE_REGRESSION|SECURITY_REGRESSION|FULL_VERIFICATION
+STAGE_B_VERIFICATION_COMMANDS=corepack pnpm typecheck|corepack pnpm lint|corepack pnpm format:check|corepack pnpm test|corepack pnpm test:coverage|corepack pnpm build|node scripts/verify_task_05.mjs --mode=structure|node scripts/verify_task_05.mjs --mode=final-review
+STAGE_B_TEST_COVERAGE=ALL_DENY_BRANCHES_AND_CHANGED_SERVER_MODULES_100_PERCENT
+STAGE_B_SECURITY_SCANS=REAL_DATA|SECRET|NETWORK|TASK06_PLUS|PUBLIC_PROJECTION_FIELD_LEAKAGE
 TASK04_REGRESSION=AUTH_MEMBERSHIP_SCOPE|TENANT_SCOPE|CAMPUS_SCOPE|HEALTH|CONTRACTS|VALIDATION|WORKSPACE_PATHS|PACKAGE_BOUNDARIES
 TASK05_FROZEN_EVIDENCE_CHECK=VERIFY_TASK04_ACCEPTANCE_AND_C1_EVIDENCE_HASHES_WITHOUT_REWRITING_OR_REPACKAGING
 ```
 
-The commands above are future acceptance gates only. Stage A does not run or
-require them because the Stage B implementation and Stage C evidence files do
-not exist and are not authorized.
+The command group above is the recorded Stage B acceptance gate. Stage B and
+Stage C1 verification was executed and is summarized in the C1 review; Stage
+C2 verification is intentionally not run because its acceptance record is not
+authorized or present.
 
 ## Stop conditions
 
@@ -194,7 +200,8 @@ ROLLBACK_POLICY=DO_NOT_RESET_CLEAN_RESTORE_CHECKOUT_REBASE_OR_AMEND|PRESERVE_ACT
 OWNER_APPROVAL_REQUIRED=YES_FOR_GOVERNANCE_RECONCILIATION|TASK05_IMPLEMENTATION|STAGE_C1|STAGE_C2
 ```
 
-The governance reconciliation is represented by the owner-approved V2
-authority and its atomic active references. Until the project owner reviews
-this Stage A formalization, preserve the two files, do not start Task 05, and
-do not infer implementation authorization from this document.
+The governance reconciliation is represented by the owner-approved V3
+authority and its atomic active references. The current stop point is the
+project-owner review of Task 05 Stage C1; preserve the evidence, do not create
+the Stage C2 acceptance record, and do not start Task 06 or later tasks from
+this document.
