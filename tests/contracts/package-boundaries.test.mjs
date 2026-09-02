@@ -10,7 +10,7 @@ import {
   findForbiddenImports,
   frozenTask03Evidence,
   sha256File,
-} from "../../scripts/verify_task_04.mjs";
+} from "../../scripts/verify_task_05.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -84,14 +84,14 @@ test("workspace package manifests preserve the approved dependency direction", (
   assert.deepEqual(tenant.exports, expectedExports);
 });
 
-test("root scripts use the active Task 04 verifier and include auth", () => {
+test("root scripts use the active Task 05 verifier and include auth", () => {
   const rootPackage = json("package.json");
 
   for (const script of ["typecheck", "lint", "test", "test:coverage", "build"]) {
     assert.match(rootPackage.scripts[script], /@student-care\/auth/, script);
   }
-  assert.match(rootPackage.scripts.verify, /scripts\/verify_task_04\.mjs --mode=structure/);
-  assert.doesNotMatch(rootPackage.scripts.verify, /verify_task_03/);
+  assert.match(rootPackage.scripts.verify, /scripts\/verify_task_05\.mjs --mode=structure/);
+  assert.doesNotMatch(rootPackage.scripts.verify, /verify_task_03|verify_task_04/);
   assert.match(rootPackage.scripts["format:check"], /PHASE_1B_TASK_04_CODEX_EXECUTION\.md/);
   assert.doesNotMatch(rootPackage.scripts["format:check"], /SHA256SUMS_PHASE_1B_TASK_04/);
 });
@@ -141,14 +141,14 @@ test("API workspace can resolve and use all explicit package exports", () => {
   assert.equal(output, "");
 });
 
-test("Task 04 verifier structure mode accepts the active implementation boundary", () => {
+test("Task 05 verifier structure mode accepts the active implementation boundary", () => {
   const output = execFileSync(
     process.execPath,
-    ["scripts/verify_task_04.mjs", "--mode=structure"],
+    ["scripts/verify_task_05.mjs", "--mode=structure"],
     {
       cwd: root,
       encoding: "utf8",
     },
   );
-  assert.match(output, /TASK_04_STRUCTURE_VERIFY=PASS/);
+  assert.match(output, /TASK_05_STRUCTURE_VERIFY=PASS/);
 });

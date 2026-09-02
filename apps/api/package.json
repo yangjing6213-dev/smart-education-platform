@@ -9,8 +9,8 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
-    "test": "tsc -p tsconfig.json && node --test dist/test/health.route.test.js dist/test/scope.plugin.test.js dist/test/task04.routes.test.js",
-    "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=100 --test-coverage-include=dist/src/plugins/auth.plugin.js --test-coverage-include=dist/src/routes/me.route.js --test-coverage-include=dist/src/routes/memberships.route.js --test dist/test/task04.routes.test.js",
+    "test": "tsc -p tsconfig.json && node --test dist/test/health.route.test.js dist/test/scope.plugin.test.js dist/test/task04.routes.test.js dist/src/modules/content/content.test.js",
+    "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=100 --test-coverage-include=dist/src/plugins/auth.plugin.js --test-coverage-include=dist/src/routes/me.route.js --test-coverage-include=dist/src/routes/memberships.route.js --test-coverage-include=dist/src/modules/content/content.service.js --test-coverage-include=dist/src/modules/content/content.repository.js --test-coverage-include=dist/src/routes/public-content.route.js --test dist/test/task04.routes.test.js dist/src/modules/content/content.test.js",
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {

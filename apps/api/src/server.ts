@@ -1,15 +1,18 @@
 import type { TrustedAuthResult } from "@student-care/auth";
 import fastify, { type FastifyInstance, type FastifyRequest } from "fastify";
+import { ContentService } from "./modules/content/content.service.js";
 import { registerHealthRoute } from "./health/health.route.js";
 import { authPlugin } from "./plugins/auth.plugin.js";
 import { scopePlugin } from "./plugins/scope.plugin.js";
 import { registerMeRoute } from "./routes/me.route.js";
 import { registerMembershipsRoute } from "./routes/memberships.route.js";
+import { registerPublicContentRoute } from "./routes/public-content.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
     request: FastifyRequest,
   ) => TrustedAuthResult | null | undefined | Promise<TrustedAuthResult | null | undefined>;
+  readonly contentService?: ContentService;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -58,5 +61,6 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
   registerHealthRoute(app);
   registerMeRoute(app);
   registerMembershipsRoute(app);
+  registerPublicContentRoute(app, options.contentService ?? new ContentService());
   return app;
 }
