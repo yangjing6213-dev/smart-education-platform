@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>首页内容管理</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+        color: #1f2937;
+        background: #f4f6f8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: #f4f6f8;
+      }
+
+      button {
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 600;
+        padding: 10px 16px;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.48;
+      }
+
+      .shell {
+        min-height: 100vh;
+      }
+
+      .topbar {
+        align-items: center;
+        background: #ffffff;
+        border-bottom: 1px solid #d9e0e7;
+        display: flex;
+        justify-content: space-between;
+        padding: 18px clamp(20px, 5vw, 64px);
+      }
+
+      .brand {
+        color: #0f766e;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .topbar span {
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      main {
+        margin: 0 auto;
+        max-width: 1120px;
+        padding: 36px clamp(20px, 5vw, 64px) 64px;
+      }
+
+      .heading-row {
+        align-items: end;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        gap: 24px;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(26px, 4vw, 38px);
+        letter-spacing: 0;
+      }
+
+      .heading-row p {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 8px;
+      }
+
+      .status {
+        align-items: center;
+        color: #475569;
+        display: flex;
+        font-size: 13px;
+        gap: 8px;
+        white-space: nowrap;
+      }
+
+      .status::before {
+        background: #f59e0b;
+        border-radius: 50%;
+        content: "";
+        height: 8px;
+        width: 8px;
+      }
+
+      .workspace {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: minmax(0, 1fr) 300px;
+      }
+
+      .panel {
+        background: #ffffff;
+        border: 1px solid #d9e0e7;
+        border-radius: 8px;
+        padding: 24px;
+      }
+
+      .panel h2 {
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+
+      .field label {
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .field strong {
+        font-size: 18px;
+      }
+
+      .summary {
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .block-list {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .block-list li {
+        background: #f8fafc;
+        border-left: 3px solid #0f766e;
+        padding: 12px 14px;
+      }
+
+      .block-kind {
+        color: #0f766e;
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+      }
+
+      .meta {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+
+      .meta div {
+        border-bottom: 1px solid #e5e7eb;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 12px;
+      }
+
+      .meta dt {
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      .meta dd {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .actions {
+        display: grid;
+        gap: 10px;
+      }
+
+      .save {
+        background: #e2e8f0;
+        color: #1e293b;
+      }
+
+      .publish {
+        background: #0f766e;
+        color: #ffffff;
+      }
+
+      .notice {
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 16px;
+      }
+
+      @media (max-width: 760px) {
+        .topbar,
+        .heading-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .panel {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="./dist/main.js"></script>
+  </body>
+</html>

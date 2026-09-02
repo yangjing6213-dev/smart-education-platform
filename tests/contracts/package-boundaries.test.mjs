@@ -11,6 +11,7 @@ import {
   frozenTask03Evidence,
   sha256File,
 } from "../../scripts/verify_task_05.mjs";
+import { frozenTask01To05Evidence as task06FrozenTask01To05Evidence } from "../../scripts/verify_task_06.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -51,6 +52,30 @@ test("Task 03 evidence is frozen by SHA without running the historical verifier"
   }
 });
 
+test("Task 06 verifier pins the complete prior task evidence boundary", () => {
+  const requiredEvidence = [
+    "SHA256SUMS_PHASE_1B_TASK_01.txt",
+    "SHA256SUMS_PHASE_1B_TASK_02.txt",
+    "SHA256SUMS_PHASE_1B_TASK_03.txt",
+    "SHA256SUMS_PHASE_1B_TASK_04.txt",
+    "SHA256SUMS_PHASE_1B_TASK_05.txt",
+    "docs/project/PHASE_1B_TASK_01_ACCEPTANCE.md",
+    "docs/project/PHASE_1B_TASK_02_ACCEPTANCE.md",
+    "docs/project/PHASE_1B_TASK_03_ACCEPTANCE.md",
+    "docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md",
+    "docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md",
+    "docs/reviews/PHASE_1B_TASK_04_REVIEW.md",
+    "docs/reviews/PHASE_1B_TASK_05_REVIEW.md",
+    "artifacts/review-package/student-care-platform-phase1b-task-04-review-pack-v1.0.zip",
+    "artifacts/review-package/student-care-platform-phase1b-task-05-review-pack-v1.0.zip",
+  ];
+
+  for (const relativePath of requiredEvidence) {
+    assert.equal(task06FrozenTask01To05Evidence.has(relativePath), true, relativePath);
+  }
+  assert.ok(task06FrozenTask01To05Evidence.size >= requiredEvidence.length);
+});
+
 test("workspace package manifests preserve the approved dependency direction", () => {
   const contracts = json("packages/contracts/package.json");
   const auth = json("packages/auth/package.json");
@@ -84,15 +109,20 @@ test("workspace package manifests preserve the approved dependency direction", (
   assert.deepEqual(tenant.exports, expectedExports);
 });
 
-test("root scripts use the active Task 05 verifier and include auth", () => {
+test("root scripts use the active Task 06 verifier and include admin-web", () => {
   const rootPackage = json("package.json");
 
   for (const script of ["typecheck", "lint", "test", "test:coverage", "build"]) {
     assert.match(rootPackage.scripts[script], /@student-care\/auth/, script);
   }
-  assert.match(rootPackage.scripts.verify, /scripts\/verify_task_05\.mjs --mode=structure/);
+  assert.match(rootPackage.scripts.verify, /scripts\/verify_task_06\.mjs --mode=structure/);
   assert.doesNotMatch(rootPackage.scripts.verify, /verify_task_03|verify_task_04/);
+  assert.match(rootPackage.scripts.typecheck, /@student-care\/admin-web/);
+  assert.match(rootPackage.scripts.lint, /@student-care\/admin-web/);
+  assert.match(rootPackage.scripts.test, /@student-care\/admin-web/);
+  assert.match(rootPackage.scripts.build, /@student-care\/admin-web/);
   assert.match(rootPackage.scripts["format:check"], /PHASE_1B_TASK_04_CODEX_EXECUTION\.md/);
+  assert.match(rootPackage.scripts["format:check"], /PHASE_1B_TASK_06_CODEX_EXECUTION\.md/);
   assert.doesNotMatch(rootPackage.scripts["format:check"], /SHA256SUMS_PHASE_1B_TASK_04/);
 });
 
@@ -141,14 +171,14 @@ test("API workspace can resolve and use all explicit package exports", () => {
   assert.equal(output, "");
 });
 
-test("Task 05 verifier structure mode accepts the active implementation boundary", () => {
+test("Task 06 verifier structure mode accepts the active implementation boundary", () => {
   const output = execFileSync(
     process.execPath,
-    ["scripts/verify_task_05.mjs", "--mode=structure"],
+    ["scripts/verify_task_06.mjs", "--mode=structure"],
     {
       cwd: root,
       encoding: "utf8",
     },
   );
-  assert.match(output, /TASK_05_STRUCTURE_VERIFY=PASS/);
+  assert.match(output, /TASK_06_STRUCTURE_VERIFY=PASS/);
 });

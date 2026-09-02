@@ -1,7 +1,12 @@
 export const MEMBERSHIP_STATUSES = ["ACTIVE", "SUSPENDED", "REVOKED", "INVITED"] as const;
 export type MembershipStatus = (typeof MEMBERSHIP_STATUSES)[number];
 
-export const IDENTITY_CAPABILITIES = ["identity:read", "memberships:read"] as const;
+export const IDENTITY_CAPABILITIES = [
+  "identity:read",
+  "memberships:read",
+  "content:write",
+  "content:publish",
+] as const;
 export type IdentityCapability = (typeof IDENTITY_CAPABILITIES)[number];
 
 export interface MembershipDto {

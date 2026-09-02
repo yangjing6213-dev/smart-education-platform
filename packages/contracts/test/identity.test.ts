@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  IDENTITY_CAPABILITIES,
   MEMBERSHIP_STATUSES,
+  type IdentityCapability,
   type MembershipDto,
   type MeDto,
   type SuccessEnvelope,
@@ -30,4 +32,19 @@ test("identity transport exports stable membership statuses and readonly DTO sha
 
   assert.equal(envelope.data.memberships[0]?.status, "ACTIVE");
   assert.equal(envelope.data.memberships[0]?.tenant_id, TENANT_ID);
+});
+
+test("identity transport exposes the Task 06 content capabilities", () => {
+  assert.deepEqual(IDENTITY_CAPABILITIES, [
+    "identity:read",
+    "memberships:read",
+    "content:write",
+    "content:publish",
+  ]);
+
+  const capabilities = [
+    "content:write",
+    "content:publish",
+  ] as const satisfies readonly IdentityCapability[];
+  assert.deepEqual(capabilities, ["content:write", "content:publish"]);
 });

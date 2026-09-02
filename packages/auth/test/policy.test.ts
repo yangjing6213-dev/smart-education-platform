@@ -130,3 +130,25 @@ test("active membership projection excludes every inactive status and denied aut
   assert.deepEqual(activeMemberships(result), [activeResult.memberships[0]]);
   assert.deepEqual(activeMemberships({ ok: false, reason: "UNAUTHENTICATED" }), []);
 });
+
+test("auth policy accepts the Task 06 content capabilities", () => {
+  const contentResult = resolveAuthContext({
+    ...activeResult,
+    memberships: [
+      {
+        ...activeResult.memberships[0],
+        capabilities: ["content:write", "content:publish"],
+      },
+    ],
+  });
+
+  assert.equal(contentResult.ok, true);
+  assert.deepEqual(
+    authorizeMembershipAccess(contentResult, TENANT_ID, CAMPUS_ID, "content:write"),
+    { ok: true, membership: contentResult.ok ? contentResult.context.memberships[0] : undefined },
+  );
+  assert.deepEqual(
+    authorizeMembershipAccess(contentResult, TENANT_ID, CAMPUS_ID, "content:publish"),
+    { ok: true, membership: contentResult.ok ? contentResult.context.memberships[0] : undefined },
+  );
+});

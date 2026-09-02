@@ -1,9 +1,15 @@
 import type { TrustedAuthResult } from "@student-care/auth";
 import fastify, { type FastifyInstance, type FastifyRequest } from "fastify";
 import { ContentService } from "./modules/content/content.service.js";
+import {
+  InstitutionService,
+  type InstitutionContentKind,
+  type InstitutionPublicScope,
+} from "./modules/institution/institution.service.js";
 import { registerHealthRoute } from "./health/health.route.js";
 import { authPlugin } from "./plugins/auth.plugin.js";
 import { scopePlugin } from "./plugins/scope.plugin.js";
+import { registerAdminInstitutionRoute } from "./routes/admin-institution.route.js";
 import { registerMeRoute } from "./routes/me.route.js";
 import { registerMembershipsRoute } from "./routes/memberships.route.js";
 import { registerPublicContentRoute } from "./routes/public-content.route.js";
@@ -13,6 +19,11 @@ export interface ServerOptions {
     request: FastifyRequest,
   ) => TrustedAuthResult | null | undefined | Promise<TrustedAuthResult | null | undefined>;
   readonly contentService?: ContentService;
+  readonly institutionService?: InstitutionService;
+  readonly getPublicInstitutionScope?: (
+    request: FastifyRequest,
+    kind: InstitutionContentKind,
+  ) => InstitutionPublicScope | undefined | Promise<InstitutionPublicScope | undefined>;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -37,9 +48,23 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
             membership.capabilities.includes(request.routeOptions.config.capabilityRequired)),
       );
       const requestedTenantId = query.tenant_id;
+      const requestedCampusId = query.campus_id;
+      const requestedCampusIdValue =
+        typeof requestedCampusId === "string" ? requestedCampusId : undefined;
       const membership =
-        memberships?.find((candidate) => candidate.tenant_id === requestedTenantId) ??
-        (requestedTenantId === undefined ? memberships?.[0] : undefined);
+        memberships?.find(
+          (candidate) =>
+            candidate.tenant_id === requestedTenantId &&
+            (requestedCampusIdValue === undefined ||
+              candidate.campus_ids.includes(requestedCampusIdValue)),
+        ) ??
+        (requestedTenantId === undefined
+          ? memberships?.find(
+              (candidate) =>
+                requestedCampusIdValue === undefined ||
+                candidate.campus_ids.includes(requestedCampusIdValue),
+            )
+          : undefined);
 
       return {
         trustedActor: request.authContext
@@ -53,7 +78,7 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
             }
           : undefined,
         requestedTenantId,
-        requestedCampusId: query.campus_id,
+        requestedCampusId,
       };
     },
   });
@@ -62,5 +87,10 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
   registerMeRoute(app);
   registerMembershipsRoute(app);
   registerPublicContentRoute(app, options.contentService ?? new ContentService());
+  registerAdminInstitutionRoute(
+    app,
+    options.institutionService ?? new InstitutionService(),
+    options.getPublicInstitutionScope,
+  );
   return app;
 }
