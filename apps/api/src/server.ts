@@ -18,6 +18,10 @@ import {
   type TeacherScope,
 } from "./modules/teachers/public-profile.service.js";
 import { registerPublicTeacherRoutes } from "./routes/public-teachers.route.js";
+import { ActivityService, type ActivityScope } from "./modules/activities/activity.service.js";
+import { MealService, type MealScope } from "./modules/meals/meal.service.js";
+import { registerPublicActivityRoutes } from "./routes/public-activities.route.js";
+import { registerPublicMealRoutes } from "./routes/public-meals.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
@@ -33,6 +37,14 @@ export interface ServerOptions {
   readonly getPublicTeacherScope?: (
     request: FastifyRequest,
   ) => TeacherScope | undefined | Promise<TeacherScope | undefined>;
+  readonly activityService?: ActivityService;
+  readonly getPublicActivityScope?: (
+    request: FastifyRequest,
+  ) => ActivityScope | undefined | Promise<ActivityScope | undefined>;
+  readonly mealService?: MealService;
+  readonly getPublicMealScope?: (
+    request: FastifyRequest,
+  ) => MealScope | undefined | Promise<MealScope | undefined>;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -74,6 +86,10 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
                 candidate.campus_ids.includes(requestedCampusIdValue),
             )
           : undefined);
+      const derivesTask08Campus =
+        request.url.startsWith("/admin/activities/") || request.url.startsWith("/admin/meals/");
+      const resolvedCampusId =
+        requestedCampusIdValue ?? (derivesTask08Campus ? membership?.campus_ids[0] : undefined);
 
       return {
         trustedActor: request.authContext
@@ -87,7 +103,7 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
             }
           : undefined,
         requestedTenantId,
-        requestedCampusId,
+        requestedCampusId: resolvedCampusId,
       };
     },
   });
@@ -105,6 +121,16 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     app,
     options.teacherProfileService ?? new TeacherProfileService(),
     options.getPublicTeacherScope,
+  );
+  registerPublicActivityRoutes(
+    app,
+    options.activityService ?? new ActivityService(),
+    options.getPublicActivityScope,
+  );
+  registerPublicMealRoutes(
+    app,
+    options.mealService ?? new MealService(),
+    options.getPublicMealScope,
   );
   return app;
 }
