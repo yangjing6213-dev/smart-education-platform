@@ -1,12 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
 Status: active plan. Task 01—06 are completed and remain frozen evidence. Task
-05 and Task 06 Stage B, C1, and C2 are accepted and frozen; Task 07+ remains
+05 and Task 06 Stage B, C1, and C2 are accepted and frozen; Task 07 Stage A
+formalization is owner-authorized; Task 07 Stage B and later tasks remain
 unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md`
-(`SHA-256=E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md`
+(`SHA-256=E7A3018481B5D596AB1128596AFCB186F1CCD25D1B2D3B034A6EFBAA71F1943F`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -22,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07+ remains unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07 Stage A formalization is authorized; Stage B implementation requires separate owner authorization, and Task 08+ remains unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -100,6 +101,16 @@ Every task follows `red -> green -> focused regression -> explicit commit`. The 
 - Implementation: create an explicit public projection and publication policy.
 - Green test: public route returns only approved synthetic fields in stable order.
 - Commit step: `feat: add public teacher profile projections`.
+
+Task 07 Stage A is currently limited to the contract and plan files
+`PHASE_1B_TASK_07_CODEX_EXECUTION.md` and
+`docs/project/PHASE_1B_TASK_07_PLAN.md`. It records approved public fields and
+file-reference boundaries, server-derived tenant/campus scope, active
+membership and capability checks, explicit public projection, publication
+policy, foreign-tenant denial, unpublished/private-field denial, and
+synthetic-only data. It does not authorize the future Stage B files above or
+any C1/C2 artifact. Stage B remains `NOT_GRANTED` until a separate owner
+authorization after the Stage A owner review gate.
 
 ## Task 08 - Activities and meals
 
