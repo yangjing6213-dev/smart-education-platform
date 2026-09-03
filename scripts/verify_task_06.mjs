@@ -11,6 +11,7 @@ const BASE_HEAD = "4db46c39d6a1f18517fe561a43b2207e8fa1dfde";
 const TARGET_BRANCH = "feature/phase-1b-task-04-identity-membership";
 const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md";
 const ACTIVE_AUTHORITY_SHA256 = "BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB";
+const C1_MEMBER_ORDER_POLICY = "POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING";
 
 const TASK_06_FILES = new Set([
   "AGENTS.md",
@@ -311,7 +312,7 @@ function checkC1Package() {
             : 0;
   });
   if (JSON.stringify(names) !== JSON.stringify(sorted))
-    fail("C1 manifest", "member order is not case-folded Unicode ordinal");
+    fail("C1 manifest", `member order is not ${C1_MEMBER_ORDER_POLICY}`);
   if (names[0] !== "apps/admin-web/index.html")
     fail("C1 manifest", "first member is not apps/admin-web/index.html");
   if (new Set(names).size !== names.length) fail("C1 manifest", "duplicate member");
@@ -400,6 +401,7 @@ function main() {
     process.exitCode = 1;
     return;
   }
+  console.log(`TASK06_MEMBER_ORDER_POLICY=${C1_MEMBER_ORDER_POLICY}`);
   console.log(
     mode === "structure" ? "TASK_06_STRUCTURE_VERIFY=PASS" : "TASK_06_FINAL_REVIEW_VERIFY=PASS",
   );

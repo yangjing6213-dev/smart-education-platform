@@ -10,6 +10,7 @@ worktree.
 ```text
 CANONICAL_MANIFEST_FORMAT=PHASE_1B_TASK_06_CANONICAL_CONTRACT_V2_STAGE_B_AMENDMENT
 CANONICALIZATION_RULE=THE_COMPLETE_FILE_IS_UTF8_NO_BOM_LF_ONLY_EXACTLY_ONE_TRAILING_LF_AND_ITS_SHA256_IS_RECORDED_ONLY_IN_THE_EXTERNAL_STAGE_A_RECEIPT
+C1_CANONICAL_MEMBER_ORDER_POLICY=POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING
 TASK_ID=PHASE_1B_TASK_06
 TASK_NAME=INSTITUTION_PROFILE_AND_HOME_CONTENT_MANAGEMENT
 TASK_STATUS=STAGE_C1_FINAL_EVIDENCE_READY
@@ -134,6 +135,7 @@ STAGE_B_NEW_FILES=apps/admin-web/package.json|apps/admin-web/tsconfig.json|apps/
 STAGE_B_NO_DEPENDENCY_INSTALL=YES
 STAGE_B_LOCKFILE_CHANGE=ONE_EXPLICIT_APPS_ADMIN_WEB_WORKSPACE_IMPORTER_ONLY
 STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_06_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_06.txt|artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip
+STAGE_C1_MEMBER_ORDER_POLICY=POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING
 STAGE_C2_EXACT_FILES=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
 OWNER_REVIEW_GATE=AFTER_STAGE_A_BEFORE_STAGE_B_IMPLEMENTATION_AUTHORIZATION
 STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
@@ -166,6 +168,10 @@ evidence paths are preserved and are not part of the Task 06 write set.
 The current Stage C1 evidence has been generated from the accepted Stage B
 implementation commit and is waiting at the owner review gate. Task 06 C2
 acceptance is absent and must not be prewritten.
+
+The C1 package member order is canonicalized as POSIX relative paths sorted by
+case-folded Unicode ordinal order, with `apps/admin-web/index.html` required as
+the first member. This is not a case-sensitive strict-ordinal policy.
 
 ## Stop conditions
 

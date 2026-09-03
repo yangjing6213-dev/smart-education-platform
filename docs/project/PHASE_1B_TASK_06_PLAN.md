@@ -129,6 +129,7 @@ workspace importer.
 
 ```text
 STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_06_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_06.txt|artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip
+STAGE_C1_MEMBER_ORDER_POLICY=POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING
 STAGE_C2_EXACT_FILES=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
 OWNER_REVIEW_GATE=AFTER_STAGE_A_BEFORE_STAGE_B_IMPLEMENTATION_AUTHORIZATION
 STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
@@ -317,12 +318,17 @@ evidence is unchanged, and no Task 06 C2 artifact or branch exists.
 Stage C1 does not claim owner acceptance or authorize C2. Any claim of Task 06
 acceptance remains pending the next owner review.
 
+The canonical C1 package member order is POSIX relative paths sorted by
+case-folded Unicode ordinal order, with `apps/admin-web/index.html` required as
+the first member. This policy is case-folded and is not a case-sensitive strict
+ordinal sort.
+
 Stop immediately on governance conflict, missing prerequisite, path expansion,
 real data, secret, network, registry, dependency installation, unapproved lockfile change,
 production service, database, migration, branch/worktree creation, staging
 outside the explicit commit gate, commit before all verification passes, any
 verification failure, or any attempt to enter Stage C1/C2 or Task 07+.
 
-`STATUS=STAGE_B_READY_FOR_OWNER_REVIEW`
+`STATUS=STAGE_C1_FINAL_EVIDENCE_READY`
 
-`STOP_REASON=STOP_BEFORE_STAGE_C1_UNTIL_STAGE_B_VERIFICATION_AND_OWNER_REVIEW`
+`STOP_REASON=OWNER_REVIEW_GATE_BEFORE_TASK06_C2`

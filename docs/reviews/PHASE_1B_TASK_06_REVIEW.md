@@ -94,6 +94,11 @@ REVIEW_PACKAGE_DETERMINISTIC_REBUILD=REQUIRED
 REVIEW_PACKAGE_EXCLUSIONS=MANIFEST|ZIP|V5_AUTHORITY|TASK04_EVIDENCE|TASK05_EVIDENCE|TASK06_C2|GENERATED_OUTPUT|UNRELATED_FILES
 ```
 
+`POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING` is the canonical
+C1 member-order policy. The comparator is case-folded Unicode ordinal order,
+not a case-sensitive strict-ordinal sort, and the first-member assertion is
+`apps/admin-web/index.html`.
+
 The exact member order is:
 
 ```text
@@ -140,6 +145,7 @@ PR_CREATED=NO
 DEPLOYMENT_EXECUTED=NO
 ```
 
-The three C1 files are the sole authorized evidence outputs. After independent
-manifest, ZIP, format, frozen-evidence, and Git checks, they are committed as
-the sole change for this C1 regeneration. Stop at `OWNER_REVIEW_GATE_BEFORE_TASK06_C2`.
+The three C1 files are the sole authorized evidence outputs. This correction
+also updates only the Task 06 contract, plan, review, and verifier to formalize
+the canonical member-order policy and current C1 lifecycle state. Stop at
+`OWNER_REVIEW_GATE_BEFORE_TASK06_C2`.
