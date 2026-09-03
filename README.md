@@ -1,6 +1,6 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—07 已完成并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 已获独立负责人授权并正在实施，Task 08 C1/C2 与 Task 09+ 尚未授权。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—07 已完成并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 修复与继续实施已获负责人授权，Task 08 C1/C2 与 Task 09+ 尚未授权。
 
 当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
@@ -49,4 +49,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md` 为准（SHA-256：`860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2 与 Task 07 C2 已接受并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 已由独立授权证据批准并正在实施，Task 08 C1/C2 与 Task 09+ 未启动且未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md` 为准（SHA-256：`E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2 与 Task 07 C2 已接受并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 修复与继续实施已获负责人授权，Task 08 C1/C2 与 Task 09+ 未启动且未授权。

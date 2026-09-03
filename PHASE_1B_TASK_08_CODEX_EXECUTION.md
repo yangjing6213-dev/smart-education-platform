@@ -1,8 +1,8 @@
 # Phase 1B Task 08 Codex Execution Contract
 
 This contract records Task 08 Stage A formalization and the independently
-authorized Stage B implementation boundary. Stage B is bounded to the five
-exact implementation/test files below; C1 and C2 remain unauthorized.
+authorized Stage B repair and continuation boundary. Stage B is bounded to the
+eight exact implementation/test files below; C1 and C2 remain unauthorized.
 
 ## Contract status and authorization
 
@@ -17,12 +17,12 @@ CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=5804cfee86dfae5033d5320b903e208b2bf2cceb
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03
 STAGE_A_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_A_FORMALIZATION_2026-09-03
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md
-ACTIVE_GOVERNANCE_SHA256=860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md
+ACTIVE_GOVERNANCE_SHA256=E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B
 TASK_05_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
-TASK_08_STARTED=YES_STAGE_B_IMPLEMENTATION
+TASK_08_STARTED=YES_STAGE_B_REPAIR_AND_CONTINUATION
 TASK_08_STAGE_A_AUTHORIZATION=GRANTED
 TASK_08_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
@@ -32,9 +32,10 @@ TASK_08_PLUS_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
 TASK_08_PLUS_STARTED=NO
 ```
 
-The current V12 authority supersedes V11 for this implementation. V11 remains
-HISTORICAL/FROZEN. The direct owner authorization above is independent from
-Stage A and explicitly grants only Task 08 Stage B implementation.
+The current V13 authority supersedes V12 for this repair and continuation. V12
+and V11 remain HISTORICAL/FROZEN. The direct owner authorization above is
+independent from Stage A and explicitly grants only the V13 Task 08 Stage B
+repair and continuation boundary.
 
 ## Objective and scope
 
@@ -102,9 +103,9 @@ A and are not implementation authorization:
 FUTURE_IMPLEMENTATION_FILES=apps/api/src/modules/activities/activity.service.ts|apps/api/src/modules/meals/meal.service.ts|apps/api/src/routes/public-activities.route.ts|apps/admin-web/src/pages/meals.tsx|apps/api/src/modules/activities/activity.test.ts
 ```
 
-Future Stage B must obtain a separate stable contract and explicit owner
-implementation authorization before touching those paths or any shared entry
-point. Stage C1 may create only its separately authorized review, detached
+The V13 Stage B boundary authorizes the five core files above plus the API
+server entry, admin entry, and public meals route needed to close the existing
+integration gap. Stage C1 may create only its separately authorized review, detached
 manifest, and deterministic ZIP. Stage C2 may create only its separately
 authorized acceptance record. Neither authorization exists in this contract.
 
@@ -146,7 +147,7 @@ git remote
 git worktree list
 ```
 
-Stage B checks only the five exact implementation/test files, current V12 and
+Stage B checks the eight exact implementation/test files, current V13 and
 frozen dependency anchors, plus existing read-only quality checks. Any
 non-whitelist change, missing frozen evidence, anchor drift, encoding/hash
 failure, real data or secret, dependency activity, network/service activity,

@@ -6,8 +6,8 @@ authorized for implementation; Task 08 C1/C2 and later tasks remain
 unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md`
-(`SHA-256=860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md`
+(`SHA-256=E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -130,14 +130,17 @@ Task 08+ artifact is created by this stage.
 - Green test: date filtering and publication state remain consistent across web and mini clients.
 - Commit step: `feat: add activity and meal content`.
 
-Task 08 Stage B is limited to the five core implementation/test files listed
-in the Task 08 contract and V12 authority. It must preserve typed date-bounded
-records, explicit published projections, server-derived tenant/campus scope,
-active membership and capability checks, fail-closed invalid dates and unsafe
-media handling, atomic stale-version denial, and synthetic-only fixtures. No
-entrypoint, package script, verifier, lockfile, schema, migration, or other
-shared path is authorized by this Stage B contract. Task 08 C1/C2 remain
-separately unauthorized.
+Task 08 Stage B repair and continuation follows the eight-file implementation
+and test boundary listed in the Task 08 contract and V13 authority. The five
+original files remain the core activity/meal implementation and test subset;
+V13 additionally authorizes the API server entry, admin entry, and public meals
+route required to close the existing integration gap. It must preserve typed
+date-bounded records, explicit published projections, server-derived
+tenant/campus scope, active membership and capability checks, fail-closed
+invalid dates and unsafe media handling, atomic stale-version denial, and
+synthetic-only fixtures. No package script, verifier, lockfile, schema,
+migration, or other shared path is authorized by this Stage B contract. Task
+08 C1/C2 remain separately unauthorized.
 
 ## Task 09 - Newcomer guides
 

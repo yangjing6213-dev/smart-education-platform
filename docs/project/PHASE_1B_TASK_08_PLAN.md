@@ -16,8 +16,8 @@ CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=5804cfee86dfae5033d5320b903e208b2bf2cceb
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03
 STAGE_A_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_A_FORMALIZATION_2026-09-03
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md
-ACTIVE_GOVERNANCE_SHA256=860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md
+ACTIVE_GOVERNANCE_SHA256=E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B
 TASK_05_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
@@ -30,9 +30,9 @@ TASK_08_PLUS_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
 TASK_08_PLUS_STARTED=NO
 ```
 
-V12 is the current active governance authority and supersedes V11, which is
+V13 is the current active governance authority and supersedes V12, which is
 HISTORICAL/FROZEN. Task 07 C2 is accepted and frozen. The independent owner
-authorization grants Task 08 Stage B implementation only; it does not grant
+authorization grants Task 08 Stage B repair and continuation only; it does not grant
 C1, C2, or Task 09+.
 
 ## Goal and bounded product contract
@@ -123,11 +123,11 @@ identify or reconstruct a real child, family, teacher, institution, or campus.
 
 ## Stage B implementation whitelist
 
-These are the exact Stage B implementation/test paths authorized by V12:
+These are the exact Stage B implementation/test paths authorized by V13:
 
 ```text
-STAGE_B_EXACT_FILES=apps/api/src/modules/activities/activity.service.ts|apps/api/src/modules/meals/meal.service.ts|apps/api/src/routes/public-activities.route.ts|apps/admin-web/src/pages/meals.tsx|apps/api/src/modules/activities/activity.test.ts
-STAGE_B_BOUNDARY=OWNER_AUTHORIZED_BY_PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03
+STAGE_B_EXACT_FILES=apps/api/src/modules/activities/activity.service.ts|apps/api/src/modules/meals/meal.service.ts|apps/api/src/routes/public-activities.route.ts|apps/admin-web/src/pages/meals.tsx|apps/api/src/modules/activities/activity.test.ts|apps/api/src/server.ts|apps/admin-web/src/main.ts|apps/api/src/routes/public-meals.route.ts
+STAGE_B_BOUNDARY=OWNER_AUTHORIZED_BY_PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_REPAIR_AND_CONTINUATION_2026-09-04
 ```
 
 No other repository path is authorized by this Stage B plan. Shared API/admin
@@ -161,7 +161,7 @@ leakage, synthetic-only data, and no prohibited integrations.
 
 ## Stage A verification and stop conditions
 
-Stage B checks only the five exact implementation/test files and the existing
+Stage B checks the eight exact implementation/test files and the existing
 read-only quality checks. It does not create or require Task 08 C1/C2 review,
 manifest, ZIP, or acceptance files. Run:
 
