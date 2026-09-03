@@ -8,8 +8,8 @@
 - 源分支/源 HEAD：`planning/phase-1a-batch-a` / `f698f87150dce3376fb96d1bbb330d28d0d73b81`
 - 目标分支：`planning/phase-1a-batch-b`
 - 历史停止字段：`PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`（`HISTORICAL/FROZEN`）
-- 当前 Phase 1B 活动治理：`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md`（SHA-256：`11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E`）
-- 当前状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY`；Task 01—05 已由负责人验收，Task 05 Stage B、C1、C2 已完成并冻结，Task 06 尚未启动
+- 当前 Phase 1B 活动治理：`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md`（SHA-256：`BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB`）
+- 当前状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_06_STAGE_B_ONLY`；Task 01—05 已由负责人验收并冻结，Task 06 Stage B 已实施并通过内部验证，C1 已生成并等待负责人审阅
 - `TASK_04_STARTED=YES`
 - `TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED`
 - `TASK_05_STARTED=YES`
@@ -17,8 +17,14 @@
 - `TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY`
 - `TASK_05_STAGE_C2_STATUS=ACCEPTED`
 - `TASK_05_OWNER_REVIEW=ACCEPTED_AND_FROZEN`
-- `TASK_06_STARTED=NO`
-- `TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED`
+- `TASK_06_STARTED=YES_STAGE_B_IMPLEMENTATION`
+- `TASK_06_IMPLEMENTATION_AUTHORIZATION=GRANTED`
+- `TASK_06_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED`
+- `TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY`
+- `TASK_06_OWNER_REVIEW=WAITING_AT_OWNER_REVIEW_GATE`
+- `TASK_06_STAGE_C2_STATUS=NOT_ACCEPTED`
+- `TASK_06_STAGE_C2_AUTHORIZATION=NOT_GRANTED`
+- `TASK_07_PLUS_STARTED=NO`
 - 当前 API/runtime：Fastify 5.12.1；Node 24.14.0；pnpm 11.22.0
 - 当前依赖裁决：T12=`T02 -> T03 -> T05`；T10=`T05 -> T08 -> T12`
 
@@ -26,16 +32,16 @@ Batch A 已由项目负责人验收为 `PASS`，其 ZIP、根清单、报告、�
 
 ## 执行顺序
 
-| 阶段 | 任务合同 | 主要产物 | 固定提交 |
-|---|---|---|---|
-| B0 | `PHASE_1A_BATCH_B_B0` | 只读门禁回执 | 无 |
-| B1 | `PHASE_1A_BATCH_B_B1` | 验收记录、决策基线、范围、执行计划、根治理更新 | `chore: activate phase 1a batch b design baseline` |
-| B2 | `PHASE_1A_BATCH_B_B2` | 视觉分析、品牌 UI 规范、组件和响应式规则 | `docs: define tongxin cross-end design system` |
-| B3 | `PHASE_1A_BATCH_B_B3` | 59 路由高保真原型、原创 SVG、模拟数据 | `feat: add phase 1a high fidelity prototypes` |
-| B4 | `PHASE_1A_BATCH_B_B4` | V0.1 技术基线、契约、追踪矩阵、Phase 1B 计划 | `docs: finalize v0.1 technical baseline and phase 1b plan` |
-| B5 | `PHASE_1A_BATCH_B_B5` | 标准库验证器、浏览器验证和响应式/负测证据 | 无 |
-| B6 | `PHASE_1A_BATCH_B_B6` | 15 张截图、评审报告、清单、独立 manifest、审查 ZIP | 无 |
-| B7 | `PHASE_1A_BATCH_B_B7` | 最终门禁与回执 | `test: add phase 1a batch b review evidence` |
+| 阶段 | 任务合同              | 主要产物                                           | 固定提交                                                   |
+| ---- | --------------------- | -------------------------------------------------- | ---------------------------------------------------------- |
+| B0   | `PHASE_1A_BATCH_B_B0` | 只读门禁回执                                       | 无                                                         |
+| B1   | `PHASE_1A_BATCH_B_B1` | 验收记录、决策基线、范围、执行计划、根治理更新     | `chore: activate phase 1a batch b design baseline`         |
+| B2   | `PHASE_1A_BATCH_B_B2` | 视觉分析、品牌 UI 规范、组件和响应式规则           | `docs: define tongxin cross-end design system`             |
+| B3   | `PHASE_1A_BATCH_B_B3` | 59 路由高保真原型、原创 SVG、模拟数据              | `feat: add phase 1a high fidelity prototypes`              |
+| B4   | `PHASE_1A_BATCH_B_B4` | V0.1 技术基线、契约、追踪矩阵、Phase 1B 计划       | `docs: finalize v0.1 technical baseline and phase 1b plan` |
+| B5   | `PHASE_1A_BATCH_B_B5` | 标准库验证器、浏览器验证和响应式/负测证据          | 无                                                         |
+| B6   | `PHASE_1A_BATCH_B_B6` | 15 张截图、评审报告、清单、独立 manifest、审查 ZIP | 无                                                         |
+| B7   | `PHASE_1A_BATCH_B_B7` | 最终门禁与回执                                     | `test: add phase 1a batch b review evidence`               |
 
 每个任务都必须先完成合同实例中的目标、白名单、验收点、命令和停止条件，再实施、验证、显式暂存和提交。禁止 `git add .`、`git add -A`、amend、rebase、reset、remote、push 和部署。
 

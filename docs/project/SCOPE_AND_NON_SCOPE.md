@@ -1,12 +1,12 @@
 # 当前 Phase 1B 活动治理与范围
 
-当前 Phase 1B 追认 Task 01—05 已完成；Task 05 Stage B、C1、C2 已完成并冻结，Task 06 尚未启动。
+当前 Phase 1B 追认 Task 01—05 已完成并冻结；Task 06 Stage B 已实施并通过内部验证，C1 已生成并等待负责人审阅。
 活动治理以
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md`
-为准（SHA-256：`11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E`）。
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md`
+为准（SHA-256：`BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB`）。
 
 ```text
-PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_05_ONLY
+PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_06_STAGE_B_ONLY
 TASK_04_STARTED=YES
 TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_STARTED=YES
@@ -14,8 +14,14 @@ TASK_05_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
 TASK_05_STAGE_C2_STATUS=ACCEPTED
 TASK_05_OWNER_REVIEW=ACCEPTED_AND_FROZEN
-TASK_06_STARTED=NO
-TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK_06_STARTED=YES_STAGE_B_IMPLEMENTATION
+TASK_06_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_06_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_06_OWNER_REVIEW=WAITING_AT_OWNER_REVIEW_GATE
+TASK_06_STAGE_C2_STATUS=NOT_ACCEPTED
+TASK_06_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_07_PLUS_STARTED=NO
 PHASE_1B_API_FRAMEWORK=FASTIFY_5.12.1
 NESTJS_REFERENCE_POLICY=HISTORICAL_DRAFT_ONLY
 PHASE_1B_NODE_VERSION=24.14.0
@@ -26,7 +32,7 @@ T10_DEPENDENCIES=T05 -> T08 -> T12
 
 本文件下方原有 Phase 1A 范围记录及旧状态整体为 `HISTORICAL/FROZEN`，不与上述当前活动范围竞争，也不因当前 authority 回写。Batch B 冻结记录中的 `PROJECT_OWNER_ACCEPTANCE=PENDING` 是负责人验收前的历史快照；当前 authority 记录后续 `BATCH_B_PROJECT_OWNER_ACCEPTANCE=PASS` 裁决。
 
-本次按 `CHANGE_CONTROL.md` §5 采用 `HISTORICAL_FREEZE_PLUS_ACTIVE_REFERENCE_CLOSURE`，活动原子范围精确为 V3 authority、`AGENTS.md`、`PLANS.md`、`README.md`、`docs/project/DECISION_BASELINE.md`、本文件、两个 Phase 1B 活动计划文件、Task 05 合同/计划和 Task 05 verifier。Task 05 C1 review、manifest、ZIP 在治理提交后按 C1 规则重新生成；Task 01—04 合同、任务实例、模板、验证器与 Batch A/Batch B 固定证据仍为冻结引用，不在当前改写范围内。
+本次按 `CHANGE_CONTROL.md` §5 采用 `HISTORICAL_FREEZE_PLUS_ACTIVE_REFERENCE_CLOSURE`，活动原子范围精确为 V5 authority、`AGENTS.md`、`PLANS.md`、`README.md`、`docs/project/DECISION_BASELINE.md`、本文件、两个 Phase 1B 活动计划文件、Task 06 合同/计划和 Task 06 verifier。V4及更早 authority、Task 01—05 合同、验收、C1证据和 Batch A/Batch B 固定证据仍为冻结引用，不在当前改写范围内。
 
 # HISTORICAL/FROZEN：Phase 1A 范围与非范围
 
@@ -36,20 +42,20 @@ T10_DEPENDENCIES=T05 -> T08 -> T12
 
 ## 2. 合同12项交付
 
-| 序号 | 合同交付 | 对应阶段 | 验收证据 |
-|---:|---|---|---|
-| 1 | 项目治理与仓库基线 | A0—A1 | 根治理文件、项目治理文件、模板、Commit 1 |
-| 2 | 产品总PRD和V0.1专项PRD | A2 | 两份PRD及范围覆盖检查 |
-| 3 | 用户角色与三端功能矩阵 | A2 | 角色矩阵、端侧矩阵 |
-| 4 | 完整页面清单 | A2 | A/B/C级页面、字段和验收点 |
-| 5 | 核心用户流程 | A2、A4 | 八条流程文档与三条可点击闭环 |
-| 6 | 内容字段和状态定义 | A2 | 内容模式与状态模型 |
-| 7 | 低保真可点击跨端原型 | A4 | 三端入口、A级导航、B级状态转换 |
-| 8 | 多租户、统一账号、权限和数据模型草案 | A3 | 架构草案与隔离检查 |
-| 9 | API边界、文件、环境和部署草案 | A3 | API、文件、环境与部署文档；不实际部署 |
-| 10 | 同芯AI学习助手产品与安全草案 | A3—A4 | 产品、安全、流程、评测草案与五层原型 |
-| 11 | 验收标准和验证脚本 | A2、A5 | 验收标准、脚本、命令结果 |
-| 12 | Phase 1A批次A审查包 | A6—A7 | 评审、清单、校验和、ZIP、最终回执 |
+| 序号 | 合同交付                             | 对应阶段 | 验收证据                                 |
+| ---: | ------------------------------------ | -------- | ---------------------------------------- |
+|    1 | 项目治理与仓库基线                   | A0—A1    | 根治理文件、项目治理文件、模板、Commit 1 |
+|    2 | 产品总PRD和V0.1专项PRD               | A2       | 两份PRD及范围覆盖检查                    |
+|    3 | 用户角色与三端功能矩阵               | A2       | 角色矩阵、端侧矩阵                       |
+|    4 | 完整页面清单                         | A2       | A/B/C级页面、字段和验收点                |
+|    5 | 核心用户流程                         | A2、A4   | 八条流程文档与三条可点击闭环             |
+|    6 | 内容字段和状态定义                   | A2       | 内容模式与状态模型                       |
+|    7 | 低保真可点击跨端原型                 | A4       | 三端入口、A级导航、B级状态转换           |
+|    8 | 多租户、统一账号、权限和数据模型草案 | A3       | 架构草案与隔离检查                       |
+|    9 | API边界、文件、环境和部署草案        | A3       | API、文件、环境与部署文档；不实际部署    |
+|   10 | 同芯AI学习助手产品与安全草案         | A3—A4    | 产品、安全、流程、评测草案与五层原型     |
+|   11 | 验收标准和验证脚本                   | A2、A5   | 验收标准、脚本、命令结果                 |
+|   12 | Phase 1A批次A审查包                  | A6—A7    | 评审、清单、校验和、ZIP、最终回执        |
 
 任何交付都必须同时满足术语、三端、多租户、未成年人、模拟数据、AI边界和证据规则。
 
@@ -85,12 +91,12 @@ A0 执行前硬门禁
 
 ## 5. 四提交边界
 
-| 提交 | 覆盖阶段 | 固定消息 |
-|---|---|---|
-| Commit 1 | A1 | `chore: establish phase 1a project governance` |
-| Commit 2 | A2 | `docs: define phase 1a batch a product baseline` |
-| Commit 3 | A3 | `docs: draft platform architecture and ai safety` |
-| Commit 4 | A4—A7 | `feat: add phase 1a low fidelity review prototype` |
+| 提交     | 覆盖阶段 | 固定消息                                           |
+| -------- | -------- | -------------------------------------------------- |
+| Commit 1 | A1       | `chore: establish phase 1a project governance`     |
+| Commit 2 | A2       | `docs: define phase 1a batch a product baseline`   |
+| Commit 3 | A3       | `docs: draft platform architecture and ai safety`  |
+| Commit 4 | A4—A7    | `feat: add phase 1a low fidelity review prototype` |
 
 评审报告记录 Commit 1—3，并说明 Commit 4 固化报告自身；Commit 4 最终哈希只写入提交后的终端回执。
 

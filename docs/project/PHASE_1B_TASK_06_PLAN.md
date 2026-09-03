@@ -1,6 +1,7 @@
 # Phase 1B Task 06 Institution Profile and Home Content Management Plan
 
 > **For agentic workers:** This plan contains the owner-confirmed Stage B
+> amendment and the generated Stage C1 evidence state.
 > amendment. Use `long-horizon-development`, `using-superpowers`,
 > `brainstorming`, `writing-plans`, `test-driven-development`,
 > `verification-before-completion`, and `requesting-code-review`; use
@@ -8,7 +9,8 @@
 > Task 07+ remain unauthorized.
 
 **Goal:** Implement and verify the bounded Task 06 tenant- and campus-scoped
-institution profile and home content management slice, then stop before C1.
+institution profile and home content management slice, generate C1 evidence,
+then stop for owner review before C2.
 
 **Architecture:** Task 06 adapts the accepted Task 05 versioned content model
 for institution profile and home content records. The API service consumes
@@ -35,8 +37,8 @@ PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
 SOURCE_HEAD=4db46c39d6a1f18517fe561a43b2207e8fa1dfde
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md
-GOVERNANCE_AUTHORITY_SHA256=11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md
+GOVERNANCE_AUTHORITY_SHA256=BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB
 AUTHORIZATION_EVIDENCE_ID=PROJECT_OWNER_EXPLICIT_TASK06_STAGE_B_IMPLEMENTATION_2026-09-02
 AUTHORIZATION_OBJECTIVE_TEXT=Authorize Phase 1B Task 06 Stage B implementation
 AUTHORIZATION_OBJECTIVE_UTF8_BYTES=49
@@ -48,21 +50,25 @@ TASK_06_STARTED=YES_STAGE_B_IMPLEMENTATION
 TASK_06_GOAL_AUTHORIZATION=GRANTED_FOR_STAGE_B_IMPLEMENTATION
 TASK_06_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_06_STAGE_A_STATUS=OWNER_CONFIRMED
-TASK_06_STAGE_B_STATUS=READY_FOR_OWNER_REVIEW
+TASK_06_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_06_OWNER_REVIEW=WAITING_AT_OWNER_REVIEW_GATE
+TASK_06_STAGE_C2_STATUS=NOT_ACCEPTED
+TASK_06_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK_06_PLUS_STARTED=NO
 DEPENDENCIES=T05
 PUBLIC_API_DTOS=@student-care/contracts
 INTERNAL_AUTH_POLICY_TYPES=@student-care/auth
 CONTENT_MODEL_SOURCE=TASK05_ACCEPTED_VERSIONED_CONTENT_MODEL
 ADMIN_WEB_PACKAGE_STATUS=OWNER_AUTHORIZED_MINIMAL_STATIC_PACKAGE
-STATUS=STAGE_B_READY_FOR_OWNER_REVIEW
-STOP_REASON=STOP_BEFORE_STAGE_C1_UNTIL_STAGE_B_VERIFICATION_AND_OWNER_REVIEW
+STATUS=STAGE_C1_FINAL_EVIDENCE_READY
+STOP_REASON=OWNER_REVIEW_GATE_BEFORE_TASK06_C2
 ```
 
-Task 05 C2 is the accepted prerequisite. The current V4 authority remains the
-active governance source and still records Task 06 implementation as
-unauthorized. Creating these two Stage A documents does not change that
-implementation status.
+Task 05 C2 is the accepted prerequisite. The current V5 authority records the
+owner-authorized Task 06 Stage B implementation and generated C1 evidence.
+Task 06 C2 remains absent, not accepted, and unauthorized until a separate
+explicit owner PASS.
 
 ## Scope contract
 
@@ -129,7 +135,8 @@ STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
 STAGE_C2_POLICY=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_PROJECT_OWNER_PASS|SEPARATE_COMMIT|NEVER_PREWRITE
 ```
 
-Stage C1 and C2 paths must not be created during Stage B.
+Stage C1 is generated evidence awaiting owner review. Stage C2 must not be
+created before explicit owner PASS.
 
 ## Stage A record and Stage B execution steps
 
@@ -247,7 +254,7 @@ evidence. Stop at `OWNER_REVIEW_GATE`.
 - [x] Run root format, test, and build commands.
 - [x] Run `node scripts/verify_task_06.mjs --mode=structure`.
 - [x] Review exact Git status and diff checks.
-- [x] Stop before Stage C1 and report `OWNER_REVIEW_GATE`.
+- [x] Generate Stage C1 evidence and stop at `OWNER_REVIEW_GATE`.
 
 ### Task 9: Remediate independent review findings
 
@@ -302,13 +309,13 @@ a new owner-approved stable amendment.
 
 ## Acceptance and stop criteria
 
-Stage B is ready for the next owner review only when the expanded exact files
-exist, targeted and root verification passes, the current V4 and Task 05
-acceptance anchors are unchanged, the index is clean, existing untracked Task
-04/05 evidence is unchanged, and no Task 06 C1/C2 artifact or branch exists.
+Stage C1 is ready for owner review only when the expanded exact files exist,
+the evidence package is deterministic, the current V5 and Task 05 acceptance
+anchors are unchanged, the index is clean, existing untracked Task 04/05
+evidence is unchanged, and no Task 06 C2 artifact or branch exists.
 
-Stage B does not authorize C1/C2 evidence generation or acceptance. Any claim
-of Task 06 completion remains pending the next owner review.
+Stage C1 does not claim owner acceptance or authorize C2. Any claim of Task 06
+acceptance remains pending the next owner review.
 
 Stop immediately on governance conflict, missing prerequisite, path expansion,
 real data, secret, network, registry, dependency installation, unapproved lockfile change,

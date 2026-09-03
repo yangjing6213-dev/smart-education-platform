@@ -9,10 +9,21 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BASE_HEAD = "4db46c39d6a1f18517fe561a43b2207e8fa1dfde";
 const TARGET_BRANCH = "feature/phase-1b-task-04-identity-membership";
-const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md";
-const ACTIVE_AUTHORITY_SHA256 = "11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E";
+const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md";
+const ACTIVE_AUTHORITY_SHA256 = "BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB";
 
 const TASK_06_FILES = new Set([
+  "AGENTS.md",
+  "PLANS.md",
+  "README.md",
+  "docs/project/DECISION_BASELINE.md",
+  "docs/project/SCOPE_AND_NON_SCOPE.md",
+  "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
+  "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
+  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
+  "docs/reviews/PHASE_1B_TASK_06_REVIEW.md",
+  "SHA256SUMS_PHASE_1B_TASK_06.txt",
+  "artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip",
   "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
   "docs/project/PHASE_1B_TASK_06_PLAN.md",
   "apps/api/src/modules/institution/institution.service.ts",
@@ -53,8 +64,37 @@ const TASK_06_C1_C2_FILES = [
   "docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md",
 ];
 
+const C1_MEMBER_FILES = new Set([
+  "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
+  "apps/admin-web/index.html",
+  "apps/admin-web/package.json",
+  "apps/admin-web/src/main.ts",
+  "apps/admin-web/src/pages/home-content.tsx",
+  "apps/admin-web/test/home-content.test.mjs",
+  "apps/admin-web/tsconfig.json",
+  "apps/api/package.json",
+  "apps/api/src/modules/institution/institution.service.ts",
+  "apps/api/src/modules/institution/institution.test.ts",
+  "apps/api/src/routes/admin-institution.route.ts",
+  "apps/api/src/server.ts",
+  "docs/project/PHASE_1B_TASK_06_PLAN.md",
+  "docs/reviews/PHASE_1B_TASK_06_REVIEW.md",
+  "package.json",
+  "packages/auth/test/policy.test.ts",
+  "packages/contracts/src/identity.ts",
+  "packages/contracts/test/identity.test.ts",
+  "pnpm-lock.yaml",
+  "scripts/verify_task_06.mjs",
+  "tests/contracts/package-boundaries.test.mjs",
+  "tests/workspace/paths.test.mjs",
+]);
+
 const FROZEN_HASHES = new Map([
   [ACTIVE_AUTHORITY_PATH, ACTIVE_AUTHORITY_SHA256],
+  [
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md",
+    "11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E",
+  ],
   [
     "docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md",
     "113870DB0895145A183740F1B97D2F4102E3D6EEC4806A12A017C41C7CAE4202",
@@ -226,8 +266,11 @@ function checkRequiredFiles() {
     if (relativePath === "pnpm-lock.yaml") continue;
     if (!existsSync(absolute(relativePath))) fail("required file", relativePath);
   }
-  for (const relativePath of TASK_06_C1_C2_FILES) {
-    if (existsSync(absolute(relativePath))) fail("Task 06 C1/C2 boundary", relativePath);
+  for (const relativePath of TASK_06_C1_C2_FILES.slice(0, 3)) {
+    if (!existsSync(absolute(relativePath))) fail("Task 06 C1 required file", relativePath);
+  }
+  if (existsSync(absolute(TASK_06_C1_C2_FILES[3]))) {
+    fail("Task 06 C2 boundary", TASK_06_C1_C2_FILES[3]);
   }
 }
 
@@ -246,6 +289,47 @@ function checkFrozenHashes() {
       fail("Task 01-05 frozen evidence", `${relativePath} differs`);
     }
   }
+}
+
+function checkC1Package() {
+  const manifestPath = absolute("SHA256SUMS_PHASE_1B_TASK_06.txt");
+  const manifest = readFileSync(manifestPath, "utf8");
+  const rows = manifest.trimEnd().split("\n");
+  if (rows.length !== 22) fail("C1 manifest", `expected 22 rows, got ${rows.length}`);
+  const names = rows.map((row) => row.split("  ")[1]);
+  const sorted = [...names].sort((left, right) => {
+    const leftKey = left.toLocaleLowerCase("en-US");
+    const rightKey = right.toLocaleLowerCase("en-US");
+    return leftKey < rightKey
+      ? -1
+      : leftKey > rightKey
+        ? 1
+        : left < right
+          ? -1
+          : left > right
+            ? 1
+            : 0;
+  });
+  if (JSON.stringify(names) !== JSON.stringify(sorted))
+    fail("C1 manifest", "member order is not case-folded Unicode ordinal");
+  if (names[0] !== "apps/admin-web/index.html")
+    fail("C1 manifest", "first member is not apps/admin-web/index.html");
+  if (new Set(names).size !== names.length) fail("C1 manifest", "duplicate member");
+  for (const name of names) {
+    if (!C1_MEMBER_FILES.has(name)) fail("C1 manifest", `unapproved member ${name}`);
+    if (!existsSync(absolute(name))) fail("C1 manifest", `missing member ${name}`);
+    if (sha256File(name) !== rows.find((row) => row.endsWith(`  ${name}`)).split("  ")[0]) {
+      fail("C1 manifest", `member hash mismatch ${name}`);
+    }
+  }
+  if (names.includes("SHA256SUMS_PHASE_1B_TASK_06.txt"))
+    fail("C1 manifest", "manifest is not detached");
+  if (names.includes("docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md"))
+    fail("C1 manifest", "V5 must be excluded");
+  const zip = readFileSync(
+    absolute("artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip"),
+  );
+  if (zip.length === 0) fail("C1 ZIP", "ZIP is empty");
 }
 
 function checkTextEncoding() {
@@ -310,6 +394,7 @@ function main() {
   checkTextEncoding();
   checkLockfileBoundary();
   checkSafety();
+  checkC1Package();
   if (failures.length > 0) {
     for (const failure of failures) console.error(`FAIL ${failure}`);
     process.exitCode = 1;
