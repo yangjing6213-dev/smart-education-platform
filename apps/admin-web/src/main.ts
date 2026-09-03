@@ -1,4 +1,8 @@
 import { HomeContentPage, type HomeContentEditorState } from "./pages/home-content.js";
+import {
+  PublicTeacherIntroductionsPage,
+  type PublicTeacherEditorState,
+} from "./pages/public-teachers.js";
 
 const initialState: HomeContentEditorState = {
   contentKey: "home-announcement",
@@ -13,12 +17,26 @@ const initialState: HomeContentEditorState = {
   canPublish: true,
 };
 
+const initialTeacherState: PublicTeacherEditorState = {
+  profileId: "teacher-one",
+  displayName: "模拟教师一号",
+  headline: "小学数学引导教师",
+  subjects: ["数学", "作业引导"],
+  bio: "这是一段仅用于管理页预览的虚构公开介绍。",
+  photoRef: "file-ref:/synthetic/teacher-one.png",
+  version: 1,
+  status: "DRAFT",
+  canPublish: true,
+};
+
 const root = document.querySelector<HTMLDivElement>("#app");
 if (root === null) throw new Error("Admin web root is missing.");
 const appRoot = root;
 
 let state = initialState;
 let notice = "草稿尚未发布";
+let teacherState = initialTeacherState;
+let teacherNotice = "教师介绍草稿尚未发布";
 
 function element<T extends keyof HTMLElementTagNameMap>(tagName: T, className?: string) {
   const element = document.createElement(tagName);
@@ -26,7 +44,7 @@ function element<T extends keyof HTMLElementTagNameMap>(tagName: T, className?: 
   return element;
 }
 
-function render(): void {
+function renderHomeContent(): void {
   const view = HomeContentPage(state);
   document.title = view.heading;
   appRoot.replaceChildren();
@@ -128,6 +146,100 @@ function render(): void {
   main.append(headingRow, workspace);
   shell.append(topbar, main);
   appRoot.append(shell);
+}
+
+function renderPublicTeachers(): void {
+  const view = PublicTeacherIntroductionsPage(teacherState);
+  document.title = view.heading;
+  appRoot.replaceChildren();
+
+  const shell = element("div", "shell");
+  const topbar = element("header", "topbar");
+  const brand = element("strong", "brand");
+  brand.textContent = "机构管理工作台";
+  const scope = element("span");
+  scope.textContent = "模拟租户 · 当前校区";
+  topbar.append(brand, scope);
+
+  const main = element("main");
+  const headingRow = element("div", "heading-row");
+  const heading = element("div");
+  const title = element("h1");
+  title.textContent = view.heading;
+  const subtitle = element("p");
+  subtitle.textContent = "编辑并控制教师公开介绍的发布状态";
+  heading.append(title, subtitle);
+  const status = element("div", "status");
+  status.textContent = teacherNotice;
+  headingRow.append(heading, status);
+
+  const workspace = element("div", "workspace");
+  const editorPanel = element("section", "panel");
+  const editorTitle = element("h2");
+  editorTitle.textContent = "教师介绍";
+  const name = element("strong");
+  name.textContent = view.state.displayName;
+  const headline = element("p", "summary");
+  headline.textContent = view.state.headline;
+  const subjects = element("p", "summary");
+  subjects.textContent = view.state.subjects.join(" · ");
+  const bio = element("p", "summary");
+  bio.textContent = view.state.bio;
+  editorPanel.append(editorTitle, name, headline, subjects, bio);
+
+  const actionPanel = element("aside", "panel");
+  const actionTitle = element("h2");
+  actionTitle.textContent = "发布控制";
+  const meta = element("dl", "meta");
+  const version = element("div");
+  const versionLabel = element("dt");
+  versionLabel.textContent = "版本";
+  const versionValue = element("dd");
+  versionValue.textContent = `v${view.state.version}`;
+  version.append(versionLabel, versionValue);
+  const stateRow = element("div");
+  const stateLabel = element("dt");
+  stateLabel.textContent = "状态";
+  const stateValue = element("dd");
+  stateValue.textContent = view.state.status;
+  stateRow.append(stateLabel, stateValue);
+  meta.append(version, stateRow);
+
+  const actions = element("div", "actions");
+  const save = element("button", "save");
+  save.type = "button";
+  save.textContent = view.saveAction;
+  save.addEventListener("click", () => {
+    teacherState = { ...teacherState, status: "DRAFT", version: teacherState.version + 1 };
+    teacherNotice = "教师介绍草稿已保存";
+    render();
+  });
+  const publish = element("button", "publish");
+  publish.type = "button";
+  publish.disabled = !teacherState.canPublish;
+  publish.textContent = view.publishAction;
+  publish.addEventListener("click", () => {
+    teacherState = { ...teacherState, status: "PUBLISHED", version: teacherState.version + 1 };
+    teacherNotice = "教师介绍已发布";
+    render();
+  });
+  actions.append(save, publish);
+  const audit = element("p", "notice");
+  audit.textContent = "发布动作使用模拟状态，不连接正式服务。";
+  actionPanel.append(actionTitle, meta, actions, audit);
+
+  workspace.append(editorPanel, actionPanel);
+  main.append(headingRow, workspace);
+  shell.append(topbar, main);
+  appRoot.append(shell);
+}
+
+function render(): void {
+  if (window.location.pathname === "/admin/public-teachers") {
+    renderPublicTeachers();
+    return;
+  }
+  renderHomeContent();
 }
 
 render();

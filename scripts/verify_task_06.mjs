@@ -106,6 +106,11 @@ const C1_MUTABLE_MEMBERS = new Set([
   "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
   "docs/project/PHASE_1B_TASK_06_PLAN.md",
   "scripts/verify_task_06.mjs",
+  "apps/api/src/server.ts",
+  "apps/admin-web/src/main.ts",
+  "package.json",
+  "tests/contracts/package-boundaries.test.mjs",
+  "tests/workspace/paths.test.mjs",
 ]);
 
 const FROZEN_HASHES = new Map([
@@ -493,7 +498,7 @@ function checkC1Package() {
   if (rows.length !== 22) fail("C1 manifest", `expected 22 rows, got ${rows.length}`);
   const records = [];
   for (const row of rows) {
-    const match = /^([A-F0-9]{64})  (.+)$/.exec(row);
+    const match = /^([A-F0-9]{64}) {2}(.+)$/.exec(row);
     if (!match) fail("C1 manifest", `malformed row ${row}`);
     else records.push({ sha: match[1], name: match[2] });
   }
@@ -553,11 +558,61 @@ function checkC1Package() {
   for (const excluded of [
     "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md",
     "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md",
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V8.md",
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md",
     "docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md",
     "docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md",
     "docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md",
   ]) {
     if (zipNames.includes(excluded)) fail("C1 ZIP", `excluded member present ${excluded}`);
+  }
+}
+
+function checkTask07Integration() {
+  const service = readFileSync(
+    absolute("apps/api/src/modules/teachers/public-profile.service.ts"),
+    "utf8",
+  );
+  const route = readFileSync(absolute("apps/api/src/routes/public-teachers.route.ts"), "utf8");
+  const server = readFileSync(absolute("apps/api/src/server.ts"), "utf8");
+  const adminMain = readFileSync(absolute("apps/admin-web/src/main.ts"), "utf8");
+  const adminPage = readFileSync(absolute("apps/admin-web/src/pages/public-teachers.tsx"), "utf8");
+  const rootPackage = JSON.parse(readFileSync(absolute("package.json"), "utf8"));
+
+  const publicCard = /export interface PublicTeacherCard \{([\s\S]*?)\n\}/.exec(service)?.[1] ?? "";
+  if (/\bversion\b/.test(publicCard)) {
+    fail("Task 07 projection", "public card exposes version");
+  }
+  if (!route.includes('"/public/teachers/:profileId"')) {
+    fail("Task 07 route", "public teacher route is not declared");
+  }
+  if (!route.includes("authRequired: false")) {
+    fail("Task 07 route", "public teacher route requires authentication");
+  }
+  if (!server.includes("registerPublicTeacherRoutes")) {
+    fail("Task 07 server", "public teacher routes are not registered");
+  }
+  if (!adminMain.includes("PublicTeacherIntroductionsPage")) {
+    fail("Task 07 admin", "public teacher page is not imported");
+  }
+  if (!adminMain.includes('"/admin/public-teachers"')) {
+    fail("Task 07 admin", "public teacher route is not selected");
+  }
+  if (!adminPage.includes('route: "/admin/public-teachers"')) {
+    fail("Task 07 admin", "public teacher page route is not canonical");
+  }
+  if (
+    !rootPackage.scripts.test.includes("apps/api/dist/src/modules/teachers/public-profile.test.js")
+  ) {
+    fail("Task 07 tests", "root test script omits public teacher test");
+  }
+  if (
+    !rootPackage.scripts["test:coverage"].includes(
+      "apps/api/dist/src/modules/teachers/public-profile.test.js",
+    )
+  ) {
+    fail("Task 07 tests", "root coverage script omits public teacher test");
   }
 }
 
@@ -624,6 +679,7 @@ function main() {
   checkLockfileBoundary();
   checkSafety();
   checkC1Package();
+  checkTask07Integration();
   if (failures.length > 0) {
     for (const failure of failures) console.error(`FAIL ${failure}`);
     process.exitCode = 1;

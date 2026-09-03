@@ -13,6 +13,11 @@ import { registerAdminInstitutionRoute } from "./routes/admin-institution.route.
 import { registerMeRoute } from "./routes/me.route.js";
 import { registerMembershipsRoute } from "./routes/memberships.route.js";
 import { registerPublicContentRoute } from "./routes/public-content.route.js";
+import {
+  TeacherProfileService,
+  type TeacherScope,
+} from "./modules/teachers/public-profile.service.js";
+import { registerPublicTeacherRoutes } from "./routes/public-teachers.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
@@ -24,6 +29,10 @@ export interface ServerOptions {
     request: FastifyRequest,
     kind: InstitutionContentKind,
   ) => InstitutionPublicScope | undefined | Promise<InstitutionPublicScope | undefined>;
+  readonly teacherProfileService?: TeacherProfileService;
+  readonly getPublicTeacherScope?: (
+    request: FastifyRequest,
+  ) => TeacherScope | undefined | Promise<TeacherScope | undefined>;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -91,6 +100,11 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     app,
     options.institutionService ?? new InstitutionService(),
     options.getPublicInstitutionScope,
+  );
+  registerPublicTeacherRoutes(
+    app,
+    options.teacherProfileService ?? new TeacherProfileService(),
+    options.getPublicTeacherScope,
   );
   return app;
 }

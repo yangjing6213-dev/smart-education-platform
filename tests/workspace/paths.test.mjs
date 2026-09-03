@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
@@ -59,11 +59,15 @@ const requiredPaths = [
   "apps/api/src/modules/institution/institution.service.ts",
   "apps/api/src/modules/institution/institution.test.ts",
   "apps/api/src/routes/admin-institution.route.ts",
+  "apps/api/src/modules/teachers/public-profile.service.ts",
+  "apps/api/src/modules/teachers/public-profile.test.ts",
+  "apps/api/src/routes/public-teachers.route.ts",
   "apps/admin-web/package.json",
   "apps/admin-web/tsconfig.json",
   "apps/admin-web/index.html",
   "apps/admin-web/src/main.ts",
   "apps/admin-web/src/pages/home-content.tsx",
+  "apps/admin-web/src/pages/public-teachers.tsx",
   "apps/admin-web/test/home-content.test.mjs",
   "scripts/verify_task_06.mjs",
   "PHASE_1B_TASK_03_CODEX_EXECUTION.md",
@@ -81,4 +85,18 @@ test("required Task 04 implementation paths resolve from the repository root", (
   for (const relativePath of requiredPaths) {
     assert.equal(existsSync(path.join(root, relativePath)), true, relativePath);
   }
+});
+
+test("Task 07 entrypoints preserve home content and expose the public teacher admin route", () => {
+  const apiServer = readFileSync(path.join(root, "apps/api/src/server.ts"), "utf8");
+  const main = readFileSync(path.join(root, "apps/admin-web/src/main.ts"), "utf8");
+  const page = readFileSync(
+    path.join(root, "apps/admin-web/src/pages/public-teachers.tsx"),
+    "utf8",
+  );
+  assert.match(apiServer, /registerPublicTeacherRoutes/);
+  assert.match(main, /PublicTeacherIntroductionsPage/);
+  assert.match(main, /\/admin\/public-teachers/);
+  assert.match(main, /HomeContentPage/);
+  assert.match(page, /route: "\/admin\/public-teachers"/);
 });

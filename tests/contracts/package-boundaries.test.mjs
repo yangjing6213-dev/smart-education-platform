@@ -126,6 +126,18 @@ test("root scripts use the active Task 06 verifier and include admin-web", () =>
   assert.doesNotMatch(rootPackage.scripts["format:check"], /SHA256SUMS_PHASE_1B_TASK_04/);
 });
 
+test("root standard tests include the Task 07 public teacher test", () => {
+  const rootPackage = json("package.json");
+  assert.match(
+    rootPackage.scripts.test,
+    /apps\/api\/dist\/src\/modules\/teachers\/public-profile\.test\.js/,
+  );
+  assert.match(
+    rootPackage.scripts["test:coverage"],
+    /apps\/api\/dist\/src\/modules\/teachers\/public-profile\.test\.js/,
+  );
+});
+
 test("tenant source rejects forbidden package directions", () => {
   const tenantSources = ["src/index.ts", "src/resolve-scope.ts", "src/scope-context.ts"].map(
     (relativePath) => ({
