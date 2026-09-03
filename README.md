@@ -49,4 +49,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md` 为准（SHA-256：`E7A3018481B5D596AB1128596AFCB186F1CCD25D1B2D3B034A6EFBAA71F1943F`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2 已接受并冻结，Task 07 Stage A 已获负责人授权并处于 formalization，Task 07 Stage B 及 Task 08+ 未启动且未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md` 为准（SHA-256：`C239659287FAE180C6BBEE013E1C7DD1CF8F737953706DFEF9AC710C73D8EB8A`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2 已接受并冻结，Task 07 Stage A 已获负责人授权并处于 formalization，Task 07 Stage B 及 Task 08+ 未启动且未授权。

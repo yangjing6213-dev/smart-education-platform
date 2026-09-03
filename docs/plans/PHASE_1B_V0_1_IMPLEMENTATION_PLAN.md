@@ -7,7 +7,7 @@ unauthorized.
 
 Current governance authority:
 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md`
-(`SHA-256=E7A3018481B5D596AB1128596AFCB186F1CCD25D1B2D3B034A6EFBAA71F1943F`).
+(`SHA-256=C239659287FAE180C6BBEE013E1C7DD1CF8F737953706DFEF9AC710C73D8EB8A`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
