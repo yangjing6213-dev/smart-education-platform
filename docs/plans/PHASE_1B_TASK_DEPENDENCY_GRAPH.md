@@ -1,15 +1,13 @@
 # Phase 1B V0.1 Task Dependency Graph
 
-Status: active planned graph. Task 01—06 are completed and remain frozen
-evidence. Task 05 and Task 06 Stage B, C1, and C2 are accepted and frozen;
-Task 07 Stage A formalization passed owner review, Task 07 Stage B
-implementation is owner-verified, Task 07 Stage C1 passed owner review, and
-Task 07 Stage C2 is authorized only as an acceptance record; later tasks remain
-unauthorized.
+Status: active planned graph. Task 01—07 are completed and remain frozen
+evidence. Task 08 Stage A formalization passed owner review and Task 08 Stage B
+implementation is independently authorized; Task 08 C1/C2 and later tasks
+remain unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V11.md`
-(`SHA-256=1C077A438C96FD4E658547667BB9FF835CB7406F76155E6E706CA6D3D723E3E4`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md`
+(`SHA-256=860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E`).
 Dependency authority:
 `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`
 (`SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`).
@@ -18,7 +16,7 @@ dependency authority SHA is historical dependency evidence; it does not
 authorize `/goal`, Task 06, or any later implementation.
 
 ```text
-PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_07_STAGE_C2_ONLY
+PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_08_STAGE_B_ONLY
 PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03|TASK_04|TASK_05|TASK_06
 TASK_04_STARTED=YES
 TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
@@ -46,6 +44,12 @@ TASK_07_STAGE_C2_STATUS=ACCEPTANCE_RECORD_AUTHORIZED
 TASK_07_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_07_PLUS_STARTED=NO
 TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
+TASK_08_STARTED=YES_STAGE_B_IMPLEMENTATION
+TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_08_STAGE_C1_AUTHORIZATION=NOT_GRANTED
+TASK_08_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_08_PLUS_STARTED=NO
+TASK_08_PLUS_AUTHORIZATION=NOT_GRANTED
 PHASE_1B_API_FRAMEWORK=FASTIFY_5.12.1
 NESTJS_REFERENCE_POLICY=HISTORICAL_DRAFT_ONLY
 ```

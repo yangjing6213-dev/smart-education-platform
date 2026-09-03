@@ -2,9 +2,9 @@
 
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；当前追认 Phase 1B Task 01—06 已完成并冻结，Task 07 Stage A 已通过负责人审阅，Task 07 Stage B 已通过并冻结，Task 07 Stage C1 已通过负责人审阅，Task 07 Stage C2 仅执行 acceptance record，Task 08+ 仍未授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；当前追认 Phase 1B Task 01—07 已完成并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 已获独立负责人授权并正在实施，Task 08 C1/C2 与 Task 09+ 仍未授权。
 
-当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V11.md` 为准（SHA-256：`1C077A438C96FD4E658547667BB9FF835CB7406F76155E6E706CA6D3D723E3E4`）。Task 01—06 已由负责人验收并冻结；Task 07 Stage A 已通过负责人审阅，Stage B 已通过并冻结，Stage C1 已通过负责人审阅，Stage C2 仅执行 acceptance record；Task 08+ 仍未授权。任何新任务仍须独立合同、稳定 SHA、项目负责人批准和单独实现授权；不得从已完成任务或 Stage A 自动推导后续实现授权。
+当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md` 为准（SHA-256：`860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E`）。Task 01—07 已由负责人验收并冻结；Task 08 Stage A 已通过负责人审阅，Stage B 由 `PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03` 独立授权并正在实施；Task 08 C1/C2 与 Task 09+ 仍未授权。任何新任务仍须独立合同、稳定 SHA、项目负责人批准和单独实现授权；不得从已完成任务或 Stage A 自动推导后续实现授权。
 
 ## HISTORICAL/FROZEN：Phase 1A 自举与必读顺序
 

@@ -1,14 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—06 are completed and remain frozen evidence. Task
-05 and Task 06 Stage B, C1, and C2 are accepted and frozen; Task 07 Stage A
-formalization passed owner review, Task 07 Stage B implementation passed its
-verification gate, Task 07 Stage C1 passed owner review, and Task 07 Stage C2
-is authorized only as an acceptance record; later tasks remain unauthorized.
+Status: active plan. Task 01—07 are completed and remain frozen evidence. Task
+08 Stage A formalization passed owner review and Task 08 Stage B is separately
+authorized for implementation; Task 08 C1/C2 and later tasks remain
+unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V11.md`
-(`SHA-256=1C077A438C96FD4E658547667BB9FF835CB7406F76155E6E706CA6D3D723E3E4`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V12.md`
+(`SHA-256=860E8B29916633797812E4B5879036D81072959572509E1E4C4D742A6B8CCF4E`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -24,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07 Stage A formalization passed owner review; Stage B implementation is separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03` and has passed its verification gate. Stage C1 was separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03` and passed owner review; Task 07 C2 is separately authorized only as an acceptance record by `PROJECT_OWNER_EXPLICIT_TASK07_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03`; Task 08+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07 Stage A formalization passed owner review; Stage B implementation is separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03` and has passed its verification gate. Stage C1 was separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03` and passed owner review; Task 07 C2 is separately authorized only as an acceptance record by `PROJECT_OWNER_EXPLICIT_TASK07_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03`; Task 08 Stage B is authorized only by `PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03`; Task 08 C1/C2 and Task 09+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -130,6 +129,15 @@ Task 08+ artifact is created by this stage.
 - Implementation: use typed date and meal structures with tenant and campus predicates.
 - Green test: date filtering and publication state remain consistent across web and mini clients.
 - Commit step: `feat: add activity and meal content`.
+
+Task 08 Stage B is limited to the five core implementation/test files listed
+in the Task 08 contract and V12 authority. It must preserve typed date-bounded
+records, explicit published projections, server-derived tenant/campus scope,
+active membership and capability checks, fail-closed invalid dates and unsafe
+media handling, atomic stale-version denial, and synthetic-only fixtures. No
+entrypoint, package script, verifier, lockfile, schema, migration, or other
+shared path is authorized by this Stage B contract. Task 08 C1/C2 remain
+separately unauthorized.
 
 ## Task 09 - Newcomer guides
 
