@@ -7,8 +7,8 @@ independently owner-authorized; Task 07 C1/C2 and later tasks remain
 unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V8.md`
-(`SHA-256=4CE2089247EF111CFCA78EC0AE7A6C06016F72E160E741F79AD6D6A1ECCF218B`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md`
+(`SHA-256=B4E53F632AC135925CBAE802CE360D361EE2394044C339137F11A9B045A96165`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 

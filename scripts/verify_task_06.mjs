@@ -8,10 +8,10 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { inflateRawSync } from "node:zlib";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const BASE_HEAD = "4db46c39d6a1f18517fe561a43b2207e8fa1dfde";
+const BASE_HEAD = "452e6cd81e5f57d10cfcee737077a91a6ba4d0fd";
 const TARGET_BRANCH = "feature/phase-1b-task-04-identity-membership";
-const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md";
-const ACTIVE_AUTHORITY_SHA256 = "E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD";
+const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md";
+const ACTIVE_AUTHORITY_SHA256 = "B4E53F632AC135925CBAE802CE360D361EE2394044C339137F11A9B045A96165";
 const C1_MEMBER_ORDER_POLICY = "POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING";
 
 const TASK_06_FILES = new Set([
@@ -24,6 +24,9 @@ const TASK_06_FILES = new Set([
   "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
   "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md",
   "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
+  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V8.md",
+  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md",
+  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md",
   "docs/reviews/PHASE_1B_TASK_06_REVIEW.md",
   "SHA256SUMS_PHASE_1B_TASK_06.txt",
   "artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip",
@@ -50,6 +53,12 @@ const TASK_06_FILES = new Set([
   "pnpm-lock.yaml",
   "tests/contracts/package-boundaries.test.mjs",
   "tests/workspace/paths.test.mjs",
+  "PHASE_1B_TASK_07_CODEX_EXECUTION.md",
+  "docs/project/PHASE_1B_TASK_07_PLAN.md",
+  "apps/api/src/modules/teachers/public-profile.service.ts",
+  "apps/api/src/routes/public-teachers.route.ts",
+  "apps/api/src/modules/teachers/public-profile.test.ts",
+  "apps/admin-web/src/pages/public-teachers.tsx",
 ]);
 
 const EXISTING_EVIDENCE_UNTRACKED = new Set([
@@ -101,6 +110,18 @@ const C1_MUTABLE_MEMBERS = new Set([
 
 const FROZEN_HASHES = new Map([
   [ACTIVE_AUTHORITY_PATH, ACTIVE_AUTHORITY_SHA256],
+  [
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V8.md",
+    "4CE2089247EF111CFCA78EC0AE7A6C06016F72E160E741F79AD6D6A1ECCF218B",
+  ],
+  [
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V7.md",
+    "073DC0C05BFFA151B009404A7DB67785411B5208B7DBC967A4CEC1EA03F4B489",
+  ],
+  [
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md",
+    "E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD",
+  ],
   [
     "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
     "BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB",
@@ -286,8 +307,12 @@ function checkGitBoundary() {
   if (git(["diff", "--cached", "--name-only"])) fail("git index", "index is not clean");
   if (git(["remote"])) fail("git remote", "remote must remain absent");
   if (git(["branch", "--list", "*task-06*"])) fail("task branch", "Task 06 branch exists");
+  if (git(["branch", "--list", "*task-07*"])) fail("task branch", "Task 07 branch exists");
   if (git(["worktree", "list"]).toLowerCase().includes("task-06")) {
     fail("task worktree", "Task 06 worktree exists");
+  }
+  if (git(["worktree", "list"]).toLowerCase().includes("task-07")) {
+    fail("task worktree", "Task 07 worktree exists");
   }
 }
 
@@ -310,17 +335,17 @@ function checkActiveGovernance() {
     "docs/project/SCOPE_AND_NON_SCOPE.md",
     "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
     "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
-    "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
-    "docs/project/PHASE_1B_TASK_06_PLAN.md",
+    "PHASE_1B_TASK_07_CODEX_EXECUTION.md",
+    "docs/project/PHASE_1B_TASK_07_PLAN.md",
     "scripts/verify_task_06.mjs",
   ];
   for (const relativePath of activeReferenceFiles) {
     const content = readFileSync(absolute(relativePath), "utf8");
     if (!content.includes(ACTIVE_AUTHORITY_PATH)) {
-      fail("active authority reference", `${relativePath} does not reference V6`);
+      fail("active authority reference", `${relativePath} does not reference V9`);
     }
     if (!content.includes(ACTIVE_AUTHORITY_SHA256)) {
-      fail("active authority reference", `${relativePath} does not reference the V6 SHA`);
+      fail("active authority reference", `${relativePath} does not reference the V9 SHA`);
     }
     if (/TASK_06_STAGE_C2_STATUS=(?:NOT_ACCEPTED|ABSENT)/.test(content)) {
       fail("active Task 06 state", `${relativePath} contains stale C2 status`);
@@ -331,12 +356,15 @@ function checkActiveGovernance() {
   }
   const authority = readFileSync(absolute(ACTIVE_AUTHORITY_PATH), "utf8");
   for (const required of [
-    "PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_06_ONLY",
+    "PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_07_STAGE_B_ONLY",
     "PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03|TASK_04|TASK_05|TASK_06",
-    "PHASE_1B_ACTIVE_TASK=TASK_06_ACCEPTED_STOP_BEFORE_TASK07",
+    "PHASE_1B_ACTIVE_TASK=TASK_07_STAGE_B_REPAIR_AND_IMPLEMENTATION",
     "TASK_06_OWNER_REVIEW=ACCEPTED",
     "TASK_06_STAGE_C2_STATUS=ACCEPTED",
     "TASK_06_STAGE_C2_AUTHORIZATION=GRANTED",
+    "TASK_07_STAGE_A_STATUS=OWNER_REVIEW_PASSED",
+    "TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_IN_PROGRESS",
+    "TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED",
     "TASK_07_PLUS_STARTED=NO",
     "TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED",
   ]) {
@@ -359,7 +387,11 @@ function checkC2Acceptance() {
   ]) {
     if (!content.includes(required)) fail("C2 acceptance", `${acceptancePath} missing ${required}`);
   }
-  if (content.includes("TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FA3495ABB9B218C640E8C4F02121CC14DEE0557850F68C")) {
+  if (
+    content.includes(
+      "TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FA3495ABB9B218C640E8C4F02121CC14DEE0557850F68C",
+    )
+  ) {
     fail("C2 acceptance", "acceptance must not contain its own SHA");
   }
 }
@@ -409,7 +441,8 @@ function parseZipEntries(zip) {
   const entries = [];
   let offset = directoryOffset;
   for (let index = 0; index < count; index += 1) {
-    if (zip.readUInt32LE(offset) !== 0x02014b50) throw new Error("ZIP central directory entry is invalid");
+    if (zip.readUInt32LE(offset) !== 0x02014b50)
+      throw new Error("ZIP central directory entry is invalid");
     const flags = zip.readUInt16LE(offset + 8);
     const method = zip.readUInt16LE(offset + 10);
     const modifiedTime = zip.readUInt16LE(offset + 12);
@@ -423,23 +456,33 @@ function parseZipEntries(zip) {
     const localOffset = zip.readUInt32LE(offset + 42);
     const name = zip.subarray(offset + 46, offset + 46 + nameLength).toString("utf8");
     if ((flags & 1) !== 0) throw new Error(`encrypted ZIP member ${name}`);
-    if (modifiedDate !== 0x21 || modifiedTime !== 0) throw new Error(`non-fixed ZIP timestamp ${name}`);
-    if (name.startsWith("/") || name.includes("\\") || name.split("/").includes("..") || name.includes("\0")) {
+    if (modifiedDate !== 0x21 || modifiedTime !== 0) {
+      throw new Error(`non-fixed ZIP timestamp ${name}`);
+    }
+    if (
+      name.startsWith("/") ||
+      name.includes("\\") ||
+      name.split("/").includes("..") ||
+      name.includes("\0")
+    ) {
       throw new Error(`unsafe ZIP member path ${name}`);
     }
-    if (zip.readUInt32LE(localOffset) !== 0x04034b50) throw new Error(`invalid local header ${name}`);
+    if (zip.readUInt32LE(localOffset) !== 0x04034b50)
+      throw new Error(`invalid local header ${name}`);
     const localNameLength = zip.readUInt16LE(localOffset + 26);
     const localExtraLength = zip.readUInt16LE(localOffset + 28);
     const dataOffset = localOffset + 30 + localNameLength + localExtraLength;
     const compressed = zip.subarray(dataOffset, dataOffset + compressedSize);
     const content = method === 0 ? compressed : method === 8 ? inflateRawSync(compressed) : null;
-    if (content === null) throw new Error(`unsupported ZIP compression method ${method} for ${name}`);
+    if (content === null)
+      throw new Error(`unsupported ZIP compression method ${method} for ${name}`);
     if (content.length !== uncompressedSize) throw new Error(`ZIP size mismatch ${name}`);
     if (crc32(content) !== expectedCrc) throw new Error(`ZIP CRC mismatch ${name}`);
     entries.push({ name, content, expectedCrc });
     offset += 46 + nameLength + extraLength + commentLength;
   }
-  if (offset !== directoryOffset + directorySize) throw new Error("ZIP central directory size mismatch");
+  if (offset !== directoryOffset + directorySize)
+    throw new Error("ZIP central directory size mismatch");
   return entries;
 }
 
@@ -490,7 +533,8 @@ function checkC1Package() {
     return;
   }
   const zipNames = entries.map(({ name }) => name);
-  if (JSON.stringify(zipNames) !== JSON.stringify(names)) fail("C1 ZIP", "member order differs from manifest");
+  if (JSON.stringify(zipNames) !== JSON.stringify(names))
+    fail("C1 ZIP", "member order differs from manifest");
   if (entries.length !== 22) fail("C1 ZIP", `expected 22 members, got ${entries.length}`);
   if (new Set(zipNames).size !== zipNames.length) fail("C1 ZIP", "duplicate member");
   for (const { name, content, expectedCrc } of entries) {
@@ -500,10 +544,12 @@ function checkC1Package() {
     if (crc32(content) !== expectedCrc) fail("C1 ZIP", `member CRC mismatch ${name}`);
     if (!C1_MUTABLE_MEMBERS.has(name)) {
       if (!existsSync(absolute(name))) fail("C1 disk", `missing member ${name}`);
-      else if (sha256File(name) !== memberSha) fail("C1 disk", `member differs from frozen ZIP ${name}`);
+      else if (sha256File(name) !== memberSha)
+        fail("C1 disk", `member differs from frozen ZIP ${name}`);
     }
   }
-  if (zipNames.includes("SHA256SUMS_PHASE_1B_TASK_06.txt")) fail("C1 ZIP", "manifest is not detached");
+  if (zipNames.includes("SHA256SUMS_PHASE_1B_TASK_06.txt"))
+    fail("C1 ZIP", "manifest is not detached");
   for (const excluded of [
     "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md",
     "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
@@ -533,10 +579,8 @@ function checkTextEncoding() {
 
 function checkLockfileBoundary() {
   const before = gitRaw(["show", `${BASE_HEAD}:pnpm-lock.yaml`]);
-  const expected = before.replace("  apps/api:\n", "  apps/admin-web: {}\n\n  apps/api:\n");
   const current = readFileSync(absolute("pnpm-lock.yaml"), "utf8");
-  if (current !== expected)
-    fail("lockfile boundary", "expected only the admin-web workspace importer");
+  if (current !== before) fail("lockfile boundary", "pnpm-lock.yaml changed");
 }
 
 function checkSafety() {
