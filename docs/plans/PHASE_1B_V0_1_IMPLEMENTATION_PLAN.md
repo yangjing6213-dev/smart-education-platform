@@ -1,12 +1,12 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—05 are completed and remain frozen evidence. Task
-05 Stage B, C1, and C2 are accepted and frozen; Task 06 Stage B is implemented
-and verified, and Task 06 Stage C1 is waiting at the owner review gate.
+Status: active plan. Task 01—06 are completed and remain frozen evidence. Task
+05 and Task 06 Stage B, C1, and C2 are accepted and frozen; Task 07+ remains
+unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md`
-(`SHA-256=BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md`
+(`SHA-256=E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -22,7 +22,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—04 are completed increments. Task 05 Stage B is an implemented increment with separate C1 evidence; Task 06 Stage B is an implemented increment with separate C1 evidence awaiting owner review. Task 07+ remains unauthorized.
+Every task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07+ remains unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 

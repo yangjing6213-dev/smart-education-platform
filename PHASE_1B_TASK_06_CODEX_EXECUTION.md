@@ -13,13 +13,13 @@ CANONICALIZATION_RULE=THE_COMPLETE_FILE_IS_UTF8_NO_BOM_LF_ONLY_EXACTLY_ONE_TRAIL
 C1_CANONICAL_MEMBER_ORDER_POLICY=POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING
 TASK_ID=PHASE_1B_TASK_06
 TASK_NAME=INSTITUTION_PROFILE_AND_HOME_CONTENT_MANAGEMENT
-TASK_STATUS=STAGE_C1_FINAL_EVIDENCE_READY
+TASK_STATUS=TASK_06_ACCEPTED_STOP_BEFORE_TASK07
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
 SOURCE_HEAD=4db46c39d6a1f18517fe561a43b2207e8fa1dfde
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md
-GOVERNANCE_AUTHORITY_SHA256=BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md
+GOVERNANCE_AUTHORITY_SHA256=E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD
 AUTHORIZATION_EVIDENCE_ID=PROJECT_OWNER_EXPLICIT_TASK06_STAGE_B_IMPLEMENTATION_2026-09-02
 AUTHORIZATION_OBJECTIVE_TEXT=Authorize Phase 1B Task 06 Stage B implementation
 AUTHORIZATION_OBJECTIVE_UTF8_BYTES=49
@@ -32,11 +32,15 @@ TASK_06_GOAL_AUTHORIZATION=GRANTED_FOR_STAGE_B_IMPLEMENTATION
 TASK_06_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_06_STAGE_A_STATUS=OWNER_CONFIRMED
 TASK_06_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
-TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
-TASK_06_OWNER_REVIEW=WAITING_AT_OWNER_REVIEW_GATE
-TASK_06_STAGE_C2_STATUS=NOT_ACCEPTED
-TASK_06_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
+TASK_06_OWNER_REVIEW=ACCEPTED
+TASK_06_STAGE_C2_STATUS=ACCEPTED
+TASK_06_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_06_PLUS_STARTED=NO
+TASK_07_PLUS_STARTED=NO
+TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
+TASK_06_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
+TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FA3495ABB9B218C640E8C4F02121CC14DEE0557850F68C
 TASK_05_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
 TASK_05_ACCEPTANCE_COMMIT=11d2a361e91232e79675597a256a7577b4cada24
@@ -61,16 +65,17 @@ CONTRACT_TRAILING_LF=EXACTLY_ONE
 
 The project owner confirmed the Stage B remediation scope after the initial
 four-file implementation was independently found to be non-integrated. This
-amendment authorizes implementation only in the expanded Stage B whitelist
-below. It does not authorize a new branch or worktree, `/goal`, dependency
-installation, unapproved lockfile changes, network access, production services,
-database/migration work, Stage C1, Stage C2, or Task 07+.
+amendment authorized implementation only in the expanded Stage B whitelist
+below. Stage B and C1 are now frozen, and the separate C2 record is
+acceptance-record-only. It does not authorize new implementation, a new branch
+or worktree, `/goal`, dependency installation, network access, production
+services, database/migration work, or Task 07+.
 
-V4 and the original Stage A snapshot remain historical/frozen records. Their
+V4, V5, and the original Stage A snapshot remain historical/frozen records. Their
 old `TASK_06_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED` values are historical
-anchors; this amendment and the current V5 authority record the owner-approved
-Task 06 Stage B implementation and generated C1 evidence without rewriting
-Task 01-05 evidence or authorizing C2.
+anchors; this amendment and the current V6 authority record the owner-accepted
+Task 06 implementation, generated C1 evidence, and C2 acceptance without
+rewriting Task 01-05 evidence or authorizing Task 07+.
 
 ## Task 06 objective and bounded design
 
@@ -165,9 +170,10 @@ checks the expanded implementation whitelist, the API/admin-web integration,
 and the Task 06-aware boundary verifier. The six existing untracked Task 04/05
 evidence paths are preserved and are not part of the Task 06 write set.
 
-The current Stage C1 evidence has been generated from the accepted Stage B
-implementation commit and is waiting at the owner review gate. Task 06 C2
-acceptance is absent and must not be prewritten.
+The current Stage C1 evidence was generated from the accepted Stage B
+implementation commit and owner review passed. Task 06 C2 is recorded by the
+separate acceptance-only file and remains frozen; no new implementation is
+authorized by that record.
 
 The C1 package member order is canonicalized as POSIX relative paths sorted by
 case-folded Unicode ordinal order, with `apps/admin-web/index.html` required as
@@ -180,10 +186,10 @@ acceptance conflict, a non-whitelist path, encoding failure, SHA disagreement,
 missing authorized file, real data, secret, network or registry operation,
 dependency installation, unapproved lockfile change, production service, database,
 migration, branch/worktree creation, staging outside the explicit commit gate,
-or any attempt to enter Stage C1, Stage C2, or Task 07+.
+or any attempt to enter Task 07+.
 
-Stage B `PASS` proves only that the implementation evidence passed internal
-verification. Stage C1 records evidence for owner review and does not claim
-owner acceptance or authorize C2. The anonymous visitor route uses only a
+Stage B and C1 are frozen evidence records, and C2 records explicit owner
+acceptance only. C2 does not authorize new implementation or Task 07+. The
+anonymous visitor route uses only a
 server-owned public scope resolver; if that resolver is absent, the route
 denies access and never treats client tenant or campus claims as authority.

@@ -6,11 +6,11 @@
 > `brainstorming`, `writing-plans`, `test-driven-development`,
 > `verification-before-completion`, and `requesting-code-review`; use
 > `systematic-debugging` before any retry after a failure. Stage C1, C2, and
-> Task 07+ remain unauthorized.
+> Task 07+ remains unauthorized; Stage C1 and C2 are frozen accepted records.
 
 **Goal:** Implement and verify the bounded Task 06 tenant- and campus-scoped
 institution profile and home content management slice, generate C1 evidence,
-then stop for owner review before C2.
+record owner-accepted C2, then stop before Task 07.
 
 **Architecture:** Task 06 adapts the accepted Task 05 versioned content model
 for institution profile and home content records. The API service consumes
@@ -37,8 +37,8 @@ PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 SOURCE_BRANCH=feature/phase-1b-task-04-identity-membership
 SOURCE_HEAD=4db46c39d6a1f18517fe561a43b2207e8fa1dfde
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md
-GOVERNANCE_AUTHORITY_SHA256=BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md
+GOVERNANCE_AUTHORITY_SHA256=E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD
 AUTHORIZATION_EVIDENCE_ID=PROJECT_OWNER_EXPLICIT_TASK06_STAGE_B_IMPLEMENTATION_2026-09-02
 AUTHORIZATION_OBJECTIVE_TEXT=Authorize Phase 1B Task 06 Stage B implementation
 AUTHORIZATION_OBJECTIVE_UTF8_BYTES=49
@@ -51,24 +51,28 @@ TASK_06_GOAL_AUTHORIZATION=GRANTED_FOR_STAGE_B_IMPLEMENTATION
 TASK_06_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_06_STAGE_A_STATUS=OWNER_CONFIRMED
 TASK_06_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
-TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
-TASK_06_OWNER_REVIEW=WAITING_AT_OWNER_REVIEW_GATE
-TASK_06_STAGE_C2_STATUS=NOT_ACCEPTED
-TASK_06_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_06_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
+TASK_06_OWNER_REVIEW=ACCEPTED
+TASK_06_STAGE_C2_STATUS=ACCEPTED
+TASK_06_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_06_PLUS_STARTED=NO
+TASK_07_PLUS_STARTED=NO
+TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
+TASK_06_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
+TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FA3495ABB9B218C640E8C4F02121CC14DEE0557850F68C
 DEPENDENCIES=T05
 PUBLIC_API_DTOS=@student-care/contracts
 INTERNAL_AUTH_POLICY_TYPES=@student-care/auth
 CONTENT_MODEL_SOURCE=TASK05_ACCEPTED_VERSIONED_CONTENT_MODEL
 ADMIN_WEB_PACKAGE_STATUS=OWNER_AUTHORIZED_MINIMAL_STATIC_PACKAGE
-STATUS=STAGE_C1_FINAL_EVIDENCE_READY
-STOP_REASON=OWNER_REVIEW_GATE_BEFORE_TASK06_C2
+STATUS=TASK_06_ACCEPTED_STOP_BEFORE_TASK07
+STOP_REASON=TASK06_ACCEPTED_STOP_BEFORE_TASK07
 ```
 
-Task 05 C2 is the accepted prerequisite. The current V5 authority records the
-owner-authorized Task 06 Stage B implementation and generated C1 evidence.
-Task 06 C2 remains absent, not accepted, and unauthorized until a separate
-explicit owner PASS.
+Task 05 C2 is the accepted prerequisite. The current V6 authority records the
+owner-accepted Task 06 Stage B implementation, C1 evidence, and C2 acceptance.
+Task 06 C2 is acceptance-record-only and does not authorize new implementation
+or Task 07+.
 
 ## Scope contract
 
@@ -136,8 +140,9 @@ STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
 STAGE_C2_POLICY=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_PROJECT_OWNER_PASS|SEPARATE_COMMIT|NEVER_PREWRITE
 ```
 
-Stage C1 is generated evidence awaiting owner review. Stage C2 must not be
-created before explicit owner PASS.
+Stage C1 is frozen evidence with owner review passed. Stage C2 is a separate
+acceptance-record-only record and does not authorize new implementation or
+Task 07+.
 
 ## Stage A record and Stage B execution steps
 
@@ -310,13 +315,13 @@ a new owner-approved stable amendment.
 
 ## Acceptance and stop criteria
 
-Stage C1 is ready for owner review only when the expanded exact files exist,
-the evidence package is deterministic, the current V5 and Task 05 acceptance
-anchors are unchanged, the index is clean, existing untracked Task 04/05
-evidence is unchanged, and no Task 06 C2 artifact or branch exists.
+Stage C1 is frozen after the expanded exact files existed, the evidence
+package was deterministic, the V6 and Task 05 acceptance anchors were
+unchanged, the index was clean, and existing untracked Task 04/05 evidence was
+unchanged.
 
-Stage C1 does not claim owner acceptance or authorize C2. Any claim of Task 06
-acceptance remains pending the next owner review.
+Stage C2 records explicit owner acceptance only. It does not authorize new
+implementation or Task 07+.
 
 The canonical C1 package member order is POSIX relative paths sorted by
 case-folded Unicode ordinal order, with `apps/admin-web/index.html` required as
@@ -329,6 +334,6 @@ production service, database, migration, branch/worktree creation, staging
 outside the explicit commit gate, commit before all verification passes, any
 verification failure, or any attempt to enter Stage C1/C2 or Task 07+.
 
-`STATUS=STAGE_C1_FINAL_EVIDENCE_READY`
+`STATUS=TASK_06_ACCEPTED_STOP_BEFORE_TASK07`
 
-`STOP_REASON=OWNER_REVIEW_GATE_BEFORE_TASK06_C2`
+`STOP_REASON=TASK06_ACCEPTED_STOP_BEFORE_TASK07`

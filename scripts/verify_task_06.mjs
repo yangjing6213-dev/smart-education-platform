@@ -5,12 +5,13 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { inflateRawSync } from "node:zlib";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BASE_HEAD = "4db46c39d6a1f18517fe561a43b2207e8fa1dfde";
 const TARGET_BRANCH = "feature/phase-1b-task-04-identity-membership";
-const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md";
-const ACTIVE_AUTHORITY_SHA256 = "BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB";
+const ACTIVE_AUTHORITY_PATH = "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md";
+const ACTIVE_AUTHORITY_SHA256 = "E695C9455B75704BE1BB61CB06EC815F30857B048F2FF2131CA4E51F0D6ED7BD";
 const C1_MEMBER_ORDER_POLICY = "POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING";
 
 const TASK_06_FILES = new Set([
@@ -21,12 +22,14 @@ const TASK_06_FILES = new Set([
   "docs/project/SCOPE_AND_NON_SCOPE.md",
   "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
   "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
+  "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md",
   "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
   "docs/reviews/PHASE_1B_TASK_06_REVIEW.md",
   "SHA256SUMS_PHASE_1B_TASK_06.txt",
   "artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip",
   "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
   "docs/project/PHASE_1B_TASK_06_PLAN.md",
+  "docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md",
   "apps/api/src/modules/institution/institution.service.ts",
   "apps/api/src/modules/institution/institution.test.ts",
   "apps/api/src/routes/admin-institution.route.ts",
@@ -90,8 +93,18 @@ const C1_MEMBER_FILES = new Set([
   "tests/workspace/paths.test.mjs",
 ]);
 
+const C1_MUTABLE_MEMBERS = new Set([
+  "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
+  "docs/project/PHASE_1B_TASK_06_PLAN.md",
+  "scripts/verify_task_06.mjs",
+]);
+
 const FROZEN_HASHES = new Map([
   [ACTIVE_AUTHORITY_PATH, ACTIVE_AUTHORITY_SHA256],
+  [
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
+    "BC8B2232F3203368BD712586464734614D0E56D062792AFA284F8794A50914DB",
+  ],
   [
     "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V4.md",
     "11FD81FB5E9738B36F7EB495424F9D4161F6F5172DFDBA564BE1D5F0FD88DB5E",
@@ -115,6 +128,22 @@ const FROZEN_HASHES = new Map([
   [
     "artifacts/review-package/student-care-platform-phase1b-task-05-review-pack-v1.0.zip",
     "08B93005CCBC86D323357D77E16807183CD6DB310A72E78269C1DDFD35FD038B",
+  ],
+  [
+    "docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md",
+    "0B690B77CF4C08653FAE3495ABB9B218C640E8C4F02121CC14DEE0557850F68C",
+  ],
+  [
+    "docs/reviews/PHASE_1B_TASK_06_REVIEW.md",
+    "48C3799F74D56B300E03D155A1A9160A9930041598267F5862482573FF0E2A17",
+  ],
+  [
+    "SHA256SUMS_PHASE_1B_TASK_06.txt",
+    "92C49EE2DFDC594DD9F347BE4BA698958AF9BE1DCE8CEA4D1EE3BF19539DBBF5",
+  ],
+  [
+    "artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip",
+    "E30E444ACC507DC4CCF0053B3261545F5DED8C84D8C8293678C7F0EBA8208855",
   ],
 ]);
 
@@ -267,11 +296,71 @@ function checkRequiredFiles() {
     if (relativePath === "pnpm-lock.yaml") continue;
     if (!existsSync(absolute(relativePath))) fail("required file", relativePath);
   }
-  for (const relativePath of TASK_06_C1_C2_FILES.slice(0, 3)) {
+  for (const relativePath of TASK_06_C1_C2_FILES) {
     if (!existsSync(absolute(relativePath))) fail("Task 06 C1 required file", relativePath);
   }
-  if (existsSync(absolute(TASK_06_C1_C2_FILES[3]))) {
-    fail("Task 06 C2 boundary", TASK_06_C1_C2_FILES[3]);
+}
+
+function checkActiveGovernance() {
+  const activeReferenceFiles = [
+    "AGENTS.md",
+    "PLANS.md",
+    "README.md",
+    "docs/project/DECISION_BASELINE.md",
+    "docs/project/SCOPE_AND_NON_SCOPE.md",
+    "docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md",
+    "docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md",
+    "PHASE_1B_TASK_06_CODEX_EXECUTION.md",
+    "docs/project/PHASE_1B_TASK_06_PLAN.md",
+    "scripts/verify_task_06.mjs",
+  ];
+  for (const relativePath of activeReferenceFiles) {
+    const content = readFileSync(absolute(relativePath), "utf8");
+    if (!content.includes(ACTIVE_AUTHORITY_PATH)) {
+      fail("active authority reference", `${relativePath} does not reference V6`);
+    }
+    if (!content.includes(ACTIVE_AUTHORITY_SHA256)) {
+      fail("active authority reference", `${relativePath} does not reference the V6 SHA`);
+    }
+    if (/TASK_06_STAGE_C2_STATUS=(?:NOT_ACCEPTED|ABSENT)/.test(content)) {
+      fail("active Task 06 state", `${relativePath} contains stale C2 status`);
+    }
+    if (/TASK_06_STAGE_C2_AUTHORIZATION=(?:NOT_GRANTED|ABSENT)/.test(content)) {
+      fail("active Task 06 state", `${relativePath} contains stale C2 authorization`);
+    }
+  }
+  const authority = readFileSync(absolute(ACTIVE_AUTHORITY_PATH), "utf8");
+  for (const required of [
+    "PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_06_ONLY",
+    "PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03|TASK_04|TASK_05|TASK_06",
+    "PHASE_1B_ACTIVE_TASK=TASK_06_ACCEPTED_STOP_BEFORE_TASK07",
+    "TASK_06_OWNER_REVIEW=ACCEPTED",
+    "TASK_06_STAGE_C2_STATUS=ACCEPTED",
+    "TASK_06_STAGE_C2_AUTHORIZATION=GRANTED",
+    "TASK_07_PLUS_STARTED=NO",
+    "TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED",
+  ]) {
+    if (!authority.includes(required)) fail("active authority state", required);
+  }
+}
+
+function checkC2Acceptance() {
+  const acceptancePath = "docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md";
+  const content = readFileSync(absolute(acceptancePath), "utf8");
+  for (const required of [
+    "TASK_ID=PHASE_1B_TASK_06",
+    "STAGE=C2",
+    "STATUS=ACCEPTED",
+    "PROJECT_OWNER_ACCEPTANCE=PASS",
+    "TASK_06_C2_STATUS=ACCEPTED",
+    "TASK_06_C2_AUTHORIZATION=GRANTED",
+    "TASK_07_PLUS_STARTED=NO",
+    "STOP_REASON=TASK06_ACCEPTED_STOP_BEFORE_TASK07",
+  ]) {
+    if (!content.includes(required)) fail("C2 acceptance", `${acceptancePath} missing ${required}`);
+  }
+  if (content.includes("TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FA3495ABB9B218C640E8C4F02121CC14DEE0557850F68C")) {
+    fail("C2 acceptance", "acceptance must not contain its own SHA");
   }
 }
 
@@ -292,12 +381,80 @@ function checkFrozenHashes() {
   }
 }
 
+function crc32(bytes) {
+  let crc = 0xffffffff;
+  for (const byte of bytes) {
+    crc ^= byte;
+    for (let bit = 0; bit < 8; bit += 1) {
+      crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
+    }
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function parseZipEntries(zip) {
+  let eocd = -1;
+  for (let offset = zip.length - 22; offset >= Math.max(0, zip.length - 65557); offset -= 1) {
+    if (zip.readUInt32LE(offset) === 0x06054b50) {
+      eocd = offset;
+      break;
+    }
+  }
+  if (eocd < 0) throw new Error("ZIP end-of-central-directory record is missing");
+  const count = zip.readUInt16LE(eocd + 10);
+  const directorySize = zip.readUInt32LE(eocd + 12);
+  const directoryOffset = zip.readUInt32LE(eocd + 16);
+  if (directoryOffset + directorySize > eocd) throw new Error("ZIP central directory is invalid");
+
+  const entries = [];
+  let offset = directoryOffset;
+  for (let index = 0; index < count; index += 1) {
+    if (zip.readUInt32LE(offset) !== 0x02014b50) throw new Error("ZIP central directory entry is invalid");
+    const flags = zip.readUInt16LE(offset + 8);
+    const method = zip.readUInt16LE(offset + 10);
+    const modifiedTime = zip.readUInt16LE(offset + 12);
+    const modifiedDate = zip.readUInt16LE(offset + 14);
+    const expectedCrc = zip.readUInt32LE(offset + 16);
+    const compressedSize = zip.readUInt32LE(offset + 20);
+    const uncompressedSize = zip.readUInt32LE(offset + 24);
+    const nameLength = zip.readUInt16LE(offset + 28);
+    const extraLength = zip.readUInt16LE(offset + 30);
+    const commentLength = zip.readUInt16LE(offset + 32);
+    const localOffset = zip.readUInt32LE(offset + 42);
+    const name = zip.subarray(offset + 46, offset + 46 + nameLength).toString("utf8");
+    if ((flags & 1) !== 0) throw new Error(`encrypted ZIP member ${name}`);
+    if (modifiedDate !== 0x21 || modifiedTime !== 0) throw new Error(`non-fixed ZIP timestamp ${name}`);
+    if (name.startsWith("/") || name.includes("\\") || name.split("/").includes("..") || name.includes("\0")) {
+      throw new Error(`unsafe ZIP member path ${name}`);
+    }
+    if (zip.readUInt32LE(localOffset) !== 0x04034b50) throw new Error(`invalid local header ${name}`);
+    const localNameLength = zip.readUInt16LE(localOffset + 26);
+    const localExtraLength = zip.readUInt16LE(localOffset + 28);
+    const dataOffset = localOffset + 30 + localNameLength + localExtraLength;
+    const compressed = zip.subarray(dataOffset, dataOffset + compressedSize);
+    const content = method === 0 ? compressed : method === 8 ? inflateRawSync(compressed) : null;
+    if (content === null) throw new Error(`unsupported ZIP compression method ${method} for ${name}`);
+    if (content.length !== uncompressedSize) throw new Error(`ZIP size mismatch ${name}`);
+    if (crc32(content) !== expectedCrc) throw new Error(`ZIP CRC mismatch ${name}`);
+    entries.push({ name, content, expectedCrc });
+    offset += 46 + nameLength + extraLength + commentLength;
+  }
+  if (offset !== directoryOffset + directorySize) throw new Error("ZIP central directory size mismatch");
+  return entries;
+}
+
 function checkC1Package() {
   const manifestPath = absolute("SHA256SUMS_PHASE_1B_TASK_06.txt");
   const manifest = readFileSync(manifestPath, "utf8");
-  const rows = manifest.trimEnd().split("\n");
+  const rows = manifest.endsWith("\n") ? manifest.slice(0, -1).split("\n") : [];
   if (rows.length !== 22) fail("C1 manifest", `expected 22 rows, got ${rows.length}`);
-  const names = rows.map((row) => row.split("  ")[1]);
+  const records = [];
+  for (const row of rows) {
+    const match = /^([A-F0-9]{64})  (.+)$/.exec(row);
+    if (!match) fail("C1 manifest", `malformed row ${row}`);
+    else records.push({ sha: match[1], name: match[2] });
+  }
+  const names = records.map(({ name }) => name);
   const sorted = [...names].sort((left, right) => {
     const leftKey = left.toLocaleLowerCase("en-US");
     const rightKey = right.toLocaleLowerCase("en-US");
@@ -318,19 +475,44 @@ function checkC1Package() {
   if (new Set(names).size !== names.length) fail("C1 manifest", "duplicate member");
   for (const name of names) {
     if (!C1_MEMBER_FILES.has(name)) fail("C1 manifest", `unapproved member ${name}`);
-    if (!existsSync(absolute(name))) fail("C1 manifest", `missing member ${name}`);
-    if (sha256File(name) !== rows.find((row) => row.endsWith(`  ${name}`)).split("  ")[0]) {
-      fail("C1 manifest", `member hash mismatch ${name}`);
-    }
+    if (name.startsWith("/") || name.includes("\\") || name.split("/").includes(".."))
+      fail("C1 manifest", `unsafe member path ${name}`);
   }
-  if (names.includes("SHA256SUMS_PHASE_1B_TASK_06.txt"))
-    fail("C1 manifest", "manifest is not detached");
-  if (names.includes("docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md"))
-    fail("C1 manifest", "V5 must be excluded");
+
   const zip = readFileSync(
     absolute("artifacts/review-package/student-care-platform-phase1b-task-06-review-pack-v1.0.zip"),
   );
-  if (zip.length === 0) fail("C1 ZIP", "ZIP is empty");
+  let entries;
+  try {
+    entries = parseZipEntries(zip);
+  } catch (error) {
+    fail("C1 ZIP", error instanceof Error ? error.message : String(error));
+    return;
+  }
+  const zipNames = entries.map(({ name }) => name);
+  if (JSON.stringify(zipNames) !== JSON.stringify(names)) fail("C1 ZIP", "member order differs from manifest");
+  if (entries.length !== 22) fail("C1 ZIP", `expected 22 members, got ${entries.length}`);
+  if (new Set(zipNames).size !== zipNames.length) fail("C1 ZIP", "duplicate member");
+  for (const { name, content, expectedCrc } of entries) {
+    const record = records.find((candidate) => candidate.name === name);
+    const memberSha = createHash("sha256").update(content).digest("hex").toUpperCase();
+    if (!record || record.sha !== memberSha) fail("C1 ZIP", `member SHA mismatch ${name}`);
+    if (crc32(content) !== expectedCrc) fail("C1 ZIP", `member CRC mismatch ${name}`);
+    if (!C1_MUTABLE_MEMBERS.has(name)) {
+      if (!existsSync(absolute(name))) fail("C1 disk", `missing member ${name}`);
+      else if (sha256File(name) !== memberSha) fail("C1 disk", `member differs from frozen ZIP ${name}`);
+    }
+  }
+  if (zipNames.includes("SHA256SUMS_PHASE_1B_TASK_06.txt")) fail("C1 ZIP", "manifest is not detached");
+  for (const excluded of [
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V6.md",
+    "docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V5.md",
+    "docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md",
+    "docs/project/PHASE_1B_TASK_04_ACCEPTANCE.md",
+    "docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md",
+  ]) {
+    if (zipNames.includes(excluded)) fail("C1 ZIP", `excluded member present ${excluded}`);
+  }
 }
 
 function checkTextEncoding() {
@@ -391,6 +573,8 @@ function main() {
   }
   checkGitBoundary();
   checkRequiredFiles();
+  checkActiveGovernance();
+  checkC2Acceptance();
   checkFrozenHashes();
   checkTextEncoding();
   checkLockfileBoundary();
