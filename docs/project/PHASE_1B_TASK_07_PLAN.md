@@ -10,11 +10,11 @@ artifact.
 TASK_ID=PHASE_1B_TASK_07
 TASK_NAME=PUBLIC_TEACHER_INTRODUCTIONS
 STAGE=STAGE_B_IMPLEMENTATION
-STATUS=STAGE_B_IMPLEMENTATION_IN_PROGRESS
+STATUS=STAGE_B_REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=452e6cd81e5f57d10cfcee737077a91a6ba4d0fd
+CURRENT_HEAD=1e5ae4bc93733832d7d52cf40444a451631e6974
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03
 STAGE_A_OWNER_REVIEW=PASS
 ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md
@@ -27,7 +27,7 @@ INPUT=APPROVED_PUBLIC_FIELDS_AND_FILE_REFERENCE_CONTRACT
 OUTPUT=FILTERED_PUBLIC_TEACHER_CARDS_AND_SCOPED_ADMIN_EDITING
 TASK_07_STAGE_A_AUTHORIZATION=GRANTED
 TASK_07_STAGE_A_STATUS=OWNER_REVIEW_PASSED
-TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_IN_PROGRESS
+TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_07_PLUS_STARTED=NO
 TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
@@ -82,11 +82,17 @@ TASK07_CLIENT_CLAIMS=TENANT_CAMPUS_ROLE_PUBLICATION_AND_VERSION_CLAIMS_UNTRUSTED
 
 ## Future implementation whitelist
 
-These are the exact Stage B implementation/test files authorized for this
-stage:
+The four core Stage B implementation/test files are:
 
 ```text
-STAGE_B_EXACT_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts
+STAGE_B_CORE_IMPLEMENTATION_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts
+```
+
+The current V9 repair and entry-integration authorization expands the exact
+Stage B write boundary to the following complete set:
+
+```text
+STAGE_B_REPAIR_EXACT_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/api/src/modules/teachers/public-profile.test.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/server.ts|apps/admin-web/src/main.ts|scripts/verify_task_06.mjs|tests/contracts/package-boundaries.test.mjs|tests/workspace/paths.test.mjs|package.json|PHASE_1B_TASK_07_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_07_PLAN.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md|AGENTS.md|PLANS.md|README.md|docs/project/DECISION_BASELINE.md|docs/project/SCOPE_AND_NON_SCOPE.md|docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md|docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md
 ```
 
 The Stage A files remain contract/plan records:
@@ -95,9 +101,13 @@ The Stage A files remain contract/plan records:
 STAGE_A_EXACT_FILES=PHASE_1B_TASK_07_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_07_PLAN.md
 ```
 
-No other repository path may be created, changed, deleted, moved, staged, or
-committed for Task 07 Stage B. Existing Task 01-06 frozen evidence and the six
-untracked Task 04/05 evidence files remain untouched and outside this plan.
+No repository path outside `STAGE_B_REPAIR_EXACT_FILES` may be created,
+changed, deleted, moved, staged, or committed for Task 07 Stage B. The four
+core files remain the implementation/test subset; the expanded set additionally
+covers the approved entry integration, Task07-aware verification, governance
+references, and contract/plan synchronization. Existing Task 01-06 frozen
+evidence and the six untracked Task 04/05 evidence files remain untouched and
+outside this plan.
 
 ## Risk register
 
@@ -122,16 +132,17 @@ STAGE_B=REPAIR_RED_GREEN_REGRESSION_ENTRY_INTEGRATION_AND_IMPLEMENTATION_UNDER_C
 STAGE_C1=REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AFTER_STAGE_B_VERIFICATION
 STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
 STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
-TASK_07_STAGE_B_STATUS=IMPLEMENTATION_IN_PROGRESS
+TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_07_STAGE_C1_STATUS=NOT_STARTED
 TASK_07_STAGE_C2_STATUS=NOT_STARTED
 TASK_07_PLUS_STARTED=NO
 ```
 
-Stage B does not require C1 or C2 files to exist. The Stage A contract and plan
-remain uncommitted in this implementation stage and are not part of the Stage
-B implementation whitelist.
+Stage B does not require C1 or C2 files to exist. Under the current V9 repair
+authorization, the Stage A contract and plan were synchronized as part of the
+expanded repair boundary, while C1/C2 artifacts remain outside the boundary
+and unauthorized.
 
 ## Later acceptance points
 
@@ -149,9 +160,10 @@ Later authorized implementation must prove:
 
 ## Stage B verification and stop conditions
 
-Run Node crypto and .NET SHA-256 over the exact bytes of both files, verify
-UTF-8 without BOM, CR=0, LF-only, and exactly one trailing LF, then run
-read-only content checks and:
+Run the targeted Task 07 tests first, then the approved root quality/build and
+Task07-aware verifier checks. Run Node crypto and .NET SHA-256 over the exact
+bytes of every changed text file, verify UTF-8 without BOM, CR=0, LF-only, and
+exactly one trailing LF, then run read-only content checks and:
 
 ```text
 git status --short --branch --untracked-files=all
@@ -163,13 +175,14 @@ git worktree list
 ```
 
 The existing branch and approved Stage B base remain in use, no remote may be
-used, and all C1/C2 artifacts must remain absent. Stage B may be explicitly
-staged and committed only after all checks pass. Any authorization conflict,
-path expansion, frozen-evidence drift, format or hash failure, unapproved
-dependency change, or later-stage activity is a fail-closed stop.
+used, and all C1/C2 artifacts must remain absent. The expanded Stage B repair
+set may be explicitly staged and committed only after all checks pass. Any
+authorization conflict, path expansion beyond `STAGE_B_REPAIR_EXACT_FILES`,
+frozen-evidence drift, format or hash failure, unapproved dependency change,
+or later-stage activity is a fail-closed stop.
 
 ```text
-STATUS=STAGE_B_IMPLEMENTATION_IN_PROGRESS
+STATUS=STAGE_B_REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 OWNER_REVIEW_GATE=AFTER_STAGE_B_BEFORE_C1
 TASK_07_IMPLEMENTATION_AUTHORIZATION=GRANTED
 STOP_REASON=TASK07_STAGE_B_C1_OWNER_REVIEW_GATE

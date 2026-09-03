@@ -10,11 +10,11 @@ It does not authorize Stage C1, Stage C2, or Task 08+.
 TASK_ID=PHASE_1B_TASK_07
 TASK_NAME=PUBLIC_TEACHER_INTRODUCTIONS
 TASK_STAGE=STAGE_B_IMPLEMENTATION
-TASK_STATUS=STAGE_B_IMPLEMENTATION_IN_PROGRESS
+TASK_STATUS=STAGE_B_REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=452e6cd81e5f57d10cfcee737077a91a6ba4d0fd
+CURRENT_HEAD=1e5ae4bc93733832d7d52cf40444a451631e6974
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03
 OWNER_AUTHORIZATION_SCOPE=STAGE_B_IMPLEMENTATION_ONLY
 STAGE_A_OWNER_REVIEW=PASS
@@ -29,7 +29,7 @@ OUTPUTS=FILTERED_PUBLIC_TEACHER_CARDS_AND_SCOPED_ADMIN_EDITING
 TASK_07_STARTED=YES_STAGE_B_IMPLEMENTATION
 TASK_07_STAGE_A_AUTHORIZATION=GRANTED
 TASK_07_STAGE_A_STATUS=OWNER_REVIEW_PASSED
-TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_IN_PROGRESS
+TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_07_STAGE_C1_STATUS=NOT_STARTED
 TASK_07_STAGE_C2_STATUS=NOT_STARTED
@@ -111,16 +111,24 @@ STAGE_A_BOM=NO
 STAGE_A_LINE_ENDING=LF
 STAGE_A_TRAILING_LF=EXACTLY_ONE
 STAGE_A_SELF_SHA=EXTERNAL_RECEIPT_ONLY_NO_SELF_REFERENCE
-STAGE_B_EXACT_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts|apps/api/src/server.ts|apps/admin-web/src/main.ts|scripts/verify_task_06.mjs|tests/contracts/package-boundaries.test.mjs|tests/workspace/paths.test.mjs|package.json|PHASE_1B_TASK_07_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_07_PLAN.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md|AGENTS.md|PLANS.md|README.md|docs/project/DECISION_BASELINE.md|docs/project/SCOPE_AND_NON_SCOPE.md|docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md|docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md
+STAGE_B_REPAIR_EXACT_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts|apps/api/src/server.ts|apps/admin-web/src/main.ts|scripts/verify_task_06.mjs|tests/contracts/package-boundaries.test.mjs|tests/workspace/paths.test.mjs|package.json|PHASE_1B_TASK_07_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_07_PLAN.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md|AGENTS.md|PLANS.md|README.md|docs/project/DECISION_BASELINE.md|docs/project/SCOPE_AND_NON_SCOPE.md|docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md|docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md
 STAGE_B_WRITE_POLICY=MODIFY_OR_CREATE_ONLY_THE_EXPANDED_WHITELIST
 STAGE_B_COMMIT_POLICY=ONE_EXPLICIT_COMMIT_AFTER_VERIFICATION
 ```
 
-The following files are the exact Stage B implementation/test files. They are
-not created until the Stage B implementation steps below:
+The following four files are the core Stage B implementation/test subset. They
+are the feature implementation and focused test surface:
 
 ```text
-STAGE_B_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts
+STAGE_B_CORE_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts
+```
+
+The current V9 repair authorization defines the complete Stage B write set,
+including approved entry integration, Task07-aware verification, governance
+references, and contract/plan synchronization:
+
+```text
+STAGE_B_REPAIR_EXACT_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/api/src/modules/teachers/public-profile.test.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/server.ts|apps/admin-web/src/main.ts|scripts/verify_task_06.mjs|tests/contracts/package-boundaries.test.mjs|tests/workspace/paths.test.mjs|package.json|PHASE_1B_TASK_07_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_07_PLAN.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md|AGENTS.md|PLANS.md|README.md|docs/project/DECISION_BASELINE.md|docs/project/SCOPE_AND_NON_SCOPE.md|docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md|docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md
 ```
 
 ## Lifecycle and owner gates
@@ -139,9 +147,9 @@ OWNER_REVIEW_GATE=AFTER_STAGE_B_BEFORE_C1
 STOP_REASON=TASK07_STAGE_B_C1_OWNER_REVIEW_GATE
 ```
 
-Stage B stops after the four implementation/test files pass the authorized
-TDD, regression, quality, and scope checks. It does not create C1, C2, or
-Task 08+ artifacts.
+Stage B stops after the core implementation/test files and the authorized V9
+repair boundary pass the TDD, regression, entry-integration, quality, and
+scope checks. It does not create C1, C2, or Task 08+ artifacts.
 
 ## Acceptance points for later authorized stages
 
@@ -165,8 +173,8 @@ corepack pnpm lint
 corepack pnpm format:check
 corepack pnpm test
 corepack pnpm build
-Node crypto SHA-256 for the four Stage B files
-.NET SHA256 for the same four exact byte sequences
+Node crypto SHA-256 for every changed text file in the repair whitelist
+.NET SHA256 for the same exact byte sequences
 git status --short --branch --untracked-files=all
 git rev-parse HEAD
 git diff --check
@@ -175,9 +183,13 @@ git remote
 git worktree list
 ```
 
-Expected Stage B results are exact changes to the four listed files, passing
-tests and quality checks, no new dependency or service activity, no C1/C2 or
-Task 08+ artifact, and unchanged frozen evidence.
+Expected Stage B results are passing changes within the complete
+`STAGE_B_REPAIR_EXACT_FILES` set: the four core implementation/test files,
+approved API/admin entry integration, Task07-aware verification and root test
+inclusion, plus the authorized governance and contract/plan synchronization.
+No new dependency or service activity is permitted; C1/C2 and Task 08+
+artifacts remain absent; frozen evidence remains unchanged. C1 and C2 are
+separate later lifecycle stages and are not authorized by this Stage B record.
 
 ## Stop conditions
 

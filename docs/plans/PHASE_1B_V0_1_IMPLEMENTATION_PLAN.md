@@ -103,15 +103,21 @@ Every implementation task follows `red -> green -> focused regression -> explici
 - Green test: public route returns only approved synthetic fields in stable order.
 - Commit step: `feat: add public teacher profile projections`.
 
-Task 07 Stage B is currently limited to the four implementation/test files
+Task 07 Stage B core implementation/test work remains the four files
 `apps/api/src/modules/teachers/public-profile.service.ts`,
 `apps/api/src/routes/public-teachers.route.ts`,
 `apps/admin-web/src/pages/public-teachers.tsx`, and
-`apps/api/src/modules/teachers/public-profile.test.ts`. It records the
-approved public fields and file-reference boundaries, server-derived
+`apps/api/src/modules/teachers/public-profile.test.ts`. Under the current V9
+repair and entry-integration authorization, Stage B also includes the exact
+expanded boundary recorded in the Task 07 contract and plan: API/admin entry
+integration, Task07-aware verification, root contract/path tests, package
+script wiring, the V9 authority and its seven active governance references,
+and the Task 07 contract/plan synchronization. This expanded boundary records
+the approved public fields and file-reference boundaries, server-derived
 tenant/campus scope, active membership and capability checks, explicit public
 projection, publication policy, foreign-tenant denial, unpublished/private-
-field denial, and synthetic-only data. C1/C2 artifacts remain unauthorized.
+field denial, atomic expected-version handling, and synthetic-only data. C1
+and C2 remain unauthorized and no C1/C2 artifact is created by Stage B.
 
 ## Task 08 - Activities and meals
 
