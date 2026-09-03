@@ -1,24 +1,25 @@
 # Phase 1B Task 07 Public Teacher Introductions Plan
 
-This plan records the owner-authorized Stage A and separately authorized Stage
-B implementation. It creates no C1, C2, review, manifest, ZIP, or acceptance
-artifact.
+This plan records the owner-authorized Stage A, completed Stage B, and
+separately authorized Stage C1 evidence work. It creates only the C1 review,
+detached manifest, and deterministic ZIP in the current stage; it creates no
+C2 or acceptance artifact.
 
 ## Current contract and anchors
 
 ```text
 TASK_ID=PHASE_1B_TASK_07
 TASK_NAME=PUBLIC_TEACHER_INTRODUCTIONS
-STAGE=STAGE_B_IMPLEMENTATION
-STATUS=STAGE_B_REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
+STAGE=STAGE_C1_FINAL_EVIDENCE
+STATUS=FINAL_EVIDENCE_READY
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=1e5ae4bc93733832d7d52cf40444a451631e6974
-OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03
+OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03
 STAGE_A_OWNER_REVIEW=PASS
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md
-ACTIVE_GOVERNANCE_SHA256=B4E53F632AC135925CBAE802CE360D361EE2394044C339137F11A9B045A96165
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V10.md
+ACTIVE_GOVERNANCE_SHA256=161A8C57154A63ADFE8A6AE94FAC29A76EC50EFA0A6BD2719F172C1553CA5538
 TASK_06_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
 TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FAE3495ABB9B218C640E8C4F02121CC14DEE0557850F68C
 TASK_06_ACCEPTANCE_STATUS=ACCEPTED_AND_FROZEN
@@ -27,8 +28,12 @@ INPUT=APPROVED_PUBLIC_FIELDS_AND_FILE_REFERENCE_CONTRACT
 OUTPUT=FILTERED_PUBLIC_TEACHER_CARDS_AND_SCOPED_ADMIN_EDITING
 TASK_07_STAGE_A_AUTHORIZATION=GRANTED
 TASK_07_STAGE_A_STATUS=OWNER_REVIEW_PASSED
-TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
+TASK_07_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_07_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_07_STAGE_C2_STATUS=NOT_STARTED
+TASK_07_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK_07_PLUS_STARTED=NO
 TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
@@ -88,8 +93,9 @@ The four core Stage B implementation/test files are:
 STAGE_B_CORE_IMPLEMENTATION_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/modules/teachers/public-profile.test.ts
 ```
 
-The current V9 repair and entry-integration authorization expands the exact
-Stage B write boundary to the following complete set:
+The completed V9 repair and entry-integration authorization defined the exact
+Stage B write boundary below. The current V10 authority separately authorizes
+the C1 evidence set:
 
 ```text
 STAGE_B_REPAIR_EXACT_FILES=apps/api/src/modules/teachers/public-profile.service.ts|apps/api/src/routes/public-teachers.route.ts|apps/api/src/modules/teachers/public-profile.test.ts|apps/admin-web/src/pages/public-teachers.tsx|apps/api/src/server.ts|apps/admin-web/src/main.ts|scripts/verify_task_06.mjs|tests/contracts/package-boundaries.test.mjs|tests/workspace/paths.test.mjs|package.json|PHASE_1B_TASK_07_CODEX_EXECUTION.md|docs/project/PHASE_1B_TASK_07_PLAN.md|docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md|AGENTS.md|PLANS.md|README.md|docs/project/DECISION_BASELINE.md|docs/project/SCOPE_AND_NON_SCOPE.md|docs/plans/PHASE_1B_TASK_DEPENDENCY_GRAPH.md|docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md
@@ -134,15 +140,21 @@ STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
 STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
 TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_07_STAGE_C1_STATUS=NOT_STARTED
+TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
 TASK_07_STAGE_C2_STATUS=NOT_STARTED
 TASK_07_PLUS_STARTED=NO
 ```
 
-Stage B does not require C1 or C2 files to exist. Under the current V9 repair
-authorization, the Stage A contract and plan were synchronized as part of the
-expanded repair boundary, while C1/C2 artifacts remain outside the boundary
-and unauthorized.
+Stage B did not require C1 or C2 files to exist. The Stage A contract and plan
+were synchronized under the completed V9 repair boundary. Under V10, C1 is
+authorized only for the three evidence files below; C2 remains outside the
+boundary and unauthorized.
+
+```text
+STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_07_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_07.txt|artifacts/review-package/student-care-platform-phase1b-task-07-review-pack-v1.0.zip
+STAGE_C1_MEMBER_ORDER_POLICY=POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING
+STAGE_C1_PACKAGE_EXCLUSIONS=V10_AUTHORITY|C1_REVIEW|C1_MANIFEST|C1_ZIP|TASK04_EVIDENCE|TASK05_EVIDENCE|TASK06_C2_ACCEPTANCE|GENERATED_OUTPUT|UNRELATED_FILES
+```
 
 ## Later acceptance points
 
@@ -175,17 +187,18 @@ git worktree list
 ```
 
 The existing branch and approved Stage B base remain in use, no remote may be
-used, and all C1/C2 artifacts must remain absent. The expanded Stage B repair
-set may be explicitly staged and committed only after all checks pass. Any
-authorization conflict, path expansion beyond `STAGE_B_REPAIR_EXACT_FILES`,
-frozen-evidence drift, format or hash failure, unapproved dependency change,
-or later-stage activity is a fail-closed stop.
+used, and no C2 or Task 08+ artifact may be created. C1 may be explicitly
+staged and committed only after all review, manifest, ZIP, frozen-evidence,
+format, hash, and boundary checks pass. Any authorization conflict, path
+expansion beyond the C1 exact set, frozen-evidence drift, format or hash
+failure, unapproved dependency change, or later-stage activity is a
+fail-closed stop.
 
 ```text
-STATUS=STAGE_B_REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
-OWNER_REVIEW_GATE=AFTER_STAGE_B_BEFORE_C1
-TASK_07_IMPLEMENTATION_AUTHORIZATION=GRANTED
-STOP_REASON=TASK07_STAGE_B_C1_OWNER_REVIEW_GATE
+STATUS=FINAL_EVIDENCE_READY
+OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_C2
+TASK_07_STAGE_C1_AUTHORIZATION=GRANTED
+STOP_REASON=C1_OWNER_REVIEW_GATE_BEFORE_C2
 ```
 
 ## File format contract

@@ -2,13 +2,13 @@
 
 Status: active plan. Task 01—06 are completed and remain frozen evidence. Task
 05 and Task 06 Stage B, C1, and C2 are accepted and frozen; Task 07 Stage A
-formalization passed owner review and Task 07 Stage B implementation is
-independently owner-authorized; Task 07 C1/C2 and later tasks remain
-unauthorized.
+formalization passed owner review, Task 07 Stage B implementation passed its
+verification gate, and Task 07 Stage C1 is independently owner-authorized;
+Task 07 C2 and later tasks remain unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V9.md`
-(`SHA-256=B4E53F632AC135925CBAE802CE360D361EE2394044C339137F11A9B045A96165`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V10.md`
+(`SHA-256=161A8C57154A63ADFE8A6AE94FAC29A76EC50EFA0A6BD2719F172C1553CA5538`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -24,7 +24,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07 Stage A formalization passed owner review; Stage B implementation is separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03`, and Task 07 C1/C2 and Task 08+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07 Stage A formalization passed owner review; Stage B implementation is separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03` and has passed its verification gate. Stage C1 is separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03`; Task 07 C2 and Task 08+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
