@@ -1,13 +1,11 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—07 are completed and remain frozen evidence. Task
-08 Stage A formalization passed owner review and Task 08 Stage B is separately
-authorized for implementation; Task 08 C1/C2 and later tasks remain
-unauthorized.
+Status: active plan. Task 01—08 are completed and remain frozen evidence. Task
+08 C2 acceptance is complete and frozen; Task 09+ remains unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md`
-(`SHA-256=E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V14.md`
+(`SHA-256=34323408892CC933F96DF1EA95F92F7A4F64D530B1851A24608BD78CE872B339`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -23,7 +21,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—05 are completed increments. Task 06 is an accepted and frozen increment with separate Stage B implementation, C1 evidence, and C2 acceptance records. Task 07 Stage A formalization passed owner review; Stage B implementation is separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_IMPLEMENTATION_2026-09-03` and has passed its verification gate. Stage C1 was separately authorized by `PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03` and passed owner review; Task 07 C2 is separately authorized only as an acceptance record by `PROJECT_OWNER_EXPLICIT_TASK07_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03`; Task 08 Stage B is authorized only by `PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03`; Task 08 C1/C2 and Task 09+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under their independent owner gates; Task 08 is now frozen. Task 09+ remains unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -130,7 +128,7 @@ Task 08+ artifact is created by this stage.
 - Green test: date filtering and publication state remain consistent across web and mini clients.
 - Commit step: `feat: add activity and meal content`.
 
-Task 08 Stage B repair and continuation follows the eight-file implementation
+Task 08 Stage B repair and continuation followed the eight-file implementation
 and test boundary listed in the Task 08 contract and V13 authority. The five
 original files remain the core activity/meal implementation and test subset;
 V13 additionally authorizes the API server entry, admin entry, and public meals
@@ -139,8 +137,9 @@ date-bounded records, explicit published projections, server-derived
 tenant/campus scope, active membership and capability checks, fail-closed
 invalid dates and unsafe media handling, atomic stale-version denial, and
 synthetic-only fixtures. No package script, verifier, lockfile, schema,
-migration, or other shared path is authorized by this Stage B contract. Task
-08 C1/C2 remain separately unauthorized.
+migration, or other shared path was authorized by that Stage B contract. The
+Task 08 C1 evidence and C2 acceptance are now frozen; no Task 09+ artifact is
+authorized by the current plan.
 
 ## Task 09 - Newcomer guides
 

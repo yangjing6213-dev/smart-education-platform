@@ -2,9 +2,9 @@
 
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；当前追认 Phase 1B Task 01—07 已完成并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 修复与继续实施已获负责人授权，Task 08 C1/C2 与 Task 09+ 仍未授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；当前追认 Phase 1B Task 01—08 已完成并冻结，Task 09+ 尚未启动且未授权。
 
-当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md` 为准（SHA-256：`E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B`）。Task 01—07 已由负责人验收并冻结；Task 08 Stage A 已通过负责人审阅，Stage B 修复与继续实施由 `PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_REPAIR_AND_CONTINUATION_2026-09-04` 授权；Task 08 C1/C2 与 Task 09+ 仍未授权。任何新任务仍须独立合同、稳定 SHA、项目负责人批准和单独实现授权；不得从已完成任务或 Stage A 自动推导后续实现授权。
+当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V14.md` 为准（SHA-256：`34323408892CC933F96DF1EA95F92F7A4F64D530B1851A24608BD78CE872B339`）。Task 01—08 已由负责人验收并冻结；Task 09+ 尚未启动且未授权。任何新任务仍须独立合同、稳定 SHA、项目负责人批准和单独实现授权；不得从已完成任务自动推导后续实现授权。
 
 ## HISTORICAL/FROZEN：Phase 1A 自举与必读顺序
 
@@ -30,7 +30,7 @@ Batch A 的审查 ZIP、根 `SHA256SUMS.txt`、评审报告、文件清单、验
 
 `phase-inputs/phase1a-batch-b/` 是只读输入，必须保持忽略、未跟踪、不进入 Git 或审查包。Batch B 原型只能使用原生 HTML、CSS 和 JavaScript、内存模拟数据、本地 PNG/SVG 与 hash 路由；不得安装依赖、创建 `package.json`、访问外网、使用持久化存储或接入正式服务。
 
-Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md` 为准（SHA-256：`E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B`）：Task 05 与 Task 06、Task 07 已完成并冻结，Task 08 Stage A 已通过负责人审阅，Task 08 Stage B 修复与继续实施已获授权，Task 08 C1/C2 及 Task 09+ 未启动且未授权，`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_08_STAGE_B_ONLY`，`TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED`，`TASK_08_STAGE_C1_AUTHORIZATION=NOT_GRANTED`，`TASK_08_STAGE_C2_AUTHORIZATION=NOT_GRANTED`，`TASK_08_PLUS_STARTED=NO`，`TASK_08_PLUS_AUTHORIZATION=NOT_GRANTED`。本文件及其他冻结文件中的旧阶段语句仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
+Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V14.md` 为准（SHA-256：`34323408892CC933F96DF1EA95F92F7A4F64D530B1851A24608BD78CE872B339`）：Task 01—08 已完成并冻结，Task 08 C2 acceptance 已接受并冻结，`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_08_C2_ACCEPTANCE_ONLY`，`TASK_08_STATUS=ACCEPTED_AND_FROZEN`，`TASK_08_STAGE_C2_STATUS=ACCEPTED`，`TASK_08_STAGE_C2_AUTHORIZATION=GRANTED`，`TASK_08_PLUS_STARTED=NO`，`TASK_08_PLUS_AUTHORIZATION=NOT_GRANTED`。本文件及其他冻结文件中的旧阶段语句仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
 
 ## 锁定产品规则
 

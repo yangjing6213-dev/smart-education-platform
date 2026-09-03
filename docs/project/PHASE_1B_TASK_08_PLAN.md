@@ -1,39 +1,42 @@
 # Phase 1B Task 08 Activities and Meals Plan
 
-This plan records Task 08 Stage A formalization and the independently
-authorized Stage B implementation boundary. It does not authorize C1/C2 or
-later tasks.
+This plan records the completed Task 08 Stage A, Stage B, Stage C1, and Stage
+C2 lifecycle. Task 08 is accepted and frozen; it does not authorize Task 09+.
 
 ## Current anchors
 
 ```text
 TASK_ID=PHASE_1B_TASK_08
 TASK_NAME=ACTIVITIES_AND_MEALS
-STAGE=STAGE_B_IMPLEMENTATION
-STATUS=IMPLEMENTATION_IN_PROGRESS
+STAGE=STAGE_C2_ACCEPTANCE
+STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=5804cfee86dfae5033d5320b903e208b2bf2cceb
-OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03
+CURRENT_HEAD=91d63b1458494d5765a2e1d6d3364729796d97eb
+OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03
 STAGE_A_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_A_FORMALIZATION_2026-09-03
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md
-ACTIVE_GOVERNANCE_SHA256=E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V14.md
+ACTIVE_GOVERNANCE_SHA256=34323408892CC933F96DF1EA95F92F7A4F64D530B1851A24608BD78CE872B339
 TASK_05_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_08_STAGE_A_AUTHORIZATION=GRANTED
 TASK_08_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_08_STAGE_C1_AUTHORIZATION=NOT_GRANTED
-TASK_08_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_08_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
+TASK_08_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_08_STAGE_C2_STATUS=ACCEPTED
+TASK_08_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_08_STATUS=ACCEPTED_AND_FROZEN
+TASK_08_C2_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_08_ACCEPTANCE.md
+TASK_08_C2_ACCEPTANCE_SHA256=CC55A5D600FB90E532835F42855DEFA66BCF305D727A4F874291B6A7A34FA2FD
 TASK_08_PLUS_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
 TASK_08_PLUS_STARTED=NO
 ```
 
-V13 is the current active governance authority and supersedes V12, which is
-HISTORICAL/FROZEN. Task 07 C2 is accepted and frozen. The independent owner
-authorization grants Task 08 Stage B repair and continuation only; it does not grant
-C1, C2, or Task 09+.
+V14 is the current active governance authority and supersedes V13, which is
+HISTORICAL/FROZEN. Task 07 C2 and Task 08 C2 are accepted and frozen. Task 09+
+remains unauthorized.
 
 ## Goal and bounded product contract
 
@@ -123,7 +126,8 @@ identify or reconstruct a real child, family, teacher, institution, or campus.
 
 ## Stage B implementation whitelist
 
-These are the exact Stage B implementation/test paths authorized by V13:
+These were the exact Stage B implementation/test paths authorized by V13 and
+completed before the Task 08 C2 acceptance:
 
 ```text
 STAGE_B_EXACT_FILES=apps/api/src/modules/activities/activity.service.ts|apps/api/src/modules/meals/meal.service.ts|apps/api/src/routes/public-activities.route.ts|apps/admin-web/src/pages/meals.tsx|apps/api/src/modules/activities/activity.test.ts|apps/api/src/server.ts|apps/admin-web/src/main.ts|apps/api/src/routes/public-meals.route.ts
@@ -141,16 +145,21 @@ stop BLOCKED and request a new explicit whitelist.
 STAGE_A=CONTRACT_AND_PLAN_FORMALIZATION_ONLY
 STAGE_A_FORMAT_GATE=CHECK_ONLY_THE_TWO_STAGE_A_FILES
 STAGE_A_OWNER_REVIEW_GATE=AFTER_READ_ONLY_FORMAT_AND_BOUNDARY_CHECKS
-STAGE_B=SEPARATE_IMPLEMENTATION_AUTHORIZATION_REQUIRED
-STAGE_C1=SEPARATE_REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AUTHORIZATION_REQUIRED
+STAGE_B=IMPLEMENTED_AND_VERIFIED
+STAGE_C1=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
 STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2
-STAGE_C2=SEPARATE_ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
+STAGE_C2=ACCEPTED_AND_FROZEN_ACCEPTANCE_RECORD_ONLY
 TASK_08_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_08_STAGE_C1_AUTHORIZATION=NOT_GRANTED
-TASK_08_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=AFTER_TASK08_STAGE_B_BEFORE_TASK08_C1
-STOP_REASON=TASK08_STAGE_B_OWNER_REVIEW_GATE
+TASK_08_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
+TASK_08_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_08_STAGE_C2_STATUS=ACCEPTED
+TASK_08_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_08_STATUS=ACCEPTED_AND_FROZEN
+TASK_08_PLUS_STARTED=NO
+TASK_08_PLUS_AUTHORIZATION=NOT_GRANTED
+OWNER_REVIEW_GATE=TASK08_ACCEPTED_STOP_BEFORE_TASK09
+STOP_REASON=TASK08_ACCEPTED_STOP_BEFORE_TASK09
 ```
 
 Later acceptance must prove explicit public projection, published-only public
@@ -161,9 +170,10 @@ leakage, synthetic-only data, and no prohibited integrations.
 
 ## Stage A verification and stop conditions
 
-Stage B checks the eight exact implementation/test files and the existing
-read-only quality checks. It does not create or require Task 08 C1/C2 review,
-manifest, ZIP, or acceptance files. Run:
+The completed Task 08 stages checked the eight exact implementation/test files
+and the existing read-only quality checks. C1 review, detached manifest, ZIP,
+and the C2 acceptance record are now frozen evidence and are not regenerated by
+this plan. Run:
 
 ```text
 Node crypto SHA-256 over each Stage A file's exact bytes
@@ -184,9 +194,9 @@ paths are existence/state inputs only and must not be read, modified, deleted,
 moved, staged, packaged, or committed. The index must remain clean and no
 other tracked or untracked path may be created by this task.
 
-Any authorization conflict, V11 or Task 05 anchor drift, missing legacy
-evidence, unexpected path, format/hash failure, real data or secret, or later
-stage artifact is a fail-closed stop. No repair may expand the whitelist.
+Any authorization conflict, V14 or Task 05 anchor drift, missing legacy
+evidence, unexpected path, format/hash failure, real data or secret, or Task
+09+ artifact is a fail-closed stop. No later task may expand this plan.
 
 ## File format and prohibited operations
 

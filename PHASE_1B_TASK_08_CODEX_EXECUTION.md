@@ -1,41 +1,46 @@
 # Phase 1B Task 08 Codex Execution Contract
 
-This contract records Task 08 Stage A formalization and the independently
-authorized Stage B repair and continuation boundary. Stage B is bounded to the
-eight exact implementation/test files below; C1 and C2 remain unauthorized.
+This contract records the completed Task 08 Stage A, Stage B, Stage C1, and
+Stage C2 lifecycle. Task 08 is accepted and frozen; Task 09+ remains
+unauthorized.
 
 ## Contract status and authorization
 
 ```text
 TASK_ID=PHASE_1B_TASK_08
 TASK_NAME=ACTIVITIES_AND_MEALS
-TASK_STAGE=STAGE_B_IMPLEMENTATION
-TASK_STATUS=IMPLEMENTATION_IN_PROGRESS
+TASK_STAGE=STAGE_C2_ACCEPTANCE
+TASK_STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=5804cfee86dfae5033d5320b903e208b2bf2cceb
-OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_B_IMPLEMENTATION_2026-09-03
+CURRENT_HEAD=91d63b1458494d5765a2e1d6d3364729796d97eb
+OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03
 STAGE_A_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK08_STAGE_A_FORMALIZATION_2026-09-03
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V13.md
-ACTIVE_GOVERNANCE_SHA256=E0CE8BD3AD0566C59563A5FA8E376B43BB64A6B82F09883C707EAF079BCCC98B
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V14.md
+ACTIVE_GOVERNANCE_SHA256=34323408892CC933F96DF1EA95F92F7A4F64D530B1851A24608BD78CE872B339
 TASK_05_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 TASK_05_ACCEPTANCE_SHA256=640BCF9B2B5C33ED1499E1F5C35E58608872953DCF0059A33086312FC260ECDD
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
-TASK_08_STARTED=YES_STAGE_B_REPAIR_AND_CONTINUATION
+TASK_08_STARTED=YES_STAGE_C2_ACCEPTANCE
 TASK_08_STAGE_A_AUTHORIZATION=GRANTED
 TASK_08_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_08_STAGE_C1_AUTHORIZATION=NOT_GRANTED
-TASK_08_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_08_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
+TASK_08_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_08_STAGE_C2_STATUS=ACCEPTED
+TASK_08_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_08_STATUS=ACCEPTED_AND_FROZEN
+TASK_08_C2_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_08_ACCEPTANCE.md
+TASK_08_C2_ACCEPTANCE_SHA256=CC55A5D600FB90E532835F42855DEFA66BCF305D727A4F874291B6A7A34FA2FD
 TASK_08_PLUS_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
 TASK_08_PLUS_STARTED=NO
 ```
 
-The current V13 authority supersedes V12 for this repair and continuation. V12
-and V11 remain HISTORICAL/FROZEN. The direct owner authorization above is
-independent from Stage A and explicitly grants only the V13 Task 08 Stage B
-repair and continuation boundary.
+The current V14 authority supersedes V13 for the completed Task 08 acceptance
+state. V13, V12, and V11 remain HISTORICAL/FROZEN. The direct owner
+authorization above records the separate C2 acceptance authorization; the C2
+record is acceptance-only and does not authorize Task 09+.
 
 ## Objective and scope
 
@@ -103,27 +108,33 @@ A and are not implementation authorization:
 FUTURE_IMPLEMENTATION_FILES=apps/api/src/modules/activities/activity.service.ts|apps/api/src/modules/meals/meal.service.ts|apps/api/src/routes/public-activities.route.ts|apps/admin-web/src/pages/meals.tsx|apps/api/src/modules/activities/activity.test.ts
 ```
 
-The V13 Stage B boundary authorizes the five core files above plus the API
+The historical V13 Stage B boundary authorized the five core files above plus the API
 server entry, admin entry, and public meals route needed to close the existing
 integration gap. Stage C1 may create only its separately authorized review, detached
 manifest, and deterministic ZIP. Stage C2 may create only its separately
-authorized acceptance record. Neither authorization exists in this contract.
+authorized acceptance record. Those completed-stage boundaries do not grant
+Task 09+ implementation authorization.
 
 ## Lifecycle and owner gates
 
 ```text
 STAGE_A=CONTRACT_AND_PLAN_FORMALIZATION_COMPLETE
 STAGE_A_OWNER_REVIEW_GATE=PASSED
-STAGE_B=OWNER_AUTHORIZED_IMPLEMENTATION_AND_TESTS
-STAGE_C1=SEPARATE_OWNER_AUTHORIZATION_REQUIRED_FOR_REVIEW_MANIFEST_AND_ZIP
+STAGE_B=IMPLEMENTED_AND_VERIFIED
+STAGE_C1=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
 STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2
-STAGE_C2=SEPARATE_ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
+STAGE_C2=ACCEPTED_AND_FROZEN_ACCEPTANCE_RECORD_ONLY
 TASK_08_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_08_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_08_STAGE_C1_AUTHORIZATION=NOT_GRANTED
-TASK_08_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=AFTER_TASK08_STAGE_B_BEFORE_TASK08_C1
-STOP_REASON=TASK08_STAGE_B_OWNER_REVIEW_GATE
+TASK_08_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
+TASK_08_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_08_STAGE_C2_STATUS=ACCEPTED
+TASK_08_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_08_STATUS=ACCEPTED_AND_FROZEN
+TASK_08_PLUS_STARTED=NO
+TASK_08_PLUS_AUTHORIZATION=NOT_GRANTED
+OWNER_REVIEW_GATE=TASK08_ACCEPTED_STOP_BEFORE_TASK09
+STOP_REASON=TASK08_ACCEPTED_STOP_BEFORE_TASK09
 ```
 
 Stage A does not run implementation, tests, services, browser checks, or
@@ -147,8 +158,9 @@ git remote
 git worktree list
 ```
 
-Stage B checks the eight exact implementation/test files, current V13 and
-frozen dependency anchors, plus existing read-only quality checks. Any
+The completed Task 08 stages were checked against the eight exact
+implementation/test files, current governance, and frozen dependency anchors,
+plus existing read-only quality checks. Any
 non-whitelist change, missing frozen evidence, anchor drift, encoding/hash
 failure, real data or secret, dependency activity, network/service activity,
 or later-stage artifact is a fail-closed stop.
@@ -165,8 +177,9 @@ NETWORK_REGISTRY_EXTERNAL_API_PROVIDER=NO
 SERVICE_DATABASE_BROWSER_OR_PRODUCTION_DATA=NO
 BRANCH_OR_WORKTREE=NO
 GOAL_OR_TASK_DISPATCH=NO
-GIT_ADD_STAGE_COMMIT_PUSH_PR_DEPLOY=NO
-TASK08_STAGE_B_C1_C2_ACCEPTANCE_ARTIFACTS=NO
+GIT_ADD_STAGE_COMMIT=GOVERNANCE_SYNC_ONLY
+GIT_PUSH_PR_DEPLOY=NO
+TASK08_STAGE_B_C1_C2_ACCEPTANCE_ARTIFACTS=FROZEN_AFTER_ACCEPTANCE
 TASK01_TO_TASK07_FREEZENS_OR_V1_TO_V11_MODIFICATION=NO
 LEGACY_UNTRACKED_EVIDENCE_READ_OR_MODIFICATION=NO
 ```
