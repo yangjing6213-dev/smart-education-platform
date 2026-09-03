@@ -1,39 +1,41 @@
 # Phase 1B Task 07 Codex Execution Contract
 
 This contract records the owner-authorized Stage A, the completed Stage B
-implementation, and the separately authorized Stage C1 evidence work for Task
-07, Public Teacher Introductions. It does not authorize Stage C2 or Task 08+.
+implementation, the separately authorized Stage C1 evidence work, and the
+acceptance-record-only Stage C2 work for Task 07, Public Teacher Introductions.
+It does not authorize Task 08+.
 
 ## Contract status and authorization
 
 ```text
 TASK_ID=PHASE_1B_TASK_07
 TASK_NAME=PUBLIC_TEACHER_INTRODUCTIONS
-TASK_STAGE=STAGE_C1_FINAL_EVIDENCE
-TASK_STATUS=FINAL_EVIDENCE_READY
+TASK_STAGE=STAGE_C2_ACCEPTANCE
+TASK_STATUS=ACCEPTANCE_RECORD_AUTHORIZED
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=1e5ae4bc93733832d7d52cf40444a451631e6974
-OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03
-OWNER_AUTHORIZATION_SCOPE=STAGE_C1_FINAL_EVIDENCE_ONLY
+CURRENT_HEAD=4d9de7f5827550fce12a4514b614aaa7de691e36
+OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03
+OWNER_AUTHORIZATION_SCOPE=STAGE_C2_ACCEPTANCE_RECORD_ONLY
 STAGE_A_OWNER_REVIEW=PASS
-GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V10.md
-GOVERNANCE_AUTHORITY_SHA256=161A8C57154A63ADFE8A6AE94FAC29A76EC50EFA0A6BD2719F172C1553CA5538
+GOVERNANCE_AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V11.md
+GOVERNANCE_AUTHORITY_SHA256=1C077A438C96FD4E658547667BB9FF835CB7406F76155E6E706CA6D3D723E3E4
 TASK_06_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
 TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FAE3495ABB9B218C640E8C4F02121CC14DEE0557850F68C
 TASK_06_ACCEPTANCE_STATUS=ACCEPTED_AND_FROZEN
 DEPENDENCIES=T05 -> T06
 INPUTS=APPROVED_PUBLIC_FIELDS_AND_FILE_REFERENCE_CONTRACT
 OUTPUTS=FILTERED_PUBLIC_TEACHER_CARDS_AND_SCOPED_ADMIN_EDITING
-TASK_07_STARTED=YES_STAGE_C1_EVIDENCE
+TASK_07_STARTED=YES_STAGE_C2_ACCEPTANCE
 TASK_07_STAGE_A_AUTHORIZATION=GRANTED
 TASK_07_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_07_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
 TASK_07_STAGE_C1_AUTHORIZATION=GRANTED
-TASK_07_STAGE_C2_STATUS=NOT_STARTED
+TASK_07_STAGE_C2_STATUS=ACCEPTANCE_RECORD_AUTHORIZED
+TASK_07_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_07_PLUS_STARTED=NO
 TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
@@ -94,7 +96,7 @@ TASK07_CLIENT_CLAIMS=TENANT_CAMPUS_ROLE_PUBLICATION_AND_VERSION_CLAIMS_UNTRUSTED
   configuration.
 - No Task 06 or Task 01-06 frozen evidence changes; no V1-V7 authority
   changes.
-- No Task 07 Stage C2 authorization is implied.
+- Task 07 Stage C2 is authorized only as an acceptance record under the current V11 authority.
 - Stage C1 creates only its review, detached manifest, and deterministic ZIP.
 - No Task 06 C2 acceptance or Task 08+ file is created.
 - No Task 08+ work is started or authorized.
@@ -144,19 +146,20 @@ STAGE_A=CONTRACT_AND_PLAN_FORMALIZATION_ONLY
 STAGE_A_OWNER_REVIEW_GATE=PASSED_BEFORE_STAGE_B_IMPLEMENTATION_AUTHORIZATION
 STAGE_B=REPAIR_ENTRY_INTEGRATION_TASK07_AWARE_VERIFICATION_AND_TDD_UNDER_CURRENT_AUTHORIZATION
 STAGE_C1=FINAL_REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AFTER_STAGE_B_VERIFICATION
-STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2_ACCEPTANCE
+STAGE_C1_OWNER_REVIEW_GATE=PASSED_BEFORE_STAGE_C2_ACCEPTANCE
 STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_07_STAGE_C1_AUTHORIZATION=GRANTED
-TASK_07_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_C2
-STOP_REASON=C1_OWNER_REVIEW_GATE_BEFORE_C2
+TASK_07_STAGE_C2_AUTHORIZATION=GRANTED
+OWNER_REVIEW_GATE=STAGE_C2_ACCEPTANCE_BEFORE_TASK08
+STOP_REASON=TASK07_ACCEPTED_STOP_BEFORE_TASK08
 ```
 
 Stage B stopped after the core implementation/test files and the authorized
 V9 repair boundary passed the TDD, regression, entry-integration, quality,
-and scope checks. Stage C1 now creates only the three listed evidence files;
-it does not modify implementation behavior or create C2 or Task 08+ artifacts.
+and scope checks. Stage C1 created only the three listed evidence files. Stage
+C2 creates only the acceptance record and does not modify implementation
+behavior or create Task 08+ artifacts.
 
 ## Acceptance points for later authorized stages
 
@@ -165,8 +168,8 @@ published-only reads, private/unpublished-field denial, server-derived scope,
 active membership and capability enforcement, foreign-tenant denial,
 synthetic-only fixtures, and no leakage of membership or administrative
 metadata. Current C1 packages only approved evidence after Stage B
-verification. Future C2 must record actual evidence only after owner PASS and a
-separate authorization; it must never be prewritten.
+verification. C2 records actual evidence only after owner PASS and the separate
+V11 authorization; it must not modify the C1 package.
 
 ## Stage B verification commands
 
@@ -194,9 +197,10 @@ Recorded Stage B results are passing changes within the complete
 `STAGE_B_REPAIR_EXACT_FILES` set: the four core implementation/test files,
 approved API/admin entry integration, Task07-aware verification and root test
 inclusion, plus the authorized governance and contract/plan synchronization.
-No new dependency or service activity was permitted; C1/C2 and Task 08+
-artifacts were absent at the Stage B boundary, and frozen evidence remained
-unchanged. C1 is now separately authorized by V10; C2 remains unauthorized.
+No new dependency or service activity was permitted; C1 artifacts were absent
+at the Stage B boundary, and frozen evidence remained unchanged. C1 passed
+owner review under V10; C2 is now separately authorized by V11 only as an
+acceptance record.
 
 ## Stop conditions
 
@@ -204,7 +208,7 @@ Stop immediately and preserve the actual state on governance or dependency
 conflict, anchor drift, non-whitelist change, encoding failure, non-whitelisted
 file creation, real data or secret discovery, network or service activity,
 dependency installation, database or migration activity, or any attempt to
-enter C1, C2, or Task 08+ without a new explicit authorization.
+enter Task 08+ without a new explicit authorization.
 
 ```text
 TASK_07_STAGE_A_COMPLETION=OWNER_REVIEW_PASSED

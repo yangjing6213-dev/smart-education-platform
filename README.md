@@ -1,6 +1,6 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—06 已完成并冻结，Task 06 C2 acceptance 仅作验收记录，Task 07 Stage A 已通过负责人审阅，Stage B 已通过并冻结，Stage C1 已获独立负责人授权并正在形成最终证据，C2 与 Task 08+ 尚未启动。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—06 已完成并冻结，Task 06 C2 acceptance 仅作验收记录，Task 07 Stage A 已通过负责人审阅，Stage B 已通过并冻结，Stage C1 已通过负责人审阅，Stage C2 仅执行 acceptance record，Task 08+ 尚未启动。
 
 当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
@@ -8,9 +8,9 @@
 
 - 项目根路径：`C:\Users\HU\Documents\student-care-saas-platform`
 - 工作分支：`feature/phase-1b-task-04-identity-membership`
-- 当前节点：Phase 1B Task 07 Stage C1 final evidence，停在 C2 前的负责人审阅
-- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_07_STAGE_B_ONLY`
-- 禁止阶段：Task 07 C2 及 Task 08+，除非取得独立合同、负责人 PASS 与对应授权
+- 当前节点：Phase 1B Task 07 Stage C2 acceptance record，完成后停在 Task 08 前
+- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_07_STAGE_C2_ONLY`
+- 禁止阶段：Task 08+，除非取得独立合同、负责人 PASS 与对应授权
 - 远程推送与部署：禁止
 
 ## 先读顺序
@@ -49,4 +49,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V10.md` 为准（SHA-256：`161A8C57154A63ADFE8A6AE94FAC29A76EC50EFA0A6BD2719F172C1553CA5538`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2 已接受并冻结，Task 07 Stage A 已通过负责人审阅，Task 07 Stage B 已通过并冻结，Task 07 Stage C1 已形成最终证据并等待负责人审阅，Task 07 C2 及 Task 08+ 未启动且未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V11.md` 为准（SHA-256：`1C077A438C96FD4E658547667BB9FF835CB7406F76155E6E706CA6D3D723E3E4`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2 已接受并冻结，Task 07 Stage A 已通过负责人审阅，Task 07 Stage B 已通过并冻结，Task 07 Stage C1 已通过负责人审阅，Task 07 Stage C2 仅执行 acceptance record，Task 08+ 未启动且未授权。

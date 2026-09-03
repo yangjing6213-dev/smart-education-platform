@@ -1,25 +1,25 @@
 # Phase 1B Task 07 Public Teacher Introductions Plan
 
-This plan records the owner-authorized Stage A, completed Stage B, and
-separately authorized Stage C1 evidence work. It creates only the C1 review,
-detached manifest, and deterministic ZIP in the current stage; it creates no
-C2 or acceptance artifact.
+This plan records the owner-authorized Stage A, completed Stage B, separately
+authorized Stage C1 evidence work, and acceptance-record-only Stage C2 work.
+The current stage creates only the Task 07 acceptance record; it creates no
+Task 08+ artifact.
 
 ## Current contract and anchors
 
 ```text
 TASK_ID=PHASE_1B_TASK_07
 TASK_NAME=PUBLIC_TEACHER_INTRODUCTIONS
-STAGE=STAGE_C1_FINAL_EVIDENCE
-STATUS=FINAL_EVIDENCE_READY
+STAGE=STAGE_C2_ACCEPTANCE
+STATUS=ACCEPTANCE_RECORD_AUTHORIZED
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=1e5ae4bc93733832d7d52cf40444a451631e6974
-OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_STAGE_B_PASS_AND_STAGE_C1_AUTHORIZATION_2026-09-03
+CURRENT_HEAD=4d9de7f5827550fce12a4514b614aaa7de691e36
+OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_EXPLICIT_TASK07_C1_PASS_AND_STAGE_C2_AUTHORIZATION_2026-09-03
 STAGE_A_OWNER_REVIEW=PASS
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V10.md
-ACTIVE_GOVERNANCE_SHA256=161A8C57154A63ADFE8A6AE94FAC29A76EC50EFA0A6BD2719F172C1553CA5538
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V11.md
+ACTIVE_GOVERNANCE_SHA256=1C077A438C96FD4E658547667BB9FF835CB7406F76155E6E706CA6D3D723E3E4
 TASK_06_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_06_ACCEPTANCE.md
 TASK_06_ACCEPTANCE_SHA256=0B690B77CF4C08653FAE3495ABB9B218C640E8C4F02121CC14DEE0557850F68C
 TASK_06_ACCEPTANCE_STATUS=ACCEPTED_AND_FROZEN
@@ -30,10 +30,10 @@ TASK_07_STAGE_A_AUTHORIZATION=GRANTED
 TASK_07_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_07_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
+TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY_AND_OWNER_REVIEW_PASSED
 TASK_07_STAGE_C1_AUTHORIZATION=GRANTED
-TASK_07_STAGE_C2_STATUS=NOT_STARTED
-TASK_07_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK_07_STAGE_C2_STATUS=ACCEPTANCE_RECORD_AUTHORIZED
+TASK_07_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_07_PLUS_STARTED=NO
 TASK_07_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
@@ -141,19 +141,20 @@ STAGE_C2=ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
 TASK_07_STAGE_B_STATUS=REPAIR_AND_IMPLEMENTATION_COMPLETE_PENDING_C1_OWNER_REVIEW
 TASK_07_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_07_STAGE_C1_STATUS=FINAL_EVIDENCE_READY
-TASK_07_STAGE_C2_STATUS=NOT_STARTED
+TASK_07_STAGE_C2_STATUS=ACCEPTANCE_RECORD_AUTHORIZED
 TASK_07_PLUS_STARTED=NO
 ```
 
 Stage B did not require C1 or C2 files to exist. The Stage A contract and plan
-were synchronized under the completed V9 repair boundary. Under V10, C1 is
-authorized only for the three evidence files below; C2 remains outside the
-boundary and unauthorized.
+were synchronized under the completed V9 repair boundary. Under V10, C1 was
+authorized only for the three evidence files below. Under V11, C2 is authorized
+only for the single acceptance record below.
 
 ```text
 STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_07_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_07.txt|artifacts/review-package/student-care-platform-phase1b-task-07-review-pack-v1.0.zip
 STAGE_C1_MEMBER_ORDER_POLICY=POSIX_RELATIVE_PATHS_CASEFOLDED_UNICODE_ORDINAL_ASCENDING
-STAGE_C1_PACKAGE_EXCLUSIONS=V10_AUTHORITY|C1_REVIEW|C1_MANIFEST|C1_ZIP|TASK04_EVIDENCE|TASK05_EVIDENCE|TASK06_C2_ACCEPTANCE|GENERATED_OUTPUT|UNRELATED_FILES
+STAGE_C1_PACKAGE_EXCLUSIONS=V10_AUTHORITY|V11_AUTHORITY|C1_REVIEW|C1_MANIFEST|C1_ZIP|TASK04_EVIDENCE|TASK05_EVIDENCE|TASK06_C2_ACCEPTANCE|GENERATED_OUTPUT|UNRELATED_FILES
+STAGE_C2_EXACT_FILES=docs/project/PHASE_1B_TASK_07_ACCEPTANCE.md
 ```
 
 ## Later acceptance points
@@ -187,18 +188,17 @@ git worktree list
 ```
 
 The existing branch and approved Stage B base remain in use, no remote may be
-used, and no C2 or Task 08+ artifact may be created. C1 may be explicitly
-staged and committed only after all review, manifest, ZIP, frozen-evidence,
-format, hash, and boundary checks pass. Any authorization conflict, path
-expansion beyond the C1 exact set, frozen-evidence drift, format or hash
-failure, unapproved dependency change, or later-stage activity is a
-fail-closed stop.
+used, and no Task 08+ artifact may be created. C2 may be explicitly staged and
+committed only after the acceptance record, frozen-evidence, format, hash, and
+boundary checks pass. Any authorization conflict, path expansion beyond the
+C2 exact set, frozen-evidence drift, format or hash failure, unapproved
+dependency change, or later-stage activity is a fail-closed stop.
 
 ```text
-STATUS=FINAL_EVIDENCE_READY
-OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_C2
-TASK_07_STAGE_C1_AUTHORIZATION=GRANTED
-STOP_REASON=C1_OWNER_REVIEW_GATE_BEFORE_C2
+STATUS=ACCEPTANCE_RECORD_AUTHORIZED
+OWNER_REVIEW_GATE=AFTER_TASK07_C2_BEFORE_TASK08
+TASK_07_STAGE_C2_AUTHORIZATION=GRANTED
+STOP_REASON=TASK07_ACCEPTED_STOP_BEFORE_TASK08
 ```
 
 ## File format contract
