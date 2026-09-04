@@ -41,6 +41,37 @@ const initialMealState: MealEditorState = {
   canPublish: true,
 };
 
+type StaffGuide = {
+  readonly guideId: string;
+  readonly title: string;
+  readonly summary: string;
+  readonly body: string;
+  readonly version: number;
+  readonly status: "PUBLISHED" | "DRAFT";
+  readonly fileRef: string;
+};
+
+const syntheticStaffGuides: readonly StaffGuide[] = [
+  {
+    guideId: "guide-welcome",
+    title: "新成员指南",
+    summary: "模拟数据：介绍报到、校区范围和内部支持入口。",
+    body: "这是一份仅用于管理端预览的虚构内部指南。",
+    version: 2,
+    status: "PUBLISHED",
+    fileRef: "file-ref:/synthetic/new-member-guide.pdf",
+  },
+  {
+    guideId: "guide-routine",
+    title: "模拟值班流程",
+    summary: "模拟数据：按当前校区查看每日值班准备事项。",
+    body: "这是一份仅用于检索演示的虚构草稿。",
+    version: 1,
+    status: "DRAFT",
+    fileRef: "file-ref:/synthetic/duty-routine.pdf",
+  },
+];
+
 const root = document.querySelector<HTMLDivElement>("#app");
 if (root === null) throw new Error("Admin web root is missing.");
 const appRoot = root;
@@ -51,6 +82,8 @@ let teacherState = initialTeacherState;
 let teacherNotice = "教师介绍草稿尚未发布";
 let mealState = initialMealState;
 let mealNotice = "餐食草稿尚未发布";
+let staffGuideQuery = "";
+let selectedStaffGuideId = syntheticStaffGuides[0]?.guideId ?? "";
 
 function element<T extends keyof HTMLElementTagNameMap>(tagName: T, className?: string) {
   const element = document.createElement(tagName);
@@ -338,7 +371,125 @@ function renderMeals(): void {
   appRoot.append(shell);
 }
 
+function renderStaffGuides(): void {
+  const matches = syntheticStaffGuides.filter((guide) => {
+    const query = staffGuideQuery.trim().toLocaleLowerCase();
+    return (
+      query.length === 0 || `${guide.title} ${guide.summary}`.toLocaleLowerCase().includes(query)
+    );
+  });
+  const selectedGuide =
+    matches.find((guide) => guide.guideId === selectedStaffGuideId) ?? matches[0] ?? null;
+  if (selectedGuide !== null) selectedStaffGuideId = selectedGuide.guideId;
+
+  document.title = "新成员指南";
+  appRoot.replaceChildren();
+
+  const shell = element("div", "shell");
+  const topbar = element("header", "topbar");
+  const brand = element("strong", "brand");
+  brand.textContent = "机构管理工作台";
+  const scope = element("span");
+  scope.textContent = "模拟租户 · 当前校区 · 内部内容";
+  topbar.append(brand, scope);
+
+  const main = element("main");
+  const headingRow = element("div", "heading-row");
+  const heading = element("div");
+  const title = element("h1");
+  title.textContent = "新成员指南";
+  const subtitle = element("p");
+  subtitle.textContent = "检索当前校区允许查看的内部指南与版本状态";
+  heading.append(title, subtitle);
+  const status = element("div", "status");
+  status.textContent = "仅显示模拟数据，不连接正式服务";
+  headingRow.append(heading, status);
+
+  const workspace = element("div", "workspace");
+  const listPanel = element("section", "panel");
+  const listTitle = element("h2");
+  listTitle.textContent = "指南列表";
+  const searchLabel = element("label");
+  searchLabel.textContent = "搜索指南";
+  const search = element("input");
+  search.type = "search";
+  search.value = staffGuideQuery;
+  search.placeholder = "输入标题或摘要";
+  search.addEventListener("input", () => {
+    staffGuideQuery = search.value;
+    render();
+  });
+  listPanel.append(listTitle, searchLabel, search);
+
+  const list = element("ul", "block-list");
+  for (const guide of matches) {
+    const item = element("li");
+    const button = element("button");
+    button.type = "button";
+    button.textContent = `${guide.title} · v${guide.version} · ${guide.status}`;
+    button.addEventListener("click", () => {
+      selectedStaffGuideId = guide.guideId;
+      render();
+    });
+    item.append(button);
+    list.append(item);
+  }
+  if (matches.length === 0) {
+    const empty = element("p", "summary");
+    empty.textContent = "没有匹配的模拟指南";
+    listPanel.append(empty);
+  }
+  listPanel.append(list);
+
+  const detailPanel = element("section", "panel");
+  const detailTitle = element("h2");
+  detailTitle.textContent = "指南详情";
+  detailPanel.append(detailTitle);
+  if (selectedGuide === null) {
+    const empty = element("p", "summary");
+    empty.textContent = "请选择一条指南查看详情";
+    detailPanel.append(empty);
+  } else {
+    const guideTitle = element("strong");
+    guideTitle.textContent = selectedGuide.title;
+    const summary = element("p", "summary");
+    summary.textContent = selectedGuide.summary;
+    const body = element("p", "summary");
+    body.textContent = selectedGuide.body;
+    const meta = element("dl", "meta");
+    const version = element("div");
+    const versionLabel = element("dt");
+    versionLabel.textContent = "版本";
+    const versionValue = element("dd");
+    versionValue.textContent = `v${selectedGuide.version}`;
+    version.append(versionLabel, versionValue);
+    const stateRow = element("div");
+    const stateLabel = element("dt");
+    stateLabel.textContent = "发布状态";
+    const stateValue = element("dd");
+    stateValue.textContent = selectedGuide.status;
+    stateRow.append(stateLabel, stateValue);
+    const fileRow = element("div");
+    const fileLabel = element("dt");
+    fileLabel.textContent = "批准文件引用";
+    const fileValue = element("dd");
+    fileValue.textContent = selectedGuide.fileRef;
+    fileRow.append(fileLabel, fileValue);
+    meta.append(version, stateRow, fileRow);
+    detailPanel.append(guideTitle, summary, body, meta);
+  }
+
+  workspace.append(listPanel, detailPanel);
+  main.append(headingRow, workspace);
+  shell.append(topbar, main);
+  appRoot.append(shell);
+}
+
 function render(): void {
+  if (window.location.pathname === "/admin/staff-guides") {
+    renderStaffGuides();
+    return;
+  }
   if (window.location.pathname === "/admin/meals") {
     renderMeals();
     return;

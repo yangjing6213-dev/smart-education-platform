@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import fastify from "fastify";
+import { buildServer } from "../../server.js";
 import { registerStaffGuideRoutes } from "../../routes/staff-guides.route.js";
 import {
   GuideService,
@@ -18,6 +19,25 @@ const TENANT_ID = "00000000-0000-4000-8000-000000000001";
 const CAMPUS_ID = "00000000-0000-4000-8000-000000000002";
 const FOREIGN_TENANT_ID = "00000000-0000-4000-8000-000000000004";
 const FOREIGN_CAMPUS_ID = "00000000-0000-4000-8000-000000000005";
+
+const trustedStaffAuthResult = {
+  trusted: true as const,
+  session: {
+    trusted: true as const,
+    status: "ACTIVE" as const,
+    actor_id: ACTOR_ID,
+    expires_at: "2099-01-01T00:00:00.000Z",
+  },
+  identity: { actor_id: ACTOR_ID, display_name: "模拟员工一号" },
+  memberships: [
+    {
+      tenant_id: TENANT_ID,
+      campus_ids: [CAMPUS_ID],
+      status: "ACTIVE" as const,
+      capabilities: ["content:write"] as const,
+    },
+  ],
+} as const;
 
 const staffContext = {
   trusted: true,
@@ -273,6 +293,20 @@ test("staff guide routes deny suspended membership and missing capability", asyn
     } finally {
       await app.close();
     }
+  }
+});
+
+test("buildServer registers staff guide routes with trusted active membership scope", async () => {
+  const app = buildServer({ getTrustedAuthResult: () => trustedStaffAuthResult });
+  try {
+    const response = await app.inject({
+      method: "GET",
+      url: "/staff/guides?query=模拟",
+    });
+    assert.equal(response.statusCode, 200);
+    assert.deepEqual(response.json().data, []);
+  } finally {
+    await app.close();
   }
 });
 

@@ -17,6 +17,9 @@ test("admin-web exposes a runnable static Task 06 entrypoint", () => {
   const page = readFileSync(path.join(root, "dist/pages/home-content.js"), "utf8");
   assert.match(html, /dist\/main\.js/);
   assert.match(entry, /HomeContentPage/);
+  assert.match(entry, /\/admin\/staff-guides/);
+  assert.match(entry, /新成员指南/);
+  assert.match(entry, /模拟数据/);
   assert.match(page, /保存草稿/);
   assert.match(page, /发布/);
 });

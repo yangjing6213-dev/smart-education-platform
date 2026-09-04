@@ -22,6 +22,11 @@ import { ActivityService, type ActivityScope } from "./modules/activities/activi
 import { MealService, type MealScope } from "./modules/meals/meal.service.js";
 import { registerPublicActivityRoutes } from "./routes/public-activities.route.js";
 import { registerPublicMealRoutes } from "./routes/public-meals.route.js";
+import { GuideService } from "./modules/guides/guide.service.js";
+import {
+  registerStaffGuideRoutes,
+  type StaffGuideScopeResolver,
+} from "./routes/staff-guides.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
@@ -45,6 +50,8 @@ export interface ServerOptions {
   readonly getPublicMealScope?: (
     request: FastifyRequest,
   ) => MealScope | undefined | Promise<MealScope | undefined>;
+  readonly guideService?: GuideService;
+  readonly getStaffGuideScope?: StaffGuideScopeResolver;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -88,8 +95,10 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
           : undefined);
       const derivesTask08Campus =
         request.url.startsWith("/admin/activities/") || request.url.startsWith("/admin/meals/");
+      const derivesStaffGuideCampus = request.url.startsWith("/staff/guides");
       const resolvedCampusId =
-        requestedCampusIdValue ?? (derivesTask08Campus ? membership?.campus_ids[0] : undefined);
+        requestedCampusIdValue ??
+        (derivesTask08Campus || derivesStaffGuideCampus ? membership?.campus_ids[0] : undefined);
 
       return {
         trustedActor: request.authContext
@@ -131,6 +140,11 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     app,
     options.mealService ?? new MealService(),
     options.getPublicMealScope,
+  );
+  registerStaffGuideRoutes(
+    app,
+    options.guideService ?? new GuideService(),
+    options.getStaffGuideScope,
   );
   return app;
 }
