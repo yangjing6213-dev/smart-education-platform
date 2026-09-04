@@ -1,12 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
 Status: active plan. Task 01—08 are completed and remain frozen evidence. Task
-08 C2 acceptance is complete and frozen; Task 09 Stage B is authorized but not
-started; Task 09 C1/C2 and Task 10+ remain unauthorized.
+08 C2 acceptance is complete and frozen; Task 09 module evidence exists and
+entry repair is authorized but not started; Task 09 C1/C2 and Task 10+ remain
+unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V15.md`
-(`SHA-256=B9AFFF943AF2EFC7EEBA124DF97DFF9CACF6A13FFE07C6C2B75C515317E8D2A1`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V16.md`
+(`SHA-256=DD69E2F92DDA9CBA867729B07DBDECD099ECE623911AB213D01659E711B57E15`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -22,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under their independent owner gates; Task 08 is now frozen. Task 09 Stage B has explicit implementation authorization but has not started; Task 09 C1/C2 and Task 10+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under their independent owner gates; Task 08 is now frozen. Task 09 original module evidence exists; its entry repair has explicit authorization but has not started. Task 09 C1/C2 and Task 10+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -145,9 +146,9 @@ Task 09 C1/C2 and Task 10+ artifacts are not authorized by the current plan.
 
 ## Task 09 - Newcomer guides
 
-Task 09 Stage A is owner-review passed. Stage B implementation is authorized
-but not started; its exact future files and boundaries are defined by the
-Task 09 contract and plan.
+Task 09 Stage A is owner-review passed. The original four module files exist;
+entry repair is authorized but not started. Its exact repair files and
+boundaries are defined by the Task 09 contract and plan.
 
 - Dependencies: Tasks 05 and 07.
 - Future files: `apps/api/src/modules/guides/guide.service.ts`, `apps/api/src/routes/staff-guides.route.ts`, `apps/user-web/src/pages/staff-guides.tsx`, `apps/api/src/modules/guides/guide.test.ts`.
@@ -156,7 +157,9 @@ Task 09 contract and plan.
 - Red test: visitor access, suspended membership, and a guide outside campus scope must be denied.
 - Implementation: add internal visibility and bounded search filters.
 - Green test: an authorized synthetic staff member can search and read only allowed versions.
-- Commit step: `feat: add scoped newcomer guides`.
+- Original commit: `feat: add scoped newcomer guides`.
+- Repair files: `apps/api/src/server.ts`, `apps/admin-web/src/main.ts`, `apps/api/src/modules/guides/guide.test.ts`, `apps/admin-web/test/home-content.test.mjs`.
+- Repair requirement: call `registerStaffGuideRoutes` from `buildServer` and render a local synthetic `/admin/staff-guides` entry without changing the `/staff/guides` module contract.
 
 ## Task 10 - Teaching resources and search
 
