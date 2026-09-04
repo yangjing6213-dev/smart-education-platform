@@ -1,13 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
 Status: active plan. Task 01—08 are completed and remain frozen evidence. Task
-08 C2 acceptance is complete and frozen; Task 09 module evidence exists and
-entry repair is authorized but not started; Task 09 C1/C2 and Task 10+ remain
-unauthorized.
+08 C2 acceptance is complete and frozen; Task 09 module evidence and entry
+repair are complete and Stage B has passed owner review; Task 09 Stage C1 is
+authorized but not started; Task 09 C2 and Task 10+ remain unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V16.md`
-(`SHA-256=DD69E2F92DDA9CBA867729B07DBDECD099ECE623911AB213D01659E711B57E15`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V17.md`
+(`SHA-256=CF8A20D84EE25F4848E2D3CFE43802AF0BEEE96AE17BF4044038E6B695F92917`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -23,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under their independent owner gates; Task 08 is now frozen. Task 09 original module evidence exists; its entry repair has explicit authorization but has not started. Task 09 C1/C2 and Task 10+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under their independent owner gates; Task 08 is now frozen. Task 09 module evidence and entry repair are complete, Stage B has passed owner review, and Stage C1 is authorized for evidence generation; C2 and Task 10+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -106,12 +106,15 @@ Task 07 Stage B core implementation/test work remains the four files
 `apps/api/src/modules/teachers/public-profile.service.ts`,
 `apps/api/src/routes/public-teachers.route.ts`,
 `apps/admin-web/src/pages/public-teachers.tsx`, and
-`apps/api/src/modules/teachers/public-profile.test.ts`. Under the current V9
-repair and entry-integration authorization, Stage B also includes the exact
-expanded boundary recorded in the Task 07 contract and plan: API/admin entry
-integration, Task07-aware verification, root contract/path tests, package
-script wiring, the V9 authority and its seven active governance references,
-and the Task 07 contract/plan synchronization. This expanded boundary records
+`apps/api/src/modules/teachers/public-profile.test.ts`. Under the historical
+Task 07 repair and entry-integration authorization, Stage B also includes the
+exact expanded boundary recorded in the Task 07 contract and plan: API/admin
+entry integration, Task07-aware verification, root contract/path tests,
+package script wiring, the historical V9 authority and its seven active
+governance references at that time, and the Task 07 contract/plan
+synchronization. The current V17 authority and Task 09 C1 synchronization are
+recorded above and do not reopen this frozen Task 07 boundary. This expanded
+boundary records
 the approved public fields and file-reference boundaries, server-derived
 tenant/campus scope, active membership and capability checks, explicit public
 projection, publication policy, foreign-tenant denial, unpublished/private-
@@ -141,14 +144,17 @@ invalid dates and unsafe media handling, atomic stale-version denial, and
 synthetic-only fixtures. No package script, verifier, lockfile, schema,
 migration, or other shared path was authorized by that Stage B contract. The
 Task 08 C1 evidence and C2 acceptance are now frozen. Task 09 Stage B is
-authorized only within its separate four-file whitelist and has not started;
-Task 09 C1/C2 and Task 10+ artifacts are not authorized by the current plan.
+complete and has passed owner review within its separate four-file repair
+whitelist. Task 09 C1 is authorized only for its three evidence paths; Task 09
+C2 and Task 10+ artifacts are not authorized by the current plan.
 
 ## Task 09 - Newcomer guides
 
-Task 09 Stage A is owner-review passed. The original four module files exist;
-entry repair is authorized but not started. Its exact repair files and
-boundaries are defined by the Task 09 contract and plan.
+Task 09 Stage A is owner-review passed. The original four module files and the
+authorized entry repair are complete, and Stage B has passed owner review.
+Stage C1 is authorized only for its review, detached manifest, and
+deterministic ZIP paths; its exact boundary is defined by the Task 09 contract
+and plan.
 
 - Dependencies: Tasks 05 and 07.
 - Future files: `apps/api/src/modules/guides/guide.service.ts`, `apps/api/src/routes/staff-guides.route.ts`, `apps/user-web/src/pages/staff-guides.tsx`, `apps/api/src/modules/guides/guide.test.ts`.

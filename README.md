@@ -1,6 +1,6 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—08 已完成并冻结，Task 09 原模块证据已存在，入口 repair 已获授权但尚未开始，Task 09 C1/C2 与 Task 10+ 尚未启动且未授权。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—08 已完成并冻结，Task 09 Stage B repair 已实现并通过负责人审阅，Task 09 C1 已获授权但尚未开始，Task 09 C2 与 Task 10+ 尚未启动且未授权。
 
 当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
@@ -8,9 +8,9 @@
 
 - 项目根路径：`C:\Users\HU\Documents\student-care-saas-platform`
 - 工作分支：`feature/phase-1b-task-04-identity-membership`
-- 当前节点：Phase 1B Task 08 C2 acceptance complete；Task 09 原模块证据已存在，入口 repair 已授权但尚未开始，等待 repair owner review gate
-- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_08_C2_ACCEPTANCE_AND_TASK_09_STAGE_B_ENTRY_REPAIR_ONLY`
-- 禁止阶段：Task 09 Stage B repair 之外的后续阶段；Task 09 C1/C2 与 Task 10+ 仍需独立负责人 PASS 和对应授权
+- 当前节点：Phase 1B Task 08 C2 acceptance complete；Task 09 Stage B repair 已通过负责人审阅，等待 C1 review、detached manifest 和 deterministic ZIP
+- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_09_STAGE_C1_ONLY`
+- 禁止阶段：Task 09 C2 与 Task 10+；C1 仅限 V17 三条精确白名单路径
 - 远程推送与部署：禁止
 
 ## 先读顺序
@@ -49,4 +49,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V16.md` 为准（SHA-256：`DD69E2F92DDA9CBA867729B07DBDECD099ECE623911AB213D01659E711B57E15`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2、Task 07 C2 与 Task 08 C2 acceptance 已接受并冻结；Task 09 原模块证据已存在且入口 repair 已授权但尚未开始，Task 09 C1/C2 与 Task 10+ 尚未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V17.md` 为准（SHA-256：`CF8A20D84EE25F4848E2D3CFE43802AF0BEEE96AE17BF4044038E6B695F92917`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2、Task 07 C2 与 Task 08 C2 acceptance 已接受并冻结；Task 09 Stage B repair 已通过负责人审阅，C1 已授权但尚未开始，Task 09 C2 与 Task 10+ 尚未授权。
