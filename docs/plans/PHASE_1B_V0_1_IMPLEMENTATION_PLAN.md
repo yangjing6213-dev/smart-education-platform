@@ -1,13 +1,12 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—08 are completed and remain frozen evidence. Task
-08 C2 acceptance is complete and frozen; Task 09 module evidence and entry
-repair are complete and Stage B has passed owner review; Task 09 Stage C1 is
-authorized but not started; Task 09 C2 and Task 10+ remain unauthorized.
+Status: active plan. Task 01—09 are completed and remain frozen evidence. Task
+08 and Task 09 C2 acceptance records are complete and frozen; Task 10+ remains
+not started and unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V17.md`
-(`SHA-256=CF8A20D84EE25F4848E2D3CFE43802AF0BEEE96AE17BF4044038E6B695F92917`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V18.md`
+(`SHA-256=20157D3F8B0DC997E380E75961BB308E66FCB0BD71214FACA2A713460BC7343E`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -23,7 +22,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under their independent owner gates; Task 08 is now frozen. Task 09 module evidence and entry repair are complete, Stage B has passed owner review, and Stage C1 is authorized for evidence generation; C2 and Task 10+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 and Task 09 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under independent owner gates; both tasks are frozen. Task 10+ remains unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -143,18 +142,18 @@ tenant/campus scope, active membership and capability checks, fail-closed
 invalid dates and unsafe media handling, atomic stale-version denial, and
 synthetic-only fixtures. No package script, verifier, lockfile, schema,
 migration, or other shared path was authorized by that Stage B contract. The
-Task 08 C1 evidence and C2 acceptance are now frozen. Task 09 Stage B is
-complete and has passed owner review within its separate four-file repair
-whitelist. Task 09 C1 is authorized only for its three evidence paths; Task 09
-C2 and Task 10+ artifacts are not authorized by the current plan.
+Task 08 C1 evidence and C2 acceptance are now frozen. Task 09 Stage B, C1
+evidence, and C2 acceptance are complete and accepted under their separate
+boundaries; Task 09 is frozen. Task 10+ is not authorized by the current plan.
 
 ## Task 09 - Newcomer guides
 
-Task 09 Stage A is owner-review passed. The original four module files and the
-authorized entry repair are complete, and Stage B has passed owner review.
-Stage C1 is authorized only for its review, detached manifest, and
-deterministic ZIP paths; its exact boundary is defined by the Task 09 contract
-and plan.
+Task 09 Stage A and Stage B passed owner review. The original four module files
+and authorized entry repair are complete. Stage C1 review, detached manifest,
+and deterministic ZIP passed owner review; Stage C2 acceptance is recorded in
+`docs/project/PHASE_1B_TASK_09_ACCEPTANCE.md` with SHA-256
+`93BC037DEB90D179099F723D86A8409DD486C8D627C1337E734826BC7A70DC62`.
+Task 09 is accepted and frozen.
 
 - Dependencies: Tasks 05 and 07.
 - Future files: `apps/api/src/modules/guides/guide.service.ts`, `apps/api/src/routes/staff-guides.route.ts`, `apps/user-web/src/pages/staff-guides.tsx`, `apps/api/src/modules/guides/guide.test.ts`.

@@ -1,24 +1,24 @@
 # Phase 1B Task 09 Codex Execution Contract
 
 This contract records the reviewed Task 09 Stage A formalization, the existing
-four-file module evidence, the completed entry repair, and the separately
-authorized Stage C1 evidence operation. It does not authorize C2, Task 10+, or
-any path outside the exact C1 whitelist.
+four-file module evidence, the completed entry repair, the owner-reviewed C1
+evidence, and the accepted C2 record. It does not authorize Task 10+ or any
+path outside the exact V18 governance synchronization whitelist.
 
 ## Contract status and authorization
 
 ```text
 TASK_ID=PHASE_1B_TASK_09
 TASK_NAME=NEWCOMER_GUIDES
-TASK_STAGE=STAGE_C1_AUTHORIZED_NOT_STARTED
-TASK_STATUS=OWNER_REVIEW_GATE_BEFORE_C1
+TASK_STAGE=STAGE_C2_ACCEPTED_AND_FROZEN
+TASK_STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD_BEFORE_V17=68d8209e90e48bb3f139173a423f6e768e200fde
-OWNER_AUTHORIZATION_EVIDENCE=Current explicit project-owner authorization for Task 09 V17 governance synchronization and Stage C1 review, detached manifest, and deterministic ZIP dated 2026-09-04; no separate evidence identifier supplied
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V17.md
-ACTIVE_GOVERNANCE_SHA256=CF8A20D84EE25F4848E2D3CFE43802AF0BEEE96AE17BF4044038E6B695F92917
+CURRENT_HEAD_BEFORE_V18=f13a5f11aa20bb9b0fe793abe9270f707c8562d6
+OWNER_AUTHORIZATION_EVIDENCE=Current explicit project-owner authorization for Phase 1B V18 governance synchronization after Task 09 Stage C2 acceptance
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V18.md
+ACTIVE_GOVERNANCE_SHA256=20157D3F8B0DC997E380E75961BB308E66FCB0BD71214FACA2A713460BC7343E
 TASK_05_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_05_ACCEPTANCE.md
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_07_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_07_ACCEPTANCE.md
@@ -31,26 +31,29 @@ TASK_09_STAGE_B_ENTRY_REPAIR_AUTHORIZATION=GRANTED
 TASK_09_STAGE_B_REPAIR_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_09_STAGE_B_STATUS=OWNER_REVIEW_PASSED
 TASK_09_STAGE_C1_AUTHORIZATION=GRANTED
-TASK_09_STAGE_C1_STATUS=AUTHORIZED_NOT_STARTED
-TASK_09_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-TASK_09_STAGE_C2_STATUS=NOT_STARTED
-TASK_09_STARTED=YES_STAGE_C1_AUTHORIZED
+TASK_09_STAGE_C1_STATUS=OWNER_REVIEW_PASSED
+TASK_09_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_09_STAGE_C2_STATUS=ACCEPTED
+TASK_09_STATUS=ACCEPTED_AND_FROZEN
+TASK_09_STARTED=YES_STAGE_C2_ACCEPTED
+TASK_09_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_09_ACCEPTANCE.md
+TASK_09_ACCEPTANCE_SHA256=93BC037DEB90D179099F723D86A8409DD486C8D627C1337E734826BC7A70DC62
+TASK_09_C1_REVIEW_SHA256=11C34F65DC71C458E58E3E79F3F03CFA002398F395123C40BC57C8F07FC3F62A
+TASK_09_C1_MANIFEST_SHA256=AB5613C56062E08D32C1A3C3BD2FFB0806D0C068DEFD5D77E44ACAEECEE7AE90
+TASK_09_C1_ZIP_SHA256=237DA795845AB4848B3553172830759CDE74728F85C9333ABCA5E33873B8F6D4
 TASK_10_PLUS_STARTED=NO
 TASK_10_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
-V17 is the current active governance authority; V16, V15, and V14 remain
-historical and frozen. Task 08 is accepted and frozen. Task 09 Stage A passed
-owner review, the original four module files exist, the entry repair is
-implemented and verified, and Stage B passed owner review. C1 evidence is
-authorized but not started. This authorization does not grant C2 or Task 10+
-authorization.
+V18 is the current active governance authority; V17 and all earlier authorities
+remain historical and frozen. Task 08 is accepted and frozen. Task 09 Stage A
+and Stage B passed owner review, C1 evidence passed owner review, and C2 is
+accepted and frozen. Task 09 acceptance does not grant Task 10+ authorization.
 
 ## Objective and approved source scope
 
 Task 09 is named **Newcomer guides** and depends on Tasks 05 and 07
-(`T05 -> T07`). The approved source plan defines the following future product
-slice:
+(`T05 -> T07`). The approved source plan defines the accepted product slice:
 
 - Input: staff role policy, versioned content, and a file access port.
 - Output: a searchable internal guide list and detail projection.
@@ -59,12 +62,12 @@ slice:
 - Implementation direction: internal visibility and bounded search filters.
 - Green case: an authorized synthetic staff member can search and read only
   allowed versions.
-- Future implementation files:
+- Implementation files:
   `apps/api/src/modules/guides/guide.service.ts`,
   `apps/api/src/routes/staff-guides.route.ts`,
   `apps/user-web/src/pages/staff-guides.tsx`, and
   `apps/api/src/modules/guides/guide.test.ts`.
-- Future implementation commit reference:
+- Implementation commit reference:
   `feat: add scoped newcomer guides`.
 
 The source plan remains the bounded implementation reference. The original
@@ -73,7 +76,7 @@ this synchronization.
 
 ## Bounded security and data contract
 
-The future service must derive `tenant_id` and `campus_id` on the server from
+The accepted service derives `tenant_id` and `campus_id` on the server from
 trusted identity, active membership, allowed campus scope, and the required
 staff capability. Client-supplied tenant, campus, role, membership,
 publication, ownership, version, search-scope, or file-access claims are
@@ -85,7 +88,7 @@ campuses, missing capability, unauthorized versions, unbounded searches, and
 unapproved file references must fail closed. A denied read or write must not
 cause an unintended state change or successful audit result.
 
-The future public-facing boundary is empty for this task: no guide content,
+The accepted public-facing boundary is empty for this task: no guide content,
 staff-only metadata, tenant or campus identifiers, membership data, internal
 version details, moderation fields, audit internals, or file-provider details
 may be exposed to visitors or unauthorized callers. Search must use bounded,
@@ -109,9 +112,9 @@ STAGE_A_FORMAT_GATE=CHECK_ONLY_THE_TWO_STAGE_A_FILES
 STAGE_A_SELF_SHA_POLICY=EXTERNAL_RECEIPT_ONLY_NO_SELF_REFERENCE
 ```
 
-Stage A created only the two contract and plan files above. The earlier V16
-governance synchronization is historical; this active V17 contract permits
-only the C1 evidence paths below and does not authorize C2 or Task 10+.
+Stage A created only the two contract and plan files above. V17 and all earlier
+governance synchronizations are historical and frozen. V18 records the accepted
+Task 09 state and does not authorize Task 10+.
 
 ## Stage B original module boundary
 
@@ -140,7 +143,7 @@ entry pattern and synthetic data. It must not change the `/staff/guides`
 module contract. The repair was committed as `68d8209e90e48bb3f139173a423f6e768e200fde`
 and passed owner review. No other repository path was included in Stage B.
 
-## Stage C1 evidence boundary
+## Stage C1 evidence boundary (HISTORICAL/FROZEN)
 
 ```text
 TASK_09_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_09_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_09.txt|artifacts/review-package/student-care-saas-platform-phase1b-task-09-review-pack-v1.0.zip
@@ -154,14 +157,17 @@ TASK_09_STAGE_C1_DETERMINISTIC_REBUILD=REQUIRED_BYTE_IDENTICAL
 TASK_09_STAGE_C1_TEXT_FORMAT=UTF8_NO_BOM_LF_EXACTLY_ONE_TRAILING_LF
 TASK_09_STAGE_C1_PACKAGE_SOURCE_SCOPE=TASK09_STAGE_A_CONTRACT_AND_PLAN|TASK09_STAGE_B_ORIGINAL_FOUR_FILES|TASK09_STAGE_B_REPAIR_FOUR_FILES|TASK09_C1_REVIEW
 TASK_09_STAGE_C1_PACKAGE_EXCLUSIONS=V17_AUTHORITY|V16_AUTHORITY|V15_AUTHORITY|C1_MANIFEST|C1_ZIP|TASK01_TO_TASK08_EVIDENCE|OLD_TASK06_VERIFIER|PROTECTED_UNTRACKED_EVIDENCE|C2_ACCEPTANCE|TASK10_PLUS|GENERATED_OUTPUT|UNRELATED_FILES
+TASK_09_STAGE_C1_STATUS=OWNER_REVIEW_PASSED
+TASK_09_STAGE_C1_REVIEW_SHA256=11C34F65DC71C458E58E3E79F3F03CFA002398F395123C40BC57C8F07FC3F62A
+TASK_09_STAGE_C1_MANIFEST_SHA256=AB5613C56062E08D32C1A3C3BD2FFB0806D0C068DEFD5D77E44ACAEECEE7AE90
+TASK_09_STAGE_C1_ZIP_SHA256=237DA795845AB4848B3553172830759CDE74728F85C9333ABCA5E33873B8F6D4
 ```
 
-Stage C1 may create only the three exact evidence paths above. The detached
-manifest records each ZIP member's actual SHA-256 and is excluded from the
-archive. The ZIP must use POSIX paths, the specified case-folded Unicode
-ordinal order, the fixed timestamp, and a byte-identical deterministic rebuild.
-The review must report local evidence separately from owner acceptance and
-must stop at `C1_OWNER_REVIEW_GATE_BEFORE_C2`.
+Stage C1 created only the three exact evidence paths above under its historical
+authorization. The detached manifest records each ZIP member's actual SHA-256
+and is excluded from the archive. The ZIP uses POSIX paths, the specified
+case-folded Unicode ordinal order, the fixed timestamp, and a byte-identical
+deterministic rebuild. The C1 evidence passed owner review and remains frozen.
 
 ## Lifecycle and owner gates
 
@@ -169,9 +175,9 @@ must stop at `C1_OWNER_REVIEW_GATE_BEFORE_C2`.
 STAGE_A=CONTRACT_AND_PLAN_FORMALIZATION_COMPLETE
 STAGE_A_OWNER_REVIEW_GATE=AFTER_READ_ONLY_FORMAT_AND_BOUNDARY_CHECKS
 STAGE_B=ORIGINAL_MODULE_EVIDENCE_PLUS_ENTRY_REPAIR_COMPLETE
-STAGE_C1=REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AUTHORIZED_NOT_STARTED
-STAGE_C1_OWNER_REVIEW_GATE=AFTER_STAGE_C1_BEFORE_STAGE_C2
-STAGE_C2=SEPARATE_ACCEPTANCE_RECORD_ONLY_AFTER_EXPLICIT_OWNER_PASS
+STAGE_C1=REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_OWNER_REVIEW_PASSED
+STAGE_C1_OWNER_REVIEW_GATE=PASSED
+STAGE_C2=ACCEPTANCE_RECORD_ACCEPTED_AND_FROZEN
 TASK_09_STAGE_A_AUTHORIZATION=GRANTED
 TASK_09_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_09_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
@@ -179,31 +185,32 @@ TASK_09_STAGE_B_ENTRY_REPAIR_AUTHORIZATION=GRANTED
 TASK_09_STAGE_B_REPAIR_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_09_STAGE_B_STATUS=OWNER_REVIEW_PASSED
 TASK_09_STAGE_C1_AUTHORIZATION=GRANTED
-TASK_09_STAGE_C1_STATUS=AUTHORIZED_NOT_STARTED
-TASK_09_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-TASK_09_STAGE_C2_STATUS=NOT_STARTED
-TASK_09_STARTED=YES_STAGE_C1_AUTHORIZED
+TASK_09_STAGE_C1_STATUS=OWNER_REVIEW_PASSED
+TASK_09_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_09_STAGE_C2_STATUS=ACCEPTED
+TASK_09_STATUS=ACCEPTED_AND_FROZEN
+TASK_09_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_10_PLUS_STARTED=NO
 TASK_10_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK09_STAGE_C1_BEFORE_C2
-STOP_REASON=TASK09_STAGE_C1_OWNER_REVIEW_GATE_BEFORE_C2
+OWNER_REVIEW_GATE=V18_GOVERNANCE_SYNC_BEFORE_TASK10_PLUS
+STOP_REASON=V18_GOVERNANCE_SYNC_OWNER_REVIEW_GATE_BEFORE_TASK10
 ```
 
 The required lifecycle is Stage A -> owner review passed -> original module
 evidence -> entry-repair authorization -> repair implementation and
 verification -> Stage B owner review passed -> C1 review/manifest/
-deterministic ZIP -> owner review gate -> C2 acceptance-only. This authority
-authorizes only C1 evidence and stops before C2.
+deterministic ZIP -> C1 owner review passed -> C2 acceptance-only -> accepted
+and frozen. V18 synchronizes this completed lifecycle and stops before Task 10+.
 
-## V17 C1 verification and stop conditions
+## V18 governance synchronization verification and stop conditions
 
-The V17 C1 verification set is:
+The V18 governance synchronization verification set is:
 
 ```text
-Node crypto SHA-256 for V17, all synchronized active reference files, and C1 artifacts
+Node crypto SHA-256 for V18 and all synchronized active reference files
 .NET SHA256 over the same exact bytes
 UTF-8 without BOM, CR=0, LF-only, exactly one trailing LF for text files
-No self-SHA value in V17 or any synchronized file
+No actual self-SHA value in V18
 git status --short --branch --untracked-files=all
 git rev-parse HEAD
 git diff --check
@@ -212,17 +219,17 @@ git remote
 git worktree list
 ```
 
-The final boundary check must show only V17 and the synchronized active
-reference paths plus the three authorized C1 paths, in addition to the
-already-known protected untracked evidence.
+The final boundary check must show only V18 and the nine synchronized active
+reference paths as the governance commit, in addition to the already-known
+protected untracked evidence.
 Those protected paths are existence/state inputs only and must not be read,
 modified, deleted, moved, staged, packaged, or committed. The index must remain
 clean.
 
-Any V16/V15 drift in historical files, dependency-anchor drift, missing
+Any V17 or earlier authority drift, dependency-anchor drift, missing
 protected evidence, unexpected path, format/hash failure, self-reference,
-missing authorization traceability, real data or secret, C2 artifact, or
-Task 10+ artifact is a fail-closed stop.
+missing authorization traceability, real data or secret, or Task 10+ artifact
+is a fail-closed stop.
 
 ## Prohibited operations
 
@@ -236,13 +243,14 @@ NETWORK_REGISTRY_EXTERNAL_API_PROVIDER=NO
 SERVICE_DATABASE_BROWSER_OR_PRODUCTION_DATA=NO
 BRANCH_OR_WORKTREE=NO
 GOAL_OR_TASK_DISPATCH=NO
-GIT_ADD_STAGE_COMMIT_PUSH_PR_DEPLOY=NO
+GIT_POLICY=V18_EXPLICIT_TEN_PATH_STAGE_AND_SINGLE_GOVERNANCE_COMMIT_ONLY
+PUSH_PR_DEPLOY=NO
 DESIGN_SPEC=NO
 CURRENT_TASK09_STAGE_B_ENTRY_REPAIR=COMPLETE_AND_FROZEN_FOR_C1_REVIEW
-TASK09_STAGE_C1=AUTHORIZED_ONLY
-TASK09_STAGE_C2=NO
+TASK09_STAGE_C1=OWNER_REVIEW_PASSED_AND_FROZEN
+TASK09_STAGE_C2=ACCEPTED_AND_FROZEN
 TASK10_PLUS=NO
-TASK01_TO_TASK08_FREEZENS_OR_V1_TO_V16_MODIFICATION=NO
+TASK01_TO_TASK08_FREEZENS_OR_V1_TO_V17_MODIFICATION=NO
 PROTECTED_UNTRACKED_EVIDENCE_READ_OR_MODIFICATION=NO
 ```
 
