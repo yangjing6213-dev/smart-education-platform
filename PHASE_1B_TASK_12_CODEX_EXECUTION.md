@@ -1,7 +1,7 @@
 # Phase 1B Task 12 Codex Execution Contract
 
 This document preserves the approved Task 12 Stage A contract and records its
-V20 active-lifecycle overlay. The Stage A and Stage B sections below remain the
+V21 active-lifecycle overlay. The Stage A and Stage B sections below remain the
 formal design and implementation record; Task 12 C2 is now accepted and frozen.
 
 ## Contract status and authorization
@@ -14,9 +14,9 @@ STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=e0cefee6417835ee7af24f572dfa76c82a5c3e63
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V20.md
-ACTIVE_GOVERNANCE_SHA256=364E3A1C92CEED9400288B2D158497FFD207DA73F6E3F19CA17475D4208C52FC
+CURRENT_HEAD=dc78c12c59e5be8d42468043e70c749ff00f59ea
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md
+ACTIVE_GOVERNANCE_SHA256=79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B
 TASK_12_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_12_ACCEPTANCE.md
 TASK_12_ACCEPTANCE_SHA256=909A8153FA681F3C5951B236755A0147049F0FA13A9828F8BBB0381D2AA04908
 DEPENDENCY_AUTHORITY_PATH=docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md
@@ -26,8 +26,8 @@ TASK_02_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_03_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_DEPENDENCY_ORDER=T02|T03|T05
-TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
-TASK_10_STAGE_B_STATUS=NOT_STARTED_OWNER_AUTHORIZATION_REQUIRED
+TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_10_STAGE_B_STATUS=AUTHORIZED_PENDING_IMPLEMENTATION
 TASK_12_STAGE_A_AUTHORIZATION=GRANTED
 TASK_12_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_12_STAGE_B_AUTHORIZATION=GRANTED
@@ -45,10 +45,10 @@ TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
-V20 is the current active governance authority. Task 01—09 and Task 12 are
-accepted and frozen. Task 10 Stage A passed owner review but Task 10 Stage B
-remains unauthorized and requires separate owner authorization; Task 11 and
-Task 13+ are not started and not authorized. Task 12 C2 is accepted and frozen.
+V21 is the current active governance authority. Task 01—09 and Task 12 are
+accepted and frozen. Task 10 Stage A passed owner review and Task 10 Stage B is
+authorized pending implementation; Task 11 and Task 13+ are not started and
+not authorized. Task 12 C2 is accepted and frozen.
 The residual integration gap is preserved: `apps/api/src/server.ts` does not
 register `registerFileIntentRoutes`; route repair is not authorized.
 
@@ -168,8 +168,8 @@ TASK_12_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK12_STAGE_C1_BEFORE_C2
-STOP_REASON=TASK12_STAGE_C1_OWNER_REVIEW_GATE_BEFORE_C2
+OWNER_REVIEW_GATE=TASK10_STAGE_B_OWNER_REVIEW_GATE
+STOP_REASON=TASK10_STAGE_B_OWNER_REVIEW_GATE
 ```
 
 The historical V19 C1 boundary produced only these protected evidence files:

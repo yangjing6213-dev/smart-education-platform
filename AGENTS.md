@@ -2,9 +2,9 @@
 
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；Phase 1B Task 01—09、Task 12 已接受并冻结，Task 10 Stage A 已通过负责人审阅但 Stage B 未授权，Task 11 未启动，Task 13+ 未启动且未授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；Phase 1B Task 01—09、Task 12 已接受并冻结，Task 10 Stage A 已通过负责人审阅，Stage B 已获授权待实施，Task 11 未启动，Task 13+ 未启动且未授权。
 
-当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V20.md` 为准（SHA-256：`364E3A1C92CEED9400288B2D158497FFD207DA73F6E3F19CA17475D4208C52FC`）。Task 12 C2 已获授权并接受/冻结；Task 10 Stage B、Task 11、Task 12 route repair 与 Task 13+ 仍未授权。任何新阶段仍须独立负责人授权；不得从已完成任务自动推导后续实现授权。
+当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md` 为准（SHA-256：`79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B`）。Task 12 C2 已获授权并接受/冻结；Task 10 Stage B 已获负责人授权待实施；Task 11、Task 12 route repair 与 Task 13+ 仍未授权。任何新阶段仍须独立负责人授权；不得从已完成任务自动推导后续实现授权。
 
 ## HISTORICAL/FROZEN：Phase 1A 自举与必读顺序
 
@@ -30,7 +30,7 @@ Batch A 的审查 ZIP、根 `SHA256SUMS.txt`、评审报告、文件清单、验
 
 `phase-inputs/phase1a-batch-b/` 是只读输入，必须保持忽略、未跟踪、不进入 Git 或审查包。Batch B 原型只能使用原生 HTML、CSS 和 JavaScript、内存模拟数据、本地 PNG/SVG 与 hash 路由；不得安装依赖、创建 `package.json`、访问外网、使用持久化存储或接入正式服务。
 
-Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V20.md` 为准（SHA-256：`364E3A1C92CEED9400288B2D158497FFD207DA73F6E3F19CA17475D4208C52FC`）：Task 01—09、Task 12 已接受并冻结；Task 10 Stage A 已通过负责人审阅但 Stage B 未授权；Task 11 未启动；Task 12 C2 已接受并冻结，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`，该集成缺口未获修复授权；Task 13+ 未授权。本文件及其他冻结文件中的旧阶段语句仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
+Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md` 为准（SHA-256：`79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B`）：Task 01—09、Task 12 已接受并冻结；Task 10 Stage A 已通过负责人审阅，Stage B 已获授权待实施；Task 11 未启动；Task 12 C2 已接受并冻结，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`，该集成缺口未获修复授权；Task 13+ 未授权。本文件及其他冻结文件中的旧阶段语句仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
 
 ## 锁定产品规则
 

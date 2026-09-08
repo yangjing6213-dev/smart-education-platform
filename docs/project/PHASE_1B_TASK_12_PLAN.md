@@ -26,17 +26,17 @@ STAGE=STAGE_C2_ACCEPTANCE
 STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
-CURRENT_HEAD=e0cefee6417835ee7af24f572dfa76c82a5c3e63
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V20.md
-ACTIVE_GOVERNANCE_SHA256=364E3A1C92CEED9400288B2D158497FFD207DA73F6E3F19CA17475D4208C52FC
+CURRENT_HEAD=dc78c12c59e5be8d42468043e70c749ff00f59ea
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md
+ACTIVE_GOVERNANCE_SHA256=79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B
 DEPENDENCY_AUTHORITY_PATH=docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md
 DEPENDENCY_AUTHORITY_SHA256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007
 TASK_02_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_03_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_05_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_DEPENDENCY_ORDER=T02|T03|T05
-TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
-TASK_10_STAGE_B_STATUS=NOT_STARTED_OWNER_AUTHORIZATION_REQUIRED
+TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
+TASK_10_STAGE_B_STATUS=AUTHORIZED_PENDING_IMPLEMENTATION
 TASK_12_STAGE_A_AUTHORIZATION=GRANTED
 TASK_12_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_12_STAGE_B_AUTHORIZATION=GRANTED
@@ -58,11 +58,12 @@ TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 
 Task 12 Stage A passed owner review. Stage B was separately authorized,
 implemented in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` with parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`, and passed owner review. Under V20,
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`, and passed owner review. Under V21,
 Task 12 C2 is accepted and frozen. The dependency order remains
 `T02 -> T03 -> T05`; Task 02, Task 03, and Task 05 remain accepted and frozen.
-Task 10 Stage B, Task 11, Task 12 route repair, and Task 13+ remain
-unauthorized. The C1 evidence and C2 acceptance remain protected inputs.
+Task 10 Stage B is authorized pending implementation; Task 11, Task 12 route
+repair, and Task 13+ remain unauthorized. The C1 evidence and C2 acceptance
+remain protected inputs.
 
 ## Exact files
 
@@ -176,7 +177,7 @@ Files: none.
 - [ ] Confirm the dependency order is exactly `T02 -> T03 -> T05`.
 - [ ] Confirm Task 12 has a separate owner authorization naming exactly the four
       Stage B files.
-- [ ] Confirm Task 10 Stage B remains unauthorized and no Task 11+ work started.
+- [ ] Confirm Task 10 Stage B authorization remains limited to the six V21 whitelist files and no Task 11+ work started.
 - [ ] Confirm no unknown path, dependency change, package/config change, schema,
       migration, verifier, or protected evidence drift exists.
 
@@ -320,7 +321,7 @@ acceptance does not authorize route repair or Task 13+.
 ## Future evidence lifecycle placeholders
 
 The original lifecycle design is retained here as historical context; the active
-status is governed by V20:
+status is governed by V21:
 
 ```text
 STAGE_C1=REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AFTER_STAGE_B_OWNER_REVIEW
@@ -334,8 +335,8 @@ TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
 The three C1 evidence files and the C2 acceptance record are protected evidence.
-No Task 10 Stage B, Task 11, route repair, or Task 13+ implementation is
-authorized.
+Task 10 Stage B implementation is authorized under V21. Task 11, route repair,
+and Task 13+ implementation remain unauthorized.
 
 ## Current C1 stop condition
 
@@ -355,6 +356,6 @@ TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V20_GOVERNANCE_SYNC_BEFORE_TASK10_STAGE_B
-STOP_REASON=V20_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=TASK10_STAGE_B_OWNER_REVIEW_GATE
+STOP_REASON=TASK10_STAGE_B_OWNER_REVIEW_GATE
 ```
