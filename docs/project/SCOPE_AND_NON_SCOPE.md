@@ -1,14 +1,14 @@
 # 当前 Phase 1B 活动治理与范围
 
-当前 Phase 1B Task 01—09、Task 12 已接受并冻结；Task 10 Stage A 已通过负责人审阅，Stage B 已获授权待实施；Task 11 未启动；Task 13+ 未启动且未授权。
+当前 Phase 1B Task 01—09、Task 12 已接受并冻结；Task 10 Stage A 已通过负责人审阅，Stage B 已完成并通过负责人审阅，Stage C1 已获授权待执行；Task 11 未启动；Task 13+ 未启动且未授权。
 活动治理以
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md`
-为准（SHA-256：`79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B`）。
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V22.md`
+为准（SHA-256：`A326AFD5A21E879C02147F8D0B4D84CA28BA2C740E3EFA9DB976B47C1A3CD136`）。
 
 ```text
-PHASE_1B_STARTED=YES_TASK10_STAGE_B_AUTHORIZED
+PHASE_1B_STARTED=YES_TASK10_STAGE_C1_AUTHORIZED
 PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03|TASK_04|TASK_05|TASK_06|TASK_07|TASK_08|TASK_09|TASK_12
-PHASE_1B_ACTIVE_TASK=TASK_10_STAGE_B
+PHASE_1B_ACTIVE_TASK=TASK_10_STAGE_C1
 TASK_04_STARTED=YES
 TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_STARTED=YES
@@ -61,7 +61,11 @@ TASK_09_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_09_ACCEPTANCE.md
 TASK_09_ACCEPTANCE_SHA256=93BC037DEB90D179099F723D86A8409DD486C8D627C1337E734826BC7A70DC62
 TASK_10_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_10_STAGE_B_STATUS=AUTHORIZED_PENDING_IMPLEMENTATION
+TASK_10_STAGE_B_IMPLEMENTATION_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_10_STAGE_B_COMMIT=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
+TASK_10_STAGE_B_STATUS=OWNER_REVIEW_PASSED
+TASK_10_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_10_STAGE_C1_STATUS=AUTHORIZED_PENDING_EXECUTION
 TASK_10_STAGE_B_EXACT_FILES=apps/api/src/modules/resources/resource.service.ts|apps/api/src/routes/staff-resources.route.ts|apps/user-web/src/pages/resources.tsx|apps/api/src/modules/resources/resource.test.ts|apps/user-web/package.json|apps/user-web/tsconfig.json
 TASK_11_STARTED=NO
 TASK_11_AUTHORIZATION=NOT_GRANTED
@@ -91,7 +95,7 @@ T10_DEPENDENCIES=T05 -> T08 -> T12
 
 本文件下方原有 Phase 1A 范围记录及旧状态整体为 `HISTORICAL/FROZEN`，不与上述当前活动范围竞争，也不因当前 authority 回写。Batch B 冻结记录中的 `PROJECT_OWNER_ACCEPTANCE=PENDING` 是负责人验收前的历史快照；当前 authority 记录后续 `BATCH_B_PROJECT_OWNER_ACCEPTANCE=PASS` 裁决。
 
-此前 V20 按 `CHANGE_CONTROL.md` §5 完成了 `HISTORICAL_FREEZE_PLUS_ACTIVE_REFERENCE_CLOSURE`，该记录保持为历史依据。V20 及更早 authority、Task 01—09 合同、验收、C1 证据和 Batch A/Batch B 固定证据仍为冻结引用；Task 10 Stage A 文件保持受保护快照。Task 12 C2 已接受并冻结，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`，route repair 未获授权。本次 V21 仅将当前活动治理引用统一到 V21，并记录 Task 10 Stage B 已获授权待实施。
+此前 V20 按 `CHANGE_CONTROL.md` §5 完成了 `HISTORICAL_FREEZE_PLUS_ACTIVE_REFERENCE_CLOSURE`，该记录保持为历史依据。V20 及更早 authority、Task 01—09 合同、验收、C1 证据和 Batch A/Batch B 固定证据仍为冻结引用；Task 10 Stage A 文件保持受保护快照。Task 12 C2 已接受并冻结，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`，route repair 未获授权。本次 V22 将当前活动治理引用统一到 V22，并记录 Task 10 Stage B 已通过负责人审阅、Stage C1 已获授权待执行。
 
 # HISTORICAL/FROZEN：Phase 1A 范围与非范围
 

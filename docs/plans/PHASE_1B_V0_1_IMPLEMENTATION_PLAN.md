@@ -1,13 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
 Status: active plan. Task 01—09 and Task 12 are accepted and remain frozen
-evidence. Task 10 Stage A passed owner review and Stage B is authorized pending implementation,
+evidence. Task 10 Stage A passed owner review, Stage B passed owner review, and Stage C1 is authorized pending execution,
 Task 11 and Task 13+ are not started and not authorized. Task 12 C2 is accepted
 and frozen; its route integration repair remains unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md`
-(`SHA-256=79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V22.md`
+(`SHA-256=A326AFD5A21E879C02147F8D0B4D84CA28BA2C740E3EFA9DB976B47C1A3CD136`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -23,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—09 and Task 12 are accepted and frozen increments with their separate implementation and acceptance records. Task 10 Stage A passed owner review, Task 11 is not started, and Task 12 Stage B implementation and C2 acceptance passed owner review. V21 records Task 12 as accepted and frozen and Task 10 Stage B as authorized pending implementation; Task 11, Task 12 route repair, and Task 13+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—09 and Task 12 are accepted and frozen increments with their separate implementation and acceptance records. Task 10 Stage A passed owner review, Task 11 is not started, and Task 12 Stage B implementation and C2 acceptance passed owner review. V22 records Task 12 as accepted and frozen, Task 10 Stage B as owner-reviewed, and Task 10 Stage C1 as authorized pending execution; Task 11, Task 12 route repair, and Task 13+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -145,8 +145,8 @@ synthetic-only fixtures. No package script, verifier, lockfile, schema,
 migration, or other shared path was authorized by that Stage B contract. The
 Task 08 C1 evidence and C2 acceptance are now frozen. Task 09 Stage B, C1
 evidence, and C2 acceptance are complete and accepted under their separate
-boundaries; Task 09 is frozen. Task 10 Stage B is authorized pending
-implementation under V21; Task 11 is not started and Task 13+ is not authorized
+boundaries; Task 09 is frozen. Task 10 Stage B passed owner review and Task 10
+Stage C1 is authorized pending execution under V22; Task 11 is not started and Task 13+ is not authorized
 by the current plan.
 
 ## Task 09 - Newcomer guides
@@ -207,11 +207,11 @@ Task 09 is accepted and frozen.
 
 Task 12 Stage A passed owner review. Stage B was implemented and passed owner
 review in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` (parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V21 authority,
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V22 authority,
 Task 12 C2 is accepted and frozen. The residual integration finding remains:
 `apps/api/src/server.ts` does not register the Task 12 route module, and route
-repair is not authorized. Task 10 Stage B is authorized pending implementation;
-Task 11 and Task 13+ remain unauthorized.
+repair is not authorized. Task 10 Stage B passed owner review and Task 10 Stage
+C1 is authorized pending execution; Task 11 and Task 13+ remain unauthorized.
 
 ```text
 TASK_12_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_12_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_12.txt|artifacts/review-package/student-care-platform-phase1b-task-12-review-pack-v1.0.zip
@@ -223,13 +223,17 @@ TASK_12_STAGE_C2_STATUS=ACCEPTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
 TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_10_STAGE_B_STATUS=AUTHORIZED_PENDING_IMPLEMENTATION
+TASK_10_STAGE_B_IMPLEMENTATION_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_10_STAGE_B_COMMIT=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
+TASK_10_STAGE_B_STATUS=OWNER_REVIEW_PASSED
+TASK_10_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_10_STAGE_C1_STATUS=AUTHORIZED_PENDING_EXECUTION
 TASK_10_STAGE_B_EXACT_FILES=apps/api/src/modules/resources/resource.service.ts|apps/api/src/routes/staff-resources.route.ts|apps/user-web/src/pages/resources.tsx|apps/api/src/modules/resources/resource.test.ts|apps/user-web/package.json|apps/user-web/tsconfig.json
 TASK_11_STARTED=NO
 TASK_11_AUTHORIZATION=NOT_GRANTED
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK10_STAGE_B_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=TASK10_STAGE_C1_BEFORE_C2
 ```
 
 ## Task 13 - Visitor user web

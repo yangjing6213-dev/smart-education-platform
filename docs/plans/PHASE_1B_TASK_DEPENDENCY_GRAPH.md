@@ -1,14 +1,14 @@
 # Phase 1B V0.1 Task Dependency Graph
 
 Status: active planned graph. Task 01—09 and Task 12 are accepted and frozen.
-Task 10 Stage A passed owner review and Stage B is authorized pending implementation. Task 11
+Task 10 Stage A passed owner review, Stage B passed owner review, and Stage C1 is authorized pending execution. Task 11
 and Task 13+ are not started and not authorized. Task 12 route repair remains
 unauthorized because `apps/api/src/server.ts` does not register
 `registerFileIntentRoutes`.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V21.md`
-(`SHA-256=79785F5FFCAE1BD8622FB7794B42A3422F7FC6948F2F7AB288D2448166A7463B`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V22.md`
+(`SHA-256=A326AFD5A21E879C02147F8D0B4D84CA28BA2C740E3EFA9DB976B47C1A3CD136`).
 Dependency authority:
 `docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md`
 (`SHA-256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007`).
@@ -17,9 +17,9 @@ dependency authority SHA is historical dependency evidence; it does not
 authorize `/goal`, Task 06, or any later implementation.
 
 ```text
-PHASE_1B_STARTED=YES_TASK10_STAGE_B_AUTHORIZED
+PHASE_1B_STARTED=YES_TASK10_STAGE_C1_AUTHORIZED
 PHASE_1B_COMPLETED_TASKS=TASK_01|TASK_02|TASK_03|TASK_04|TASK_05|TASK_06|TASK_07|TASK_08|TASK_09|TASK_12
-PHASE_1B_ACTIVE_TASK=TASK_10_STAGE_B
+PHASE_1B_ACTIVE_TASK=TASK_10_STAGE_C1
 TASK_04_STARTED=YES
 TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_05_STARTED=YES
@@ -71,7 +71,11 @@ TASK_09_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_09_ACCEPTANCE.md
 TASK_09_ACCEPTANCE_SHA256=93BC037DEB90D179099F723D86A8409DD486C8D627C1337E734826BC7A70DC62
 TASK_10_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
-TASK_10_STAGE_B_STATUS=AUTHORIZED_PENDING_IMPLEMENTATION
+TASK_10_STAGE_B_IMPLEMENTATION_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_10_STAGE_B_COMMIT=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
+TASK_10_STAGE_B_STATUS=OWNER_REVIEW_PASSED
+TASK_10_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_10_STAGE_C1_STATUS=AUTHORIZED_PENDING_EXECUTION
 TASK_10_STAGE_B_EXACT_FILES=apps/api/src/modules/resources/resource.service.ts|apps/api/src/routes/staff-resources.route.ts|apps/user-web/src/pages/resources.tsx|apps/api/src/modules/resources/resource.test.ts|apps/user-web/package.json|apps/user-web/tsconfig.json
 TASK_11_STARTED=NO
 TASK_11_AUTHORIZATION=NOT_GRANTED
