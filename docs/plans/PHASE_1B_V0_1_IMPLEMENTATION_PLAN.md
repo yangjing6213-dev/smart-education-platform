@@ -1,12 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—09 are completed and remain frozen evidence. Task
-08 and Task 09 C2 acceptance records are complete and frozen; Task 10+ remains
-not started and unauthorized.
+Status: active plan. Task 01—09 are accepted and remain frozen evidence. Task 10
+Stage A passed owner review but Stage B remains unauthorized, Task 11 is not
+started, and Task 12 Stage B passed owner review with Stage C1 authorized.
+Task 12 C2 and Task 13+ remain unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V18.md`
-(`SHA-256=20157D3F8B0DC997E380E75961BB308E66FCB0BD71214FACA2A713460BC7343E`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V19.md`
+(`SHA-256=9A6C417329E8A95372DBC39D1EF1F83F1A634E10C456FCA9F9C01AF6D6DA7D19`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -22,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—07 are completed and frozen increments with their separate implementation and acceptance records. Task 08 and Task 09 Stage B implementation, C1 evidence, and C2 acceptance are completed and accepted under independent owner gates; both tasks are frozen. Task 10+ remains unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—09 are accepted and frozen increments with their separate implementation and acceptance records. Task 10 Stage A passed owner review, Task 11 is not started, and Task 12 Stage B implementation passed owner review. V19 authorizes only Task 12 C1 evidence; Task 12 C2 and Task 13+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -111,8 +112,8 @@ exact expanded boundary recorded in the Task 07 contract and plan: API/admin
 entry integration, Task07-aware verification, root contract/path tests,
 package script wiring, the historical V9 authority and its seven active
 governance references at that time, and the Task 07 contract/plan
-synchronization. The current V17 authority and Task 09 C1 synchronization are
-recorded above and do not reopen this frozen Task 07 boundary. This expanded
+synchronization. The historical V17 authority and Task 09 C1 synchronization
+are recorded above and do not reopen this frozen Task 07 boundary. This expanded
 boundary records
 the approved public fields and file-reference boundaries, server-derived
 tenant/campus scope, active membership and capability checks, explicit public
@@ -144,7 +145,9 @@ synthetic-only fixtures. No package script, verifier, lockfile, schema,
 migration, or other shared path was authorized by that Stage B contract. The
 Task 08 C1 evidence and C2 acceptance are now frozen. Task 09 Stage B, C1
 evidence, and C2 acceptance are complete and accepted under their separate
-boundaries; Task 09 is frozen. Task 10+ is not authorized by the current plan.
+boundaries; Task 09 is frozen. Task 10 Stage B remains unauthorized pending
+Task 12 acceptance; Task 11 is not started and Task 13+ is not authorized by
+the current plan.
 
 ## Task 09 - Newcomer guides
 
@@ -200,6 +203,23 @@ Task 09 is accepted and frozen.
 - Implementation: implement a storage port with a provider fake first; keep COS credentials outside source.
 - Green test: valid synthetic image passes fake scan and foreign object access remains denied.
 - Commit step: `feat: add scoped file storage adapter boundary`.
+
+Task 12 Stage A passed owner review. Stage B was implemented and passed owner
+review in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` (parent
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V19 authority,
+Stage C1 is authorized to create only a review, detached manifest, and
+deterministic ZIP. The review must preserve the residual integration finding
+that `apps/api/src/server.ts` does not register the Task 12 route module.
+Task 12 C2 and Task 13+ remain unauthorized.
+
+```text
+TASK_12_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_12_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_12.txt|artifacts/review-package/student-care-platform-phase1b-task-12-review-pack-v1.0.zip
+TASK_12_STAGE_C1_MEMBER_COUNT=10
+TASK_12_STAGE_C1_FIRST_MEMBER=apps/api/package.json
+TASK_12_STAGE_C1_FIXED_TIMESTAMP=1980-01-01T00:00:00
+TASK_12_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+OWNER_REVIEW_GATE=TASK12_STAGE_C1_BEFORE_C2
+```
 
 ## Task 13 - Visitor user web
 

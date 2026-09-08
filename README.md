@@ -1,6 +1,6 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—08 已完成并冻结，Task 09 Stage B repair、C1 evidence 和 C2 acceptance 已完成并接受/冻结，Task 10+ 尚未启动且未授权。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—09 已接受并冻结，Task 10 Stage A 已通过负责人审阅但 Stage B 未授权，Task 12 Stage B 已完成并通过负责人审阅，Task 12 Stage C1 已授权。
 
 当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
@@ -8,9 +8,9 @@
 
 - 项目根路径：`C:\Users\HU\Documents\student-care-saas-platform`
 - 工作分支：`feature/phase-1b-task-04-identity-membership`
-- 当前节点：Phase 1B Task 09 C2 acceptance complete and frozen；Task 10+ remains owner-gated
-- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_09_C2_ACCEPTED_AND_FROZEN`
-- 禁止阶段：Task 10+；后续任务必须有独立合同、负责人审阅/批准和单独实现授权
+- 当前节点：Phase 1B Task 12 Stage C1 authorized after Stage B owner review
+- 当前治理状态：`PHASE_1B_STARTED=YES_FOR_TASK_01_TO_TASK_09_ACCEPTED_AND_TASK_12_STAGE_C1_AUTHORIZED`
+- 禁止阶段：Task 10 Stage B、Task 11、Task 12 C2、Task 13+；后续阶段必须有独立负责人授权
 - 远程推送与部署：禁止
 
 ## 先读顺序
@@ -49,4 +49,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V18.md` 为准（SHA-256：`20157D3F8B0DC997E380E75961BB308E66FCB0BD71214FACA2A713460BC7343E`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 06 C2、Task 07 C2、Task 08 C2 和 Task 09 C2 acceptance 已接受并冻结；Task 10+ 尚未启动且未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V19.md` 为准（SHA-256：`9A6C417329E8A95372DBC39D1EF1F83F1A634E10C456FCA9F9C01AF6D6DA7D19`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—09 已接受并冻结；Task 12 Stage B 已通过负责人审阅，Stage C1 已授权；C2 和 Task 13+ 未授权。
