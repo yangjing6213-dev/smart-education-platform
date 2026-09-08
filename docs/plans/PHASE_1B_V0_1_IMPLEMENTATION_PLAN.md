@@ -1,13 +1,13 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—09 are accepted and remain frozen evidence. Task 10
-Stage A passed owner review but Stage B remains unauthorized, Task 11 is not
-started, and Task 12 Stage B passed owner review with Stage C1 authorized.
-Task 12 C2 and Task 13+ remain unauthorized.
+Status: active plan. Task 01—09 and Task 12 are accepted and remain frozen
+evidence. Task 10 Stage A passed owner review but Stage B remains unauthorized,
+Task 11 and Task 13+ are not started and not authorized. Task 12 C2 is accepted
+and frozen; its route integration repair remains unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V19.md`
-(`SHA-256=9A6C417329E8A95372DBC39D1EF1F83F1A634E10C456FCA9F9C01AF6D6DA7D19`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V20.md`
+(`SHA-256=364E3A1C92CEED9400288B2D158497FFD207DA73F6E3F19CA17475D4208C52FC`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -23,7 +23,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—09 are accepted and frozen increments with their separate implementation and acceptance records. Task 10 Stage A passed owner review, Task 11 is not started, and Task 12 Stage B implementation passed owner review. V19 authorizes only Task 12 C1 evidence; Task 12 C2 and Task 13+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—09 and Task 12 are accepted and frozen increments with their separate implementation and acceptance records. Task 10 Stage A passed owner review, Task 11 is not started, and Task 12 Stage B implementation and C2 acceptance passed owner review. V20 records Task 12 as accepted and frozen; Task 10 Stage B, Task 11, Task 12 route repair, and Task 13+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -145,8 +145,8 @@ synthetic-only fixtures. No package script, verifier, lockfile, schema,
 migration, or other shared path was authorized by that Stage B contract. The
 Task 08 C1 evidence and C2 acceptance are now frozen. Task 09 Stage B, C1
 evidence, and C2 acceptance are complete and accepted under their separate
-boundaries; Task 09 is frozen. Task 10 Stage B remains unauthorized pending
-Task 12 acceptance; Task 11 is not started and Task 13+ is not authorized by
+boundaries; Task 09 is frozen. Task 10 Stage B remains unauthorized and requires
+separate owner authorization; Task 11 is not started and Task 13+ is not authorized by
 the current plan.
 
 ## Task 09 - Newcomer guides
@@ -206,19 +206,28 @@ Task 09 is accepted and frozen.
 
 Task 12 Stage A passed owner review. Stage B was implemented and passed owner
 review in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` (parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V19 authority,
-Stage C1 is authorized to create only a review, detached manifest, and
-deterministic ZIP. The review must preserve the residual integration finding
-that `apps/api/src/server.ts` does not register the Task 12 route module.
-Task 12 C2 and Task 13+ remain unauthorized.
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V20 authority,
+Task 12 C2 is accepted and frozen. The residual integration finding remains:
+`apps/api/src/server.ts` does not register the Task 12 route module, and route
+repair is not authorized. Task 10 Stage B, Task 11, and Task 13+ remain
+unauthorized.
 
 ```text
 TASK_12_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_12_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_12.txt|artifacts/review-package/student-care-platform-phase1b-task-12-review-pack-v1.0.zip
 TASK_12_STAGE_C1_MEMBER_COUNT=10
 TASK_12_STAGE_C1_FIRST_MEMBER=apps/api/package.json
 TASK_12_STAGE_C1_FIXED_TIMESTAMP=1980-01-01T00:00:00
-TASK_12_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK12_STAGE_C1_BEFORE_C2
+TASK_12_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_12_STAGE_C2_STATUS=ACCEPTED
+TASK_12_STATUS=ACCEPTED_AND_FROZEN
+TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
+TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=NOT_GRANTED
+TASK_10_STAGE_B_STATUS=NOT_STARTED_OWNER_AUTHORIZATION_REQUIRED
+TASK_11_STARTED=NO
+TASK_11_AUTHORIZATION=NOT_GRANTED
+TASK_13_PLUS_STARTED=NO
+TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
+OWNER_REVIEW_GATE=V20_GOVERNANCE_SYNC_BEFORE_TASK10_STAGE_B
 ```
 
 ## Task 13 - Visitor user web
