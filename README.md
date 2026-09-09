@@ -1,6 +1,6 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—10、Task 12 已接受并冻结，Task 11 未启动，Task 13+ 未授权。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—12 已接受并冻结，Task 12 新工作未启动，Task 13+ 未授权。
 
 当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
@@ -8,13 +8,17 @@
 
 - 项目根路径：`C:\Users\HU\Documents\student-care-saas-platform`
 - 工作分支：`feature/phase-1b-task-04-identity-membership`
-- 当前节点：Phase 1B Task 10 C2 accepted and frozen; stopped before Task 11
-- 当前治理状态：`PHASE_1B_STARTED=YES_TASK10_C2_ACCEPTED`
+- 当前节点：Phase 1B Task 11 C2 accepted and frozen; stopped before Task 12 new work
+- 当前治理状态：`PHASE_1B_STARTED=YES_TASK11_C2_ACCEPTED`
 - Task 10 锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
   `TASK_10_STATUS=ACCEPTED_AND_FROZEN`、
   `TASK_10_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_10_ACCEPTANCE.md`、
   `TASK_10_ACCEPTANCE_SHA256=4628B2BADB28CF6E5A065AD252B4A1E934D199A1A911D9DE6DEC07313064B657`
-- 禁止阶段：Task 11、Task 12 route repair、Task 13+；后续阶段必须有独立负责人授权
+- Task 11 锚点：`TASK_11_STAGE_C2_STATUS=ACCEPTED`、
+  `TASK_11_STATUS=ACCEPTED_AND_FROZEN`、
+  `TASK_11_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_11_ACCEPTANCE.md`、
+  `TASK_11_ACCEPTANCE_SHA256=4482B3B1914B3A78886487854A54C2732CDF688BB59418C88570E32F204B4FCD`
+- 禁止阶段：Task 12 new work、Task 12 route repair、Task 13+；后续阶段必须有独立负责人授权
 - 远程推送与部署：禁止
 
 ## 先读顺序
@@ -53,4 +57,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V23.md` 为准（SHA-256：`3BA4616D2081488FB4609B0677314773EC366115DDC28E3F5CCDE7B7163082C2`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—10、Task 12 已接受并冻结；Task 12 C2 已接受，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`；Task 11、Task 12 route repair 与 Task 13+ 未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V24.md` 为准（SHA-256：`209124CDD9FBB355A9C29610E97439CCBC847A3F5CA033575B14646C7974F833`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—12 已接受并冻结；Task 12 C2 已接受，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`；Task 12 新工作、Task 12 route repair 与 Task 13+ 未授权。
