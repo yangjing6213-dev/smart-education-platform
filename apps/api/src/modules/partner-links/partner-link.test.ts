@@ -17,15 +17,53 @@ const TENANT_ID = "00000000-0000-4000-8000-000000000001";
 const CAMPUS_ID = "00000000-0000-4000-8000-000000000002";
 const FOREIGN_TENANT_ID = "00000000-0000-4000-8000-000000000004";
 const FOREIGN_CAMPUS_ID = "00000000-0000-4000-8000-000000000005";
+const MEMBERSHIP_ID = "membership-1";
 
-const staffContext = {
+function scopeFingerprintFor(context: {
+  readonly actorId: string;
+  readonly scope: { readonly tenantId: string; readonly campusId: string };
+  readonly allowedScopes: readonly { readonly tenantId: string; readonly campusId: string }[];
+  readonly membershipId: string;
+  readonly membershipStatus: "ACTIVE";
+  readonly membershipTenantId: string;
+  readonly membershipCampusIds: readonly string[];
+  readonly capabilities: readonly string[];
+  readonly roles?: readonly string[];
+}): string {
+  return JSON.stringify({
+    actorId: context.actorId,
+    tenantId: context.scope.tenantId,
+    campusId: context.scope.campusId,
+    allowedScopes: context.allowedScopes
+      .map((scope) => [scope.tenantId, scope.campusId])
+      .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right))),
+    membershipId: context.membershipId,
+    membershipStatus: context.membershipStatus,
+    membershipTenantId: context.membershipTenantId,
+    membershipCampusIds: [...context.membershipCampusIds].sort(),
+    capabilities: [...context.capabilities].sort(),
+    roles: [...(context.roles ?? context.capabilities)].sort(),
+  });
+}
+
+const staffContextBase = {
   trusted: true,
   actorId: ACTOR_ID,
   activeMembership: true,
   scope: { tenantId: TENANT_ID, campusId: CAMPUS_ID },
   allowedScopes: [{ tenantId: TENANT_ID, campusId: CAMPUS_ID }],
+  membershipId: MEMBERSHIP_ID,
+  membershipStatus: "ACTIVE",
+  membershipTenantId: TENANT_ID,
+  membershipCampusIds: [CAMPUS_ID],
   capabilities: ["content:write"],
   roles: ["content:write"],
+  requestCorrelationId: "req:staff",
+} as const;
+
+const staffContext = {
+  ...staffContextBase,
+  scopeFingerprint: scopeFingerprintFor(staffContextBase),
 } as const satisfies PartnerLinkActorContext;
 
 const approvedLink = {
@@ -81,11 +119,13 @@ function makeService(
 function makeRouteApp(
   service: PartnerLinkService,
   membership: {
+    readonly membership_id?: string;
     readonly tenant_id: string;
     readonly campus_ids: readonly string[];
     readonly status: "ACTIVE" | "SUSPENDED";
     readonly capabilities: readonly string[];
   } = {
+    membership_id: MEMBERSHIP_ID,
     tenant_id: TENANT_ID,
     campus_ids: [CAMPUS_ID],
     status: "ACTIVE",
@@ -249,6 +289,133 @@ test("entry handoff is short lived, scope bound, single use, and audited", () =>
       message: "Partner link was not found in the allowed scope.",
     },
   });
+});
+
+test("handoff binds the partner-link version and denies changed versions", () => {
+  const events: PartnerLinkAuditEvent[] = [];
+  let currentRecord: PartnerLinkRecord = approvedLink;
+  const repository: PartnerLinkRepository = {
+    get: (scope, linkId) =>
+      scope.tenantId === TENANT_ID && scope.campusId === CAMPUS_ID && linkId === currentRecord.id
+        ? currentRecord
+        : undefined,
+    list: () => [currentRecord],
+  };
+  const service = new PartnerLinkService(repository, {
+    onAuditEvent: (event) => events.push(event),
+  });
+  const issued = service.issueEntry(
+    { ...staffContext, requestCorrelationId: "req:version" },
+    "partner-link-1",
+  );
+
+  assert.equal(issued.ok, true);
+  if (!issued.ok) return;
+  currentRecord = { ...approvedLink, version: approvedLink.version + 1 };
+
+  const denied = service.consumeHandoff(
+    { ...staffContext, requestCorrelationId: "req:version" },
+    issued.data.handoffToken,
+  );
+  assert.deepEqual(denied, {
+    ok: false,
+    error: {
+      code: "NOT_FOUND_SCOPED",
+      message: "Partner link was not found in the allowed scope.",
+    },
+  });
+  assert.equal(events.filter((event) => event.eventType === "ENTRY_CONSUMED").length, 0);
+  assert.deepEqual(events.at(-1), {
+    eventType: "DENIED",
+    action: "CONSUME_HANDOFF",
+    result: "NOT_FOUND_SCOPED",
+    tenantId: TENANT_ID,
+    campusId: CAMPUS_ID,
+    actorReference: ACTOR_ID,
+    linkId: "partner-link-1",
+    requestCorrelationId: "req:version",
+    eventTime: events.at(-1)?.eventTime,
+  });
+});
+
+test("handoff binds membership identity and complete trusted scope fingerprint", () => {
+  const events: PartnerLinkAuditEvent[] = [];
+  const service = makeService(events);
+  const issued = service.issueEntry(
+    { ...staffContext, requestCorrelationId: "req:scope" },
+    "partner-link-1",
+  );
+
+  assert.equal(issued.ok, true);
+  if (!issued.ok) return;
+
+  const changedMembership = {
+    ...staffContext,
+    membershipId: "membership-2",
+    scopeFingerprint: scopeFingerprintFor({
+      ...staffContext,
+      membershipId: "membership-2",
+    }),
+    requestCorrelationId: "req:scope-membership",
+  };
+  assert.equal(service.consumeHandoff(changedMembership, issued.data.handoffToken).ok, false);
+  assert.equal(events.filter((event) => event.eventType === "ENTRY_CONSUMED").length, 0);
+  assert.equal(events.at(-1)?.eventType, "DENIED");
+  assert.equal(events.at(-1)?.action, "CONSUME_HANDOFF");
+  assert.equal(events.at(-1)?.requestCorrelationId, "req:scope-membership");
+
+  const changedFingerprint = {
+    ...staffContext,
+    scopeFingerprint: `${staffContext.scopeFingerprint}:changed`,
+    requestCorrelationId: "req:scope-fingerprint",
+  };
+  assert.equal(service.consumeHandoff(changedFingerprint, issued.data.handoffToken).ok, false);
+  assert.equal(events.at(-1)?.eventType, "DENIED");
+  assert.equal(events.at(-1)?.result, "FORBIDDEN_SCOPE");
+  assert.equal(events.at(-1)?.requestCorrelationId, "req:scope-fingerprint");
+});
+
+test("service denials emit an explicit result, action, and request correlation ID", () => {
+  const events: PartnerLinkAuditEvent[] = [];
+  const service = makeService(events);
+  const denied = service.issueEntry(
+    { ...staffContext, requestCorrelationId: "req:denial" },
+    "partner-link-1",
+    { destination: "https://evil.example.invalid/escape" },
+  );
+
+  assert.equal(denied.ok, false);
+  assert.deepEqual(events.at(-1), {
+    eventType: "DENIED",
+    action: "ISSUE_ENTRY",
+    result: "VALIDATION_FAILED",
+    tenantId: TENANT_ID,
+    campusId: CAMPUS_ID,
+    actorReference: ACTOR_ID,
+    linkId: "partner-link-1",
+    requestCorrelationId: "req:denial",
+    eventTime: events.at(-1)?.eventTime,
+  });
+});
+
+test("route-only denials emit the Fastify request correlation ID", async () => {
+  const events: PartnerLinkAuditEvent[] = [];
+  const app = makeRouteApp(makeService(events));
+  try {
+    const response = await app.inject({
+      method: "GET",
+      url: `/staff/partner-cloud-links?query=工作台&tenant_id=${FOREIGN_TENANT_ID}`,
+    });
+
+    assert.equal(response.statusCode, 400);
+    const denial = events.at(-1);
+    assert.equal(denial?.eventType, "DENIED");
+    assert.equal(denial?.action, "ROUTE_QUERY_VALIDATION");
+    assert.equal(denial?.result, "VALIDATION_FAILED");
+    assert.equal(denial?.requestCorrelationId, response.json().request_id);
+  } finally {
+    await app.close();
+  }
 });
 
 test("staff route derives scope from active membership and rejects client claims", async () => {

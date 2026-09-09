@@ -12,8 +12,14 @@ export interface PartnerLinkActorContext {
   readonly activeMembership: true;
   readonly scope: PartnerLinkScope;
   readonly allowedScopes: readonly PartnerLinkScope[];
+  readonly membershipId: string;
+  readonly membershipStatus: "ACTIVE";
+  readonly membershipTenantId: string;
+  readonly membershipCampusIds: readonly string[];
+  readonly scopeFingerprint: string;
   readonly capabilities: readonly string[];
   readonly roles?: readonly string[];
+  readonly requestCorrelationId: string;
 }
 
 export interface PartnerLinkRecord {
@@ -57,18 +63,76 @@ export interface PartnerLinkEntryProjection extends PartnerLinkProjection {
   readonly expiresAt: string;
 }
 
+export type PartnerLinkAuditAction =
+  | "SEARCH"
+  | "ISSUE_ENTRY"
+  | "CONSUME_HANDOFF"
+  | "ROUTE_QUERY_VALIDATION"
+  | "ROUTE_SCOPE_VALIDATION";
+
 export interface PartnerLinkAuditEvent {
-  readonly eventType: "SEARCHED" | "ENTRY_ISSUED" | "ENTRY_CONSUMED";
+  readonly eventType: "SEARCHED" | "ENTRY_ISSUED" | "ENTRY_CONSUMED" | "DENIED";
+  readonly action: PartnerLinkAuditAction;
+  readonly result: "ALLOWED" | PartnerLinkErrorCode;
   readonly tenantId: string;
   readonly campusId: string;
   readonly actorReference: string;
   readonly linkId?: string;
+  readonly requestCorrelationId: string;
   readonly eventTime: string;
 }
 
 export interface PartnerLinkRepository {
   get(scope: PartnerLinkScope, linkId: string): PartnerLinkRecord | undefined;
   list(scope: PartnerLinkScope): readonly PartnerLinkRecord[];
+}
+
+export interface PartnerLinkScopeFingerprintInput {
+  readonly actorId: string;
+  readonly tenantId: string;
+  readonly campusId: string;
+  readonly allowedScopes: readonly PartnerLinkScope[];
+  readonly membershipId: string;
+  readonly membershipStatus: "ACTIVE";
+  readonly membershipTenantId: string;
+  readonly membershipCampusIds: readonly string[];
+  readonly capabilities: readonly string[];
+  readonly roles?: readonly string[];
+}
+
+export interface PartnerLinkMembershipIdentityInput {
+  readonly actorId: string;
+  readonly tenantId: string;
+  readonly campusIds: readonly string[];
+  readonly membershipStatus: "ACTIVE";
+  readonly capabilities: readonly string[];
+}
+
+export function createPartnerLinkMembershipId(input: PartnerLinkMembershipIdentityInput): string {
+  return `membership:${JSON.stringify({
+    actorId: input.actorId,
+    tenantId: input.tenantId,
+    campusIds: [...input.campusIds].sort(),
+    membershipStatus: input.membershipStatus,
+    capabilities: [...input.capabilities].sort(),
+  })}`;
+}
+
+export function createPartnerLinkScopeFingerprint(input: PartnerLinkScopeFingerprintInput): string {
+  return JSON.stringify({
+    actorId: input.actorId,
+    tenantId: input.tenantId,
+    campusId: input.campusId,
+    allowedScopes: input.allowedScopes
+      .map((scope) => [scope.tenantId, scope.campusId])
+      .sort((left, right) => JSON.stringify(left).localeCompare(JSON.stringify(right))),
+    membershipId: input.membershipId,
+    membershipStatus: input.membershipStatus,
+    membershipTenantId: input.membershipTenantId,
+    membershipCampusIds: [...input.membershipCampusIds].sort(),
+    capabilities: [...input.capabilities].sort(),
+    roles: [...(input.roles ?? input.capabilities)].sort(),
+  });
 }
 
 export class InMemoryPartnerLinkRepository implements PartnerLinkRepository {
@@ -130,9 +194,12 @@ interface HandoffRecord {
   readonly tenantId: string;
   readonly campusId: string;
   readonly actorId: string;
+  readonly membershipId: string;
+  readonly scopeFingerprint: string;
   readonly role: string;
   readonly capability: string;
   readonly policyVersion: string;
+  readonly version: number;
   readonly expiresAt: number;
   consumed: boolean;
 }
@@ -169,10 +236,24 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+function isPartnerLinkScope(value: unknown): value is PartnerLinkScope {
+  return (
+    isRecord(value) &&
+    typeof value.tenantId === "string" &&
+    value.tenantId.length > 0 &&
+    typeof value.campusId === "string" &&
+    value.campusId.length > 0
+  );
+}
+
+function isStringArray(value: unknown): value is readonly string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === "string" && item.length > 0);
+}
+
 function isAuthorized(context: unknown): context is PartnerLinkActorContext {
   if (!isRecord(context)) return false;
   const scope = context.scope;
-  return (
+  if (
     context.trusted === true &&
     context.activeMembership === true &&
     typeof context.actorId === "string" &&
@@ -183,15 +264,41 @@ function isAuthorized(context: unknown): context is PartnerLinkActorContext {
     typeof scope.campusId === "string" &&
     scope.campusId.length > 0 &&
     Array.isArray(context.allowedScopes) &&
+    context.allowedScopes.every(isPartnerLinkScope) &&
     context.allowedScopes.some(
-      (allowed) =>
-        isRecord(allowed) &&
-        allowed.tenantId === scope.tenantId &&
-        allowed.campusId === scope.campusId,
+      (allowed) => allowed.tenantId === scope.tenantId && allowed.campusId === scope.campusId,
     ) &&
-    Array.isArray(context.capabilities) &&
-    context.capabilities.includes(REQUIRED_STAFF_CAPABILITY)
-  );
+    isStringArray(context.capabilities) &&
+    context.capabilities.includes(REQUIRED_STAFF_CAPABILITY) &&
+    typeof context.membershipId === "string" &&
+    context.membershipId.length > 0 &&
+    context.membershipStatus === "ACTIVE" &&
+    typeof context.membershipTenantId === "string" &&
+    context.membershipTenantId === scope.tenantId &&
+    isStringArray(context.membershipCampusIds) &&
+    context.membershipCampusIds.includes(scope.campusId) &&
+    typeof context.scopeFingerprint === "string" &&
+    typeof context.requestCorrelationId === "string" &&
+    context.requestCorrelationId.length > 0 &&
+    (context.roles === undefined || isStringArray(context.roles))
+  ) {
+    return (
+      context.scopeFingerprint ===
+      createPartnerLinkScopeFingerprint({
+        actorId: context.actorId,
+        tenantId: scope.tenantId,
+        campusId: scope.campusId,
+        allowedScopes: context.allowedScopes as PartnerLinkScope[],
+        membershipId: context.membershipId,
+        membershipStatus: context.membershipStatus,
+        membershipTenantId: context.membershipTenantId,
+        membershipCampusIds: context.membershipCampusIds,
+        capabilities: context.capabilities,
+        roles: Array.isArray(context.roles) ? context.roles : context.capabilities,
+      })
+    );
+  }
+  return false;
 }
 
 function rolesFor(context: PartnerLinkActorContext): readonly string[] {
@@ -275,13 +382,59 @@ export class PartnerLinkService {
     this.onAuditEvent = options.onAuditEvent ?? (() => undefined);
   }
 
+  private auditDenied(
+    context: unknown,
+    action: PartnerLinkAuditAction,
+    result: PartnerLinkErrorCode,
+    linkId?: string,
+    requestCorrelationId?: string,
+  ): void {
+    const record = isRecord(context) ? context : undefined;
+    const scope = record !== undefined && isRecord(record.scope) ? record.scope : undefined;
+    this.onAuditEvent({
+      eventType: "DENIED",
+      action,
+      result,
+      tenantId: typeof scope?.tenantId === "string" ? scope.tenantId : "unknown",
+      campusId: typeof scope?.campusId === "string" ? scope.campusId : "unknown",
+      actorReference: typeof record?.actorId === "string" ? record.actorId : "unknown",
+      ...(linkId === undefined ? {} : { linkId }),
+      requestCorrelationId:
+        requestCorrelationId ??
+        (typeof record?.requestCorrelationId === "string"
+          ? record.requestCorrelationId
+          : "unavailable"),
+      eventTime: this.now().toISOString(),
+    });
+  }
+
+  public recordDenial(
+    requestCorrelationId: string,
+    action: PartnerLinkAuditAction,
+    result: PartnerLinkErrorCode,
+    context?: unknown,
+    linkId?: string,
+  ): void {
+    this.auditDenied(context, action, result, linkId, requestCorrelationId);
+  }
+
+  private denied(
+    context: unknown,
+    action: PartnerLinkAuditAction,
+    result: PartnerLinkErrorCode,
+    linkId?: string,
+  ): PartnerLinkError {
+    this.auditDenied(context, action, result, linkId);
+    return failure(result);
+  }
+
   public search(
     context: PartnerLinkActorContext,
     input: PartnerLinkSearchInput,
   ): PartnerLinkResult<readonly PartnerLinkProjection[]> {
-    if (!isAuthorized(context)) return failure("FORBIDDEN_SCOPE");
+    if (!isAuthorized(context)) return this.denied(context, "SEARCH", "FORBIDDEN_SCOPE");
     const parsed = parseSearchInput(input);
-    if (parsed === undefined) return failure("VALIDATION_FAILED");
+    if (parsed === undefined) return this.denied(context, "SEARCH", "VALIDATION_FAILED");
 
     const data = this.repository
       .list(context.scope)
@@ -302,9 +455,12 @@ export class PartnerLinkService {
 
     this.onAuditEvent({
       eventType: "SEARCHED",
+      action: "SEARCH",
+      result: "ALLOWED",
       tenantId: context.scope.tenantId,
       campusId: context.scope.campusId,
       actorReference: context.actorId,
+      requestCorrelationId: context.requestCorrelationId,
       eventTime: this.now().toISOString(),
     });
     return { ok: true, data };
@@ -315,20 +471,28 @@ export class PartnerLinkService {
     linkId: string,
     clientClaims?: unknown,
   ): PartnerLinkResult<PartnerLinkEntryProjection> {
-    if (!isAuthorized(context)) return failure("FORBIDDEN_SCOPE");
-    if (clientClaims !== undefined) return failure("VALIDATION_FAILED");
-    if (!LINK_ID_PATTERN.test(linkId)) return failure("VALIDATION_FAILED");
+    if (!isAuthorized(context)) return this.denied(context, "ISSUE_ENTRY", "FORBIDDEN_SCOPE");
+    if (clientClaims !== undefined) {
+      return this.denied(context, "ISSUE_ENTRY", "VALIDATION_FAILED", linkId);
+    }
+    if (!LINK_ID_PATTERN.test(linkId)) {
+      return this.denied(context, "ISSUE_ENTRY", "VALIDATION_FAILED", linkId);
+    }
 
     const record = this.repository.get(context.scope, linkId);
-    if (record === undefined) return failure("NOT_FOUND_SCOPED");
-    if (!isSafeRecord(record)) return failure("VALIDATION_FAILED");
+    if (record === undefined) {
+      return this.denied(context, "ISSUE_ENTRY", "NOT_FOUND_SCOPED", linkId);
+    }
+    if (!isSafeRecord(record)) {
+      return this.denied(context, "ISSUE_ENTRY", "VALIDATION_FAILED", linkId);
+    }
     if (
       record.publication_status !== "PUBLISHED" ||
       record.enabled_status !== "ENABLED" ||
       record.required_capability !== REQUIRED_STAFF_CAPABILITY ||
       !roleAllows(record, context)
     ) {
-      return failure("NOT_FOUND_SCOPED");
+      return this.denied(context, "ISSUE_ENTRY", "NOT_FOUND_SCOPED", linkId);
     }
 
     const now = this.now();
@@ -341,19 +505,25 @@ export class PartnerLinkService {
       tenantId: context.scope.tenantId,
       campusId: context.scope.campusId,
       actorId: context.actorId,
+      membershipId: context.membershipId,
+      scopeFingerprint: context.scopeFingerprint,
       role,
       capability: record.required_capability,
       policyVersion: record.allowlist_policy_version,
+      version: record.version,
       expiresAt: expiresAt.getTime(),
       consumed: false,
     });
 
     this.onAuditEvent({
       eventType: "ENTRY_ISSUED",
+      action: "ISSUE_ENTRY",
+      result: "ALLOWED",
       tenantId: context.scope.tenantId,
       campusId: context.scope.campusId,
       actorReference: context.actorId,
       linkId: record.id,
+      requestCorrelationId: context.requestCorrelationId,
       eventTime: now.toISOString(),
     });
     return {
@@ -370,21 +540,31 @@ export class PartnerLinkService {
     context: PartnerLinkActorContext,
     token: string,
   ): PartnerLinkResult<PartnerLinkProjection> {
-    if (!isAuthorized(context)) return failure("FORBIDDEN_SCOPE");
-    if (typeof token !== "string" || token.length < 12) return failure("VALIDATION_FAILED");
+    if (!isAuthorized(context)) return this.denied(context, "CONSUME_HANDOFF", "FORBIDDEN_SCOPE");
+    if (typeof token !== "string" || token.length < 12) {
+      return this.denied(context, "CONSUME_HANDOFF", "VALIDATION_FAILED");
+    }
 
     const handoff = this.handoffs.get(token);
-    if (handoff === undefined) return failure("VALIDATION_FAILED");
-    if (handoff.consumed) return failure("HANDOFF_REUSED");
-    if (this.now().getTime() >= handoff.expiresAt) return failure("HANDOFF_EXPIRED");
+    if (handoff === undefined) {
+      return this.denied(context, "CONSUME_HANDOFF", "VALIDATION_FAILED");
+    }
+    if (handoff.consumed) {
+      return this.denied(context, "CONSUME_HANDOFF", "HANDOFF_REUSED", handoff.linkId);
+    }
+    if (this.now().getTime() >= handoff.expiresAt) {
+      return this.denied(context, "CONSUME_HANDOFF", "HANDOFF_EXPIRED", handoff.linkId);
+    }
     if (
       handoff.tenantId !== context.scope.tenantId ||
       handoff.campusId !== context.scope.campusId ||
       handoff.actorId !== context.actorId ||
+      handoff.membershipId !== context.membershipId ||
+      handoff.scopeFingerprint !== context.scopeFingerprint ||
       handoff.capability !== REQUIRED_STAFF_CAPABILITY ||
       !rolesFor(context).includes(handoff.role)
     ) {
-      return failure("FORBIDDEN_SCOPE");
+      return this.denied(context, "CONSUME_HANDOFF", "FORBIDDEN_SCOPE", handoff.linkId);
     }
 
     const record = this.repository.get(context.scope, handoff.linkId);
@@ -393,18 +573,22 @@ export class PartnerLinkService {
       !isSafeRecord(record) ||
       record.publication_status !== "PUBLISHED" ||
       record.enabled_status !== "ENABLED" ||
-      record.allowlist_policy_version !== handoff.policyVersion
+      record.allowlist_policy_version !== handoff.policyVersion ||
+      record.version !== handoff.version
     ) {
-      return failure("NOT_FOUND_SCOPED");
+      return this.denied(context, "CONSUME_HANDOFF", "NOT_FOUND_SCOPED", handoff.linkId);
     }
 
     handoff.consumed = true;
     this.onAuditEvent({
       eventType: "ENTRY_CONSUMED",
+      action: "CONSUME_HANDOFF",
+      result: "ALLOWED",
       tenantId: context.scope.tenantId,
       campusId: context.scope.campusId,
       actorReference: context.actorId,
       linkId: record.id,
+      requestCorrelationId: context.requestCorrelationId,
       eventTime: this.now().toISOString(),
     });
     return { ok: true, data: project(record) };

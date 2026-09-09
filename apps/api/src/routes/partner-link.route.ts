@@ -5,6 +5,10 @@ import type {
   PartnerLinkScope,
   PartnerLinkService,
 } from "../modules/partner-links/partner-link.service.js";
+import {
+  createPartnerLinkMembershipId,
+  createPartnerLinkScopeFingerprint,
+} from "../modules/partner-links/partner-link.service.js";
 
 const FORBIDDEN_QUERY_FIELDS = new Set([
   "actor_id",
@@ -58,24 +62,51 @@ function contextFromRequest(request: FastifyRequest): PartnerLinkActorContext | 
   if (membership === undefined || !membership.capabilities.includes("content:write")) {
     return undefined;
   }
+  const membershipId =
+    isRecord(membership) && typeof membership.membership_id === "string"
+      ? membership.membership_id
+      : createPartnerLinkMembershipId({
+          actorId: scope.actorId,
+          tenantId: membership.tenant_id,
+          campusIds: membership.campus_ids,
+          membershipStatus: "ACTIVE",
+          capabilities: membership.capabilities,
+        });
   const resolvedScope: PartnerLinkScope = {
     tenantId: scope.tenantId,
     campusId: scope.campusId,
   };
+  const allowedScopes = authContext.memberships
+    .filter((candidate) => candidate.status === "ACTIVE" && candidate.tenant_id === scope.tenantId)
+    .flatMap((candidate) =>
+      candidate.campus_ids.map((campusId) => ({ tenantId: scope.tenantId, campusId })),
+    );
+  const roles = membership.capabilities;
   return {
     trusted: true,
     actorId: scope.actorId,
     activeMembership: true,
     scope: resolvedScope,
-    allowedScopes: authContext.memberships
-      .filter(
-        (candidate) => candidate.status === "ACTIVE" && candidate.tenant_id === scope.tenantId,
-      )
-      .flatMap((candidate) =>
-        candidate.campus_ids.map((campusId) => ({ tenantId: scope.tenantId, campusId })),
-      ),
+    allowedScopes,
+    membershipId,
+    membershipStatus: "ACTIVE",
+    membershipTenantId: membership.tenant_id,
+    membershipCampusIds: membership.campus_ids,
     capabilities: membership.capabilities,
-    roles: membership.capabilities,
+    roles,
+    scopeFingerprint: createPartnerLinkScopeFingerprint({
+      actorId: scope.actorId,
+      tenantId: scope.tenantId,
+      campusId: scope.campusId,
+      allowedScopes,
+      membershipId,
+      membershipStatus: "ACTIVE",
+      membershipTenantId: membership.tenant_id,
+      membershipCampusIds: membership.campus_ids,
+      capabilities: membership.capabilities,
+      roles,
+    }),
+    requestCorrelationId: request.id,
   };
 }
 
@@ -134,10 +165,14 @@ export function registerPartnerLinkRoutes(app: FastifyInstance, service: Partner
     { config: { authRequired: true, scopeRequired: true, capabilityRequired: "content:write" } },
     async (request, reply) => {
       if (hasForbiddenClaim(request) || !hasOnlyQueryKeys(request, ["query", "limit"])) {
+        service.recordDenial(request.id, "ROUTE_QUERY_VALIDATION", "VALIDATION_FAILED", undefined);
         return invalid(request, reply);
       }
       const context = contextFromRequest(request);
-      if (context === undefined) return forbidden(request, reply);
+      if (context === undefined) {
+        service.recordDenial(request.id, "ROUTE_SCOPE_VALIDATION", "FORBIDDEN_SCOPE", undefined);
+        return forbidden(request, reply);
+      }
       return sendResult(request, reply, service.search(context, searchInput(request)));
     },
   );
@@ -147,10 +182,26 @@ export function registerPartnerLinkRoutes(app: FastifyInstance, service: Partner
     { config: { authRequired: true, scopeRequired: true, capabilityRequired: "content:write" } },
     async (request, reply) => {
       if (hasForbiddenClaim(request) || !hasOnlyQueryKeys(request, [])) {
+        service.recordDenial(
+          request.id,
+          "ROUTE_QUERY_VALIDATION",
+          "VALIDATION_FAILED",
+          undefined,
+          (request.params as { linkId: string }).linkId,
+        );
         return invalid(request, reply);
       }
       const context = contextFromRequest(request);
-      if (context === undefined) return forbidden(request, reply);
+      if (context === undefined) {
+        service.recordDenial(
+          request.id,
+          "ROUTE_SCOPE_VALIDATION",
+          "FORBIDDEN_SCOPE",
+          undefined,
+          (request.params as { linkId: string }).linkId,
+        );
+        return forbidden(request, reply);
+      }
       const linkId = (request.params as { linkId: string }).linkId;
       return sendResult(request, reply, service.issueEntry(context, linkId));
     },
