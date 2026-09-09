@@ -57,4 +57,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V24.md` 为准（SHA-256：`209124CDD9FBB355A9C29610E97439CCBC847A3F5CA033575B14646C7974F833`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—12 已接受并冻结；Task 12 C2 已接受，但 `apps/api/src/server.ts` 尚未注册 `registerFileIntentRoutes`；Task 12 新工作、Task 12 route repair 与 Task 13+ 未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V25.md` 为准（SHA-256：`D8008CC04ADBAA95DAF9D002B7FAEEDBB598067E71EB576708C9C67BB03CF4D6`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—12 已接受并冻结；Task 12 当前仅执行已授权的最小 route repair，范围为 `apps/api/src/server.ts` 与 `apps/api/src/modules/files/file.test.ts`；Task 13+ 未授权。

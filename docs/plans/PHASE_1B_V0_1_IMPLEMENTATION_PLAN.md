@@ -5,8 +5,8 @@ Task 12 new work and Task 13+ are not started and not authorized. Task 12 C2 is
 accepted and frozen; its route integration repair remains unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V24.md`
-(`SHA-256=209124CDD9FBB355A9C29610E97439CCBC847A3F5CA033575B14646C7974F833`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V25.md`
+(`SHA-256=D8008CC04ADBAA95DAF9D002B7FAEEDBB598067E71EB576708C9C67BB03CF4D6`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification.
 
@@ -22,7 +22,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—12 are accepted and frozen increments with their separate implementation and acceptance records. Task 11 C2 is accepted and frozen; Task 12 new work, Task 12 route repair, and Task 13+ remain unauthorized. V24 records the Task 11 C2 acceptance and preserves the Task 12 route repair gap.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—12 are accepted and frozen increments with their separate implementation and acceptance records. Task 11 C2 and Task 12 C2 are accepted and frozen; Task 12 route repair is authorized only as the V25 two-file minimal repair, and Task 13+ remain unauthorized. V25 records the Task 12 route repair boundary and preserves all unrelated integration risks.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -207,11 +207,11 @@ Task 09 is accepted and frozen.
 
 Task 12 Stage A passed owner review. Stage B was implemented and passed owner
 review in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` (parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V24 authority,
-Task 12 C2 is accepted and frozen. Task 11 C2 is accepted and frozen. The residual integration finding remains:
-`apps/api/src/server.ts` does not register the Task 12 route module, and route
-repair is not authorized. Task 10 C2 is accepted and frozen; Task 12 new work
-and Task 13+ remain unauthorized.
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V25 authority,
+Task 12 C2 is accepted and frozen. Task 11 C2 is accepted and frozen. The
+missing route registration in `apps/api/src/server.ts` is authorized for the
+two-file minimal repair only. Task 10 C2 is accepted and frozen; Task 13+
+remains unauthorized.
 
 ```text
 TASK_12_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_12_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_12.txt|artifacts/review-package/student-care-platform-phase1b-task-12-review-pack-v1.0.zip
@@ -221,7 +221,7 @@ TASK_12_STAGE_C1_FIXED_TIMESTAMP=1980-01-01T00:00:00
 TASK_12_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_12_STAGE_C2_STATUS=ACCEPTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
-TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
+TASK_12_ROUTE_REPAIR_AUTHORIZATION=GRANTED
 TASK_10_STAGE_B_IMPLEMENTATION_AUTHORIZATION=GRANTED
 TASK_10_STAGE_B_IMPLEMENTATION_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_10_STAGE_B_COMMIT=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
@@ -241,9 +241,9 @@ TASK_11_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_11_ACCEPTANCE.md
 TASK_11_ACCEPTANCE_SHA256=4482B3B1914B3A78886487854A54C2732CDF688BB59418C88570E32F204B4FCD
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
-TASK_12_NEW_WORK_STARTED=NO
-TASK_12_NEW_WORK_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V24_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+TASK_12_NEW_WORK_STARTED=YES_MINIMAL_ROUTE_REPAIR
+TASK_12_NEW_WORK_SCOPE=MINIMAL_ROUTE_REPAIR_ONLY
+OWNER_REVIEW_GATE=V25_TASK12_ROUTE_REPAIR_OWNER_REVIEW_GATE
 ```
 
 ## Task 13 - Visitor user web

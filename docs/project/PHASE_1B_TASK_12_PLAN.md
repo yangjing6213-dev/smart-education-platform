@@ -27,8 +27,8 @@ STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V24.md
-ACTIVE_GOVERNANCE_SHA256=209124CDD9FBB355A9C29610E97439CCBC847A3F5CA033575B14646C7974F833
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V25.md
+ACTIVE_GOVERNANCE_SHA256=D8008CC04ADBAA95DAF9D002B7FAEEDBB598067E71EB576708C9C67BB03CF4D6
 DEPENDENCY_AUTHORITY_PATH=docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md
 DEPENDENCY_AUTHORITY_SHA256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007
 TASK_02_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
@@ -65,14 +65,14 @@ TASK_12_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_12_ACCEPTANCE.md
 TASK_12_ACCEPTANCE_SHA256=909A8153FA681F3C5951B236755A0147049F0FA13A9828F8BBB0381D2AA04908
 TASK_12_STARTED=YES_STAGE_C2_ACCEPTED
-TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
+TASK_12_ROUTE_REPAIR_AUTHORIZATION=GRANTED
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
 Task 12 Stage A passed owner review. Stage B was separately authorized,
 implemented in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` with parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`, and passed owner review. Under V24,
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`, and passed owner review. Under V25,
 Task 12 C2 is accepted and frozen. Task 11 C2 is accepted and frozen. The dependency order remains
 `T02 -> T03 -> T05`; Task 02, Task 03, and Task 05 remain accepted and frozen.
 Task 10 C2 is accepted and frozen; Task 12 new work, Task 12 route repair, and
@@ -309,9 +309,11 @@ feat: add scoped file storage adapter boundary
 ```
 
 The Stage B execution record above is complete and owner-reviewed. The current
-The historical V19 C1 execution boundary remains a protected evidence record:
+The historical V19 C1 execution boundary remains a protected evidence record
+and does not override the active V25 route-repair authorization:
 
 ```text
+SNAPSHOT_STATUS=HISTORICAL/FROZEN
 TASK_12_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_12_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_12.txt|artifacts/review-package/student-care-platform-phase1b-task-12-review-pack-v1.0.zip
 TASK_12_STAGE_C1_GIT_POLICY=CREATE_UNCOMMITTED_EVIDENCE_ONLY
 TASK_12_STAGE_C1_MEMBER_COUNT=10
@@ -334,10 +336,10 @@ The C1 review recorded that `apps/api/src/server.ts` does not register the
 Task 12 route module; no global endpoint reachability may be claimed. C2
 acceptance does not authorize route repair or Task 13+.
 
-## Future evidence lifecycle placeholders
+## HISTORICAL/FROZEN: Future evidence lifecycle placeholders
 
-The original lifecycle design is retained here as historical context; the active
-status is governed by V24:
+The original lifecycle design is retained here as a historical snapshot; current
+activity is governed by V25:
 
 ```text
 STAGE_C1=REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AFTER_STAGE_B_OWNER_REVIEW
@@ -351,13 +353,13 @@ TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
 The three C1 evidence files and the C2 acceptance record are protected evidence.
-Task 10 C2 and Task 11 C2 are accepted and frozen under V24. Task 12 new work,
-route repair, and Task 13+ implementation remain unauthorized.
+The old C1 snapshot is historical/frozen and does not override the V25
+two-file route-repair authorization.
 
-## Current C1 stop condition
+## Current route repair stop condition
 
-After the review, detached manifest, and deterministic ZIP pass all required
-checks, leave them uncommitted for owner review. The final status is:
+After the real `buildServer()` regression and required focused verification pass,
+leave the repair at the owner review gate. The final status is:
 
 ```text
 TASK_12_STAGE_A_STATUS=OWNER_REVIEW_PASSED
@@ -371,7 +373,9 @@ TASK_12_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
-TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V24_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
-STOP_REASON=V24_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+TASK_12_ROUTE_REPAIR_AUTHORIZATION=GRANTED
+TASK_12_NEW_WORK_STARTED=YES_MINIMAL_ROUTE_REPAIR
+TASK_12_NEW_WORK_SCOPE=MINIMAL_ROUTE_REPAIR_ONLY
+OWNER_REVIEW_GATE=V25_TASK12_ROUTE_REPAIR_OWNER_REVIEW_GATE
+STOP_REASON=V25_TASK12_ROUTE_REPAIR_OWNER_REVIEW_GATE
 ```

@@ -1,7 +1,7 @@
 # Phase 1B Task 12 Codex Execution Contract
 
 This document preserves the approved Task 12 Stage A contract and records its
-V24 active-lifecycle overlay. The Stage A and Stage B sections below remain the
+V25 active-lifecycle overlay. The Stage A and Stage B sections below remain the
 formal design and implementation record; Task 12 C2 is accepted and frozen.
 
 ## Contract status and authorization
@@ -15,8 +15,8 @@ PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V24.md
-ACTIVE_GOVERNANCE_SHA256=209124CDD9FBB355A9C29610E97439CCBC847A3F5CA033575B14646C7974F833
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V25.md
+ACTIVE_GOVERNANCE_SHA256=D8008CC04ADBAA95DAF9D002B7FAEEDBB598067E71EB576708C9C67BB03CF4D6
 TASK_12_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_12_ACCEPTANCE.md
 TASK_12_ACCEPTANCE_SHA256=909A8153FA681F3C5951B236755A0147049F0FA13A9828F8BBB0381D2AA04908
 DEPENDENCY_AUTHORITY_PATH=docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md
@@ -54,16 +54,17 @@ TASK_12_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_12_STAGE_C2_STATUS=ACCEPTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_STARTED=YES_STAGE_C2_ACCEPTED
-TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
+TASK_12_ROUTE_REPAIR_AUTHORIZATION=GRANTED
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
-V24 is the current active governance authority. Task 01—12 are accepted and
-frozen. Task 12 new work and Task 13+ are not started and not authorized.
+V25 is the current active governance authority. Task 01—12 are accepted and
+frozen. Task 12 is limited to the separately authorized minimal route repair;
+Task 13+ are not started and not authorized.
 Task 10 C2 is accepted and frozen. Task 12 C2 is accepted and frozen.
 The residual integration gap is preserved: `apps/api/src/server.ts` does not
-register `registerFileIntentRoutes`; route repair is not authorized.
+register `registerFileIntentRoutes`; the V25 two-file route repair is authorized.
 
 ## Stage A exact boundary
 
@@ -178,13 +179,13 @@ TASK_12_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_12_STAGE_C2_STATUS=ACCEPTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_STARTED=YES_STAGE_C2_ACCEPTED
-TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
-TASK_12_NEW_WORK_STARTED=NO
-TASK_12_NEW_WORK_AUTHORIZATION=NOT_GRANTED
+TASK_12_ROUTE_REPAIR_AUTHORIZATION=GRANTED
+TASK_12_NEW_WORK_STARTED=YES_MINIMAL_ROUTE_REPAIR
+TASK_12_NEW_WORK_SCOPE=MINIMAL_ROUTE_REPAIR_ONLY
 TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V24_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
-STOP_REASON=V24_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=V25_TASK12_ROUTE_REPAIR_OWNER_REVIEW_GATE
+STOP_REASON=V25_TASK12_ROUTE_REPAIR_OWNER_REVIEW_GATE
 ```
 
 The historical V19 C1 boundary produced only these protected evidence files:
