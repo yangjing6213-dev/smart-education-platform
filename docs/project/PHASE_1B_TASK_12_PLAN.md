@@ -27,8 +27,8 @@ STATUS=ACCEPTED_AND_FROZEN
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V22.md
-ACTIVE_GOVERNANCE_SHA256=A326AFD5A21E879C02147F8D0B4D84CA28BA2C740E3EFA9DB976B47C1A3CD136
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V23.md
+ACTIVE_GOVERNANCE_SHA256=3BA4616D2081488FB4609B0677314773EC366115DDC28E3F5CCDE7B7163082C2
 DEPENDENCY_AUTHORITY_PATH=docs/project/PHASE_1B_T10_T12_DEPENDENCY_AUTHORITY_V1.md
 DEPENDENCY_AUTHORITY_SHA256=B7F7509914399DD660D02F6FFD52E735EDF9EA850C0BF5C92F95698D8104F007
 TASK_02_DEPENDENCY_STATUS=ACCEPTED_AND_FROZEN
@@ -40,7 +40,12 @@ TASK_10_STAGE_B_IMPLEMENTATION_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_10_STAGE_B_COMMIT=78a0d9ef80a5c0bf634ab46f730cd386c05a180c
 TASK_10_STAGE_B_STATUS=OWNER_REVIEW_PASSED
 TASK_10_STAGE_C1_AUTHORIZATION=GRANTED
-TASK_10_STAGE_C1_STATUS=AUTHORIZED_PENDING_EXECUTION
+TASK_10_STAGE_C1_STATUS=OWNER_REVIEW_PASSED
+TASK_10_STAGE_C2_AUTHORIZATION=GRANTED
+TASK_10_STAGE_C2_STATUS=ACCEPTED
+TASK_10_STATUS=ACCEPTED_AND_FROZEN
+TASK_10_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_10_ACCEPTANCE.md
+TASK_10_ACCEPTANCE_SHA256=4628B2BADB28CF6E5A065AD252B4A1E934D199A1A911D9DE6DEC07313064B657
 TASK_12_STAGE_A_AUTHORIZATION=GRANTED
 TASK_12_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_12_STAGE_B_AUTHORIZATION=GRANTED
@@ -62,12 +67,12 @@ TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 
 Task 12 Stage A passed owner review. Stage B was separately authorized,
 implemented in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` with parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`, and passed owner review. Under V22,
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`, and passed owner review. Under V23,
 Task 12 C2 is accepted and frozen. The dependency order remains
 `T02 -> T03 -> T05`; Task 02, Task 03, and Task 05 remain accepted and frozen.
-Task 10 Stage B passed owner review and Task 10 Stage C1 is authorized pending
-execution; Task 11, Task 12 route repair, and Task 13+ remain unauthorized. The C1 evidence and C2 acceptance
-remain protected inputs.
+Task 10 C2 is accepted and frozen; Task 11, Task 12 route repair, and Task
+13+ remain unauthorized. The Task 10 C1 evidence and C2 acceptance remain
+protected inputs.
 
 ## Exact files
 
@@ -181,7 +186,7 @@ Files: none.
 - [ ] Confirm the dependency order is exactly `T02 -> T03 -> T05`.
 - [ ] Confirm Task 12 has a separate owner authorization naming exactly the four
       Stage B files.
-- [ ] Confirm Task 10 Stage B authorization remains limited to the six V22 whitelist files and no Task 11+ work started.
+- [ ] Confirm Task 10 Stage B authorization remains limited to the six V23-frozen whitelist files and no Task 11+ work started.
 - [ ] Confirm no unknown path, dependency change, package/config change, schema,
       migration, verifier, or protected evidence drift exists.
 
@@ -325,7 +330,7 @@ acceptance does not authorize route repair or Task 13+.
 ## Future evidence lifecycle placeholders
 
 The original lifecycle design is retained here as historical context; the active
-status is governed by V22:
+status is governed by V23:
 
 ```text
 STAGE_C1=REVIEW_MANIFEST_AND_DETERMINISTIC_ZIP_AFTER_STAGE_B_OWNER_REVIEW
@@ -339,9 +344,8 @@ TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
 The three C1 evidence files and the C2 acceptance record are protected evidence.
-Task 10 Stage B implementation passed owner review and Task 10 Stage C1 is
-authorized under V22. Task 11, route repair, and Task 13+ implementation
-remain unauthorized.
+Task 10 C2 is accepted and frozen under V23. Task 11, route repair, and Task
+13+ implementation remain unauthorized.
 
 ## Current C1 stop condition
 
@@ -361,6 +365,6 @@ TASK_13_PLUS_STARTED=NO
 TASK_13_PLUS_AUTHORIZATION=NOT_GRANTED
 TASK_12_STATUS=ACCEPTED_AND_FROZEN
 TASK_12_ROUTE_REPAIR_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK10_STAGE_C1_BEFORE_C2
-STOP_REASON=TASK10_STAGE_C1_OWNER_REVIEW_GATE_BEFORE_C2
+OWNER_REVIEW_GATE=V23_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+STOP_REASON=V23_GOVERNANCE_SYNC_OWNER_REVIEW_GATE_BEFORE_TASK11
 ```
