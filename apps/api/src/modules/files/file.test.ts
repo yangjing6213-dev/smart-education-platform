@@ -2,8 +2,9 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import fastify from "fastify";
-import type { AuthContext } from "@student-care/auth";
+import type { AuthContext, TrustedAuthResult } from "@student-care/auth";
 import { registerFileIntentRoutes } from "../../routes/file-intent.route.js";
+import { buildServer } from "../../server.js";
 import {
   FileService,
   MAX_FILE_BYTES,
@@ -50,6 +51,27 @@ function input(overrides: Partial<FileUploadIntentInput> = {}): FileUploadIntent
 
 function authContext(): AuthContext {
   return {
+    identity: { actor_id: ACTOR_ID, display_name: "模拟员工一号" },
+    memberships: [
+      {
+        tenant_id: TENANT_ID,
+        campus_ids: [CAMPUS_ID],
+        status: "ACTIVE",
+        capabilities: ["content:write"],
+      },
+    ],
+  };
+}
+
+function trustedAuthResult(): TrustedAuthResult {
+  return {
+    trusted: true,
+    session: {
+      trusted: true,
+      status: "ACTIVE",
+      actor_id: ACTOR_ID,
+      expires_at: "2099-01-01T00:00:00.000Z",
+    },
     identity: { actor_id: ACTOR_ID, display_name: "模拟员工一号" },
     memberships: [
       {
@@ -331,6 +353,50 @@ test("file intent routes derive scope from trusted request context and reject cl
       },
     });
     assert.equal(forged.statusCode, 400);
+  } finally {
+    await app.close();
+  }
+});
+
+test("real buildServer registers file intent routes and keeps scope server-derived", async () => {
+  const app = buildServer({ getTrustedAuthResult: () => trustedAuthResult() });
+
+  try {
+    const created = await app.inject({
+      method: "POST",
+      url: "/files/intents",
+      payload: {
+        declared_purpose: "ACTIVITY_MEDIA",
+        mime_type: "image/png",
+        size_bytes: imageBytes.byteLength,
+        checksum: checksum(imageBytes),
+      },
+    });
+
+    assert.equal(created.statusCode, 201);
+    const createdBody = created.json() as {
+      data: { file: { id: string }; intent: { token: string } };
+    };
+
+    const unsignedRead = await app.inject({
+      method: "GET",
+      url: `/files/${createdBody.data.file.id}/read`,
+    });
+    assert.equal(unsignedRead.statusCode, 403);
+    assert.equal(unsignedRead.json().error.code, "UNSIGNED_ACCESS");
+
+    const forgedScope = await app.inject({
+      method: "POST",
+      url: `/files/intents?tenant_id=${FOREIGN_TENANT_ID}`,
+      payload: {
+        declared_purpose: "ACTIVITY_MEDIA",
+        mime_type: "image/png",
+        size_bytes: imageBytes.byteLength,
+        checksum: checksum(imageBytes),
+      },
+    });
+    assert.equal(forgedScope.statusCode, 403);
+    assert.equal(forgedScope.json().error.code, "FORBIDDEN_SCOPE");
   } finally {
     await app.close();
   }

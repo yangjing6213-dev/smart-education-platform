@@ -23,10 +23,13 @@ import { MealService, type MealScope } from "./modules/meals/meal.service.js";
 import { registerPublicActivityRoutes } from "./routes/public-activities.route.js";
 import { registerPublicMealRoutes } from "./routes/public-meals.route.js";
 import { GuideService } from "./modules/guides/guide.service.js";
+import { InMemoryCosStorage } from "./adapters/cos.storage.js";
+import { FileService } from "./modules/files/file.service.js";
 import {
   registerStaffGuideRoutes,
   type StaffGuideScopeResolver,
 } from "./routes/staff-guides.route.js";
+import { registerFileIntentRoutes } from "./routes/file-intent.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
@@ -52,6 +55,7 @@ export interface ServerOptions {
   ) => MealScope | undefined | Promise<MealScope | undefined>;
   readonly guideService?: GuideService;
   readonly getStaffGuideScope?: StaffGuideScopeResolver;
+  readonly fileService?: FileService;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -96,9 +100,12 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
       const derivesTask08Campus =
         request.url.startsWith("/admin/activities/") || request.url.startsWith("/admin/meals/");
       const derivesStaffGuideCampus = request.url.startsWith("/staff/guides");
+      const derivesFileCampus = request.url.startsWith("/files/");
       const resolvedCampusId =
         requestedCampusIdValue ??
-        (derivesTask08Campus || derivesStaffGuideCampus ? membership?.campus_ids[0] : undefined);
+        (derivesTask08Campus || derivesStaffGuideCampus || derivesFileCampus
+          ? membership?.campus_ids[0]
+          : undefined);
 
       return {
         trustedActor: request.authContext
@@ -146,5 +153,6 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     options.guideService ?? new GuideService(),
     options.getStaffGuideScope,
   );
+  registerFileIntentRoutes(app, options.fileService ?? new FileService(new InMemoryCosStorage()));
   return app;
 }
