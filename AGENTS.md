@@ -2,9 +2,9 @@
 
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；Phase 1B Task 01—12 已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 13 Stage A 已通过负责人审阅，Stage B 已授权但尚未启动，Task 13 C1/C2 与 Task 14+ 未授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；Phase 1B Task 01—12 已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 13 Stage B 已实现并通过负责人审阅，Stage C1 已授权但尚未启动，Task 13 C2 与 Task 14+ 未授权。
 
-当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V27.md` 为准（SHA-256：`F83FA211CFE14170DA43864FEB46A834EA1430447C47BBF8488E9186509DCBB6`）。Task 10 C2、Task 11 C2 与 Task 12 C2 已接受并冻结；Task 12 post-acceptance minimal route repair 已实现、验证并通过负责人审阅，且不重开 C1/C2 或扩大 Task 12 范围。Task 13 Stage A 已通过负责人审阅，Stage B 已授权但尚未启动；Task 13 C1/C2 与 Task 14+ 未授权。
+当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V28.md` 为准（SHA-256：`433E07B66ECE98110255158DA63D3FE87D9F4D11FA442444B150FC9FBEFFE4AC`）。Task 10 C2、Task 11 C2 与 Task 12 C2 已接受并冻结；Task 12 post-acceptance minimal route repair 已实现、验证并通过负责人审阅，且不重开 C1/C2 或扩大 Task 12 范围。Task 13 Stage B 已实现并通过负责人审阅，Stage C1 已授权但尚未启动；Task 13 C2 与 Task 14+ 未授权。
 
 当前 Task 10 活动锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `TASK_10_STATUS=ACCEPTED_AND_FROZEN`、
@@ -18,11 +18,13 @@
 `TASK_12_ROUTE_REPAIR_OWNER_REVIEW=PASS`、
 `TASK_12_NEW_WORK_SCOPE=MINIMAL_ROUTE_REPAIR_ONLY`、
 `TASK_12_NEW_WORK_STATUS=MINIMAL_ROUTE_REPAIR_ACCEPTED_AND_FROZEN`、
-`TASK_13_STARTED=YES_STAGE_A_OWNER_REVIEW_PASSED`、
+`TASK_13_STARTED=YES_STAGE_B_OWNER_REVIEW_PASSED`、
 `TASK_13_STAGE_A_STATUS=OWNER_REVIEW_PASSED`、
 `TASK_13_STAGE_B_AUTHORIZATION=GRANTED`、
-`TASK_13_STAGE_B_STATUS=AUTHORIZED_NOT_STARTED`、
-`TASK_13_STAGE_C1_AUTHORIZATION=NOT_GRANTED`、
+`TASK_13_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED`、
+`TASK_13_STAGE_B_OWNER_REVIEW=PASS`、
+`TASK_13_STAGE_C1_AUTHORIZATION=GRANTED`、
+`TASK_13_STAGE_C1_STATUS=AUTHORIZED_NOT_STARTED`、
 `TASK_13_STAGE_C2_AUTHORIZATION=NOT_GRANTED`、
 `TASK_14_PLUS_STARTED=NO`、`TASK_14_PLUS_AUTHORIZATION=NOT_GRANTED`。
 
@@ -50,7 +52,7 @@ Batch A 的审查 ZIP、根 `SHA256SUMS.txt`、评审报告、文件清单、验
 
 `phase-inputs/phase1a-batch-b/` 是只读输入，必须保持忽略、未跟踪、不进入 Git 或审查包。Batch B 原型只能使用原生 HTML、CSS 和 JavaScript、内存模拟数据、本地 PNG/SVG 与 hash 路由；不得安装依赖、创建 `package.json`、访问外网、使用持久化存储或接入正式服务。
 
-Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V27.md` 为准（SHA-256：`F83FA211CFE14170DA43864FEB46A834EA1430447C47BBF8488E9186509DCBB6`）：Task 01—12 已接受并冻结；Task 12 post-acceptance minimal route repair 提交 `e964b9295f1bf8da74b58e9036c396b2cc91ce6c` 已实现、验证并通过负责人审阅，精确范围为 `apps/api/src/server.ts` 与 `apps/api/src/modules/files/file.test.ts`；该修复不重开 C1/C2；Task 13 Stage A 已通过负责人审阅，Stage B 已授权但尚未启动；Task 13 C1/C2 与 Task 14+ 未授权。本文件及其他冻结文件中的旧阶段语句仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
+Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览器路由、15 张真实浏览器截图、V0.1 技术基线、18 个独立 TDD 任务的 Phase 1B 计划、自动验证器及 86 项精确白名单审查包。上述 Batch B 合同与证据保持历史冻结。当前 Phase 1B 活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V28.md` 为准（SHA-256：`433E07B66ECE98110255158DA63D3FE87D9F4D11FA442444B150FC9FBEFFE4AC`）：Task 01—12 已接受并冻结；Task 12 post-acceptance minimal route repair 提交 `e964b9295f1bf8da74b58e9036c396b2cc91ce6c` 已实现、验证并通过负责人审阅，精确范围为 `apps/api/src/server.ts` 与 `apps/api/src/modules/files/file.test.ts`；该修复不重开 C1/C2；Task 13 Stage B 已实现并通过负责人审阅，Stage C1 已授权但尚未启动；Task 13 C2 与 Task 14+ 未授权。本文件及其他冻结文件中的旧阶段语句仅属 `HISTORICAL/FROZEN` 记录；当前 API 为 Fastify 5.12.1，runtime 为 Node 24.14.0 与 pnpm 11.22.0，T12 为 `T02 -> T03 -> T05`，T10 为 `T05 -> T08 -> T12`。
 
 ## 锁定产品规则
 

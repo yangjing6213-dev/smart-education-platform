@@ -1,6 +1,6 @@
 # 学生托管机构智能化系统平台
 
-本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—12 已接受并冻结，Task 13 Stage A 已通过负责人审阅且 Stage B 已授权但尚未启动，Task 13 C1/C2 与 Task 14+ 未授权。
+本仓库是“同芯学园”试点方向的多租户 SaaS 规划与原型仓库。Batch A、Batch B 已完成并冻结；Phase 1B Task 01—12 已接受并冻结，Task 13 Stage B 已实现并通过负责人审阅，Stage C1 已授权但尚未启动，Task 13 C2 与 Task 14+ 未授权。
 
 当前仓库已包含 Phase 1B Task 01—03 的早期基础实现，但尚不是完整生产系统；不连接真实服务，不使用真实学生数据，也不调用正式 AI 模型。
 
@@ -8,8 +8,8 @@
 
 - 项目根路径：`C:\Users\HU\Documents\student-care-saas-platform`
 - 工作分支：`feature/phase-1b-task-04-identity-membership`
-- 当前节点：Phase 1B Task 13 Stage B authorized; stopped before implementation
-- 当前治理状态：`PHASE_1B_STARTED=YES_TASK13_STAGE_B_AUTHORIZED_NOT_STARTED`
+- 当前节点：Phase 1B Task 13 Stage C1 authorized; stopped before C1 execution
+- 当前治理状态：`PHASE_1B_STARTED=YES_TASK13_STAGE_C1_AUTHORIZED_NOT_STARTED`
 - Task 10 锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
   `TASK_10_STATUS=ACCEPTED_AND_FROZEN`、
   `TASK_10_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_10_ACCEPTANCE.md`、
@@ -18,7 +18,7 @@
   `TASK_11_STATUS=ACCEPTED_AND_FROZEN`、
   `TASK_11_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_11_ACCEPTANCE.md`、
   `TASK_11_ACCEPTANCE_SHA256=4482B3B1914B3A78886487854A54C2732CDF688BB59418C88570E32F204B4FCD`
-- 禁止阶段：Task 13 Stage C1/C2、Task 14+；Task 13 Stage B 仅限 V27 四文件白名单并须按合同执行
+- 禁止阶段：Task 13 Stage C2、Task 14+；Task 13 Stage C1 仅限 V28 三文件 C1 白名单并须按合同执行
 - 远程推送与部署：禁止
 
 ## 先读顺序
@@ -57,4 +57,4 @@ Batch B 合同必须保持字节不变，SHA-256 固定为：
 - `docs/templates/TASK_CONTRACT.md`
 - `docs/templates/REVIEW_RECEIPT.md`
 
-总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V27.md` 为准（SHA-256：`F83FA211CFE14170DA43864FEB46A834EA1430447C47BBF8488E9186509DCBB6`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—12 已接受并冻结；Task 12 minimal route repair 提交 `e964b9295f1bf8da74b58e9036c396b2cc91ce6c` 已实现、验证并通过负责人审阅，不重开 C1/C2；Task 13 Stage A 已通过负责人审阅，Stage B 已授权但尚未启动；Task 13 C1/C2 与 Task 14+ 未授权。
+总体历史执行顺序与五个提交节点见 `PLANS.md`。当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V28.md` 为准（SHA-256：`433E07B66ECE98110255158DA63D3FE87D9F4D11FA442444B150FC9FBEFFE4AC`）。历史冻结文件中的旧 `PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`、NestJS 和旧阶段语句不回写；当前 API/runtime 为 Fastify 5.12.1、Node 24.14.0、pnpm 11.22.0，T12=`T02 -> T03 -> T05`，T10=`T05 -> T08 -> T12`。Task 01—12 已接受并冻结；Task 12 minimal route repair 提交 `e964b9295f1bf8da74b58e9036c396b2cc91ce6c` 已实现、验证并通过负责人审阅，不重开 C1/C2；Task 13 Stage B 已实现并通过负责人审阅，Stage C1 已授权但尚未启动；Task 13 C2 与 Task 14+ 未授权。

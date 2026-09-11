@@ -1,8 +1,9 @@
 # Phase 1B Task 13 Codex Execution Contract
 
-This contract records the approved Task 13 Stage A formalization and the V27
-active-lifecycle overlay. It does not implement the visitor web surface, execute
-Stage B, grant C1/C2, or authorize Task 14 or later work.
+This contract records the approved Task 13 Stage A formalization and the V28
+active-lifecycle overlay. Stage B implementation passed owner review under its
+approved boundary; V28 authorizes only Stage C1 evidence generation. It does not
+grant C2 or authorize Task 14 or later work.
 
 ## Contract status and authorization
 
@@ -16,32 +17,34 @@ PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 TARGET_BRANCH=CURRENT_CHECKOUT_NO_NEW_BRANCH_OR_WORKTREE
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=984c92a4b897caeb097e48d3af57324f3e7b612e
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V27.md
-ACTIVE_GOVERNANCE_SHA256=F83FA211CFE14170DA43864FEB46A834EA1430447C47BBF8488E9186509DCBB6
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V28.md
+ACTIVE_GOVERNANCE_SHA256=433E07B66ECE98110255158DA63D3FE87D9F4D11FA442444B150FC9FBEFFE4AC
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_CONFIRMED_TASK13_STAGE_A_FORMALIZATION_2026-09-11
-TASK_13_STARTED=YES_STAGE_A_OWNER_REVIEW_PASSED
+TASK_13_STARTED=YES_STAGE_B_OWNER_REVIEW_PASSED
 TASK_13_STAGE_A_AUTHORIZATION=GRANTED
 TASK_13_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_13_STAGE_B_AUTHORIZATION=GRANTED
-TASK_13_STAGE_B_STATUS=AUTHORIZED_NOT_STARTED
-TASK_13_STAGE_C1_AUTHORIZATION=NOT_GRANTED
+TASK_13_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_13_STAGE_B_OWNER_REVIEW=PASS
+TASK_13_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_13_STAGE_C1_STATUS=AUTHORIZED_NOT_STARTED
 TASK_13_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK_14_PLUS_STARTED=NO
 TASK_14_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V27_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
-STOP_REASON=V27_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=V28_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+STOP_REASON=V28_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
 ```
 
 `PASS` for Stage A means that the two formalization documents satisfy their
-local evidence gates and are ready for owner review. The V27 authority records
-owner approval and grants Stage B, but this contract does not authorize C1, C2,
-or Task 14+.
+local evidence gates and are ready for owner review. The V28 authority records
+the completed Stage B owner review and grants only C1; this contract does not
+authorize C2 or Task 14+.
 
 ## Task identity, dependencies, and inputs
 
 Task 13 is the visitor-facing user-web surface for public, contract-shaped
 content. Its approved dependencies are Tasks 05-08 and 12, all of which remain
-accepted and frozen under the active V27 authority.
+accepted and frozen under the active V28 authority.
 
 ```text
 TASK_13_DEPENDENCIES=TASK_05|TASK_06|TASK_07|TASK_08|TASK_12
@@ -55,7 +58,7 @@ TASK_13_UNEXPECTED_REQUESTS=DISALLOWED
 ```
 
 The current repository baseline is the Fastify/TypeScript monorepo described by
-V27. The existing user-web package exposes `typecheck`, `lint`, and `build`
+V28. The existing user-web package exposes `typecheck`, `lint`, and `build`
 scripts, uses `src` as its root and `dist` as its output directory, and has no
 Stage B visitor route or visitor test file yet.
 
@@ -84,17 +87,18 @@ configuration, dependencies, lockfiles, and all protected untracked evidence.
 
 ## Future Stage B implementation boundary
 
-The following four files are the complete Stage B candidate set. They may be
-created or modified only within the V27 authorization and exact-file boundary;
-implementation remains stopped until this governance sync is complete:
+The following four files were the complete Stage B candidate set. Their accepted
+implementation remains frozen within the approved exact-file boundary while
+the separately authorized C1 evidence work proceeds:
 
 ```text
 STAGE_B_EXACT_FILES=apps/user-web/src/routes/visitor.routes.tsx|apps/user-web/src/pages/visitor-home.tsx|apps/user-web/src/pages/visitor-content.tsx|apps/user-web/src/pages/visitor.test.tsx
 STAGE_B_WRITE_POLICY=FUTURE_EXACT_FILES_ONLY
 STAGE_B_COMMIT_MESSAGE=feat: add visitor web surface
 STAGE_B_AUTHORIZATION=GRANTED
-STAGE_B_STATUS=AUTHORIZED_NOT_STARTED
-STAGE_C1_AUTHORIZATION=NOT_GRANTED
+STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+STAGE_C1_AUTHORIZATION=GRANTED
+STAGE_C1_STATUS=AUTHORIZED_NOT_STARTED
 STAGE_C2_AUTHORIZATION=NOT_GRANTED
 ```
 
@@ -213,16 +217,18 @@ STAGE_B_TO_C1=SEPARATE_OWNER_AUTHORIZATION_REQUIRED
 STAGE_C1_TO_C2=SEPARATE_OWNER_ACCEPTANCE_REQUIRED
 TASK_13_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK_13_STAGE_B_AUTHORIZATION=GRANTED
-TASK_13_STAGE_B_STATUS=AUTHORIZED_NOT_STARTED
-TASK_13_STAGE_C1_AUTHORIZATION=NOT_GRANTED
+TASK_13_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED
+TASK_13_STAGE_B_OWNER_REVIEW=PASS
+TASK_13_STAGE_C1_AUTHORIZATION=GRANTED
+TASK_13_STAGE_C1_STATUS=AUTHORIZED_NOT_STARTED
 TASK_13_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK_14_PLUS_STARTED=NO
 TASK_14_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V27_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
-STOP_REASON=V27_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=V28_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+STOP_REASON=V28_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
 ```
 
-Stop immediately with `STATUS=BLOCKED` if the V27 baseline, branch, HEAD,
+Stop immediately with `STATUS=BLOCKED` if the V28 baseline, branch, HEAD,
 tracked/index cleanliness, target absence, protection count, encoding boundary,
 or exact write allowlist is not satisfied. Preserve the scene and do not clean,
 restore, stage, commit, or modify unrelated paths.
