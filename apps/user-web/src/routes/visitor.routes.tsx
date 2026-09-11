@@ -10,7 +10,7 @@ import {
 
 export interface VisitorRouteInput {
   readonly path: string;
-  readonly response: PublicVisitorResponse;
+  readonly response: unknown;
   readonly state?: VisitorPageState;
 }
 
@@ -39,6 +39,8 @@ export function createSyntheticVisitorResponse(): PublicVisitorResponse {
         visibility: "PUBLIC",
         scope: "PUBLIC",
         syntheticData: "SIMULATED",
+        freshnessStatus: "FRESH",
+        enabledStatus: "ENABLED",
       },
       {
         slug: "private-staff-note",
@@ -49,6 +51,8 @@ export function createSyntheticVisitorResponse(): PublicVisitorResponse {
         visibility: "PRIVATE",
         scope: "PUBLIC",
         syntheticData: "SIMULATED",
+        freshnessStatus: "FRESH",
+        enabledStatus: "ENABLED",
       },
       {
         slug: "draft-preview",
@@ -59,6 +63,8 @@ export function createSyntheticVisitorResponse(): PublicVisitorResponse {
         visibility: "PUBLIC",
         scope: "PUBLIC",
         syntheticData: "SIMULATED",
+        freshnessStatus: "FRESH",
+        enabledStatus: "ENABLED",
       },
       {
         slug: "foreign-public-item",
@@ -69,6 +75,8 @@ export function createSyntheticVisitorResponse(): PublicVisitorResponse {
         visibility: "PUBLIC",
         scope: "FOREIGN",
         syntheticData: "SIMULATED",
+        freshnessStatus: "FRESH",
+        enabledStatus: "ENABLED",
       },
     ],
   };

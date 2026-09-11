@@ -9,6 +9,8 @@ export interface PublicVisitorItem {
   readonly visibility: "PUBLIC" | "PRIVATE";
   readonly scope: "PUBLIC" | "FOREIGN";
   readonly syntheticData: "SIMULATED";
+  readonly freshnessStatus: "FRESH" | "STALE";
+  readonly enabledStatus: "ENABLED" | "DISABLED";
 }
 
 export interface PublicVisitorResponse {
@@ -41,24 +43,28 @@ const LAYOUT: VisitorLayoutConstraints = {
   overflowX: "hidden",
 };
 
-export function publishedVisitorItems(
-  response: PublicVisitorResponse,
-): readonly PublicVisitorItem[] {
-  return response.items.filter(
-    (item) =>
-      item.publicationStatus === "PUBLISHED" &&
-      item.visibility === "PUBLIC" &&
-      item.scope === "PUBLIC" &&
-      item.syntheticData === "SIMULATED",
-  );
+export function publishedVisitorItems(response: unknown): readonly PublicVisitorItem[] {
+  const parsed = parseVisitorResponse(response);
+  if (!parsed.valid) {
+    return [];
+  }
+
+  return parsed.items.filter(isPublishedVisitorItem);
 }
 
 export function renderVisitorHome(
-  response: PublicVisitorResponse,
+  response: unknown,
   state: VisitorPageState = "PUBLISHED",
 ): VisitorHomeView {
-  const items = state === "PUBLISHED" ? publishedVisitorItems(response) : [];
-  const resolvedState = state === "PUBLISHED" && items.length === 0 ? "EMPTY" : state;
+  const parsed = parseVisitorResponse(response);
+  const items =
+    state === "PUBLISHED" && parsed.valid ? parsed.items.filter(isPublishedVisitorItem) : [];
+  const resolvedState =
+    state === "PUBLISHED" && !parsed.valid
+      ? "ERROR"
+      : state === "PUBLISHED" && items.length === 0
+        ? "EMPTY"
+        : state;
   const statusAnnouncement =
     resolvedState === "LOADING"
       ? "Loading visitor content"
@@ -67,7 +73,10 @@ export function renderVisitorHome(
         : resolvedState === "ERROR"
           ? "Visitor content is unavailable"
           : `Published visitor content: ${items[0]?.title ?? "Synthetic learning welcome"}`;
-  const focusOrder = items.map((item) => `visitor-content-${item.slug}`);
+  const focusOrder =
+    resolvedState === "EMPTY"
+      ? ["visitor-home-empty-action"]
+      : items.map((item) => `visitor-content-${item.slug}`);
 
   return {
     route: "/visitor",
@@ -102,15 +111,88 @@ function visitorHomeHtml(
           )
           .join("")
       : "";
+  const emptyAction =
+    state === "EMPTY"
+      ? '<a id="visitor-home-empty-action" href="/visitor" aria-label="重新查看公开内容">重新查看公开内容</a>'
+      : "";
 
   return `
     <main aria-labelledby="visitor-home-heading" style="max-inline-size:100%;min-inline-size:0;overflow-x:hidden">
       <h1 id="visitor-home-heading">访客首页</h1>
       <p>模拟数据</p>
       <p role="status" aria-live="polite">${escapeHtml(statusAnnouncement)}</p>
+      ${emptyAction}
       ${itemMarkup}
     </main>
   `.trim();
+}
+
+function parseVisitorItem(value: unknown): PublicVisitorItem | undefined {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  const body = value.body;
+  if (
+    typeof value.slug !== "string" ||
+    typeof value.title !== "string" ||
+    typeof value.summary !== "string" ||
+    !Array.isArray(body) ||
+    !body.every((paragraph) => typeof paragraph === "string") ||
+    (value.publicationStatus !== "PUBLISHED" && value.publicationStatus !== "DRAFT") ||
+    (value.visibility !== "PUBLIC" && value.visibility !== "PRIVATE") ||
+    (value.scope !== "PUBLIC" && value.scope !== "FOREIGN") ||
+    value.syntheticData !== "SIMULATED" ||
+    (value.freshnessStatus !== "FRESH" && value.freshnessStatus !== "STALE") ||
+    (value.enabledStatus !== "ENABLED" && value.enabledStatus !== "DISABLED")
+  ) {
+    return undefined;
+  }
+
+  return {
+    slug: value.slug,
+    title: value.title,
+    summary: value.summary,
+    body,
+    publicationStatus: value.publicationStatus,
+    visibility: value.visibility,
+    scope: value.scope,
+    syntheticData: value.syntheticData,
+    freshnessStatus: value.freshnessStatus,
+    enabledStatus: value.enabledStatus,
+  };
+}
+
+function parseVisitorResponse(
+  response: unknown,
+):
+  | { readonly valid: true; readonly items: readonly PublicVisitorItem[] }
+  | { readonly valid: false; readonly items: readonly [] } {
+  if (!isRecord(response) || !Array.isArray(response.items)) {
+    return { valid: false, items: [] };
+  }
+
+  const items = response.items.map(parseVisitorItem);
+  if (items.some((item) => item === undefined)) {
+    return { valid: false, items: [] };
+  }
+
+  return { valid: true, items: items as PublicVisitorItem[] };
+}
+
+function isPublishedVisitorItem(item: PublicVisitorItem): boolean {
+  return (
+    item.publicationStatus === "PUBLISHED" &&
+    item.visibility === "PUBLIC" &&
+    item.scope === "PUBLIC" &&
+    item.syntheticData === "SIMULATED" &&
+    item.freshnessStatus === "FRESH" &&
+    item.enabledStatus === "ENABLED"
+  );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 function escapeHtml(value: string): string {

@@ -1,6 +1,5 @@
 import {
   publishedVisitorItems,
-  type PublicVisitorResponse,
   type PublicVisitorItem,
   type VisitorLayoutConstraints,
   type VisitorPageState,
@@ -21,7 +20,7 @@ export interface VisitorContentView {
 }
 
 export function renderVisitorContent(
-  response: PublicVisitorResponse,
+  response: unknown,
   slug: string,
   state: VisitorPageState = "PUBLISHED",
 ): VisitorContentView {

@@ -70,6 +70,81 @@ test("visitor actions have a stable keyboard order and narrow viewport guard", (
   assert.match(route.view.html, /href="\/visitor\/content\/welcome-to-synthetic-learning"/);
 });
 
+test("empty visitor home exposes a safe keyboard-reachable next action", () => {
+  const route = selectVisitorRoute({
+    path: "/visitor",
+    response: { items: [] },
+  });
+
+  assert.equal(route.kind, "HOME");
+  assert.equal(route.view.state, "EMPTY");
+  assert.deepEqual(route.view.focusOrder, ["visitor-home-empty-action"]);
+  assert.match(route.view.html, /id="visitor-home-empty-action"/);
+  assert.match(route.view.html, /href="\/visitor"/);
+});
+
+test("stale and disabled public items are excluded from the projection", () => {
+  const response = createSyntheticVisitorResponse();
+  const published = response.items[0];
+  assert.ok(published);
+  const unsafeResponse = {
+    items: [
+      ...response.items,
+      { ...published, slug: "stale-item", freshnessStatus: "STALE" },
+      { ...published, slug: "disabled-item", enabledStatus: "DISABLED" },
+    ],
+  };
+  const route = selectVisitorRoute({
+    path: "/visitor",
+    response: unsafeResponse,
+  });
+
+  assert.equal(route.kind, "HOME");
+  assert.deepEqual(
+    route.view.items.map((item) => item.slug),
+    ["welcome-to-synthetic-learning"],
+  );
+  assert.doesNotMatch(route.view.html, /stale-item|disabled-item/i);
+});
+
+test("malformed public responses fail closed without throwing or leaking fields", () => {
+  const malformedResponse = {
+    items: [
+      {
+        slug: 42,
+        title: { raw: "private malformed title" },
+        summary: null,
+        body: [null],
+        publicationStatus: "PUBLISHED",
+        visibility: "PUBLIC",
+        scope: "PUBLIC",
+        syntheticData: "SIMULATED",
+      },
+    ],
+  };
+
+  assert.doesNotThrow(() => {
+    const route = selectVisitorRoute({
+      path: "/visitor",
+      response: malformedResponse as never,
+    });
+    assert.equal(route.kind, "HOME");
+    assert.equal(route.view.state, "ERROR");
+    assert.deepEqual(route.view.items, []);
+    assert.doesNotMatch(route.view.html, /private malformed title|raw/i);
+  });
+
+  assert.doesNotThrow(() => {
+    const route = selectVisitorRoute({
+      path: "/visitor/content/malformed-item",
+      response: malformedResponse as never,
+    });
+    assert.equal(route.kind, "CONTENT");
+    assert.equal(route.view.state, "ERROR");
+    assert.doesNotMatch(route.view.html, /private malformed title|raw/i);
+  });
+});
+
 test("visitor route rejects unknown content without requests or external destinations", () => {
   const route = selectVisitorRoute({
     path: "/visitor/content/private-item",
