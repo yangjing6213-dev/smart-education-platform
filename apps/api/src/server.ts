@@ -24,7 +24,9 @@ import { registerPublicActivityRoutes } from "./routes/public-activities.route.j
 import { registerPublicMealRoutes } from "./routes/public-meals.route.js";
 import { GuideService } from "./modules/guides/guide.service.js";
 import { InMemoryCosStorage } from "./adapters/cos.storage.js";
+import { AuditService } from "./modules/audit/audit.service.js";
 import { FileService } from "./modules/files/file.service.js";
+import { registerAdminAuditRoute } from "./routes/admin-audit.route.js";
 import {
   registerStaffGuideRoutes,
   type StaffGuideScopeResolver,
@@ -56,6 +58,7 @@ export interface ServerOptions {
   readonly guideService?: GuideService;
   readonly getStaffGuideScope?: StaffGuideScopeResolver;
   readonly fileService?: FileService;
+  readonly auditService?: AuditService;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -101,9 +104,10 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
         request.url.startsWith("/admin/activities/") || request.url.startsWith("/admin/meals/");
       const derivesStaffGuideCampus = request.url.startsWith("/staff/guides");
       const derivesFileCampus = request.url.startsWith("/files/");
+      const derivesAuditCampus = request.url.startsWith("/admin/audit-logs");
       const resolvedCampusId =
         requestedCampusIdValue ??
-        (derivesTask08Campus || derivesStaffGuideCampus || derivesFileCampus
+        (derivesTask08Campus || derivesStaffGuideCampus || derivesFileCampus || derivesAuditCampus
           ? membership?.campus_ids[0]
           : undefined);
 
@@ -154,5 +158,6 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     options.getStaffGuideScope,
   );
   registerFileIntentRoutes(app, options.fileService ?? new FileService(new InMemoryCosStorage()));
+  registerAdminAuditRoute(app, options.auditService ?? new AuditService());
   return app;
 }

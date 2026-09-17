@@ -3,7 +3,7 @@
 This document preserves the Task 14 Stage A formalization and records the V31
 active-lifecycle overlay. Stage B was implemented and accepted within the
 four-file boundary below, C1 was reviewed, and C2 was accepted. Task 14 is now
-frozen; Task 15+ remain not started and unauthorized.
+frozen; Task 15 Stage A is formalized and owner-reviewed; Stage B/C and Task 16+ remain unauthorized.
 
 ## Authorization and anchors
 
@@ -16,8 +16,8 @@ EXECUTION_DATE=2026-09-12
 PROJECT_ROOT=C:/Users/HU/Documents/student-care-saas-platform
 CURRENT_BRANCH=feature/phase-1b-task-04-identity-membership
 CURRENT_HEAD=8a95455b287cff3db3efadcd28ebc453c3e7fa94
-ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V31.md
-ACTIVE_GOVERNANCE_SHA256=318463CB170B0B2AFA8840DBD302D4E30078B7AE37B14063BDA77A74396BF685
+ACTIVE_GOVERNANCE_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md
+ACTIVE_GOVERNANCE_SHA256=F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A
 OWNER_AUTHORIZATION_EVIDENCE=PROJECT_OWNER_CONFIRMED_TASK14_STAGE_A_FORMALIZATION_2026-09-12
 TASK_14_STAGE_A_AUTHORIZATION=GRANTED
 TASK_14_STAGE_A_STATUS=OWNER_REVIEW_PASSED
@@ -40,14 +40,14 @@ TASK_13_STAGE_C1_STATUS=OWNER_REVIEW_PASSED
 TASK_13_STAGE_C2_AUTHORIZATION=GRANTED
 TASK_13_STATUS=ACCEPTED_AND_FROZEN
 TASK_14_STARTED=YES_STAGE_C2_ACCEPTED
-TASK_15_STARTED=NO
+TASK_15_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_15_PLUS_STARTED=NO
 TASK_15_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V31_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
-STOP_REASON=V31_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=V38_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+STOP_REASON=V38_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
 ```
 
-The current branch and HEAD are read-only anchors. V31 is the active authority;
+The current branch and HEAD are read-only anchors. V34 is the active authority;
 its path and SHA are recorded above. The completed Stage B and C1 boundaries,
 and the accepted C2 record, remain frozen. No Task 15+ work is authorized.
 
@@ -70,7 +70,7 @@ for compact, on-site interaction. It must remain separate from user-web pages,
 server adapters, and server-owned authorization.
 
 Task 14 Stage B required Task 13 Stage C1 completion followed by the
-independent Task 13 C2 acceptance gate. Under V31, Task 13 is accepted and
+independent Task 13 C2 acceptance gate. Under V32, Task 13 is accepted and
 frozen, and Task 14 Stage B, C1, and C2 are completed within their approved
 boundaries and frozen.
 
@@ -99,7 +99,7 @@ STAGE_C1_STATUS=OWNER_REVIEW_PASSED
 STAGE_C2_AUTHORIZATION=GRANTED
 STAGE_C2_STATUS=ACCEPTED
 TASK_14_STATUS=ACCEPTED_AND_FROZEN
-TASK_15_STARTED=NO
+TASK_15_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_15_PLUS_AUTHORIZATION=NOT_GRANTED
 ```
 
@@ -185,10 +185,10 @@ TASK_14_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_14_STATUS=ACCEPTED_AND_FROZEN
 TASK_15_PLUS_STARTED=NO
 TASK_15_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V31_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
-STOP_REASON=V31_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=V34_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+STOP_REASON=V34_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
 ```
 
-Stop with `STATUS=BLOCKED` and preserve the scene if the V31 baseline, branch,
+Stop with `STATUS=BLOCKED` and preserve the scene if the V32 baseline, branch,
 HEAD, tracked/index cleanliness, protected-path boundary, encoding boundary, or
 exact governance allowlist is not satisfied.

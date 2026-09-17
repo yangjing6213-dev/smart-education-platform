@@ -1,19 +1,27 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—14 are accepted and remain frozen evidence.
+Status: active plan. Task 01—16 are accepted and remain frozen evidence.
 Task 12 C2 is accepted and frozen. Its post-acceptance route integration repair
 was implemented, verified, passed owner review, and is now frozen within the
 minimal two-file scope; Task 13 C2 is accepted and frozen; Task 14 Stage B/C1/C2
-are completed, accepted, and frozen; Task 15 has not started and is not
-authorized.
+and Task 16 Stage B/C1/C2 are completed, accepted, and frozen. The V41
+governance synchronization passed owner review and remains frozen. Task 17
+Stage A is owner-reviewed. Its Stage B component evidence is accepted and the
+minimal entrypoint repair is authorized, but the entrypoint and integration
+gap remains blocked. C1/C2 remain unauthorized, and Task 18+ remains
+unstarted and unauthorized.
 
 Current governance authority:
-`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V31.md`
-(`SHA-256=318463CB170B0B2AFA8840DBD302D4E30078B7AE37B14063BDA77A74396BF685`).
+`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md`
+(`SHA-256=F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
 recorded after independent Node and .NET verification. Task 13 C2 is accepted
 and frozen. Task 14 Stage B/C1/C2 are completed, accepted, and frozen within
-their exact boundaries. Task 15+ remain not started and unauthorized.
+their exact boundaries. Task 16 Stage B/C1/C2 are accepted and frozen within
+their exact boundaries. Task 17 Stage A passed owner review; Stage B component
+evidence is accepted and the minimal entrypoint repair is authorized, but the
+entrypoint and integration gap remains blocked. C1/C2 and Task 18+ remain
+unauthorized.
 
 ## Dependency authority
 
@@ -27,7 +35,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—14 are accepted and frozen increments with their separate implementation and acceptance records. Task 11 C2, Task 12 C2, and Task 13 C2 are accepted and frozen; Task 12 route repair was authorized only as the V26 two-file minimal repair. Task 14 Stage B/C1/C2 are completed, accepted, and frozen under the active V31 authority; Task 15+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—14 are accepted and frozen increments with their separate implementation and acceptance records. Task 11 C2, Task 12 C2, and Task 13 C2 are accepted and frozen; Task 12 route repair was authorized only as the V26 two-file minimal repair. Task 14 Stage B/C1/C2 are completed, accepted, and frozen under the active V32 authority; Task 15 Stage B/C and Task 16+ remain unauthorized.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -212,7 +220,7 @@ Task 09 is accepted and frozen.
 
 Task 12 Stage A passed owner review. Stage B was implemented and passed owner
 review in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` (parent
-`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V31 authority,
+`b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V32 authority,
 Task 12 C2, Task 11 C2, and Task 13 C2 are accepted and frozen. The
 two-file minimal route repair was implemented, verified, and passed owner review
 in commit `e964b9295f1bf8da74b58e9036c396b2cc91ce6c` (parent
@@ -271,10 +279,45 @@ TASK_14_STAGE_C2_STATUS=ACCEPTED
 TASK_14_STATUS=ACCEPTED_AND_FROZEN
 TASK_14_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_14_ACCEPTANCE.md
 TASK_14_ACCEPTANCE_SHA256=E3399204076DF11AD94301BEE0881589C3CE743FC4A3C84C7F1EEABCDD9C8FD9
-TASK_15_STARTED=NO
+TASK_15_STARTED=YES_STAGE_C2_ACCEPTED
 TASK_15_PLUS_STARTED=NO
-TASK_15_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=V31_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+TASK_15_STATUS=ACCEPTED_AND_FROZEN
+TASK16_STAGE_B_AUTHORIZATION=GRANTED
+TASK16_STAGE_B_STATUS=OWNER_REVIEW_PASSED
+TASK16_STAGE_B_OWNER_REVIEW=PASS
+TASK_16_STARTED=YES_STAGE_C2_ACCEPTED
+TASK16_STAGE_A_STATUS=OWNER_REVIEW_PASSED
+TASK16_STAGE_C1_AUTHORIZATION=GRANTED
+TASK16_STAGE_C1_STATUS=OWNER_REVIEW_PASSED
+TASK16_STAGE_C1_OWNER_REVIEW=PASS
+TASK16_STAGE_C2_AUTHORIZATION=GRANTED
+TASK16_STAGE_C2_STATUS=ACCEPTED
+TASK16_STAGE_C2_OWNER_REVIEW=PASS
+TASK16_STATUS=ACCEPTED_AND_FROZEN
+TASK16_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_16_ACCEPTANCE.md
+TASK16_ACCEPTANCE_SHA256=A77C3FDCD079271AE12CDF9D16A6D4F50B05936F9F231AE26B6F405E7F489FF5
+V41_GOVERNANCE_SYNC_OWNER_REVIEW=PASS
+TASK_17_STARTED=YES_STAGE_A_FORMALIZED
+TASK17_STAGE_A_AUTHORIZATION=GRANTED
+TASK17_STAGE_A_STATUS=OWNER_REVIEW_PASSED
+TASK17_STAGE_A_OWNER_REVIEW=PASS
+TASK17_STAGE_B_AUTHORIZATION=GRANTED
+TASK17_STAGE_B_COMPONENT_EVIDENCE=PASS
+TASK17_STAGE_B_REPAIR_AUTHORIZATION=GRANTED
+TASK17_STAGE_B_STATUS=BLOCKED_ENTRYPOINT_AND_INTEGRATION_GAP
+TASK17_API_ENTRYPOINT_STATUS=NOT_WIRED
+TASK17_ADMIN_WEB_ENTRYPOINT_STATUS=NOT_WIRED
+TASK17_AUDIT_ACTION_INTEGRATION_STATUS=NOT_PROVEN
+TASK17_STAGE_C1_AUTHORIZATION=NOT_GRANTED
+TASK17_STAGE_C1_STATUS=NOT_STARTED
+TASK17_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK17_STAGE_C2_STATUS=NOT_STARTED
+TASK18_PLUS_STARTED=NO
+TASK18_PLUS_AUTHORIZATION=NOT_GRANTED
+PHASE_1B_STARTED=YES_TASK17_STAGE_B_REPAIR_AUTHORIZED
+PHASE_1B_ACTIVE_TASK=TASK17_STAGE_B_REPAIR_AUTHORIZED
+OWNER_REVIEW_GATE=TASK17_STAGE_B_REPAIR_OWNER_REVIEW_GATE
+STOP_REASON=V42_GOVERNANCE_SYNC_READY_FOR_TASK17_ENTRYPOINT_REPAIR
 TASK_12_NEW_WORK_STARTED=YES_MINIMAL_ROUTE_REPAIR
 TASK_12_NEW_WORK_SCOPE=MINIMAL_ROUTE_REPAIR_ONLY
 TASK_12_ROUTE_REPAIR_COMMIT=e964b9295f1bf8da74b58e9036c396b2cc91ce6c
@@ -282,7 +325,7 @@ TASK_12_ROUTE_REPAIR_PARENT=8fdccb52d7e03306c225a56f3878b5fca6d012f9
 TASK_12_ROUTE_REPAIR_STATUS=IMPLEMENTED_AND_VERIFIED
 TASK_12_ROUTE_REPAIR_OWNER_REVIEW=PASS
 TASK_12_NEW_WORK_STATUS=MINIMAL_ROUTE_REPAIR_ACCEPTED_AND_FROZEN
-OWNER_REVIEW_GATE=V31_GOVERNANCE_SYNC_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=TASK17_STAGE_B_REPAIR_OWNER_REVIEW_GATE
 ```
 
 ## Task 13 - Visitor user web

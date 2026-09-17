@@ -4,6 +4,7 @@ import {
   type PublicTeacherEditorState,
 } from "./pages/public-teachers.js";
 import { MealsPage, type MealEditorState } from "./pages/meals.js";
+import { AuditLogsPage, type AuditLogEventViewModel } from "./pages/audit-logs.js";
 
 const initialState: HomeContentEditorState = {
   contentKey: "home-announcement",
@@ -69,6 +70,27 @@ const syntheticStaffGuides: readonly StaffGuide[] = [
     version: 1,
     status: "DRAFT",
     fileRef: "file-ref:/synthetic/duty-routine.pdf",
+  },
+];
+
+const syntheticAuditEvents: readonly AuditLogEventViewModel[] = [
+  {
+    event_id: "audit-event-synthetic-001",
+    actor_id: "00000000-0000-4000-8000-000000000003",
+    tenant_id: "00000000-0000-4000-8000-000000000001",
+    campus_id: "00000000-0000-4000-8000-000000000002",
+    action: "CONTENT_PUBLISHED",
+    target_type: "HOME_CONTENT",
+    target_id: "synthetic-home-announcement",
+    occurred_at: "2026-09-17T02:00:00.000Z",
+    correlation_id: "correlation-synthetic-audit-001",
+    trace_id: "trace-synthetic-audit-001",
+    metadata: {
+      result: "SUCCESS",
+      channel: "ADMIN_WEB",
+      synthetic_reference: "synthetic-audit-001",
+    },
+    synthetic_data: true,
   },
 ];
 
@@ -485,7 +507,81 @@ function renderStaffGuides(): void {
   appRoot.append(shell);
 }
 
+function renderAuditLogs(): void {
+  const view = AuditLogsPage({ status: "READY", events: syntheticAuditEvents });
+  document.title = view.heading;
+  appRoot.replaceChildren();
+
+  const shell = element("div", "shell");
+  const topbar = element("header", "topbar");
+  const brand = element("strong", "brand");
+  brand.textContent = "机构管理工作台";
+  const scope = element("span");
+  scope.textContent = "模拟租户 · 当前校区 · 只读审计";
+  topbar.append(brand, scope);
+
+  const main = element("main");
+  const headingRow = element("div", "heading-row");
+  const heading = element("div");
+  const title = element("h1");
+  title.textContent = view.heading;
+  const subtitle = element("p");
+  subtitle.textContent = "仅展示当前授权范围内的脱敏模拟元数据";
+  heading.append(title, subtitle);
+  const status = element("div", "status");
+  status.textContent = view.message;
+  headingRow.append(heading, status);
+
+  const auditPanel = element("section", "panel");
+  const table = element("table");
+  const head = element("thead");
+  const headRow = element("tr");
+  for (const column of view.columns) {
+    const cell = element("th");
+    cell.textContent = column;
+    headRow.append(cell);
+  }
+  head.append(headRow);
+
+  const body = element("tbody");
+  for (const row of view.rows) {
+    const tableRow = element("tr");
+    const values = [
+      row.occurredAt,
+      row.actorReference,
+      row.action,
+      row.targetReference,
+      row.correlationId,
+      row.traceId,
+      JSON.stringify(row.metadata),
+    ];
+    for (const value of values) {
+      const cell = element("td");
+      cell.textContent = value;
+      tableRow.append(cell);
+    }
+    body.append(tableRow);
+  }
+  table.append(head, body);
+
+  const actions = element("div", "actions");
+  const refresh = element("button", "save");
+  refresh.type = "button";
+  refresh.textContent = view.availableActions[0];
+  refresh.addEventListener("click", renderAuditLogs);
+  actions.append(refresh);
+  auditPanel.append(table, actions);
+
+  main.append(headingRow, auditPanel);
+  shell.append(topbar, main);
+  appRoot.append(shell);
+}
+
 function render(): void {
+  if (window.location.pathname === "/admin/audit-logs") {
+    renderAuditLogs();
+    return;
+  }
   if (window.location.pathname === "/admin/staff-guides") {
     renderStaffGuides();
     return;

@@ -23,3 +23,13 @@ test("admin-web exposes a runnable static Task 06 entrypoint", () => {
   assert.match(page, /保存草稿/);
   assert.match(page, /发布/);
 });
+
+test("admin-web source entry renders the administrator audit route", () => {
+  const entry = readFileSync(path.join(root, "src/main.ts"), "utf8");
+
+  assert.match(entry, /import\s+\{\s*AuditLogsPage/);
+  assert.match(entry, /from "\.\/pages\/audit-logs\.js"/);
+  assert.match(entry, /window\.location\.pathname === "\/admin\/audit-logs"/);
+  assert.match(entry, /renderAuditLogs\(\)/);
+  assert.match(entry, /syntheticAuditEvents/);
+});
