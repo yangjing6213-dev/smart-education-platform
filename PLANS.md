@@ -23,15 +23,16 @@ checkpoint 只表示本地可恢复状态，不等于产品验收通过。负责
 
 1. `AGENTS.md`
 2. `PLANS.md`
-3. `scripts/task17-preflight.mjs`
-4. `apps/api/src/server.ts`
-5. `apps/api/src/modules/audit/audit.test.ts`
-6. `apps/api/src/modules/content/content.service.ts`
-7. `apps/api/src/modules/files/file.service.ts`
-8. `apps/api/src/modules/partner-links/partner-link.service.ts`
-9. `apps/api/src/modules/institution/institution.service.ts`
-10. `apps/api/src/routes/admin-institution.route.ts`
-11. `apps/api/src/routes/file-intent.route.ts`
+3. `.gitattributes`
+4. `scripts/task17-preflight.mjs`
+5. `apps/api/src/server.ts`
+6. `apps/api/src/modules/audit/audit.test.ts`
+7. `apps/api/src/modules/content/content.service.ts`
+8. `apps/api/src/modules/files/file.service.ts`
+9. `apps/api/src/modules/partner-links/partner-link.service.ts`
+10. `apps/api/src/modules/institution/institution.service.ts`
+11. `apps/api/src/routes/admin-institution.route.ts`
+12. `apps/api/src/routes/file-intent.route.ts`
 
 白名单外文件均不属于本轮写集。当前 67 条既有未跟踪证据继续按路径保护，不读取内容、不删除、不覆盖、不移动，也不使用 `git add -A`。Task 17 验证顺序为 focused audit test、admin 入口测试、相关服务回归、ESLint、Prettier、API/admin-web typecheck、preflight、`git diff --check` 和选择性 checkpoint。
 

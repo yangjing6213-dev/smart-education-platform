@@ -12,6 +12,7 @@ const expectedBranch = "feature/phase-1b-task-17-audit-logs";
 const task17Whitelist = new Set([
   "AGENTS.md",
   "PLANS.md",
+  ".gitattributes",
   "scripts/task17-preflight.mjs",
   "apps/api/src/server.ts",
   "apps/api/src/modules/audit/audit.test.ts",
