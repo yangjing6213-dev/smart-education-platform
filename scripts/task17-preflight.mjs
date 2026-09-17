@@ -28,6 +28,22 @@ function git(...args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trimEnd();
 }
 
+function tryGit(...args) {
+  try {
+    return git(...args);
+  } catch {
+    return null;
+  }
+}
+
+export function resolveTaskIdentity({ branch, head, expectedBranchTip }) {
+  if (branch === expectedBranch) return "TASK_BRANCH";
+  if (branch === "" && expectedBranchTip !== null && head === expectedBranchTip) {
+    return "DETACHED_AT_TASK_BRANCH_TIP";
+  }
+  return "MISMATCH";
+}
+
 function occurrences(text, value) {
   return text.split(value).length - 1;
 }
@@ -65,7 +81,15 @@ if (!existsSync(governanceAbsolutePath)) {
 }
 
 const branch = git("branch", "--show-current");
-if (branch !== expectedBranch) blockers.push(`TASK_IDENTITY_MISMATCH:${branch}`);
+const head = git("rev-parse", "HEAD");
+const expectedBranchTip = tryGit("rev-parse", "--verify", `refs/heads/${expectedBranch}`);
+if (expectedBranchTip === null) {
+  blockers.push(`EXPECTED_TASK_BRANCH_MISSING:${expectedBranch}`);
+}
+const taskIdentityMode = resolveTaskIdentity({ branch, head, expectedBranchTip });
+if (taskIdentityMode === "MISMATCH") {
+  blockers.push(`TASK_IDENTITY_MISMATCH:${branch || "DETACHED"}:${head}`);
+}
 
 for (const path of ["AGENTS.md", "PLANS.md"]) {
   const text = readFileSync(resolve(root, path), "utf8");
@@ -104,7 +128,11 @@ const output = {
   active_governance: "V42",
   governance_sha256: governanceSha256,
   active_task: "TASK17",
-  branch,
+  branch: branch || null,
+  head,
+  expected_task_branch: expectedBranch,
+  expected_branch_tip: expectedBranchTip,
+  task_identity_mode: taskIdentityMode,
   worktree_status_count: statusLines.length,
   classifications: Object.fromEntries([...classifications].sort()),
   unknown_or_reported_only_blocks_development: false,
