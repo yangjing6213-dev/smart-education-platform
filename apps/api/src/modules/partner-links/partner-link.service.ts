@@ -1,3 +1,5 @@
+import type { AuditService } from "../audit/audit.service.js";
+
 export type PartnerLinkPublicationStatus = "DRAFT" | "PUBLISHED" | "UNPUBLISHED";
 export type PartnerLinkEnabledStatus = "ENABLED" | "DISABLED";
 
@@ -186,6 +188,7 @@ export type PartnerLinkResult<T> = PartnerLinkSuccess<T> | PartnerLinkError;
 export interface PartnerLinkServiceOptions {
   readonly now?: () => Date;
   readonly onAuditEvent?: (event: PartnerLinkAuditEvent) => void;
+  readonly auditService?: AuditService;
 }
 
 interface HandoffRecord {
@@ -370,6 +373,7 @@ export class PartnerLinkService {
   public readonly repository: PartnerLinkRepository;
   private readonly now: () => Date;
   private readonly onAuditEvent: (event: PartnerLinkAuditEvent) => void;
+  private readonly auditService: AuditService | undefined;
   private readonly handoffs = new Map<string, HandoffRecord>();
   private handoffSequence = 0;
 
@@ -380,6 +384,7 @@ export class PartnerLinkService {
     this.repository = repository;
     this.now = options.now ?? (() => new Date());
     this.onAuditEvent = options.onAuditEvent ?? (() => undefined);
+    this.auditService = options.auditService;
   }
 
   private auditDenied(
@@ -497,43 +502,70 @@ export class PartnerLinkService {
 
     const now = this.now();
     const expiresAt = new Date(now.getTime() + HANDOFF_TTL_MS);
-    const token = `handoff:${record.id}:${++this.handoffSequence}`;
+    const nextHandoffSequence = this.handoffSequence + 1;
+    const token = `handoff:${record.id}:${nextHandoffSequence}`;
     const role = rolesFor(context)[0] ?? REQUIRED_STAFF_CAPABILITY;
-    this.handoffs.set(token, {
-      token,
-      linkId: record.id,
-      tenantId: context.scope.tenantId,
-      campusId: context.scope.campusId,
-      actorId: context.actorId,
-      membershipId: context.membershipId,
-      scopeFingerprint: context.scopeFingerprint,
-      role,
-      capability: record.required_capability,
-      policyVersion: record.allowlist_policy_version,
-      version: record.version,
-      expiresAt: expiresAt.getTime(),
-      consumed: false,
-    });
+    const command = () => {
+      this.handoffSequence = nextHandoffSequence;
+      this.handoffs.set(token, {
+        token,
+        linkId: record.id,
+        tenantId: context.scope.tenantId,
+        campusId: context.scope.campusId,
+        actorId: context.actorId,
+        membershipId: context.membershipId,
+        scopeFingerprint: context.scopeFingerprint,
+        role,
+        capability: record.required_capability,
+        policyVersion: record.allowlist_policy_version,
+        version: record.version,
+        expiresAt: expiresAt.getTime(),
+        consumed: false,
+      });
 
-    this.onAuditEvent({
-      eventType: "ENTRY_ISSUED",
-      action: "ISSUE_ENTRY",
-      result: "ALLOWED",
-      tenantId: context.scope.tenantId,
-      campusId: context.scope.campusId,
-      actorReference: context.actorId,
-      linkId: record.id,
-      requestCorrelationId: context.requestCorrelationId,
-      eventTime: now.toISOString(),
-    });
-    return {
-      ok: true,
-      data: {
-        ...project(record),
-        handoffToken: token,
-        expiresAt: expiresAt.toISOString(),
-      },
+      this.onAuditEvent({
+        eventType: "ENTRY_ISSUED",
+        action: "ISSUE_ENTRY",
+        result: "ALLOWED",
+        tenantId: context.scope.tenantId,
+        campusId: context.scope.campusId,
+        actorReference: context.actorId,
+        linkId: record.id,
+        requestCorrelationId: context.requestCorrelationId,
+        eventTime: now.toISOString(),
+      });
+      return {
+        ok: true as const,
+        data: {
+          ...project(record),
+          handoffToken: token,
+          expiresAt: expiresAt.toISOString(),
+        },
+      };
     };
+    if (this.auditService === undefined) return command();
+    const result = this.auditService.executeProtectedCommand(
+      context,
+      {
+        action: "PARTNER_LINK_HANDOFF_CREATED",
+        target: { type: "PARTNER_LINK", id: record.id },
+        correlationId: context.requestCorrelationId,
+        traceId: context.requestCorrelationId,
+        metadata: {
+          result: "SUCCESS",
+          version: record.version,
+          status: "CREATED",
+          channel: "API",
+          operation: "CREATE_PARTNER_HANDOFF",
+          synthetic_reference: "synthetic-partner-link",
+        },
+      },
+      () => command(),
+    );
+    if (result.ok) return result;
+    return result.error.code === "FORBIDDEN_SCOPE"
+      ? this.denied(context, "ISSUE_ENTRY", "FORBIDDEN_SCOPE", linkId)
+      : this.denied(context, "ISSUE_ENTRY", "VALIDATION_FAILED", linkId);
   }
 
   public consumeHandoff(

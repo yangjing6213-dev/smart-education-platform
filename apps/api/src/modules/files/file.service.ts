@@ -4,6 +4,7 @@ import {
   type CosStoragePort,
   type StorageScope,
 } from "../../adapters/cos.storage.js";
+import type { AuditService } from "../audit/audit.service.js";
 
 export const MAX_FILE_BYTES = 10 * 1024 * 1024;
 export const MAX_DOCUMENT_BYTES = 25 * 1024 * 1024;
@@ -25,6 +26,8 @@ export interface FileActorContext {
   readonly activeMembership: true;
   readonly scope: FileScope;
   readonly capabilities: readonly string[];
+  readonly requestCorrelationId?: string;
+  readonly traceId?: string;
 }
 
 export interface FileUploadIntentInput {
@@ -104,6 +107,7 @@ export type FileResult<T> = FileSuccess<T> | FileFailure;
 export interface FileServiceOptions {
   readonly now?: () => Date;
   readonly onAuditEvent?: (event: FileAuditEvent) => void;
+  readonly auditService?: AuditService;
 }
 
 export interface FileAuditEvent {
@@ -287,6 +291,7 @@ export class FileService {
   private readonly storage: CosStoragePort;
   private readonly now: () => Date;
   private readonly onAuditEvent: (event: FileAuditEvent) => void;
+  private readonly auditService: AuditService | undefined;
   private readonly records = new Map<string, InternalFileRecord>();
   private readonly recordsById = new Map<string, InternalFileRecord>();
   private readonly intents = new Map<string, InternalUploadIntent>();
@@ -299,6 +304,7 @@ export class FileService {
     this.storage = storage;
     this.now = options.now ?? (() => new Date());
     this.onAuditEvent = options.onAuditEvent ?? (() => undefined);
+    this.auditService = options.auditService;
   }
 
   public createUploadIntent(
@@ -351,14 +357,39 @@ export class FileService {
       expires_at: now + UPLOAD_INTENT_TTL_MS,
       consumed: false,
     };
-    this.records.set(scopeKey(context.scope, fileId), record);
-    this.recordsById.set(fileId, record);
-    this.intents.set(token, intent);
-    this.emitAuditEvent("UPLOAD_INTENT_ISSUED", context, fileId, new Date(now));
-    return {
-      ok: true,
-      data: { file: projectFile(record), intent: projectIntent(intent) },
+    const command = () => {
+      this.records.set(scopeKey(context.scope, fileId), record);
+      this.recordsById.set(fileId, record);
+      this.intents.set(token, intent);
+      this.emitAuditEvent("UPLOAD_INTENT_ISSUED", context, fileId, new Date(now));
+      return {
+        ok: true as const,
+        data: { file: projectFile(record), intent: projectIntent(intent) },
+      };
     };
+    if (this.auditService === undefined) return command();
+    const correlationId = context.requestCorrelationId ?? `file-intent:${fileId}`;
+    const result = this.auditService.executeProtectedCommand(
+      context,
+      {
+        action: "FILE_INTENT_CREATED",
+        target: { type: "FILE", id: fileId },
+        correlationId,
+        traceId: context.traceId ?? correlationId,
+        metadata: {
+          result: "SUCCESS",
+          status: "CREATED",
+          channel: "API",
+          operation: "CREATE_FILE_INTENT",
+          synthetic_reference: "synthetic-file",
+        },
+      },
+      () => command(),
+    );
+    if (result.ok) return result;
+    return result.error.code === "FORBIDDEN_SCOPE"
+      ? failure("FORBIDDEN_SCOPE")
+      : failure("STORAGE_UNAVAILABLE");
   }
 
   public getFileRecord(

@@ -1,3 +1,42 @@
+# 当前唯一执行控制面
+
+- `ACTIVE_GOVERNANCE=V42`
+- `ACTIVE_GOVERNANCE_SHA256=F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A`
+- `PHASE_1B_ACTIVE_TASK=TASK17`
+- `ACTIVE_BRANCH=feature/phase-1b-task-17-audit-logs`
+- `EXECUTION_MODE=DEVELOPMENT_MODE`
+- `TASK17_LOCAL_STATUS=LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE`
+- `TASK17_API_ENTRYPOINT_STATUS=WIRED_AND_TESTED`
+- `TASK17_ADMIN_WEB_ENTRYPOINT_STATUS=WIRED_AND_TESTED`
+- `TASK17_AUDIT_ACTION_INTEGRATION_STATUS=SIX_ACTIONS_LOCALLY_VERIFIED`
+- `TASK17_OWNER_ACCEPTANCE=PENDING`
+- `TASK17_STAGE_C1_AUTHORIZATION=NOT_GRANTED`
+- `TASK17_STAGE_C2_AUTHORIZATION=NOT_GRANTED`
+- `TASK18_PLUS_AUTHORIZATION=NOT_GRANTED`
+- `OWNER_REVIEW_GATE=TASK17_OWNER_ACCEPTANCE_GATE`
+
+V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 17 使用本次波次授权完成入口、六动作审计集成、preflight 和本地验证，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建与选择性 checkpoint 不重复请求授权。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
+
+checkpoint 只表示本地可恢复状态，不等于产品验收通过。负责人验收仅在 Task 17 实现和验证结束时执行；ZIP、最终 SHA 清单、完整 E2E 与发布审计延后到明确交付边界。C1/C2、Task 18+、push、deploy 和 release 均不得由 checkpoint 或本地测试 PASS 推断授权。
+
+## Task 17 精确开发白名单
+
+1. `AGENTS.md`
+2. `PLANS.md`
+3. `scripts/task17-preflight.mjs`
+4. `apps/api/src/server.ts`
+5. `apps/api/src/modules/audit/audit.test.ts`
+6. `apps/api/src/modules/content/content.service.ts`
+7. `apps/api/src/modules/files/file.service.ts`
+8. `apps/api/src/modules/partner-links/partner-link.service.ts`
+9. `apps/api/src/modules/institution/institution.service.ts`
+10. `apps/api/src/routes/admin-institution.route.ts`
+11. `apps/api/src/routes/file-intent.route.ts`
+
+白名单外文件均不属于本轮写集。当前 67 条既有未跟踪证据继续按路径保护，不读取内容、不删除、不覆盖、不移动，也不使用 `git add -A`。Task 17 验证顺序为 focused audit test、admin 入口测试、相关服务回归、ESLint、Prettier、API/admin-web typecheck、preflight、`git diff --check` 和选择性 checkpoint。
+
+---
+
 # Phase 1A 批次B执行计划（历史冻结）
 
 ## 权威与状态
@@ -8,8 +47,8 @@
 - 源分支/源 HEAD：`planning/phase-1a-batch-a` / `f698f87150dce3376fb96d1bbb330d28d0d73b81`
 - 目标分支：`planning/phase-1a-batch-b`
 - 历史停止字段：`PHASE_1B_STARTED=NO`、`PROJECT_OWNER_ACCEPTANCE=PENDING`（`HISTORICAL/FROZEN`）
-- 当前 Phase 1B 活动治理：`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md`（SHA-256：`F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A`）
-- 当前状态：V41 治理同步已通过负责人审阅并冻结；Task 01—16 已接受并冻结；Task 17 Stage A 已通过负责人审阅，Stage B 四文件定向技术证据已接受，minimal entrypoint repair 已获授权，但整体仍为 `BLOCKED_ENTRYPOINT_AND_INTEGRATION_GAP`，C1/C2 尚未授权；Task 18+ 尚未启动且未获授权
+- V42 治理快照：`docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md`（SHA-256：`F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A`）
+- V42 授权时状态：V41 治理同步已通过负责人审阅并冻结；Task 01—16 已接受并冻结；Task 17 Stage A 已通过负责人审阅，Stage B 四文件定向技术证据已接受，minimal entrypoint repair 已获授权，但整体仍为 `BLOCKED_ENTRYPOINT_AND_INTEGRATION_GAP`，C1/C2 尚未授权；Task 18+ 尚未启动且未获授权
 - `TASK_04_STARTED=YES`
 - `TASK_04_IMPLEMENTATION_AUTHORIZATION=GRANTED`
 - `TASK_05_STARTED=YES`

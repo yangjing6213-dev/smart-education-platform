@@ -57,6 +57,8 @@ function contextFromRequest(request: FastifyRequest): FileActorContext | undefin
     activeMembership: true,
     scope: { tenantId: scope.tenantId, campusId: scope.campusId },
     capabilities: membership.capabilities,
+    requestCorrelationId: request.id,
+    traceId: request.id,
   };
 }
 

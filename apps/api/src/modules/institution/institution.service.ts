@@ -17,6 +17,7 @@ import {
   type ContentRepository,
   type ContentRecord,
 } from "../content/content.repository.js";
+import type { AuditService } from "../audit/audit.service.js";
 
 export type InstitutionActorContext = ContentActorContext;
 export type InstitutionContentKind = "INSTITUTION" | "HOME_BLOCK";
@@ -29,6 +30,7 @@ export interface InstitutionPublicScope {
 export interface InstitutionServiceOptions {
   readonly now?: () => Date;
   readonly onPublicationAuditEvent?: (event: PublicationAuditEvent) => void;
+  readonly auditService?: AuditService;
 }
 
 const ERROR_MESSAGES = {
@@ -93,7 +95,12 @@ function normalizeContext(
 ): InstitutionActorContext | undefined {
   if (!isAuthorizedContext(context)) return undefined;
   if (kind === "INSTITUTION") {
-    return { ...context, scope: { tenantId: context.scope.tenantId } };
+    const auditCampusId = context.auditCampusId ?? context.scope.campusId;
+    return {
+      ...context,
+      ...(auditCampusId === undefined ? {} : { auditCampusId }),
+      scope: { tenantId: context.scope.tenantId },
+    };
   }
   return context;
 }

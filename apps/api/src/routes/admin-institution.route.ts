@@ -83,6 +83,9 @@ function contextFromRequest(request: FastifyRequest): InstitutionActorContext | 
       ...(scope.campusId === undefined ? {} : { campusId: scope.campusId }),
     },
     capabilities: membership.capabilities as readonly string[],
+    ...(scope.campusId === undefined ? {} : { auditCampusId: scope.campusId }),
+    requestCorrelationId: request.id,
+    traceId: request.id,
   };
 }
 

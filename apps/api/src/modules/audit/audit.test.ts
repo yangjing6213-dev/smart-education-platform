@@ -36,6 +36,8 @@ const { AUDIT_ACTIONS, AUDIT_ADMIN_PERMISSION_MATRIX, AuditService, InMemoryAudi
   (await import(serviceModulePath)) as typeof import("./audit.service.js");
 const { registerAdminAuditRoute } = await import(routeModulePath);
 const { buildServer } = await import("../../server.js");
+const { InMemoryPartnerLinkRepository, PartnerLinkService } =
+  await import("../partner-links/partner-link.service.js");
 const pageSource = readFileSync(new URL(pageModulePath, import.meta.url), "utf8");
 const pageJavaScript = ts.transpileModule(pageSource, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
@@ -445,4 +447,119 @@ test("audit log page presents read-only redacted states without mutation control
   assert.equal(AuditLogsPage({ status: "EMPTY", events: [] }).message, "NO_AUDIT_EVENTS");
   assert.equal(AuditLogsPage({ status: "DENIED", events: [] }).message, "ACCESS_DENIED");
   assert.equal(AuditLogsPage({ status: "ERROR", events: [] }).message, "AUDIT_LOGS_UNAVAILABLE");
+});
+
+test("active server records the six protected command actions in one scoped audit stream", async () => {
+  const auditService = createService();
+  const partnerLinkService = new PartnerLinkService(
+    new InMemoryPartnerLinkRepository([
+      {
+        id: "synthetic-partner-link-001",
+        tenant_id: TENANT_ID,
+        campus_id: CAMPUS_ID,
+        symbolic_destination: "PARTNER_CLOUD_SYNTHETIC_WORKSPACE",
+        normalized_host: "synthetic.partner.invalid",
+        normalized_path: "/approved/synthetic-workspace",
+        allowed_roles: ["content:write"],
+        required_capability: "content:write",
+        publication_status: "PUBLISHED",
+        enabled_status: "ENABLED",
+        allowlist_policy_version: "policy-v1",
+        title: "模拟伙伴入口",
+        description: "仅用于 Task 17 审计测试的虚构入口。",
+        version: 1,
+        synthetic_data: true,
+      },
+    ]),
+    { auditService },
+  );
+  const app = buildServer({
+    auditService,
+    partnerLinkService,
+    getTrustedAuthResult: () =>
+      trustedAuthResult(["content:write", "content:publish", "memberships:read"]),
+  });
+  const payload = {
+    title: "Synthetic Task 17 bulletin",
+    type: "HOME_BLOCK",
+    visibility: "PUBLIC",
+    body: {
+      summary: "Synthetic summary",
+      blocks: [{ kind: "TEXT", text: "Synthetic content" }],
+    },
+  };
+
+  try {
+    const responses = [
+      await app.inject({
+        method: "POST",
+        url: "/admin/institution/home/synthetic-task17-content/draft",
+        payload: { payload },
+      }),
+      await app.inject({
+        method: "PUT",
+        url: "/admin/institution/home/synthetic-task17-content/draft",
+        payload: {
+          payload: { ...payload, title: "Synthetic Task 17 bulletin updated" },
+          expected_version: 1,
+        },
+      }),
+      await app.inject({
+        method: "POST",
+        url: "/admin/institution/home/synthetic-task17-content/publish",
+        payload: { expected_version: 2 },
+      }),
+      await app.inject({
+        method: "POST",
+        url: "/admin/institution/home/synthetic-task17-content/unpublish",
+        payload: { expected_version: 3 },
+      }),
+      await app.inject({
+        method: "POST",
+        url: "/files/intents",
+        payload: {
+          declared_purpose: "ACTIVITY_MEDIA",
+          mime_type: "image/png",
+          size_bytes: 4,
+          checksum: "a".repeat(64),
+        },
+      }),
+      await app.inject({
+        method: "GET",
+        url: "/staff/partner-cloud-links/synthetic-partner-link-001/entry-check",
+      }),
+    ];
+
+    assert.deepEqual(
+      responses.map((response) => response.statusCode),
+      [201, 200, 200, 200, 201, 200],
+    );
+    const responseRequestIds = responses.map((response) => response.json().request_id).sort();
+    const events = auditService.store.listEvents();
+    assert.equal(events.length, 6);
+    assert.deepEqual(events.map((event) => event.action).sort(), [...AUDIT_ACTIONS].sort());
+    assert.deepEqual(events.map((event) => event.correlation_id).sort(), responseRequestIds);
+    assert.deepEqual(events.map((event) => event.trace_id).sort(), responseRequestIds);
+    assert.equal(
+      events.every(
+        (event) =>
+          event.actor_id === ACTOR_ID &&
+          event.tenant_id === TENANT_ID &&
+          event.campus_id === CAMPUS_ID &&
+          event.metadata.result === "SUCCESS" &&
+          event.synthetic_data,
+      ),
+      true,
+    );
+
+    const stale = await app.inject({
+      method: "PUT",
+      url: "/admin/institution/home/synthetic-task17-content/draft",
+      payload: { payload, expected_version: 1 },
+    });
+    assert.equal(stale.statusCode, 409);
+    assert.equal(auditService.store.listEvents().length, 6);
+  } finally {
+    await app.close();
+  }
 });

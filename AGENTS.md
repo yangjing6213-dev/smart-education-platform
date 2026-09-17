@@ -2,11 +2,21 @@
 
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；V41 治理同步已通过负责人审阅并冻结；Phase 1B Task 01—16 均已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 14 Stage B/C1/C2 与 Task 16 Stage B/C1/C2 已完成并通过负责人审阅；Task 17 Stage A 已通过负责人审阅，Stage B 四文件定向技术证据已接受，minimal entrypoint repair 已获授权，但整体仍为 `BLOCKED_ENTRYPOINT_AND_INTEGRATION_GAP`，C1/C2 尚未授权；Task 18+ 尚未启动且未获授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；V41 治理同步已通过负责人审阅并冻结；Phase 1B Task 01—16 均已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 14 Stage B/C1/C2 与 Task 16 Stage B/C1/C2 已完成并通过负责人审阅；Task 17 是唯一当前活动任务，API/admin-web 入口与六动作审计集成已在 `DEVELOPMENT_MODE` 下完成本地验证，当前状态为 `LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE`；C1/C2 与 Task 18+ 尚未授权。
 
-当前活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md` 为准（SHA-256：`F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A`）。V41 治理同步已通过负责人审阅并冻结；Task 01—16 均已接受并冻结；Task 17 Stage A 已通过负责人审阅，Stage B 四文件定向技术证据已接受，minimal entrypoint repair 已获授权，但两个入口尚未接线且六动作集成尚未证明，C1/C2 尚未授权；Task 18+ 尚未启动且未获授权。
+当前唯一活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md` 为准（SHA-256：`F2C77C7A1EEE626619CB19DDD994D2D373D59C54CBB939260E7C3B7C77B52D5A`）。不得为普通开发继续创建 V43、V44 或其他并行治理文件；治理冲突应在现有 `AGENTS.md` 与 `PLANS.md` 当前控制面中收敛并等待负责人验收。
 
-当前 Task 10 活动锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
+## 当前执行模式与长期稳定规则
+
+- `ACTIVE_GOVERNANCE=V42`；`PHASE_1B_ACTIVE_TASK=TASK17`；同一时刻只允许一个当前治理版本和一个当前活动任务。V42 之前的版本和下文明确标注的状态块仅是 `HISTORICAL/FROZEN` 证据，不得被解释为第二个活动控制面。
+- `DEVELOPMENT_MODE` 用于任务实现与本地稳定化。获得一次任务波次授权后，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建和本地 checkpoint 默认允许连续执行，不得按子步骤重复请求授权。
+- `ACCEPTANCE_MODE` 只在任务实现和验证结束后进入。负责人验收、ZIP、最终 SHA 清单、完整 E2E、发布审计和交付包只在明确的验收或交付边界执行；checkpoint 提交只保存可恢复现场，不等于产品验收通过，也不自动授权 C1、C2、下一任务、push、deploy 或 release。
+- `UNKNOWN` 与 `REPORTED_ONLY` 必须给出警告、路径分类和影响，但只要不触及保护路径、高风险操作或明确验收门禁，就不得阻塞普通开发。未跟踪路径只按 Git 元数据分类；未获授权时不得读取、删除、移动、覆盖或批量暂存其内容。
+- 仅以下高风险操作暂停并请求一次明确确认：删除或覆盖数据、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和任何外部写入。生产密钥、真实数据和外部服务仍禁止接入。
+- 同一错误最多自动修复两轮。两轮后仍失败必须停止试错，并分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`，记录证据、影响和下一步，不得通过放宽断言、权限或隔离要求制造通过。
+- Task 17 当前精确开发白名单和验证矩阵只在 `PLANS.md` 维护；禁止 `git add .`、`git add -A` 和对白名单外路径的顺手清理。每次 checkpoint 必须显式列出路径并在提交后复核工作树。
+
+V42 冻结任务锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `TASK_10_STATUS=ACCEPTED_AND_FROZEN`、
 `TASK_10_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_10_ACCEPTANCE.md`、
 `TASK_10_ACCEPTANCE_SHA256=4628B2BADB28CF6E5A065AD252B4A1E934D199A1A911D9DE6DEC07313064B657`；

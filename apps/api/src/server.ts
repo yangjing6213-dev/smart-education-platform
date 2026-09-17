@@ -32,6 +32,8 @@ import {
   type StaffGuideScopeResolver,
 } from "./routes/staff-guides.route.js";
 import { registerFileIntentRoutes } from "./routes/file-intent.route.js";
+import { PartnerLinkService } from "./modules/partner-links/partner-link.service.js";
+import { registerPartnerLinkRoutes } from "./routes/partner-link.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
@@ -59,6 +61,7 @@ export interface ServerOptions {
   readonly getStaffGuideScope?: StaffGuideScopeResolver;
   readonly fileService?: FileService;
   readonly auditService?: AuditService;
+  readonly partnerLinkService?: PartnerLinkService;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -105,9 +108,16 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
       const derivesStaffGuideCampus = request.url.startsWith("/staff/guides");
       const derivesFileCampus = request.url.startsWith("/files/");
       const derivesAuditCampus = request.url.startsWith("/admin/audit-logs");
+      const derivesInstitutionCampus = request.url.startsWith("/admin/institution/");
+      const derivesPartnerLinkCampus = request.url.startsWith("/staff/partner-cloud-links");
       const resolvedCampusId =
         requestedCampusIdValue ??
-        (derivesTask08Campus || derivesStaffGuideCampus || derivesFileCampus || derivesAuditCampus
+        (derivesTask08Campus ||
+        derivesStaffGuideCampus ||
+        derivesFileCampus ||
+        derivesAuditCampus ||
+        derivesInstitutionCampus ||
+        derivesPartnerLinkCampus
           ? membership?.campus_ids[0]
           : undefined);
 
@@ -128,13 +138,15 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     },
   });
 
+  const auditService = options.auditService ?? new AuditService();
+
   registerHealthRoute(app);
   registerMeRoute(app);
   registerMembershipsRoute(app);
   registerPublicContentRoute(app, options.contentService ?? new ContentService());
   registerAdminInstitutionRoute(
     app,
-    options.institutionService ?? new InstitutionService(),
+    options.institutionService ?? new InstitutionService(undefined, { auditService }),
     options.getPublicInstitutionScope,
   );
   registerPublicTeacherRoutes(
@@ -157,7 +169,14 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     options.guideService ?? new GuideService(),
     options.getStaffGuideScope,
   );
-  registerFileIntentRoutes(app, options.fileService ?? new FileService(new InMemoryCosStorage()));
-  registerAdminAuditRoute(app, options.auditService ?? new AuditService());
+  registerFileIntentRoutes(
+    app,
+    options.fileService ?? new FileService(new InMemoryCosStorage(), { auditService }),
+  );
+  registerPartnerLinkRoutes(
+    app,
+    options.partnerLinkService ?? new PartnerLinkService(undefined, { auditService }),
+  );
+  registerAdminAuditRoute(app, auditService);
   return app;
 }

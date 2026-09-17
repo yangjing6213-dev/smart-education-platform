@@ -14,6 +14,7 @@ import {
   type ContentScope,
   InMemoryContentRepository,
 } from "./content.repository.js";
+import type { AuditAction, AuditService } from "../audit/audit.service.js";
 
 export type ContentCapability = "content:write" | "content:publish";
 
@@ -23,6 +24,9 @@ export interface ContentActorContext {
   readonly activeMembership: true;
   readonly scope: ContentScope;
   readonly capabilities: readonly string[];
+  readonly auditCampusId?: string;
+  readonly requestCorrelationId?: string;
+  readonly traceId?: string;
 }
 
 export interface DraftPayload {
@@ -71,6 +75,7 @@ export type ContentOperationResult<T> = ContentOperationSuccess<T> | ContentOper
 export interface ContentServiceOptions {
   readonly now?: () => Date;
   readonly onPublicationAuditEvent?: (event: PublicationAuditEvent) => void;
+  readonly auditService?: AuditService;
 }
 
 const ERROR_MESSAGES: Record<ContentErrorCode, string> = {
@@ -167,6 +172,7 @@ export class ContentService {
   public readonly repository: ContentRepository;
   private readonly now: () => Date;
   private readonly onPublicationAuditEvent: (event: PublicationAuditEvent) => void;
+  private readonly auditService: AuditService | undefined;
 
   public constructor(
     repository: ContentRepository = new InMemoryContentRepository(),
@@ -175,6 +181,7 @@ export class ContentService {
     this.repository = repository;
     this.now = options.now ?? (() => new Date());
     this.onPublicationAuditEvent = options.onPublicationAuditEvent ?? (() => undefined);
+    this.auditService = options.auditService;
   }
 
   public createDraft(
@@ -217,8 +224,18 @@ export class ContentService {
       updated_by: context.actorId,
       updated_at: now,
     };
-    this.repository.save(record);
-    return { ok: true, data: record };
+    return this.executeAudited(
+      context,
+      "CONTENT_DRAFT_CREATED",
+      contentKey,
+      record.version,
+      "CREATED",
+      "CREATE",
+      () => {
+        this.repository.save(record);
+        return { ok: true, data: record };
+      },
+    );
   }
 
   public updateDraft(
@@ -253,8 +270,18 @@ export class ContentService {
       updated_by: context.actorId,
       updated_at: this.now().toISOString(),
     };
-    this.repository.save(record);
-    return { ok: true, data: record };
+    return this.executeAudited(
+      context,
+      "CONTENT_DRAFT_UPDATED",
+      contentKey,
+      record.version,
+      "UPDATED",
+      "UPDATE",
+      () => {
+        this.repository.save(record);
+        return { ok: true, data: record };
+      },
+    );
   }
 
   public publish(
@@ -320,16 +347,70 @@ export class ContentService {
       updated_by: context.actorId,
       updated_at: now,
     };
-    this.repository.save(record);
-    this.onPublicationAuditEvent({
-      eventType: targetStatus,
-      tenantId: record.tenant_id,
-      ...(record.campus_id === null ? {} : { campusId: record.campus_id }),
-      contentKey: record.content_key,
-      resultingVersion: record.version,
-      actorReference: context.actorId,
-      eventTime: now,
-    });
-    return { ok: true, data: record };
+    return this.executeAudited(
+      context,
+      targetStatus === "PUBLISHED" ? "CONTENT_PUBLISHED" : "CONTENT_UNPUBLISHED",
+      contentKey,
+      record.version,
+      targetStatus,
+      targetStatus === "PUBLISHED" ? "PUBLISH" : "UNPUBLISH",
+      () => {
+        this.repository.save(record);
+        this.onPublicationAuditEvent({
+          eventType: targetStatus,
+          tenantId: record.tenant_id,
+          ...(record.campus_id === null ? {} : { campusId: record.campus_id }),
+          contentKey: record.content_key,
+          resultingVersion: record.version,
+          actorReference: context.actorId,
+          eventTime: now,
+        });
+        return { ok: true, data: record };
+      },
+    );
+  }
+
+  private executeAudited<T>(
+    context: ContentActorContext,
+    action: AuditAction,
+    contentKey: string,
+    version: number,
+    status: "CREATED" | "UPDATED" | "PUBLISHED" | "UNPUBLISHED",
+    operation: "CREATE" | "UPDATE" | "PUBLISH" | "UNPUBLISH",
+    command: () => ContentOperationResult<T>,
+  ): ContentOperationResult<T> {
+    if (this.auditService === undefined) return command();
+    const campusId = context.auditCampusId ?? context.scope.campusId;
+    if (campusId === undefined) return failure("FORBIDDEN_SCOPE");
+    const correlationId = context.requestCorrelationId ?? `content:${action}:${contentKey}`;
+    const traceId = context.traceId ?? correlationId;
+    const result = this.auditService.executeProtectedCommand(
+      {
+        trusted: true,
+        actorId: context.actorId,
+        activeMembership: true,
+        scope: { tenantId: context.scope.tenantId, campusId },
+        capabilities: context.capabilities,
+      },
+      {
+        action,
+        target: { type: "CONTENT", id: contentKey },
+        correlationId,
+        traceId,
+        metadata: {
+          result: "SUCCESS",
+          version,
+          status,
+          channel: "API",
+          operation,
+          synthetic_reference: "synthetic-content",
+        },
+      },
+      () => command(),
+    );
+    if (result.ok) return result;
+    return result.error.code === "FORBIDDEN_SCOPE"
+      ? failure("FORBIDDEN_SCOPE")
+      : failure("CONFLICT_STATE");
   }
 }
