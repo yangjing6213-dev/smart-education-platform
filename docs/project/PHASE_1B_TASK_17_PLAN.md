@@ -26,7 +26,7 @@ TASK_ID=PHASE_1B_TASK_17
 TITLE=Operation logs and audit views
 ACTIVE_GOVERNANCE=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md
 ACTIVE_GOVERNANCE_SHA256=7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB
-AUTHORIZATION_SOURCE=PROJECT_OWNER_CONFIRMED_V39_AND_AUTHORIZED_TASK17_STAGE_A_2026-09-17
+AUTHORIZATION_SOURCE=PROJECT_OWNER_CONFIRMED_TASK17_STAGE_A_2026-09-17
 FORMALIZATION_EXECUTION_DATE=2026-09-16
 AUTHORIZATION_SOURCE_DATE_NOTE=SOURCE_IDENTIFIER_CONTAINS_2026-09-17_FUTURE_RELATIVE_TO_FORMALIZATION_DATE
 BASELINE_BRANCH=feature/phase-1b-task-04-identity-membership
@@ -61,9 +61,10 @@ OWNER_REVIEW_GATE=TASK17_POST_C2_GOVERNANCE_REVIEW_GATE
 STOP_REASON=TASK17_POST_C2_GOVERNANCE_REVIEW_GATE
 ```
 
-V39 predates the current explicit Task 17 Stage A authorization and therefore
-correctly remains unchanged. This plan does not treat V39's earlier
-`TASK17_PLUS_STARTED=NO` state as a blocker.
+V39 is HISTORICAL/FROZEN evidence only and is not the current authority. V42
+records the completed Task 17 lifecycle. The earlier V39
+`TASK17_PLUS_STARTED=NO` state is historical context and is not the current
+Task 17 status.
 
 ## Locked dependencies and role
 
@@ -251,7 +252,8 @@ configuration or install dependencies to force a pass.
 ## Encoding, preservation, and fail-closed rules
 
 Both Stage A documents must be UTF-8 without BOM, LF-only, exactly one trailing
-LF, and must not contain their own final actual SHA. V39, Task 16 acceptance,
+LF, and must not contain their own final actual SHA. V39 HISTORICAL/FROZEN
+evidence, Task 16 acceptance,
 Task 01-16 evidence, source, tests, configuration, dependencies, lockfiles,
 databases, migrations, protected paths, and external receipts remain
 unchanged.

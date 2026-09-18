@@ -6,7 +6,7 @@ STAGE=STAGE_C2_ACCEPTANCE
 CONTRACT_STATUS=ACCEPTED_AND_FROZEN
 ACTIVE_GOVERNANCE=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md
 ACTIVE_GOVERNANCE_SHA256=7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB
-AUTHORIZATION_SOURCE=PROJECT_OWNER_CONFIRMED_V39_AND_AUTHORIZED_TASK17_STAGE_A_2026-09-17
+AUTHORIZATION_SOURCE=PROJECT_OWNER_CONFIRMED_TASK17_STAGE_A_2026-09-17
 FORMALIZATION_EXECUTION_DATE=2026-09-16
 AUTHORIZATION_SOURCE_DATE_NOTE=SOURCE_IDENTIFIER_CONTAINS_2026-09-17_FUTURE_RELATIVE_TO_FORMALIZATION_DATE
 BASELINE_BRANCH=feature/phase-1b-task-04-identity-membership
@@ -43,10 +43,10 @@ STOP_REASON=TASK17_POST_C2_GOVERNANCE_REVIEW_GATE
 ## 1. Authority and purpose
 
 This contract formalizes Phase 1B Task 17, Operation logs and audit views.
-V39 remains unchanged. Although V39 records Task 17 as unstarted and
-unauthorized, the project owner's explicit Task 17 Stage A instruction is
-subsequent authorization evidence for creating only this contract and
-`docs/project/PHASE_1B_TASK_17_PLAN.md`.
+V39 is HISTORICAL/FROZEN evidence only. V42 is the current active governance
+authority and records the completed Task 17 lifecycle. The project owner's
+explicit Task 17 Stage A instruction was the historical authorization for
+creating this contract and `docs/project/PHASE_1B_TASK_17_PLAN.md`.
 
 Stage A defines the future audit-event contract, exact Stage B file boundary,
 TDD expectations, verification gates, and stop conditions. It does not
@@ -177,7 +177,7 @@ browser evidence, its receipt must record `UI_NOT_VISUALLY_VERIFIED=YES`.
 
 ## 7. Preservation and stop conditions
 
-V39, Task 16 acceptance, all Task 01-16 evidence, source, tests, configuration,
+V39 HISTORICAL/FROZEN evidence, Task 16 acceptance, all Task 01-16 evidence, source, tests, configuration,
 dependencies, lockfiles, databases, migrations, protected paths, and external
 receipts are read-only. This Stage A performs no network, service, branch,
 worktree, staging, commit, push, PR, deployment, production-data, or Task 18+
