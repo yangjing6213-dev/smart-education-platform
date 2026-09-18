@@ -2,19 +2,19 @@
 
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；V41 治理同步已通过负责人审阅并冻结；Phase 1B Task 01—16 均已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 14 Stage B/C1/C2 与 Task 16 Stage B/C1/C2 已完成并通过负责人审阅；Task 17 已完成并接受冻结，API/admin-web 入口与六动作审计集成已完成本地验证，C1 已完成、C2 已接受并冻结。Task 18 跨端回归、安全隔离、localhost 浏览器 smoke 与只读发布就绪门禁已通过负责人审阅，本地 checkpoint 已通过 Manager Review，Task 18 已接受并冻结；Task 19 尚未启动且未获授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；V41 治理同步已通过负责人审阅并冻结；Phase 1B Task 01—16 均已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 14 Stage B/C1/C2 与 Task 16 Stage B/C1/C2 已完成并通过负责人审阅；Task 17 已完成并接受冻结，API/admin-web 入口与六动作审计集成已完成本地验证，C1 已完成、C2 已接受并冻结。Task 18 跨端回归、安全隔离、localhost 浏览器 smoke 与只读发布就绪门禁已通过负责人审阅，本地 checkpoint 已通过 Manager Review，Task 18 已接受并冻结；Task 19 Stage A formalization 已获授权并处于负责人审阅前提案状态，Task 19 实施、C1、C2 与 Task 20+ 均未启动且未获授权。
 
 当前唯一活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md` 为准（SHA-256：`7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB`）。不得为普通开发继续创建 V43、V44 或其他并行治理文件；治理冲突应在现有 `AGENTS.md` 与 `PLANS.md` 当前控制面中收敛并等待负责人验收。
 
 ## 当前执行模式与长期稳定规则
 
-- `ACTIVE_GOVERNANCE=V42`；`PHASE_1B_ACTIVE_TASK=TASK18_ACCEPTED_AND_FROZEN`；同一时刻只允许一个当前治理版本和一个当前任务边界。V42 之前的版本和下文明确标注的状态块仅是 `HISTORICAL/FROZEN` 证据，不得被解释为第二个活动控制面。
+- `ACTIVE_GOVERNANCE=V42`；`PHASE_1B_ACTIVE_TASK=TASK19_STAGE_A_FORMALIZATION`；同一时刻只允许一个当前治理版本和一个当前任务边界。V42 之前的版本、V42 内旧 Task 17/Task 18+ 时点字段和下文明确标注的状态块仅是 `HISTORICAL/FROZEN` 证据，不得被解释为第二个活动控制面。
 - `DEVELOPMENT_MODE` 用于任务实现与本地稳定化。获得一次任务波次授权后，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建和本地 checkpoint 默认允许连续执行，不得按子步骤重复请求授权。
 - `ACCEPTANCE_MODE` 只在任务实现和验证结束后进入。负责人验收、ZIP、最终 SHA 清单、完整 E2E、发布审计和交付包只在明确的验收或交付边界执行；checkpoint 提交只保存可恢复现场，不等于产品验收通过，也不自动授权 C1、C2、下一任务、push、deploy 或 release。
 - `UNKNOWN` 与 `REPORTED_ONLY` 必须给出警告、路径分类和影响，但只要不触及保护路径、高风险操作或明确验收门禁，就不得阻塞普通开发。未跟踪路径只按 Git 元数据分类；未获授权时不得读取、删除、移动、覆盖或批量暂存其内容。
 - 仅以下高风险操作暂停并请求一次明确确认：删除或覆盖数据、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和任何外部写入。生产密钥、真实数据和外部服务仍禁止接入。
 - 同一错误最多自动修复两轮。两轮后仍失败必须停止试错，并分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`，记录证据、影响和下一步，不得通过放宽断言、权限或隔离要求制造通过。
-- Task 18 精确八路径写集、验证矩阵和 checkpoint 边界已完成并冻结，其历史明细保留在 `PLANS.md`。禁止 `git add .`、`git add -A` 和对白名单外路径的顺手清理；13 条受保护 user-web/mini-program 路径仅可只读验证并须保持大小与修改时间不变。
+- Task 18 精确八路径写集、验证矩阵和 checkpoint 边界已完成并冻结，其历史明细保留在 `PLANS.md`。Task 19 Stage A 当前写集严格限于 `PHASE_1B_TASK_19_CODEX_EXECUTION.md`、`docs/project/PHASE_1B_TASK_19_PLAN.md`、`docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md`、`AGENTS.md`、`PLANS.md`；本阶段不得暂存或提交。禁止 `git add .`、`git add -A` 和对白名单外路径的顺手清理；71 条保护未跟踪路径本阶段仅可核验路径、大小与 mtime，不得读取内容。未来 Stage B proposed read-only 范围严格拆分为合同完整枚举的 13 条产品输入与 58 条冻结证据输入，只有负责人另行明确授权后才可按各自边界读取内容。
 
 V42 冻结任务锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `TASK_10_STATUS=ACCEPTED_AND_FROZEN`、
@@ -107,16 +107,22 @@ V42 冻结任务锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `TASK18_COMMIT_AUTHORIZATION=GRANTED`、
 `TASK18_CHECKPOINT_COMMIT=e0c41bb859a87a031cf8b7d39373aea3b712681a`、
 `TASK18_CHECKPOINT_STATUS=MANAGER_REVIEW_PASSED`、
+`TASK18_CONTROL_PLANE_CHECKPOINT_COMMIT=b3f300cd3c749cc06dc462d149353ac8cd0f5528`、
 `TASK19_STARTED=NO`、
-`TASK19_AUTHORIZATION=NOT_GRANTED`、
-`TASK19_PLUS_STARTED=NO`、
-`TASK19_CANDIDATE_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`、
-`TASK19_CANDIDATE_STATUS=RECOMMENDATION_ONLY`、
-`PHASE_1B_ACTIVE_TASK=TASK18_ACCEPTED_AND_FROZEN`、
-`OWNER_REVIEW_GATE=TASK18_MANAGER_REVIEW_AND_TASK19_AUTHORITY_GATE`、
-`STOP_REASON=TASK18_MANAGER_REVIEW_AND_TASK19_AUTHORITY_GATE`。
+`TASK19_IMPLEMENTATION_AUTHORIZED=NO`、
+`TASK19_STAGE_A_AUTHORIZATION=GRANTED`、
+`TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`、
+`TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`、
+`TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED`、
+`TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED`、
+`TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED`、
+`TASK20_PLUS_STARTED=NO`、
+`TASK20_PLUS_AUTHORIZATION=NOT_GRANTED`、
+`PHASE_1B_ACTIVE_TASK=TASK19_STAGE_A_FORMALIZATION`、
+`OWNER_REVIEW_GATE=TASK19_STAGE_A_OWNER_REVIEW_GATE`、
+`STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE`。
 
-Task 18 checkpoint 已通过 Manager Review，但 checkpoint 仍只保存本地可恢复状态，不等于发布或 release，也不构成 Task 19 实施授权。Task 19 候选类型仅为建议；进入 Stage A formalization 仍需负责人单独授权。
+Task 18 checkpoint 与控制面 checkpoint 已通过独立复核，但 checkpoint 仍只保存本地可恢复状态，不等于发布或 release。负责人已授权 Task 19 Stage A formalization；该授权只允许形成合同、计划和当前控制面，不构成 Task 19 Stage B 实施、C1、C2、push、deploy、release 或 Task 20+ 授权。
 
 ## HISTORICAL/FROZEN：Phase 1A 自举与必读顺序
 

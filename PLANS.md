@@ -2,7 +2,7 @@
 
 - `ACTIVE_GOVERNANCE=V42`
 - `ACTIVE_GOVERNANCE_SHA256=7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB`
-- `PHASE_1B_ACTIVE_TASK=TASK18_ACCEPTED_AND_FROZEN`
+- `PHASE_1B_ACTIVE_TASK=TASK19_STAGE_A_FORMALIZATION`
 - `ACTIVE_BRANCH=feature/phase-1b-task-17-audit-logs`
 - `EXECUTION_MODE=ACCEPTANCE_MODE`
 - `TASK17_LOCAL_STATUS=ACCEPTED_AND_FROZEN`
@@ -24,22 +24,40 @@
 - `TASK18_COMMIT_AUTHORIZATION=GRANTED`
 - `TASK18_CHECKPOINT_COMMIT=e0c41bb859a87a031cf8b7d39373aea3b712681a`
 - `TASK18_CHECKPOINT_STATUS=MANAGER_REVIEW_PASSED`
+- `TASK18_CONTROL_PLANE_CHECKPOINT_COMMIT=b3f300cd3c749cc06dc462d149353ac8cd0f5528`
 - `TASK19_STARTED=NO`
-- `TASK19_AUTHORIZATION=NOT_GRANTED`
-- `TASK19_PLUS_STARTED=NO`
-- `TASK19_CANDIDATE_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`
-- `TASK19_CANDIDATE_STATUS=RECOMMENDATION_ONLY`
+- `TASK19_IMPLEMENTATION_AUTHORIZED=NO`
+- `TASK19_STAGE_A_AUTHORIZATION=GRANTED`
+- `TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`
+- `TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`
+- `TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED`
+- `TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED`
+- `TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED`
+- `TASK20_PLUS_STARTED=NO`
+- `TASK20_PLUS_AUTHORIZATION=NOT_GRANTED`
 - `UI_VISUAL_VERIFICATION_REQUIRED=YES`
-- `OWNER_REVIEW_GATE=TASK18_MANAGER_REVIEW_AND_TASK19_AUTHORITY_GATE`
-- `STOP_REASON=TASK18_MANAGER_REVIEW_AND_TASK19_AUTHORITY_GATE`
+- `OWNER_REVIEW_GATE=TASK19_STAGE_A_OWNER_REVIEW_GATE`
+- `STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE`
 
-V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 18 已在单一开发波次内完成跨端回归、安全隔离、localhost 浏览器 smoke 和只读发布就绪门禁，并在 checkpoint Manager Review 后接受冻结。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
+V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 18 已在单一开发波次内完成跨端回归、安全隔离、localhost 浏览器 smoke 和只读发布就绪门禁，并在 checkpoint Manager Review 后接受冻结。Task 19 仅进入 Stage A formalization，实施、C1、C2 和 Task 20+ 未获授权。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
 
-Task 18 已通过负责人审阅和 checkpoint Manager Review，状态为 `ACCEPTED_AND_FROZEN`。checkpoint 只表示本地可恢复状态，不等于发布或 release。Task 19 尚未启动且未获授权；`PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE` 仅登记为候选类型建议，不构成 Stage A formalization 或实施授权。ZIP、最终 SHA 清单、完整 E2E 与发布审计仍延后到明确交付边界。
+Task 18 已通过负责人审阅和 checkpoint Manager Review，状态为 `ACCEPTED_AND_FROZEN`。checkpoint 只表示本地可恢复状态，不等于发布或 release。负责人已授权 Task 19 Stage A formalization，并锁定类型为 `PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`；当前只形成合同、实施计划与 backlog，不授权 Stage B、完整 E2E、浏览器、ZIP、manifest、C1、C2 或最终 release。
 
 V42 与下方冻结快照中旧 Task 17 阻塞、Task 18+ 未启动或未授权表述均为 `HISTORICAL/FROZEN` 授权时点记录，不代表当前控制面。
 
 下方 `HISTORICAL/FROZEN` 快照中的 `UI_NOT_VISUALLY_VERIFIED=YES` 仅记录 Task 17 的历史限制；Task 18 当前 localhost smoke 状态以 `TASK18_UI_VISUAL_VERIFICATION_STATUS=PASS_LOCALHOST_SMOKE` 为准。
+
+## Task 19 Stage A 当前边界
+
+Task 19 是 Phase 1B V0.1 最终交付验收，不是产品功能开发。Stage A 精确写集仅为：
+
+1. `PHASE_1B_TASK_19_CODEX_EXECUTION.md`
+2. `docs/project/PHASE_1B_TASK_19_PLAN.md`
+3. `docs/plans/PHASE_1B_V0_1_IMPLEMENTATION_PLAN.md`
+4. `AGENTS.md`
+5. `PLANS.md`
+
+Stage B 的 31 条永久输出、71 条 proposed read-only 输入（13 条产品输入 + 58 条冻结证据输入及三份路径清单 SHA）、21 个真实浏览器案例、先构建后 focused tests 的三端质量顺序、`evidence -> deterministic ZIP/manifest -> read-only final` 验证器生命周期、离线安装/回滚、临时目录和 created-this-run-only 清理规则，以 `PHASE_1B_TASK_19_CODEX_EXECUTION.md` 与 `docs/project/PHASE_1B_TASK_19_PLAN.md` 为准。Stage A 对 71 条路径仍仅核验 Git 路径、大小和 mtime；未来内容读取须由负责人另行明确授权。本阶段不得执行其中任何 Stage B 命令，不得暂存或提交上述五文件，并停止在 `TASK19_STAGE_A_OWNER_REVIEW_GATE`。
 
 ## HISTORICAL/FROZEN：Task 18 精确开发白名单
 

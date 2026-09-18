@@ -1,27 +1,22 @@
 # Phase 1B V0.1 Implementation Plan
 
-Status: active plan. Task 01—16 are accepted and remain frozen evidence.
-Task 12 C2 is accepted and frozen. Its post-acceptance route integration repair
-was implemented, verified, passed owner review, and is now frozen within the
-minimal two-file scope; Task 13 C2 is accepted and frozen; Task 14 Stage B/C1/C2
-and Task 16 Stage B/C1/C2 are completed, accepted, and frozen. The V41
-governance synchronization passed owner review and remains frozen. Task 17
-Stage A is owner-reviewed. Its Stage B component evidence is accepted and the
-minimal entrypoint repair is authorized, but the entrypoint and integration
-gap remains blocked. C1/C2 remain unauthorized, and Task 18+ remains
-unstarted and unauthorized.
+Status: active plan. Tasks 01-17 are accepted and remain frozen evidence. Task
+12's post-acceptance route repair, Task 17's entrypoint/audit integration, and
+their acceptance evidence are frozen within their exact boundaries. Task 18
+cross-client regression, security isolation, localhost browser smoke, and
+release-readiness gates passed owner and Manager review; Task 18 is accepted
+and frozen. Task 19 Stage A formalization is authorized and proposed pending
+owner review. Task 19 implementation, C1, C2, and Task 20+ are not started and
+not authorized.
 
 Current governance authority:
 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md`
 (`SHA-256=7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB`).
 The authority uses a whole-file SHA with no self-reference; its final SHA is
-recorded after independent Node and .NET verification. Task 13 C2 is accepted
-and frozen. Task 14 Stage B/C1/C2 are completed, accepted, and frozen within
-their exact boundaries. Task 16 Stage B/C1/C2 are accepted and frozen within
-their exact boundaries. Task 17 Stage A passed owner review; Stage B component
-evidence is accepted and the minimal entrypoint repair is authorized, but the
-entrypoint and integration gap remains blocked. C1/C2 and Task 18+ remain
-unauthorized.
+recorded after independent Node and .NET verification. V42's old Task 17 gate
+and Task 18+ denial remain `HISTORICAL/FROZEN` statements from its authorization
+point; they do not override the current Task 18 accepted state or Task 19 Stage
+A authorization recorded in `AGENTS.md`, `PLANS.md`, and the Task 19 contract.
 
 ## Dependency authority
 
@@ -35,7 +30,7 @@ depends only on `T05 -> T08 -> T12`.
 
 ## Working contract
 
-Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Task 01—14 are accepted and frozen increments with their separate implementation and acceptance records. Task 11 C2, Task 12 C2, and Task 13 C2 are accepted and frozen; Task 12 route repair was authorized only as the V26 two-file minimal repair. Task 14 Stage B/C1/C2 are completed, accepted, and frozen under the active V32 authority; Task 15 Stage B/C and Task 16+ remain unauthorized.
+Every implementation task follows `red -> green -> focused regression -> explicit commit`. The task owner must use synthetic fixtures, preserve tenant and campus scope, and attach command output to the task record. Tasks 01-18 are accepted and frozen increments with their separate contracts and evidence. Task 19 is the final-delivery acceptance boundary; its Stage A documents do not authorize implementation, packaging, browser execution, C1, C2, release, or Task 20+.
 
 ## Task 01 - Monorepo and quality tools
 
@@ -218,15 +213,20 @@ Task 09 is accepted and frozen.
 - Green test: valid synthetic image passes fake scan and foreign object access remains denied.
 - Commit step: `feat: add scoped file storage adapter boundary`.
 
-Task 12 Stage A passed owner review. Stage B was implemented and passed owner
+### HISTORICAL/FROZEN: Task 12 through Task 17 lifecycle snapshot
+
+The following narrative and status block preserve their original authorization
+time and are not current Task 18/19 controls. Task 12 Stage A passed owner
+review. Stage B was implemented and passed owner
 review in commit `e0cefee6417835ee7af24f572dfa76c82a5c3e63` (parent
 `b856fd809b2ee00e12907d1fd28a5c6186e6b8a2`). Under the active V32 authority,
 Task 12 C2, Task 11 C2, and Task 13 C2 are accepted and frozen. The
 two-file minimal route repair was implemented, verified, and passed owner review
 in commit `e964b9295f1bf8da74b58e9036c396b2cc91ce6c` (parent
 `8fdccb52d7e03306c225a56f3878b5fca6d012f9`). Task 10 C2 is accepted and frozen;
-Task 14 Stage B/C1/C2 are completed, accepted, and frozen. Task 15+ remain not
-started and unauthorized.
+Task 14 Stage B/C1/C2 are completed, accepted, and frozen. At that historical
+authorization point only, Task 15+ were recorded as not started and
+unauthorized. That statement does not describe the current control plane.
 
 ```text
 TASK_12_STAGE_C1_EXACT_FILES=docs/reviews/PHASE_1B_TASK_12_REVIEW.md|SHA256SUMS_PHASE_1B_TASK_12.txt|artifacts/review-package/student-care-platform-phase1b-task-12-review-pack-v1.0.zip
@@ -378,8 +378,9 @@ OWNER_REVIEW_GATE=TASK17_OWNER_ACCEPTANCE_GATE
 
 ## Task 17 - Operation logs and audit views
 
+- Current status: `ACCEPTED_AND_FROZEN`; C1 completed and C2 accepted/frozen.
 - Dependencies: Tasks 03-16.
-- Future files: `apps/api/src/modules/audit/audit.service.ts`, `apps/api/src/routes/admin-audit.route.ts`, `apps/admin-web/src/pages/audit-logs.tsx`, `apps/api/src/modules/audit/audit.test.ts`.
+- Frozen implementation files: `apps/api/src/modules/audit/audit.service.ts`, `apps/api/src/routes/admin-audit.route.ts`, `apps/admin-web/src/pages/audit-logs.tsx`, `apps/api/src/modules/audit/audit.test.ts`.
 - Input: audit baseline, event taxonomy, and admin permission matrix.
 - Output: append-only events and scoped metadata view.
 - Red test: mutable audit event, missing actor or scope, child content in an event, and unauthorized read must fail.
@@ -389,14 +390,91 @@ OWNER_REVIEW_GATE=TASK17_OWNER_ACCEPTANCE_GATE
 
 ## Task 18 - E2E, security, and release candidate validation
 
+- Current status: `ACCEPTED_AND_FROZEN`; owner review, Manager review, and local
+  control-plane checkpoint passed.
 - Dependencies: Tasks 01-17.
-- Future files: `tests/e2e/visitor.spec.ts`, `tests/e2e/staff.spec.ts`, `tests/e2e/learning.spec.ts`, `tests/security/isolation.spec.ts`, `tests/release/acceptance.spec.ts`, `scripts/verify-release.mjs`.
+- Frozen files: `tests/e2e/visitor.spec.ts`, `tests/e2e/staff.spec.ts`, `tests/e2e/learning.spec.ts`, `tests/security/isolation.spec.ts`, `tests/release/acceptance.spec.ts`, `scripts/verify-release.mjs`.
 - Input: all contracts, browser matrix, migration plan, and release thresholds.
 - Output: reproducible release-candidate report with route, security, privacy, performance smoke, and rollback checks.
 - Red test: inject a cross-tenant identifier, skip an AI hint step, request a private summary as a guardian, and corrupt an artifact; each must fail the release suite.
 - Implementation: compose synthetic environment fixtures, browser flows, deny tests, and artifact checks.
 - Green test: all critical flows and deny tests pass with zero unexpected requests and a recorded rollback target.
-- Commit step: `test: certify phase 1b v0.1 release candidate`.
+- Frozen checkpoints:
+  `e0c41bb859a87a031cf8b7d39373aea3b712681a` for the eight-path Task 18
+  release-readiness gate and `b3f300cd3c749cc06dc462d149353ac8cd0f5528`
+  for the accepted Task 18 control plane.
+
+## Task 19 - Phase 1B V0.1 final delivery acceptance
+
+- Type: `PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`.
+- Current lifecycle: Stage A authorization granted; proposal pending owner
+  review; Task 19 implementation not started and not authorized.
+- Dependencies: accepted and frozen Tasks 01-18.
+- User value: independently reproducible install, full quality and security
+  evidence, three-client visual acceptance, deterministic delivery package,
+  detached hashes, and rollback proof without production access.
+- Stage A files: `PHASE_1B_TASK_19_CODEX_EXECUTION.md`,
+  `docs/project/PHASE_1B_TASK_19_PLAN.md`, this backlog, `AGENTS.md`, and
+  `PLANS.md`.
+- Future Stage B verifier files: `scripts/verify-final-delivery.mjs` and
+  `tests/release/final-delivery.spec.ts`.
+- Future Stage B evidence roots:
+  `docs/reviews/PHASE_1B_TASK_19_FINAL_DELIVERY_REVIEW.md`,
+  `artifacts/final-delivery/task19/`,
+  `SHA256SUMS_PHASE_1B_TASK_19.txt`, and
+  `artifacts/release-package/student-care-platform-phase1b-v0.1-final-delivery-v1.0.zip`.
+- Exact Stage B boundary: 31 permanent paths and the single temporary root
+  `artifacts/task-19/tmp/`, enumerated without wildcard expansion in the Task 19
+  execution contract and plan. No 32nd permanent path is allowed.
+- Proposed Stage B protected read-only scope: 71 paths split into 13 product
+  inputs and 58 frozen-evidence inputs, with exact enumerations and path-list
+  SHA-256 values in the Task 19 execution contract. Stage A remains metadata
+  only. Future content reads require an explicit Stage B authorization; the 13
+  product paths may enter isolated build copies, while the 58 evidence paths may
+  only be hashed, structurally verified, and packaged unchanged. External
+  execution-receipt JSON is excluded absent separate exact authorization.
+- Browser matrix: seven named routes across `1440x1024`, `390x844`, and
+  `320x568`, producing exactly 21 inspected screenshots with zero unexpected
+  external requests or horizontal overflow.
+- Security matrix: trusted tenant/campus scope, membership and capability deny
+  cases, public projection safety, teacher-summary isolation, six-action audit
+  semantics, and synthetic-only minor data.
+- Reproduction: offline frozen install in isolated current/rollback copies;
+  root and explicit user-web/mini-program quality gates; root and user-web builds
+  before frozen focused specs; then root test and coverage evidence;
+  `MIGRATION_ID=NONE_NO_SCHEMA_CHANGE`, and rollback target
+  `b3f300cd3c749cc06dc462d149353ac8cd0f5528`.
+- Packaging: `--mode=evidence` creates the release-verifier report from four
+  prerequisite reports without reading itself or requiring a ZIP; then the
+  stored ZIP includes the 58 frozen-evidence paths, uses a fixed DOS timestamp,
+  UTF-8 flag, ordinal member order, CRC/length/source-SHA verification, and two
+  byte-identical rebuilds. The detached manifest uses 64-hex SHA-256, two ASCII
+  spaces, and POSIX paths; `--mode=final` is read-only and writes no sixth JSON.
+- Performance: localhost smoke fields are measured and recorded; no SLA,
+  percentile, capacity, production-latency, or guarantee claim is permitted.
+- Stop rule: any frozen drift, protected-path drift, missing browser case,
+  external request, real-data ambiguity, command failure, offline-store miss,
+  package nondeterminism, or extra path is `STATUS=BLOCKED`. After two attempts,
+  classify it as `PRODUCT_ISSUE` or `INFRASTRUCTURE_ISSUE`.
+- Branch recommendation only:
+  `codex/phase-1b-task-19-final-delivery-acceptance`; Stage A does not create
+  or switch a branch or worktree.
+- Stage B, C1, C2, release, deploy, and Task 20+ require separate authorization.
+
+```text
+TASK19_STARTED=NO
+TASK19_IMPLEMENTATION_AUTHORIZED=NO
+TASK19_STAGE_A_AUTHORIZATION=GRANTED
+TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW
+TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE
+TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED
+TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
+TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
+TASK20_PLUS_STARTED=NO
+TASK20_PLUS_AUTHORIZATION=NOT_GRANTED
+OWNER_REVIEW_GATE=TASK19_STAGE_A_OWNER_REVIEW_GATE
+STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
+```
 
 ## Historical Phase 1B start gate
 
