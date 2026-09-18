@@ -3,7 +3,7 @@
 AUTHORITY_ID=PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY
 AUTHORITY_VERSION=V42
 AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md
-AUTHORITY_STATUS=ACTIVE_TASK17_STAGE_B_REPAIR_AUTHORIZED_BLOCKED_INTEGRATION_GAP
+AUTHORITY_STATUS=ACTIVE_TASK17_LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
 AUTHORITY_OWNER_APPROVAL_SOURCE=PROJECT_OWNER_CONFIRMED_V41_AND_AUTHORIZED_TASK17_ENTRYPOINT_REPAIR_2026-09-17
 AUTHORITY_SUPERSEDES=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V41.md
 AUTHORITY_SUPERSEDES_SHA256=26EA89E0C1FF01F24EA12060ED1F13737DFCA312D1466FDCDA24FE12D089A9E9
@@ -23,14 +23,14 @@ and is not modified by this synchronization.
 
 Task 01-16 remain accepted and frozen. Task 17 Stage A remains formalized and
 owner-reviewed. The project owner accepted the focused technical evidence for
-the four Task 17 Stage B component files. That component-level evidence does
-not establish entrypoint wiring or protected-command integration. Task 17
-therefore remains blocked by the entrypoint and integration gap.
+the four Task 17 Stage B component files. The authorized repair wave now has
+local evidence for entrypoint wiring and protected-command integration. Task 17
+is locally verified and remains pending project-owner acceptance.
 
-The project owner granted a separate minimal entrypoint-repair authorization.
-This governance-only synchronization records that authorization but does not
-modify or execute any repair target. Task 17 C1 and C2 remain unstarted and
-unauthorized. Task 18+ remains unstarted and unauthorized.
+The project owner granted a separate minimal entrypoint-repair authorization,
+and its local verification is now recorded pending project-owner acceptance.
+Task 17 C1 and C2 remain unstarted and unauthorized. Task 18+ remains
+unstarted and unauthorized.
 
 V41_GOVERNANCE_SYNC_OWNER_REVIEW=PASS
 TASK_17_STARTED=YES_STAGE_A_FORMALIZED
@@ -40,19 +40,19 @@ TASK17_STAGE_A_OWNER_REVIEW=PASS
 TASK17_STAGE_B_AUTHORIZATION=GRANTED
 TASK17_STAGE_B_COMPONENT_EVIDENCE=PASS
 TASK17_STAGE_B_REPAIR_AUTHORIZATION=GRANTED
-TASK17_STAGE_B_STATUS=BLOCKED_ENTRYPOINT_AND_INTEGRATION_GAP
-TASK17_API_ENTRYPOINT_STATUS=NOT_WIRED
-TASK17_ADMIN_WEB_ENTRYPOINT_STATUS=NOT_WIRED
-TASK17_AUDIT_ACTION_INTEGRATION_STATUS=NOT_PROVEN
+TASK17_STAGE_B_STATUS=LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
+TASK17_API_ENTRYPOINT_STATUS=WIRED_AND_TESTED
+TASK17_ADMIN_WEB_ENTRYPOINT_STATUS=WIRED_AND_TESTED
+TASK17_AUDIT_ACTION_INTEGRATION_STATUS=SIX_ACTIONS_LOCALLY_VERIFIED
 TASK17_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK17_STAGE_C1_STATUS=NOT_STARTED
 TASK17_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK17_STAGE_C2_STATUS=NOT_STARTED
 TASK18_PLUS_STARTED=NO
 TASK18_PLUS_AUTHORIZATION=NOT_GRANTED
-PHASE_1B_ACTIVE_TASK=TASK17_STAGE_B_REPAIR_AUTHORIZED
-OWNER_REVIEW_GATE=TASK17_STAGE_B_REPAIR_OWNER_REVIEW_GATE
-STOP_REASON=V42_GOVERNANCE_SYNC_READY_FOR_TASK17_ENTRYPOINT_REPAIR
+PHASE_1B_ACTIVE_TASK=TASK17_OWNER_ACCEPTANCE_PENDING
+OWNER_REVIEW_GATE=TASK17_OWNER_ACCEPTANCE_GATE
+STOP_REASON=V42_GOVERNANCE_SYNC_TASK17_LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
 
 ## Accepted Task 17 Stage B component evidence
 
@@ -64,11 +64,10 @@ authorized Stage B component files:
 - `apps/admin-web/src/pages/audit-logs.tsx`
 - `apps/api/src/modules/audit/audit.test.ts`
 
-The evidence demonstrates the bounded component behavior only. It does not
-prove that the API server registers the audit route, that the admin web
-entrypoint renders the audit-log page, or that existing protected commands use
-the Task 17 atomic audit boundary. No C1 authorization follows from this
-component evidence.
+The evidence demonstrates the bounded component behavior, API registration,
+admin-web route exposure, and six-action audit integration. This remains local
+evidence pending project-owner acceptance; no C1 authorization follows from
+local verification.
 
 ## Authorized minimal entrypoint repair
 
@@ -76,7 +75,7 @@ The separately authorized future repair write set is exactly four files:
 
 ```text
 TASK17_REPAIR_EXACT_FILES=apps/api/src/server.ts|apps/admin-web/src/main.ts|apps/api/src/modules/audit/audit.test.ts|apps/admin-web/test/home-content.test.mjs
-TASK17_REPAIR_IMPLEMENTATION_THIS_SYNC=NO
+TASK17_REPAIR_IMPLEMENTATION_THIS_SYNC=LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
 ```
 
 - `apps/api/src/server.ts`
@@ -94,17 +93,17 @@ authority and explicit project-owner approval.
 This V42 synchronization does not implement the repair. Independent V42 review
 must complete before a separate repair execution begins.
 
-## Preserved audit-action integration gap
+## Locally verified audit-action integration
 
 The full protected-command integration remains outside the minimal repair
 authorization:
 
 ```text
-TASK17_FULL_AUDIT_ACTION_INTEGRATION=NOT_AUTHORIZED
-TASK17_AUDIT_ACTION_INTEGRATION_STATUS=NOT_PROVEN
+TASK17_FULL_AUDIT_ACTION_INTEGRATION=SIX_ACTIONS_LOCALLY_VERIFIED
+TASK17_AUDIT_ACTION_INTEGRATION_STATUS=SIX_ACTIONS_LOCALLY_VERIFIED
 ```
 
-The following six actions remain explicitly open and are not claimed closed:
+The following six actions are locally verified and remain pending owner acceptance:
 
 - `CONTENT_DRAFT_CREATED`
 - `CONTENT_DRAFT_UPDATED`
@@ -114,12 +113,11 @@ The following six actions remain explicitly open and are not claimed closed:
 - `PARTNER_LINK_HANDOFF_CREATED`
 
 Existing content publication, file-intent, and partner-handoff command
-families have not been proven to share an atomic transaction boundary with the
-Task 17 `AuditService`. Success-exactly-one-event and
-failure-or-rollback-zero-success-event semantics therefore remain unproven for
-those real command paths. A later full integration requires a separately
-approved exact path whitelist, including explicit exceptions for any Task
-01-16 frozen file that must change.
+families were locally exercised against the Task 17 `AuditService` boundary.
+Success-exactly-one-event and failure-or-rollback-zero-success-event semantics
+are locally verified for this wave, pending owner acceptance. Any later scope
+expansion still requires a separately approved exact path whitelist, including
+explicit exceptions for any Task 01-16 frozen file that must change.
 
 ## Locked Task 17 audit contract
 
