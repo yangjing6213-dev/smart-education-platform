@@ -2,7 +2,7 @@
 
 - `ACTIVE_GOVERNANCE=V42`
 - `ACTIVE_GOVERNANCE_SHA256=7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB`
-- `PHASE_1B_ACTIVE_TASK=TASK17`
+- `PHASE_1B_ACTIVE_TASK=TASK18`
 - `ACTIVE_BRANCH=feature/phase-1b-task-17-audit-logs`
 - `EXECUTION_MODE=DEVELOPMENT_MODE`
 - `TASK17_LOCAL_STATUS=ACCEPTED_AND_FROZEN`
@@ -15,30 +15,38 @@
 - `TASK17_STAGE_C1_STATUS=COMPLETED`
 - `TASK17_STAGE_C2_AUTHORIZATION=GRANTED`
 - `TASK17_STAGE_C2_STATUS=ACCEPTED_AND_FROZEN`
-- `UI_NOT_VISUALLY_VERIFIED=YES`
-- `TASK18_PLUS_AUTHORIZATION=NOT_GRANTED`
-- `OWNER_REVIEW_GATE=TASK17_POST_C2_GOVERNANCE_REVIEW_GATE`
+- `TASK18_AUTHORIZATION=GRANTED`
+- `TASK18_STATUS=OWNER_REVIEW_PASSED`
+- `TASK18_OWNER_REVIEW=PASS`
+- `TASK18_LOCAL_VALIDATION_STATUS=PASS`
+- `TASK18_UI_VISUAL_VERIFICATION_STATUS=PASS_LOCALHOST_SMOKE`
+- `TASK18_COMMIT_AUTHORIZATION=GRANTED`
+- `TASK18_CHECKPOINT_STATUS=CREATED_PENDING_MANAGER_REVIEW`
+- `TASK19_PLUS_STARTED=NO`
+- `UI_VISUAL_VERIFICATION_REQUIRED=YES`
+- `OWNER_REVIEW_GATE=TASK18_CHECKPOINT_REVIEW_GATE`
+- `STOP_REASON=TASK18_CHECKPOINT_REVIEW_GATE`
 
-V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 17 使用本次波次授权完成入口、六动作审计集成、preflight 和本地验证，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建与选择性 checkpoint 不重复请求授权。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
+V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 18 使用本次单一开发波次授权完成跨端回归、安全隔离、localhost 浏览器 smoke 和只读发布就绪门禁，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建与本地服务验证不重复请求授权。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
 
-checkpoint 只表示本地可恢复状态，不等于产品验收通过。负责人验收仅在 Task 17 实现和验证结束时执行；ZIP、最终 SHA 清单、完整 E2E 与发布审计延后到明确交付边界。C1/C2、Task 18+、push、deploy 和 release 均不得由 checkpoint 或本地测试 PASS 推断授权。
+Task 18 已通过负责人审阅，本次仅授权对精确八路径建立本地 checkpoint。checkpoint 只表示本地可恢复状态，不等于发布、release 或 Task 19+ 授权；ZIP、最终 SHA 清单、完整 E2E 与发布审计仍延后到明确交付边界。
 
-## Task 17 精确开发白名单
+下方 `HISTORICAL/FROZEN` 快照中的 `UI_NOT_VISUALLY_VERIFIED=YES` 仅记录 Task 17 的历史限制；Task 18 当前 localhost smoke 状态以 `TASK18_UI_VISUAL_VERIFICATION_STATUS=PASS_LOCALHOST_SMOKE` 为准。
+
+## Task 18 精确开发白名单
 
 1. `AGENTS.md`
 2. `PLANS.md`
-3. `.gitattributes`
-4. `scripts/task17-preflight.mjs`
-5. `apps/api/src/server.ts`
-6. `apps/api/src/modules/audit/audit.test.ts`
-7. `apps/api/src/modules/content/content.service.ts`
-8. `apps/api/src/modules/files/file.service.ts`
-9. `apps/api/src/modules/partner-links/partner-link.service.ts`
-10. `apps/api/src/modules/institution/institution.service.ts`
-11. `apps/api/src/routes/admin-institution.route.ts`
-12. `apps/api/src/routes/file-intent.route.ts`
+3. `tests/e2e/visitor.spec.ts`
+4. `tests/e2e/staff.spec.ts`
+5. `tests/e2e/learning.spec.ts`
+6. `tests/security/isolation.spec.ts`
+7. `tests/release/acceptance.spec.ts`
+8. `scripts/verify-release.mjs`
 
-白名单外文件均不属于本轮写集。当前 67 条既有未跟踪证据继续按路径保护，不读取内容、不删除、不覆盖、不移动，也不使用 `git add -A`。Task 17 验证顺序为 focused audit test、admin 入口测试、相关服务回归、ESLint、Prettier、API/admin-web typecheck、preflight、`git diff --check` 和选择性 checkpoint。
+白名单外文件均不属于本轮写集。基线 71 条既有未跟踪证据继续按路径保护，不删除、不覆盖、不移动、不批量暂存；其中 13 条授权的 user-web/mini-program 产品路径只读用于跨端验证，必须保持文件大小和修改时间不变。允许的构建输出仅限被 Git 忽略的本地 `dist`。浏览器和本地服务只能访问 localhost 或本地项目路径。
+
+Task 18 验证顺序为：五个 focused specs；访客、员工、学习、安全隔离及 Task 17 审计入口回归；API/admin-web/user-web/mini-program typecheck；精确范围 ESLint 与 Prettier；构建；`git diff --check` 与 `git diff --cached --check`；最后执行桌面 `1440x1024`、移动 `390x844`、窄屏 `320x568` 的真实 localhost 浏览器 smoke。性能仅记录每页耗时、页面错误、严重 console、失败请求和意外外部请求，不声明数值 SLA。若需要第七个 Task 18 文件、产品代码、配置或依赖变更，立即停止并报告 `STATUS=BLOCKED`。
 
 ---
 
