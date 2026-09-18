@@ -3,7 +3,7 @@
 AUTHORITY_ID=PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY
 AUTHORITY_VERSION=V42
 AUTHORITY_PATH=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md
-AUTHORITY_STATUS=ACTIVE_TASK17_LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
+AUTHORITY_STATUS=ACTIVE_TASK17_ACCEPTED_AND_FROZEN
 AUTHORITY_OWNER_APPROVAL_SOURCE=PROJECT_OWNER_CONFIRMED_V41_AND_AUTHORIZED_TASK17_ENTRYPOINT_REPAIR_2026-09-17
 AUTHORITY_SUPERSEDES=docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V41.md
 AUTHORITY_SUPERSEDES_SHA256=26EA89E0C1FF01F24EA12060ED1F13737DFCA312D1466FDCDA24FE12D089A9E9
@@ -25,34 +25,38 @@ Task 01-16 remain accepted and frozen. Task 17 Stage A remains formalized and
 owner-reviewed. The project owner accepted the focused technical evidence for
 the four Task 17 Stage B component files. The authorized repair wave now has
 local evidence for entrypoint wiring and protected-command integration. Task 17
-is locally verified and remains pending project-owner acceptance.
+has completed C1 and is accepted and frozen through C2 owner review. UI visual
+verification remains unavailable and is recorded as a known limitation.
 
 The project owner granted a separate minimal entrypoint-repair authorization,
-and its local verification is now recorded pending project-owner acceptance.
-Task 17 C1 and C2 remain unstarted and unauthorized. Task 18+ remains
-unstarted and unauthorized.
+and its result is accepted by the project owner. Task 17 C1 is completed and
+C2 is accepted and frozen. Task 18+ remains unstarted and unauthorized.
 
 V41_GOVERNANCE_SYNC_OWNER_REVIEW=PASS
-TASK_17_STARTED=YES_STAGE_A_FORMALIZED
+TASK_17_STARTED=YES_STAGE_C2_ACCEPTED
 TASK17_STAGE_A_AUTHORIZATION=GRANTED
 TASK17_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK17_STAGE_A_OWNER_REVIEW=PASS
 TASK17_STAGE_B_AUTHORIZATION=GRANTED
 TASK17_STAGE_B_COMPONENT_EVIDENCE=PASS
 TASK17_STAGE_B_REPAIR_AUTHORIZATION=GRANTED
-TASK17_STAGE_B_STATUS=LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
+TASK17_STAGE_B_STATUS=OWNER_REVIEW_PASSED
 TASK17_API_ENTRYPOINT_STATUS=WIRED_AND_TESTED
 TASK17_ADMIN_WEB_ENTRYPOINT_STATUS=WIRED_AND_TESTED
 TASK17_AUDIT_ACTION_INTEGRATION_STATUS=SIX_ACTIONS_LOCALLY_VERIFIED
-TASK17_STAGE_C1_AUTHORIZATION=NOT_GRANTED
-TASK17_STAGE_C1_STATUS=NOT_STARTED
-TASK17_STAGE_C2_AUTHORIZATION=NOT_GRANTED
-TASK17_STAGE_C2_STATUS=NOT_STARTED
+TASK17_STAGE_C1_AUTHORIZATION=GRANTED
+TASK17_STAGE_C1_STATUS=COMPLETED
+TASK17_STAGE_C1_OWNER_REVIEW=PASS
+TASK17_STAGE_C2_AUTHORIZATION=GRANTED
+TASK17_STAGE_C2_STATUS=ACCEPTED_AND_FROZEN
+TASK17_STAGE_C2_OWNER_REVIEW=PASS
+TASK17_STATUS=ACCEPTED_AND_FROZEN
+UI_NOT_VISUALLY_VERIFIED=YES
 TASK18_PLUS_STARTED=NO
 TASK18_PLUS_AUTHORIZATION=NOT_GRANTED
-PHASE_1B_ACTIVE_TASK=TASK17_OWNER_ACCEPTANCE_PENDING
-OWNER_REVIEW_GATE=TASK17_OWNER_ACCEPTANCE_GATE
-STOP_REASON=V42_GOVERNANCE_SYNC_TASK17_LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
+PHASE_1B_ACTIVE_TASK=TASK17_ACCEPTED_AND_FROZEN
+OWNER_REVIEW_GATE=TASK17_POST_C2_GOVERNANCE_REVIEW_GATE
+STOP_REASON=TASK17_POST_C2_GOVERNANCE_REVIEW_GATE
 
 ## Accepted Task 17 Stage B component evidence
 
@@ -66,8 +70,8 @@ authorized Stage B component files:
 
 The evidence demonstrates the bounded component behavior, API registration,
 admin-web route exposure, and six-action audit integration. This remains local
-evidence pending project-owner acceptance; no C1 authorization follows from
-local verification.
+evidence accepted through the Task 17 C2 owner review. UI visual verification
+remains unavailable and is recorded as `UI_NOT_VISUALLY_VERIFIED=YES`.
 
 ## Authorized minimal entrypoint repair
 
@@ -75,7 +79,7 @@ The separately authorized future repair write set is exactly four files:
 
 ```text
 TASK17_REPAIR_EXACT_FILES=apps/api/src/server.ts|apps/admin-web/src/main.ts|apps/api/src/modules/audit/audit.test.ts|apps/admin-web/test/home-content.test.mjs
-TASK17_REPAIR_IMPLEMENTATION_THIS_SYNC=LOCALLY_VERIFIED_PENDING_OWNER_ACCEPTANCE
+TASK17_REPAIR_IMPLEMENTATION_THIS_SYNC=OWNER_REVIEW_PASSED
 ```
 
 - `apps/api/src/server.ts`
@@ -90,8 +94,8 @@ coverage within the exact four-file boundary. Any fifth implementation, test,
 configuration, schema, migration, generated, or support file requires a new
 authority and explicit project-owner approval.
 
-This V42 synchronization does not implement the repair. Independent V42 review
-must complete before a separate repair execution begins.
+This V42 synchronization records the completed and accepted repair result; it
+does not expand Task 17 scope or authorize Task 18+.
 
 ## Locally verified audit-action integration
 
@@ -103,7 +107,7 @@ TASK17_FULL_AUDIT_ACTION_INTEGRATION=SIX_ACTIONS_LOCALLY_VERIFIED
 TASK17_AUDIT_ACTION_INTEGRATION_STATUS=SIX_ACTIONS_LOCALLY_VERIFIED
 ```
 
-The following six actions are locally verified and remain pending owner acceptance:
+The following six actions are locally verified and accepted through owner review:
 
 - `CONTENT_DRAFT_CREATED`
 - `CONTENT_DRAFT_UPDATED`
@@ -115,7 +119,7 @@ The following six actions are locally verified and remain pending owner acceptan
 Existing content publication, file-intent, and partner-handoff command
 families were locally exercised against the Task 17 `AuditService` boundary.
 Success-exactly-one-event and failure-or-rollback-zero-success-event semantics
-are locally verified for this wave, pending owner acceptance. Any later scope
+are locally verified and accepted for this wave. Any later scope
 expansion still requires a separately approved exact path whitelist, including
 explicit exceptions for any Task 01-16 frozen file that must change.
 
