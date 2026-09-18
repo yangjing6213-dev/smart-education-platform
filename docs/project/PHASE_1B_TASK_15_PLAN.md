@@ -39,15 +39,16 @@ TASK_15_STAGE_C2_STATUS=ACCEPTED_AND_FROZEN
 TASK_15_STAGE_C2_OWNER_REVIEW=PASS
 TASK_15_STATUS=ACCEPTED_AND_FROZEN
 UI_NOT_VISUALLY_VERIFIED=YES
-TASK_16_PLUS_STARTED=NO
-TASK_16_PLUS_AUTHORIZATION=NOT_GRANTED
 OWNER_REVIEW_GATE=TASK15_STAGE_C2_OWNER_REVIEW_GATE
 STOP_REASON=TASK15_STAGE_C2_OWNER_REVIEW_GATE
 ```
 
 V42 is the current governance authority. The original Stage A and pre-C2
 authorization values remain HISTORICAL/FROZEN snapshots only. Task 15 is now
-accepted and frozen; Task 16+ remains unauthorized.
+accepted and frozen. The next-task stop flags in the historical lifecycle
+below are not current global status and do not revoke later owner
+authorizations. Under V42, Task 16 and Task 17 are accepted and frozen;
+Task 18+ remains unstarted and unauthorized.
 
 ## Scope and non-scope
 

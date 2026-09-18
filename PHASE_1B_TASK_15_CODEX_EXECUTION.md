@@ -2,8 +2,8 @@
 
 This document preserves the approved Task 15 contract and records its
 post-C2 accepted-and-frozen lifecycle. Task 15 Stage B, C1, and C2 completed
-within their approved boundaries; Task 16+ remains outside the current
-authorization.
+within their approved boundaries. The next-task stop flags retained below are
+HISTORICAL/FROZEN snapshots, not current global task status.
 
 ## Authorization and anchors
 
@@ -35,15 +35,14 @@ TASK_15_STAGE_C2_STATUS=ACCEPTED_AND_FROZEN
 TASK_15_STAGE_C2_OWNER_REVIEW=PASS
 TASK_15_STATUS=ACCEPTED_AND_FROZEN
 UI_NOT_VISUALLY_VERIFIED=YES
-TASK_16_PLUS_STARTED=NO
-TASK_16_PLUS_AUTHORIZATION=NOT_GRANTED
 OWNER_REVIEW_GATE=TASK15_STAGE_C2_OWNER_REVIEW_GATE
 STOP_REASON=TASK15_STAGE_C2_OWNER_REVIEW_GATE
 ```
 
 V42 is the current governance authority. The earlier Stage A and pre-C2
 authorization values remain HISTORICAL/FROZEN contract snapshots only and do
-not override the accepted Task 15 state above. Task 16+ remains unauthorized.
+not override the accepted Task 15 state above. Under V42, Task 16 and Task 17
+are accepted and frozen; Task 18+ remains unstarted and unauthorized.
 
 ## Identity, dependencies, and objective
 
@@ -123,7 +122,7 @@ approved staff capability. No real credentials, production data, provider
 URLs, storage, browser persistence, analytics, or external resources may be
 used.
 
-## Stage lifecycle and gates
+## HISTORICAL/FROZEN: Stage lifecycle and gates
 
 ```text
 STAGE_A=CONTRACT_AND_IMPLEMENTATION_PLAN_FORMALIZATION
@@ -152,6 +151,8 @@ STOP_REASON=TASK15_STAGE_C2_OWNER_REVIEW_GATE
 
 The original Stage A lifecycle above is retained as a historical contract
 shape; its former pre-C2 values are HISTORICAL/FROZEN, not current status.
+The next-task NO/NOT_GRANTED flags record Task 15's historical stop boundary,
+not current global status, and do not revoke later owner authorizations.
 
 Stage B may begin only after the owner separately reviews this Stage A package
 and grants Stage B authorization. Stage B must stop at its own owner-review

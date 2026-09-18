@@ -45,8 +45,6 @@ STAGE_C2_OWNER_REVIEW=PASS
 TASK16_STATUS=ACCEPTED_AND_FROZEN
 TASK16_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_16_ACCEPTANCE.md
 TASK16_ACCEPTANCE_SHA256=A77C3FDCD079271AE12CDF9D16A6D4F50B05936F9F231AE26B6F405E7F489FF5
-TASK17_PLUS_STARTED=NO
-TASK17_PLUS_AUTHORIZATION=NOT_GRANTED
 OWNER_REVIEW_GATE=TASK16_STAGE_C2_OWNER_REVIEW_GATE
 STOP_REASON=TASK16_STAGE_C2_OWNER_REVIEW_GATE
 ```
@@ -55,6 +53,10 @@ Stage A historically created only `PHASE_1B_TASK_16_CODEX_EXECUTION.md` and
 this plan. Stage B, C1, and C2 were later executed only under their separate
 authorizations; the resulting Task 16 artifacts are now accepted and frozen.
 V39 is HISTORICAL/FROZEN; V42 is the current active governance authority.
+The next-task stop flags retained below are HISTORICAL/FROZEN snapshots,
+not current global status, and do not revoke later owner authorizations.
+Under V42, Task 17 is accepted and frozen; Task 18+ remains unstarted and
+unauthorized.
 
 ## Exact file map
 
@@ -209,6 +211,12 @@ TASK16_STAGE_C2_OWNER_REVIEW=PASS
 TASK16_STATUS=ACCEPTED_AND_FROZEN
 TASK16_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_16_ACCEPTANCE.md
 TASK16_ACCEPTANCE_SHA256=A77C3FDCD079271AE12CDF9D16A6D4F50B05936F9F231AE26B6F405E7F489FF5
+
+### HISTORICAL/FROZEN: Task 16 next-task stop boundary
+
+These flags record the Task 16 acceptance-stop snapshot, not current global
+status. They do not revoke later owner authorizations.
+
 TASK17_PLUS_STARTED=NO
 TASK17_PLUS_AUTHORIZATION=NOT_GRANTED
 OWNER_REVIEW_GATE=TASK16_STAGE_C2_OWNER_REVIEW_GATE

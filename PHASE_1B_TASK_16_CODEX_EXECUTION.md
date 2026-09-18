@@ -25,8 +25,6 @@ TASK16_STAGE_C2_OWNER_REVIEW=PASS
 TASK16_STATUS=ACCEPTED_AND_FROZEN
 TASK16_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_16_ACCEPTANCE.md
 TASK16_ACCEPTANCE_SHA256=A77C3FDCD079271AE12CDF9D16A6D4F50B05936F9F231AE26B6F405E7F489FF5
-TASK17_PLUS_STARTED=NO
-TASK17_PLUS_AUTHORIZATION=NOT_GRANTED
 OWNER_REVIEW_GATE=TASK16_STAGE_C2_OWNER_REVIEW_GATE
 STOP_REASON=TASK16_STAGE_C2_OWNER_REVIEW_GATE
 
@@ -36,7 +34,9 @@ This contract formalizes Phase 1B Task 16, Internal employee mini program.
 V39 is HISTORICAL/FROZEN evidence only. V42 is the current active authority
 and is not modified by this record. Task 16 Stage A, Stage B, Stage C1, and
 Stage C2 have completed their authorized gates; Task 16 is accepted and
-frozen, and work stops before Task 17+.
+frozen. Its earlier stop-before-Task-17 boundary is HISTORICAL/FROZEN, not
+current global status. Under V42, Task 17 is accepted and frozen;
+Task 18+ remains unstarted and unauthorized.
 
 Task 16 depends on Tasks 04, 09, 10, 11, and 15. The mini program is a
 phone-first internal employee surface for a compact workbench, safe quick
@@ -144,7 +144,8 @@ and explicit owner authorization. It created only the acceptance record and
 the explicitly authorized external receipt, then stopped before Task 17.
 
 No stage may infer authorization from a prior stage's local PASS. Task 17+
-remains unstarted and unauthorized.
+was unstarted and unauthorized in the HISTORICAL/FROZEN Task 16 acceptance
+snapshot only. This does not override the current V42 state.
 
 ## 6. Preservation and stop conditions
 
@@ -176,6 +177,13 @@ TASK16_STAGE_C2_OWNER_REVIEW=PASS
 TASK16_STATUS=ACCEPTED_AND_FROZEN
 TASK16_ACCEPTANCE_PATH=docs/project/PHASE_1B_TASK_16_ACCEPTANCE.md
 TASK16_ACCEPTANCE_SHA256=A77C3FDCD079271AE12CDF9D16A6D4F50B05936F9F231AE26B6F405E7F489FF5
+
+### HISTORICAL/FROZEN: Task 16 next-task stop boundary
+
+These flags record the Task 16 acceptance-stop snapshot, not current global
+status. They do not revoke later owner authorizations.
+
 TASK17_PLUS_STARTED=NO
+TASK17_PLUS_AUTHORIZATION=NOT_GRANTED
 OWNER_REVIEW_GATE=TASK16_STAGE_C2_OWNER_REVIEW_GATE
 STOP_REASON=TASK16_STAGE_C2_OWNER_REVIEW_GATE
