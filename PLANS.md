@@ -2,9 +2,9 @@
 
 - `ACTIVE_GOVERNANCE=V42`
 - `ACTIVE_GOVERNANCE_SHA256=7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB`
-- `PHASE_1B_ACTIVE_TASK=TASK18`
+- `PHASE_1B_ACTIVE_TASK=TASK18_ACCEPTED_AND_FROZEN`
 - `ACTIVE_BRANCH=feature/phase-1b-task-17-audit-logs`
-- `EXECUTION_MODE=DEVELOPMENT_MODE`
+- `EXECUTION_MODE=ACCEPTANCE_MODE`
 - `TASK17_LOCAL_STATUS=ACCEPTED_AND_FROZEN`
 - `TASK17_API_ENTRYPOINT_STATUS=WIRED_AND_TESTED`
 - `TASK17_ADMIN_WEB_ENTRYPOINT_STATUS=WIRED_AND_TESTED`
@@ -16,24 +16,32 @@
 - `TASK17_STAGE_C2_AUTHORIZATION=GRANTED`
 - `TASK17_STAGE_C2_STATUS=ACCEPTED_AND_FROZEN`
 - `TASK18_AUTHORIZATION=GRANTED`
-- `TASK18_STATUS=OWNER_REVIEW_PASSED`
+- `TASK18_STATUS=ACCEPTED_AND_FROZEN`
 - `TASK18_OWNER_REVIEW=PASS`
+- `TASK18_MANAGER_REVIEW=PASS`
 - `TASK18_LOCAL_VALIDATION_STATUS=PASS`
 - `TASK18_UI_VISUAL_VERIFICATION_STATUS=PASS_LOCALHOST_SMOKE`
 - `TASK18_COMMIT_AUTHORIZATION=GRANTED`
-- `TASK18_CHECKPOINT_STATUS=CREATED_PENDING_MANAGER_REVIEW`
+- `TASK18_CHECKPOINT_COMMIT=e0c41bb859a87a031cf8b7d39373aea3b712681a`
+- `TASK18_CHECKPOINT_STATUS=MANAGER_REVIEW_PASSED`
+- `TASK19_STARTED=NO`
+- `TASK19_AUTHORIZATION=NOT_GRANTED`
 - `TASK19_PLUS_STARTED=NO`
+- `TASK19_CANDIDATE_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`
+- `TASK19_CANDIDATE_STATUS=RECOMMENDATION_ONLY`
 - `UI_VISUAL_VERIFICATION_REQUIRED=YES`
-- `OWNER_REVIEW_GATE=TASK18_CHECKPOINT_REVIEW_GATE`
-- `STOP_REASON=TASK18_CHECKPOINT_REVIEW_GATE`
+- `OWNER_REVIEW_GATE=TASK18_MANAGER_REVIEW_AND_TASK19_AUTHORITY_GATE`
+- `STOP_REASON=TASK18_MANAGER_REVIEW_AND_TASK19_AUTHORITY_GATE`
 
-V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 18 使用本次单一开发波次授权完成跨端回归、安全隔离、localhost 浏览器 smoke 和只读发布就绪门禁，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建与本地服务验证不重复请求授权。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
+V42 是唯一当前治理版本；禁止创建 V43、V44 或其他并行治理文件。Task 18 已在单一开发波次内完成跨端回归、安全隔离、localhost 浏览器 smoke 和只读发布就绪门禁，并在 checkpoint Manager Review 后接受冻结。`UNKNOWN` 和 `REPORTED_ONLY` 只警告并分类，不阻塞普通开发；删除、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和外部写入必须暂停确认。同一错误最多自动修复两轮，之后分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`。
 
-Task 18 已通过负责人审阅，本次仅授权对精确八路径建立本地 checkpoint。checkpoint 只表示本地可恢复状态，不等于发布、release 或 Task 19+ 授权；ZIP、最终 SHA 清单、完整 E2E 与发布审计仍延后到明确交付边界。
+Task 18 已通过负责人审阅和 checkpoint Manager Review，状态为 `ACCEPTED_AND_FROZEN`。checkpoint 只表示本地可恢复状态，不等于发布或 release。Task 19 尚未启动且未获授权；`PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE` 仅登记为候选类型建议，不构成 Stage A formalization 或实施授权。ZIP、最终 SHA 清单、完整 E2E 与发布审计仍延后到明确交付边界。
+
+V42 与下方冻结快照中旧 Task 17 阻塞、Task 18+ 未启动或未授权表述均为 `HISTORICAL/FROZEN` 授权时点记录，不代表当前控制面。
 
 下方 `HISTORICAL/FROZEN` 快照中的 `UI_NOT_VISUALLY_VERIFIED=YES` 仅记录 Task 17 的历史限制；Task 18 当前 localhost smoke 状态以 `TASK18_UI_VISUAL_VERIFICATION_STATUS=PASS_LOCALHOST_SMOKE` 为准。
 
-## Task 18 精确开发白名单
+## HISTORICAL/FROZEN：Task 18 精确开发白名单
 
 1. `AGENTS.md`
 2. `PLANS.md`
@@ -44,9 +52,9 @@ Task 18 已通过负责人审阅，本次仅授权对精确八路径建立本地
 7. `tests/release/acceptance.spec.ts`
 8. `scripts/verify-release.mjs`
 
-白名单外文件均不属于本轮写集。基线 71 条既有未跟踪证据继续按路径保护，不删除、不覆盖、不移动、不批量暂存；其中 13 条授权的 user-web/mini-program 产品路径只读用于跨端验证，必须保持文件大小和修改时间不变。允许的构建输出仅限被 Git 忽略的本地 `dist`。浏览器和本地服务只能访问 localhost 或本地项目路径。
+该白名单记录已完成 Task 18 波次的冻结写集，不授权任何后续修改。基线 71 条既有未跟踪证据继续按路径保护，不删除、不覆盖、不移动、不批量暂存；其中 13 条 user-web/mini-program 产品路径只读用于 Task 18 跨端验证并保持文件大小和修改时间不变。允许的历史构建输出仅限被 Git 忽略的本地 `dist`；浏览器和本地服务访问仅限 localhost 或本地项目路径。
 
-Task 18 验证顺序为：五个 focused specs；访客、员工、学习、安全隔离及 Task 17 审计入口回归；API/admin-web/user-web/mini-program typecheck；精确范围 ESLint 与 Prettier；构建；`git diff --check` 与 `git diff --cached --check`；最后执行桌面 `1440x1024`、移动 `390x844`、窄屏 `320x568` 的真实 localhost 浏览器 smoke。性能仅记录每页耗时、页面错误、严重 console、失败请求和意外外部请求，不声明数值 SLA。若需要第七个 Task 18 文件、产品代码、配置或依赖变更，立即停止并报告 `STATUS=BLOCKED`。
+Task 18 已按以下冻结顺序完成验证：五个 focused specs；访客、员工、学习、安全隔离及 Task 17 审计入口回归；API/admin-web/user-web/mini-program typecheck；精确范围 ESLint 与 Prettier；构建；`git diff --check` 与 `git diff --cached --check`；最后执行桌面 `1440x1024`、移动 `390x844`、窄屏 `320x568` 的真实 localhost 浏览器 smoke。性能证据仅记录每页耗时、页面错误、严重 console、失败请求和意外外部请求，不声明数值 SLA。
 
 ---
 
