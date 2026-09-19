@@ -3,16 +3,19 @@
 TASK_ID=PHASE_1B_TASK_19
 TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE
 TASK19_STAGE_A_AUTHORIZATION=GRANTED
-TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW
-TASK19_STARTED=NO
+TASK19_STAGE_A_STATUS=OWNER_REVIEW_PASSED
+TASK19_STARTED=YES_STAGE_B_VALIDATION
 TASK19_IMPLEMENTATION_AUTHORIZED=NO
-TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED
+TASK19_STAGE_B_AUTHORIZATION=GRANTED
+TASK19_STAGE_B_STATUS=IN_PROGRESS_OWNER_ACCEPTED_HISTORICAL_EXCEPTION
+TASK19_HISTORICAL_EVIDENCE_STATUS=UNAVAILABLE
+TASK19_HISTORICAL_EXCEPTION=OWNER_ACCEPTED_HISTORICAL_EXCEPTION
 TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK20_PLUS_STARTED=NO
 TASK20_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK19_STAGE_A_OWNER_REVIEW_GATE
-STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=TASK19_STAGE_B_OWNER_REVIEW_GATE
+STOP_REASON=TASK19_STAGE_B_OWNER_REVIEW_GATE
 
 ## 1. Authority and baseline
 
@@ -42,6 +45,25 @@ STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
 - `EXPECTED_UNTRACKED_PATHS=71` is the Stage B pre-start clean-baseline count.
   This count is the exact 71-path protected read-only set enumerated below; no
   nonexistent paths are restored to satisfy an obsolete count.
+
+## 1A. Owner-accepted historical evidence exception
+
+The owner selected option B: `HISTORICAL_EVIDENCE_UNAVAILABLE`. The complete
+Task 06 historical checkpoint cannot be reconstructed without combining
+unrelated commits and external untracked evidence. The frozen
+`tests/contracts/package-boundaries.test.mjs`, `scripts/verify_task_06.mjs`,
+and `tests/workspace/paths.test.mjs` remain unchanged, are not skipped or
+weakened, and the old Task 06 verifier is not current Task 19 PASS evidence.
+Current package-boundary verification is a separate present-HEAD check and
+cannot replace the missing historical proof. Every final Task 19 result must
+carry `OWNER_ACCEPTED_HISTORICAL_EXCEPTION` and state this limitation.
+
+The existing Task 19 verifier provides the allowed current equivalent command:
+`node scripts/verify-final-delivery.mjs --mode=package-boundary`. It covers
+current workspace dependency direction, package manifests and exports,
+tenant/auth/API boundaries, reverse-import detection, current
+lockfile/workspace configuration, and the declared 31-path Task 19 delivery
+boundary. Its output is current evidence only.
 
 ## 2. Goal and user value
 
@@ -290,8 +312,10 @@ permanent writes are limited to these exact 31 paths:
 30. `artifacts/final-delivery/task19/browser/admin-audit-logs__mobile-390x844.png`
 31. `artifacts/final-delivery/task19/browser/admin-audit-logs__small-mobile-320x568.png`
 
-Every permanent output path must be absent at Stage B start. Existing content is
-not overwritten. Any required 32nd path is a contract failure and blocks Stage B.
+Every permanent output path must be absent at a clean Stage B start. Existing
+content from the invalidated run is preserved during this continuation and is
+not adopted as valid evidence or overwritten. Any required 32nd path is a
+contract failure and blocks Stage B.
 
 ## 6. Future Stage B temporary writes and cleanup
 
@@ -326,13 +350,32 @@ Stage B must run the four frozen Task 18 behavior and security specs
 complete existing workspace typecheck, lint, format, test, coverage, and build
 matrix inside the isolated `artifacts/task-19/tmp/current/` copy. The
 current/rollback exports remain limited to the contract's behavior and security
-tests and explicitly enumerated non-Git package checks; they must not run a
-Git-aware workspace/path-boundary test in an export without `.git`. It must not
-change root source or lock bytes to make a command pass.
+tests and explicitly enumerated tests proven not to read Git metadata, inspect a
+repository boundary, or infer a repository path from the process working
+directory. They must not run any Git-aware test in an export without `.git`, and
+must not change root source or lock bytes to make a command pass.
 
-Any workspace/path-boundary test that reads Git metadata, resolves the repository
-root through Git, or asserts a Git working-tree boundary (including
-`tests/workspace/paths.test.mjs`) must run unchanged in a real temporary Git
+For this contract, a test is Git-aware when it calls Git, reads `.git`, checks a
+repository root, branch, HEAD, worktree, changed-path or package boundary, or
+uses `process.cwd()` to infer a repository-relative path. The complete inventory
+must be written to `run-ledger.json` before any member runs, including its path,
+reason for classification, exact execution root, command, and expected HEAD.
+The current-HEAD Git-aware inventory is:
+
+1. `tests/workspace/paths.test.mjs`, which checks paths from the repository root;
+2. `tests/contracts/package-boundaries.test.mjs`, which invokes the Git-aware
+   `scripts/verify_task_06.mjs --mode=structure` boundary verifier;
+3. `apps/api/src/modules/activities/activity.test.ts`, which resolves a product
+   path from `process.cwd()`;
+4. `apps/api/src/modules/guides/guide.test.ts`, which resolves a product path
+   from `process.cwd()`;
+5. `apps/api/src/modules/resources/resource.test.ts`, which resolves product and
+   package paths from `process.cwd()`;
+6. `tests/release/final-delivery.spec.ts`, which imports the Git-capable
+   `scripts/verify-final-delivery.mjs` verifier and is therefore isolated from
+   the export matrix even when its exercised helpers are pure.
+
+All six current-HEAD Git-aware tests must run unchanged in a real temporary Git
 worktree at the exact Stage B HEAD recorded in `run-ledger.json`, never in
 `current/` or `rollback/`. The worktree path must be absent before creation and
 must be inside the project workspace but outside the repository root, for
@@ -345,11 +388,12 @@ path; `git -C <path> rev-parse HEAD` equals the exact Stage B HEAD; and
 branch or empty only when the worktree is intentionally detached. Also verify
 the path appears in `git worktree list --porcelain` and that the test process
 working directory is the same worktree root, so it cannot resolve to the outer
-repository. Run only the Git-aware workspace/path-boundary suite there, record
-its command, exit code, stdout/stderr SHA-256, and cleanup result, then remove
-the clean temporary worktree. Do not modify, skip, weaken, or copy the frozen
-test; a missing `.git`, root mismatch, HEAD mismatch, ambiguous branch/detached
-state, or cleanup failure is a hard infrastructure blocker.
+repository. Run only the six-item current-HEAD Git-aware inventory there,
+record each command, exit code, stdout/stderr SHA-256, and cleanup result, then
+remove the clean temporary worktree. Do not modify, skip, weaken, copy, or fake
+any frozen test; a missing inventory item, missing `.git`, root mismatch, HEAD
+mismatch, ambiguous branch/detached state, or cleanup failure is a hard
+infrastructure blocker.
 
 The frozen `tests/release/acceptance.spec.ts` repository-lifecycle suite is not
 run in either Task 19 current/rollback export. It must instead run unchanged in
@@ -366,6 +410,10 @@ temporary local branch. It never changes the current Task 19 branch, creates a
 remote branch, pushes, edits the frozen suite, or treats copied Task 19 control
 files as Task 18 history. The final Task 19 report must cite this independent
 historical result together with the four-spec current/rollback results.
+This suite is also Git-aware, but its asserted Task 18 control-plane semantics
+require the separately pinned historical worktree rather than the current
+Task 19 HEAD. The ledger's complete Git-aware inventory must list it as the
+seventh item with execution root `TASK18_HISTORICAL_CHECKPOINT`.
 
 The final browser matrix is exactly seven routes by three viewports, 21 cases:
 
@@ -516,8 +564,9 @@ product bytes.
 In each copy, commands run in this order: root typecheck, lint, and format gates;
 explicit user-web typecheck and lint; mini-program `tsc --noEmit`, exact ESLint,
 and exact Prettier gates; explicit Prettier coverage for Task 19 verifier and
-governance files; root build; user-web build; frozen focused tests; root test;
-and root coverage. Builds therefore exist before focused specs read
+governance files; root build; user-web build; frozen focused tests; and the
+explicit non-Git package test and coverage commands. Builds therefore exist
+before focused specs read
 `packages/tenant/dist` or `apps/user-web/dist`. The report must prove the root
 `pnpm-lock.yaml` raw blob never changed and record
 `MIGRATION_ID=NONE_NO_SCHEMA_CHANGE`. Rollback is a rehearsal in the temporary
@@ -592,8 +641,9 @@ quality command runs first in `artifacts/task-19/tmp/current/` and then in
     node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts tests/e2e/learning.spec.ts tests/security/isolation.spec.ts
     ```
 
-    Current additionally runs `tests/release/final-delivery.spec.ts` after those
-    four frozen behavior/security specs;
+    `tests/release/final-delivery.spec.ts` is not run in either export; it is
+    the sixth current-HEAD Git-aware inventory member and runs only in the
+    designated real Git worktree;
 
 11. the explicit non-Git package test and coverage components listed in the
     implementation plan; do not invoke the root `test` or `test:coverage`
@@ -601,20 +651,26 @@ quality command runs first in `artifacts/task-19/tmp/current/` and then in
     Git-aware workspace/path-boundary suite;
 12. `node artifacts/task-19/tmp/browser-harness/server.mjs --host=127.0.0.1
    --port=4173` and browser automation restricted to localhost and the 21 cases;
-13. `node scripts/verify-final-delivery.mjs --mode=structure`, then
+13. `node scripts/verify-final-delivery.mjs --mode=package-boundary`, then
+    `node scripts/verify-final-delivery.mjs --mode=structure`, then
     `--mode=evidence`, and, only after packaging, `--mode=final`;
 14. explicit copy and created-this-run cleanup operations confined to the paths
     in Sections 5 and 6;
-15. the exact local-only Git-aware workspace/path-boundary worktree lifecycle
+15. the exact local-only six-item current-HEAD Git-aware worktree lifecycle
     in Section 7, followed by the Task 18 historical worktree lifecycle,
     including temporary branch creation/deletion and clean worktree
     creation/removal, solely to run the unchanged frozen suites.
 
+The current permanent outputs, `artifacts/task-19/tmp/`, and existing
+`run-ledger.json` are preserved; continuation appends events and never deletes,
+overwrites, or re-adopts earlier records.
+
 No registry access, install outside the temp copies, root build output, external
 service, database, migration, staging, commit, push, PR, deploy, or release is
 implied. Branch/worktree operations are prohibited except for the exact
-historical Task 18 lifecycle in Section 7; that lifecycle must leave no worktree
-or historical branch behind. A later authorization may separately permit an
+current-HEAD and historical Task 18 lifecycles in Section 7; both lifecycles
+must leave no temporary worktree or historical branch behind. A later
+authorization may separately permit an
 explicit Task 19 checkpoint; this Stage A does not.
 
 ## 13. Stop conditions and review standard
@@ -656,19 +712,22 @@ If the owner later authorizes an isolated Task 19 branch, the recommended name
 is `codex/phase-1b-task-19-final-delivery-acceptance`. This is a recommendation
 only. Stage A must not create or switch a branch or worktree.
 
-## 15. Stage A stop state
+## 15. Stage B continuation state
 
 ```text
-TASK19_STARTED=NO
+TASK19_STARTED=YES_STAGE_B_VALIDATION
 TASK19_IMPLEMENTATION_AUTHORIZED=NO
 TASK19_STAGE_A_AUTHORIZATION=GRANTED
-TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW
+TASK19_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE
-TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED
+TASK19_STAGE_B_AUTHORIZATION=GRANTED
+TASK19_STAGE_B_STATUS=IN_PROGRESS_OWNER_ACCEPTED_HISTORICAL_EXCEPTION
+TASK19_HISTORICAL_EVIDENCE_STATUS=UNAVAILABLE
+TASK19_HISTORICAL_EXCEPTION=OWNER_ACCEPTED_HISTORICAL_EXCEPTION
 TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK20_PLUS_STARTED=NO
 TASK20_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK19_STAGE_A_OWNER_REVIEW_GATE
-STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=TASK19_STAGE_B_OWNER_REVIEW_GATE
+STOP_REASON=TASK19_STAGE_B_OWNER_REVIEW_GATE
 ```

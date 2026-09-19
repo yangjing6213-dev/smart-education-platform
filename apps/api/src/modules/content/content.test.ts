@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import type { TrustedAuthResult } from "@student-care/auth";
 import fastify from "fastify";
+import type { AuditService } from "../audit/audit.service.js";
 import { buildServer } from "../../server.js";
 import {
   ContentService,
@@ -107,6 +108,54 @@ test("content commands require trusted active membership and minimum capability"
     false,
   );
   assert.equal(service.readPublic(inactiveContext, "content-demo-001").ok, false);
+});
+
+test("content audit scope failures map to a content permission failure", () => {
+  const auditService = {
+    executeProtectedCommand: () => ({
+      ok: false as const,
+      error: { code: "FORBIDDEN_SCOPE", message: "Synthetic audit scope denial." },
+    }),
+  } as unknown as AuditService;
+  const service = new ContentService(new InMemoryContentRepository(), { auditService });
+  const auditedContext = {
+    ...contentWriterContext,
+    auditCampusId: "campus-demo-audit",
+    requestCorrelationId: "correlation-demo-001",
+    traceId: "trace-demo-001",
+  } satisfies ContentActorContext;
+
+  assert.deepEqual(service.createDraft(auditedContext, "audit-forbidden-content", draftPayload), {
+    ok: false,
+    error: { code: "FORBIDDEN_SCOPE", message: "Content scope access is not permitted." },
+  });
+  assert.equal(service.repository.get(auditedContext.scope, "audit-forbidden-content"), undefined);
+
+  const noCampusContext = {
+    ...contentWriterContext,
+    scope: { tenantId: "tenant-demo-audit" },
+  } as unknown as ContentActorContext;
+  assert.deepEqual(service.createDraft(noCampusContext, "audit-no-campus-content", draftPayload), {
+    ok: false,
+    error: { code: "FORBIDDEN_SCOPE", message: "Content scope access is not permitted." },
+  });
+
+  const conflictAuditService = {
+    executeProtectedCommand: () => ({
+      ok: false as const,
+      error: { code: "COMMAND_FAILED", message: "Synthetic audit command failure." },
+    }),
+  } as unknown as AuditService;
+  const conflictService = new ContentService(new InMemoryContentRepository(), {
+    auditService: conflictAuditService,
+  });
+  assert.deepEqual(
+    conflictService.createDraft(contentWriterContext, "audit-conflict-content", draftPayload),
+    {
+      ok: false,
+      error: { code: "CONFLICT_STATE", message: "Content state transition is not permitted." },
+    },
+  );
 });
 
 test("content policy rejects malformed authorization contexts and payloads", () => {

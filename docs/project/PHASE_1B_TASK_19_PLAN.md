@@ -25,18 +25,21 @@ standard-library-compatible code only.
 ## Stage A control state
 
 ```text
-TASK19_STARTED=NO
+TASK19_STARTED=YES_STAGE_B_VALIDATION
 TASK19_IMPLEMENTATION_AUTHORIZED=NO
 TASK19_STAGE_A_AUTHORIZATION=GRANTED
-TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW
+TASK19_STAGE_A_STATUS=OWNER_REVIEW_PASSED
 TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE
-TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED
+TASK19_STAGE_B_AUTHORIZATION=GRANTED
+TASK19_STAGE_B_STATUS=IN_PROGRESS_OWNER_ACCEPTED_HISTORICAL_EXCEPTION
+TASK19_HISTORICAL_EVIDENCE_STATUS=UNAVAILABLE
+TASK19_HISTORICAL_EXCEPTION=OWNER_ACCEPTED_HISTORICAL_EXCEPTION
 TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK20_PLUS_STARTED=NO
 TASK20_PLUS_AUTHORIZATION=NOT_GRANTED
-OWNER_REVIEW_GATE=TASK19_STAGE_A_OWNER_REVIEW_GATE
-STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
+OWNER_REVIEW_GATE=TASK19_STAGE_B_OWNER_REVIEW_GATE
+STOP_REASON=TASK19_STAGE_B_OWNER_REVIEW_GATE
 ```
 
 The current baseline is
@@ -47,9 +50,18 @@ governance file and retains SHA-256
 V42's old Task 17 gate and Task 18+ denial are `HISTORICAL/FROZEN` snapshots,
 not current Task 19 controls. Task 18 is accepted and frozen.
 
-This plan does not authorize any checkbox below. Stage B starts only after the
-owner reviews Stage A, supplies the exact Stage A checkpoint HEAD, and separately
-sets `TASK19_STAGE_B_AUTHORIZATION=GRANTED`.
+The owner selected option B: `HISTORICAL_EVIDENCE_UNAVAILABLE`, and separately
+authorized Stage B continuation. The complete Task 06 historical checkpoint
+will not be reconstructed by combining commits or external files. The frozen
+`tests/contracts/package-boundaries.test.mjs`, `scripts/verify_task_06.mjs`,
+and `tests/workspace/paths.test.mjs` remain unchanged, and the old verifier is
+not executable Task 19 PASS evidence. The current equivalent is the existing
+Task 19 verifier command:
+`node scripts/verify-final-delivery.mjs --mode=package-boundary`.
+It covers current dependency direction, manifests, exports, tenant/auth/API
+boundaries, reverse imports, lockfile/workspace configuration, and the 31-path
+Task 19 delivery boundary. It cannot replace historical Task 06 evidence.
+The final result must include `OWNER_ACCEPTED_HISTORICAL_EXCEPTION`.
 
 The Stage B run rooted at `8449d85c2a111746d6464d4ab92aad4a9a97955b`
 is `INVALIDATED_INFRASTRUCTURE_RUN`. Its existing
@@ -58,9 +70,9 @@ is `INVALIDATED_INFRASTRUCTURE_RUN`. Its existing
 `INVALID_RUN_OUTPUT_PENDING_CLEAN_RESTART`; they are not accepted evidence and
 must not be adopted into a later delivery package.
 
-If a later owner authorization chooses an isolated branch, the recommendation is
-`codex/phase-1b-task-19-final-delivery-acceptance`. Stage A does not create or
-switch a branch or worktree.
+The current branch remains
+`feature/phase-1b-task-19-final-delivery-acceptance`. No branch rename or
+additional governance version is part of this exception.
 
 ## Exact Stage B boundaries
 
@@ -322,7 +334,6 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 
   ```powershell
   node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts tests/e2e/learning.spec.ts tests/security/isolation.spec.ts
-  node --test tests/release/final-delivery.spec.ts
   corepack pnpm --filter @student-care/contracts test
   corepack pnpm --filter @student-care/validation test
   corepack pnpm --filter @student-care/tenant test
@@ -330,12 +341,10 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   corepack pnpm --filter @student-care/api test
   node --test apps/api/dist/src/modules/teachers/public-profile.test.js
   corepack pnpm --filter @student-care/admin-web test
-  node --test tests/contracts/package-boundaries.test.mjs
   corepack pnpm --filter @student-care/tenant test:coverage
   corepack pnpm --filter @student-care/auth test:coverage
   corepack pnpm --filter @student-care/api test:coverage
   node --experimental-test-coverage --test apps/api/dist/src/modules/teachers/public-profile.test.js
-  node --test tests/contracts/package-boundaries.test.mjs
   ```
 
   Expected: every test passes, including tenant/campus injection denial,
@@ -345,24 +354,40 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   existing threshold. The explicit commands above are the non-Git components of
   the repository test and coverage matrix; do not invoke the root `test` or
   `test:coverage` wrappers in this `.git`-less export because they transitively
-  include the Git-aware workspace/path-boundary test. The omitted
-  `tests/workspace/paths.test.mjs` suite remains mandatory and runs only in the
-  exact-HEAD worktree in Step 4. Do not delete, skip, or weaken its assertions.
+  include Git-aware boundary tests. The omitted Git-aware tests remain mandatory
+  and run only in the worktrees assigned in Step 4. Do not delete, skip, weaken,
+  copy, or fake their assertions or results.
 
 - [ ] **Step 4: Verify the frozen Task 18 repository lifecycle historically.**
 
-  First verify Git-aware workspace/path-boundary tests in a real temporary
-  worktree rooted at the exact Stage B HEAD recorded in `run-ledger.json`; never
-  run them in the `.git`-less `current/` or `rollback/` exports. Require the
+  Before any Git-aware member runs, append the complete inventory, classification
+  reason, command, execution root, and expected HEAD to `run-ledger.json`. The
+  current-HEAD inventory is exactly:
+
+  1. `tests/workspace/paths.test.mjs` (`REPOSITORY_ROOT_PATH_CHECK`);
+  2. `tests/contracts/package-boundaries.test.mjs`
+     (`TRANSITIVE_GIT_CHANGED_PATH_AND_PACKAGE_BOUNDARY_CHECK`);
+  3. `apps/api/src/modules/activities/activity.test.ts`
+     (`PROCESS_CWD_REPOSITORY_PATH_INFERENCE`);
+  4. `apps/api/src/modules/guides/guide.test.ts`
+     (`PROCESS_CWD_REPOSITORY_PATH_INFERENCE`);
+  5. `apps/api/src/modules/resources/resource.test.ts`
+     (`PROCESS_CWD_REPOSITORY_PATH_INFERENCE`);
+  6. `tests/release/final-delivery.spec.ts`
+     (`GIT_CAPABLE_VERIFIER_IMPORT_BOUNDARY`).
+
+  Verify all six unchanged in a real temporary worktree rooted at the exact
+  Stage B HEAD recorded in `run-ledger.json`; never run them in the `.git`-less
+  `current/` or `rollback/` exports. Require the
   canonical path
   `C:\Users\HU\Documents\student-care-saas-platform-task19-git-boundary-<HEAD>`
   to be absent, create it with `git worktree add --detach`, and verify its
   canonical path, `git -C <path> rev-parse --show-toplevel`, exact `HEAD`,
   `git -C <path> symbolic-ref --short -q HEAD` (empty for the intentional
   detached state), `git worktree list --porcelain` membership, and the test
-  process working directory. Run only the unchanged Git-aware
-  `tests/workspace/paths.test.mjs` suite there, record command/exit/output SHA,
-  then remove the clean worktree. A root mismatch, HEAD mismatch, ambiguous
+  process working directory. Run only the unchanged six-item inventory there,
+  record every command, exit code, and output SHA, then remove the clean
+  worktree. A missing inventory entry, root mismatch, HEAD mismatch, ambiguous
   branch state, or cleanup failure is an infrastructure blocker.
 
   Require the temporary path
@@ -376,14 +401,18 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   temporary local branch. Do not edit the frozen test, copy Task 19 controls into
   the historical tree, switch the Task 19 branch, create a remote branch, or
   push. The final report must cite this result separately.
+  Record `tests/release/acceptance.spec.ts` as the seventh Git-aware inventory item
+  with classification `TASK18_HISTORICAL_REPOSITORY_LIFECYCLE` and execution
+  root `TASK18_HISTORICAL_CHECKPOINT`; its Task 18 assertions make the historical
+  checkpoint, not current Task 19 HEAD, the authoritative execution root.
 
 - [ ] **Step 5: Repeat the ordered matrix in `rollback/`.**
 
   Run Step 1, Step 2, then the four frozen behavior/security specs and the
   explicit non-Git test and coverage commands from Step 3 in that exact order.
-  Do not run `tests/workspace/paths.test.mjs` or the Task 18
-  repository-lifecycle suite in rollback; both are executed only in their
-  designated real Git worktrees. The Task 19 verifier files and Stage A
+  Do not run any of the six Git-aware inventory members in rollback; they are
+  executed only in their designated real Git worktrees. The Task 19 verifier
+  files and Stage A
   documents remain validation-only overlays for the explicit Prettier gate; the
   rollback does not claim them as product bytes. Expected: every command exits 0
   and product/lock bytes match the accepted Task 18 rollback target.
@@ -555,7 +584,9 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 - [ ] **Step 4: Stop for Owner Review.**
 
   Report `TASK19_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED_PENDING_OWNER_REVIEW`
-  only if every fresh gate passed. Otherwise report `STATUS=BLOCKED` with
+  only if every fresh gate passed, and include
+  `OWNER_ACCEPTED_HISTORICAL_EXCEPTION` plus the current-only package-boundary
+  result. Otherwise report `STATUS=BLOCKED` with
   `PRODUCT_ISSUE` or `INFRASTRUCTURE_ISSUE`. Do not stage, commit, start C1/C2,
   release, deploy, or start Task 20.
 
@@ -570,4 +601,5 @@ protected drift. A partial package, missing browser case, unreviewed warning,
 missing historical result, lockfile mutation, or need for another path is not a
 pass.
 
-Stage A ends now at `TASK19_STAGE_A_OWNER_REVIEW_GATE`.
+Stage B ends at `TASK19_STAGE_B_OWNER_REVIEW_GATE`. C1/C2 and Task 20+ remain
+unauthorized.
