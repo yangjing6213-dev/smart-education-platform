@@ -463,10 +463,16 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 - [ ] **Step 2: Start the one allowed local service.**
 
   ```powershell
-  node artifacts/task-19/tmp/browser-harness/server.mjs --host=127.0.0.1 --port=4173
+  node artifacts/task-19/tmp/browser-harness/server.mjs --host=127.0.0.1 --port=0
   ```
 
-  Expected: binds only `127.0.0.1:4173`. Any other listener or external request
+  Expected: requests an operating-system assigned port with `listen(0)`, then
+  reads `address().port` and records a positive actual port and
+  `http://127.0.0.1:<actual-port>` base URL in the ledger. The actual port must
+  be outside the Windows TCP excluded ranges, have no pre-existing listener,
+  and belong to the current harness PID. Browser cases must use that actual
+  base URL; port `0` is never a browser URL. Any bind outside `127.0.0.1`,
+  external request, excluded-range port, unexpected listener, or PID mismatch
   is a blocker.
 
 - [ ] **Step 3: Exercise all 21 route/viewport cases.**

@@ -665,7 +665,13 @@ quality command runs first in `artifacts/task-19/tmp/current/` and then in
     wrappers in either `.git`-less export because they transitively run the
     Git-aware workspace/path-boundary suite;
 12. `node artifacts/task-19/tmp/browser-harness/server.mjs --host=127.0.0.1
-   --port=4173` and browser automation restricted to localhost and the 21 cases;
+   --port=0` and browser automation restricted to localhost and the 21 cases.
+   The harness must request `listen(0)`, read the assigned
+   `address().port`, verify that the actual port is positive, not in an
+   excluded range, and owned by the current harness process, then pass only
+   the resulting `http://127.0.0.1:<actual-port>` base URL to all 21 cases.
+   Port `0` itself must never be used as a browser URL. The harness may not
+   bind `0.0.0.0`, a LAN address, or a public address.
 13. `node scripts/verify-final-delivery.mjs --mode=package-boundary`, then
     `node scripts/verify-final-delivery.mjs --mode=structure`, then
     `--mode=evidence`, and, only after packaging, `--mode=final`;
