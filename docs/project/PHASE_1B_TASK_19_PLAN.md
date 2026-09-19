@@ -161,6 +161,8 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 
   Every one of the 31 permanent outputs and `artifacts/task-19/tmp/` must be
   absent. Existing content must not be overwritten.
+  `EXPECTED_UNTRACKED_PATHS=71` must match the exact 71-path protected
+  read-only baseline before the temporary root is created.
 
 ## Task 2: Write failing final-delivery verifier tests
 

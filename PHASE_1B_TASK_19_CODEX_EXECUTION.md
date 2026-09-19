@@ -33,6 +33,9 @@ STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
   `e0c41bb859a87a031cf8b7d39373aea3b712681a`; its accepted control-plane
   checkpoint is `b3f300cd3c749cc06dc462d149353ac8cd0f5528`.
 - Task 19 is final delivery acceptance work, not product feature development.
+- `EXPECTED_UNTRACKED_PATHS=71` is the Stage B pre-start clean-baseline count.
+  This count is the exact 71-path protected read-only set enumerated below; no
+  nonexistent paths are restored to satisfy an obsolete count.
 
 ## 2. Goal and user value
 
@@ -301,6 +304,8 @@ The only temporary write root is `artifacts/task-19/tmp/`, with these children:
 `artifacts/task-19/tmp/` must be absent at Stage B start. Stage B may delete only
 the files and directories it created under that root during the same run and
 recorded in `run-ledger.json`.
+`EXPECTED_UNTRACKED_PATHS=71` must match the pre-start clean baseline before the
+temporary root is created.
 `TASK19_TEMP_DELETE_AUTHORIZATION=CREATED_THIS_RUN_UNDER_EXACT_TEMP_ROOT_ONLY`.
 Pre-existing files, repository-root `dist`, `coverage`, `.playwright-mcp`, caches,
 and all protected paths must not be deleted or overwritten. Cleanup failure is
