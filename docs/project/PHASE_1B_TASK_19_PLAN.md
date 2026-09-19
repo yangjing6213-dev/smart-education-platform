@@ -323,17 +323,47 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   ```powershell
   node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts tests/e2e/learning.spec.ts tests/security/isolation.spec.ts
   node --test tests/release/final-delivery.spec.ts
-  corepack pnpm test
-  corepack pnpm test:coverage
+  corepack pnpm --filter @student-care/contracts test
+  corepack pnpm --filter @student-care/validation test
+  corepack pnpm --filter @student-care/tenant test
+  corepack pnpm --filter @student-care/auth test
+  corepack pnpm --filter @student-care/api test
+  node --test apps/api/dist/src/modules/teachers/public-profile.test.js
+  corepack pnpm --filter @student-care/admin-web test
+  node --test tests/contracts/package-boundaries.test.mjs
+  corepack pnpm --filter @student-care/tenant test:coverage
+  corepack pnpm --filter @student-care/auth test:coverage
+  corepack pnpm --filter @student-care/api test:coverage
+  node --experimental-test-coverage --test apps/api/dist/src/modules/teachers/public-profile.test.js
+  node --test tests/contracts/package-boundaries.test.mjs
   ```
 
   Expected: every test passes, including tenant/campus injection denial,
   membership/capability denial, teacher-summary denial, public projection
   safety, learning hint order, audit exactly-once success, and rollback-zero
   success-event cases. Coverage output is evidence, not permission to weaken an
-  existing threshold.
+  existing threshold. The explicit commands above are the non-Git components of
+  the repository test and coverage matrix; do not invoke the root `test` or
+  `test:coverage` wrappers in this `.git`-less export because they transitively
+  include the Git-aware workspace/path-boundary test. The omitted
+  `tests/workspace/paths.test.mjs` suite remains mandatory and runs only in the
+  exact-HEAD worktree in Step 4. Do not delete, skip, or weaken its assertions.
 
 - [ ] **Step 4: Verify the frozen Task 18 repository lifecycle historically.**
+
+  First verify Git-aware workspace/path-boundary tests in a real temporary
+  worktree rooted at the exact Stage B HEAD recorded in `run-ledger.json`; never
+  run them in the `.git`-less `current/` or `rollback/` exports. Require the
+  canonical path
+  `C:\Users\HU\Documents\student-care-saas-platform-task19-git-boundary-<HEAD>`
+  to be absent, create it with `git worktree add --detach`, and verify its
+  canonical path, `git -C <path> rev-parse --show-toplevel`, exact `HEAD`,
+  `git -C <path> symbolic-ref --short -q HEAD` (empty for the intentional
+  detached state), `git worktree list --porcelain` membership, and the test
+  process working directory. Run only the unchanged Git-aware
+  `tests/workspace/paths.test.mjs` suite there, record command/exit/output SHA,
+  then remove the clean worktree. A root mismatch, HEAD mismatch, ambiguous
+  branch state, or cleanup failure is an infrastructure blocker.
 
   Require the temporary path
   `C:\Users\HU\Documents\student-care-saas-platform-task18-history-e0c41`
@@ -349,9 +379,11 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 
 - [ ] **Step 5: Repeat the ordered matrix in `rollback/`.**
 
-  Run Step 1, Step 2, then the four frozen behavior/security specs, root test,
-  and coverage from Step 3 in that exact order. Do not run the Task 18
-  repository-lifecycle suite in rollback. The Task 19 verifier files and Stage A
+  Run Step 1, Step 2, then the four frozen behavior/security specs and the
+  explicit non-Git test and coverage commands from Step 3 in that exact order.
+  Do not run `tests/workspace/paths.test.mjs` or the Task 18
+  repository-lifecycle suite in rollback; both are executed only in their
+  designated real Git worktrees. The Task 19 verifier files and Stage A
   documents remain validation-only overlays for the explicit Prettier gate; the
   rollback does not claim them as product bytes. Expected: every command exits 0
   and product/lock bytes match the accepted Task 18 rollback target.

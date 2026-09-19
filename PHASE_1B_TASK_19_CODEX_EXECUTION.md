@@ -324,8 +324,32 @@ Stage B must run the four frozen Task 18 behavior and security specs
 (`tests/e2e/visitor.spec.ts`, `tests/e2e/staff.spec.ts`,
 `tests/e2e/learning.spec.ts`, and `tests/security/isolation.spec.ts`) plus the
 complete existing workspace typecheck, lint, format, test, coverage, and build
-matrix inside the isolated `artifacts/task-19/tmp/current/` copy. It must not
+matrix inside the isolated `artifacts/task-19/tmp/current/` copy. The
+current/rollback exports remain limited to the contract's behavior and security
+tests and explicitly enumerated non-Git package checks; they must not run a
+Git-aware workspace/path-boundary test in an export without `.git`. It must not
 change root source or lock bytes to make a command pass.
+
+Any workspace/path-boundary test that reads Git metadata, resolves the repository
+root through Git, or asserts a Git working-tree boundary (including
+`tests/workspace/paths.test.mjs`) must run unchanged in a real temporary Git
+worktree at the exact Stage B HEAD recorded in `run-ledger.json`, never in
+`current/` or `rollback/`. The worktree path must be absent before creation and
+must be inside the project workspace but outside the repository root, for
+example
+`C:\Users\HU\Documents\student-care-saas-platform-task19-git-boundary-<HEAD>`.
+Before running the test, record and verify all of the following: the canonical
+temporary worktree path; `git -C <path> rev-parse --show-toplevel` equals that
+path; `git -C <path> rev-parse HEAD` equals the exact Stage B HEAD; and
+`git -C <path> symbolic-ref --short -q HEAD` is either the explicitly recorded
+branch or empty only when the worktree is intentionally detached. Also verify
+the path appears in `git worktree list --porcelain` and that the test process
+working directory is the same worktree root, so it cannot resolve to the outer
+repository. Run only the Git-aware workspace/path-boundary suite there, record
+its command, exit code, stdout/stderr SHA-256, and cleanup result, then remove
+the clean temporary worktree. Do not modify, skip, weaken, or copy the frozen
+test; a missing `.git`, root mismatch, HEAD mismatch, ambiguous branch/detached
+state, or cleanup failure is a hard infrastructure blocker.
 
 The frozen `tests/release/acceptance.spec.ts` repository-lifecycle suite is not
 run in either Task 19 current/rollback export. It must instead run unchanged in
@@ -571,16 +595,20 @@ quality command runs first in `artifacts/task-19/tmp/current/` and then in
     Current additionally runs `tests/release/final-delivery.spec.ts` after those
     four frozen behavior/security specs;
 
-11. `corepack pnpm test`, then `corepack pnpm test:coverage`;
+11. the explicit non-Git package test and coverage components listed in the
+    implementation plan; do not invoke the root `test` or `test:coverage`
+    wrappers in either `.git`-less export because they transitively run the
+    Git-aware workspace/path-boundary suite;
 12. `node artifacts/task-19/tmp/browser-harness/server.mjs --host=127.0.0.1
    --port=4173` and browser automation restricted to localhost and the 21 cases;
 13. `node scripts/verify-final-delivery.mjs --mode=structure`, then
     `--mode=evidence`, and, only after packaging, `--mode=final`;
 14. explicit copy and created-this-run cleanup operations confined to the paths
     in Sections 5 and 6;
-15. the exact local-only Task 18 historical worktree lifecycle in Section 7,
-    including temporary local branch creation/deletion and clean worktree
-    creation/removal, solely to run the unchanged repository-lifecycle suite.
+15. the exact local-only Git-aware workspace/path-boundary worktree lifecycle
+    in Section 7, followed by the Task 18 historical worktree lifecycle,
+    including temporary branch creation/deletion and clean worktree
+    creation/removal, solely to run the unchanged frozen suites.
 
 No registry access, install outside the temp copies, root build output, external
 service, database, migration, staging, commit, push, PR, deploy, or release is
