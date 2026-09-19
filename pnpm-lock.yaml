@@ -47,6 +47,8 @@ importers:
         specifier: 5.12.1
         version: 5.12.1
 
+  apps/user-web: {}
+
   packages/auth:
     dependencies:
       '@student-care/contracts':

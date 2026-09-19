@@ -33,6 +33,12 @@ STOP_REASON=TASK19_STAGE_A_OWNER_REVIEW_GATE
   `e0c41bb859a87a031cf8b7d39373aea3b712681a`; its accepted control-plane
   checkpoint is `b3f300cd3c749cc06dc462d149353ac8cd0f5528`.
 - Task 19 is final delivery acceptance work, not product feature development.
+- The Stage B run rooted at `8449d85c2a111746d6464d4ab92aad4a9a97955b`
+  is `INVALIDATED_INFRASTRUCTURE_RUN`. Its existing
+  `scripts/verify-final-delivery.mjs` and
+  `tests/release/final-delivery.spec.ts` are
+  `INVALID_RUN_OUTPUT_PENDING_CLEAN_RESTART`; neither file is accepted evidence
+  or a package member unless a later clean Stage B run recreates and verifies it.
 - `EXPECTED_UNTRACKED_PATHS=71` is the Stage B pre-start clean-baseline count.
   This count is the exact 71-path protected read-only set enumerated below; no
   nonexistent paths are restored to satisfy an obsolete count.
@@ -314,10 +320,28 @@ reported; it is not hidden with a broad clean command. `git clean`, `git reset
 
 ## 7. E2E and three-client browser matrix
 
-Stage B must run the five frozen Task 18 focused specs and the complete existing
-workspace typecheck, lint, format, test, coverage, and build matrix inside the
-isolated `artifacts/task-19/tmp/current/` copy. It must not change root source or
-lock bytes to make a command pass.
+Stage B must run the four frozen Task 18 behavior and security specs
+(`tests/e2e/visitor.spec.ts`, `tests/e2e/staff.spec.ts`,
+`tests/e2e/learning.spec.ts`, and `tests/security/isolation.spec.ts`) plus the
+complete existing workspace typecheck, lint, format, test, coverage, and build
+matrix inside the isolated `artifacts/task-19/tmp/current/` copy. It must not
+change root source or lock bytes to make a command pass.
+
+The frozen `tests/release/acceptance.spec.ts` repository-lifecycle suite is not
+run in either Task 19 current/rollback export. It must instead run unchanged in
+an isolated Git worktree at Task 18 checkpoint
+`e0c41bb859a87a031cf8b7d39373aea3b712681a`, with the historical local branch
+identity `feature/phase-1b-task-17-audit-logs` and that commit's Task 18-active
+`AGENTS.md` and `PLANS.md`. The exact temporary worktree path is
+`C:\Users\HU\Documents\student-care-saas-platform-task18-history-e0c41`.
+Before creation, both that path and local historical branch must be absent.
+Stage B creates the local branch and worktree from the exact commit, runs only
+`node --test tests/release/acceptance.spec.ts`, records the commit, command, exit
+code, and stdout/stderr SHA-256, then removes the clean worktree and deletes the
+temporary local branch. It never changes the current Task 19 branch, creates a
+remote branch, pushes, edits the frozen suite, or treats copied Task 19 control
+files as Task 18 history. The final Task 19 report must cite this independent
+historical result together with the four-spec current/rollback results.
 
 The final browser matrix is exactly seven routes by three viewports, 21 cases:
 
@@ -440,6 +464,22 @@ corepack pnpm --dir artifacts/task-19/tmp/current install --offline --frozen-loc
 corepack pnpm --dir artifacts/task-19/tmp/rollback install --offline --frozen-lockfile --ignore-scripts
 ```
 
+Before either install, Stage B must read the root `package.json`
+`packageManager` field and run `corepack pnpm --version`. The executable version
+must equal the declared version exactly; Corepack download, `corepack prepare`,
+`pnpm fetch`, registry access, and an alternate pnpm version are prohibited. A
+mismatch is `PNPM_VERSION_MISMATCH` and blocks Stage B. The declared executable
+may be used only when it is already present in the local Corepack cache.
+
+Stage B must hash each copy's `package.json`, `pnpm-workspace.yaml`, and
+`pnpm-lock.yaml` immediately before and after installation. Exit zero is not
+sufficient: the lockfile bytes and SHA-256 must remain exactly identical.
+Any change is `SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`; Stage B stops and
+must not normalize, restore, edit, or accept the temporary lockfile, use
+`--no-frozen-lockfile`, or continue later validation from that copy. Repairing
+the source lockfile requires a separately authorized infrastructure wave and a
+new clean Stage B baseline.
+
 The local pnpm store must already contain every locked package. Missing store
 content is `INFRASTRUCTURE_ISSUE`; network fallback is prohibited. The current
 copy uses the separately authorized Stage B baseline plus the exact 13 product
@@ -522,22 +562,32 @@ quality command runs first in `artifacts/task-19/tmp/current/` and then in
    `PLANS.md`;
 9. `corepack pnpm build`, then
    `corepack pnpm --filter @student-care/user-web build`;
-10. `node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts
-   tests/e2e/learning.spec.ts tests/security/isolation.spec.ts
-   tests/release/acceptance.spec.ts`; current additionally runs
-    `tests/release/final-delivery.spec.ts` after the five frozen specs;
+10. run the four frozen behavior/security specs with:
+
+    ```powershell
+    node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts tests/e2e/learning.spec.ts tests/security/isolation.spec.ts
+    ```
+
+    Current additionally runs `tests/release/final-delivery.spec.ts` after those
+    four frozen behavior/security specs;
+
 11. `corepack pnpm test`, then `corepack pnpm test:coverage`;
 12. `node artifacts/task-19/tmp/browser-harness/server.mjs --host=127.0.0.1
    --port=4173` and browser automation restricted to localhost and the 21 cases;
 13. `node scripts/verify-final-delivery.mjs --mode=structure`, then
     `--mode=evidence`, and, only after packaging, `--mode=final`;
 14. explicit copy and created-this-run cleanup operations confined to the paths
-    in Sections 5 and 6.
+    in Sections 5 and 6;
+15. the exact local-only Task 18 historical worktree lifecycle in Section 7,
+    including temporary local branch creation/deletion and clean worktree
+    creation/removal, solely to run the unchanged repository-lifecycle suite.
 
 No registry access, install outside the temp copies, root build output, external
-service, database, migration, branch creation/switch, worktree, staging, commit,
-push, PR, deploy, or release is implied. A later authorization may separately
-permit an explicit Task 19 checkpoint; this Stage A does not.
+service, database, migration, staging, commit, push, PR, deploy, or release is
+implied. Branch/worktree operations are prohibited except for the exact
+historical Task 18 lifecycle in Section 7; that lifecycle must leave no worktree
+or historical branch behind. A later authorization may separately permit an
+explicit Task 19 checkpoint; this Stage A does not.
 
 ## 13. Stop conditions and review standard
 
@@ -546,7 +596,9 @@ true: baseline ambiguity, V42/lock/frozen drift, protected metadata drift,
 unexpected path, existing output collision, external request, real data,
 failed deny test, incomplete browser matrix, visual defect, command failure,
 offline-store miss, invalid encoding, manifest/ZIP mismatch, nondeterministic
-rebuild, cleanup boundary failure, or need for a 32nd permanent path.
+rebuild, cleanup boundary failure, `PNPM_VERSION_MISMATCH`,
+`SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`, missing or failed independent
+Task 18 historical lifecycle evidence, or need for a 32nd permanent path.
 
 After two repair attempts for the same failure:
 
@@ -561,6 +613,14 @@ rebuild is byte-equal, detached hashes match independently, the root repository
 has no out-of-scope drift, limitations are explicit, and no SLA or production
 claim is inferred. Stage B then stops at `TASK19_STAGE_B_OWNER_REVIEW_GATE`.
 C1 and C2 require separate authorization. Task 20+ remains prohibited.
+
+The observed invalidated run used the declared `pnpm@11.22.0`, but its frozen
+install added the missing `apps/user-web: {}` importer to both temporary
+lockfiles. Therefore its diagnosis is
+`SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`, not
+`PNPM_VERSION_MISMATCH`. The minimal proposed source repair is the single empty
+`apps/user-web: {}` importer under `importers:` in `pnpm-lock.yaml`; this
+contract amendment does not authorize that repair.
 
 ## 14. Branch recommendation
 

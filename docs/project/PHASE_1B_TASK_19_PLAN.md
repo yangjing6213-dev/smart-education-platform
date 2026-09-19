@@ -51,6 +51,13 @@ This plan does not authorize any checkbox below. Stage B starts only after the
 owner reviews Stage A, supplies the exact Stage A checkpoint HEAD, and separately
 sets `TASK19_STAGE_B_AUTHORIZATION=GRANTED`.
 
+The Stage B run rooted at `8449d85c2a111746d6464d4ab92aad4a9a97955b`
+is `INVALIDATED_INFRASTRUCTURE_RUN`. Its existing
+`scripts/verify-final-delivery.mjs` and
+`tests/release/final-delivery.spec.ts` are
+`INVALID_RUN_OUTPUT_PENDING_CLEAN_RESTART`; they are not accepted evidence and
+must not be adopted into a later delivery package.
+
 If a later owner authorization chooses an isolated branch, the recommendation is
 `codex/phase-1b-task-19-final-delivery-acceptance`. Stage A does not create or
 switch a branch or worktree.
@@ -257,8 +264,17 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   corepack pnpm --dir artifacts/task-19/tmp/rollback install --offline --frozen-lockfile --ignore-scripts
   ```
 
-  Expected: both exit 0 without registry access or lockfile change. A local-store
-  miss is `INFRASTRUCTURE_ISSUE`; do not retry online.
+  Before these commands, require the root `package.json` `packageManager`
+  version to exactly equal `corepack pnpm --version`, and prove that exact pnpm
+  version already exists in the local Corepack cache. Corepack download,
+  `corepack prepare`, `pnpm fetch`, registry access, an alternate pnpm version,
+  and `--no-frozen-lockfile` are prohibited. Hash `package.json`,
+  `pnpm-workspace.yaml`, and `pnpm-lock.yaml` in each copy immediately before
+  and after installation. Expected: both commands exit 0 and every lockfile byte
+  and SHA remains identical. A version mismatch is `PNPM_VERSION_MISMATCH`; a
+  local-store miss is `INFRASTRUCTURE_ISSUE`; any lockfile change is
+  `SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`. Stop without online retry,
+  temporary normalization, restoration, or continued validation.
 
 - [ ] **Step 3: Record install and rollback evidence.**
 
@@ -305,7 +321,7 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 - [ ] **Step 3: Run focused, root-test, and coverage gates in `current/`.**
 
   ```powershell
-  node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts tests/e2e/learning.spec.ts tests/security/isolation.spec.ts tests/release/acceptance.spec.ts
+  node --test tests/e2e/visitor.spec.ts tests/e2e/staff.spec.ts tests/e2e/learning.spec.ts tests/security/isolation.spec.ts
   node --test tests/release/final-delivery.spec.ts
   corepack pnpm test
   corepack pnpm test:coverage
@@ -317,19 +333,40 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   success-event cases. Coverage output is evidence, not permission to weaken an
   existing threshold.
 
-- [ ] **Step 4: Repeat the ordered matrix in `rollback/`.**
+- [ ] **Step 4: Verify the frozen Task 18 repository lifecycle historically.**
 
-  Run Step 1, Step 2, then the five frozen focused specs, root test, and coverage
-  from Step 3 in that exact order. The Task 19 verifier files and Stage A
+  Require the temporary path
+  `C:\Users\HU\Documents\student-care-saas-platform-task18-history-e0c41`
+  and local branch `feature/phase-1b-task-17-audit-logs` to be absent. Create an
+  isolated local worktree and that temporary local branch at exact checkpoint
+  `e0c41bb859a87a031cf8b7d39373aea3b712681a`. Confirm its committed
+  `AGENTS.md` and `PLANS.md` identify Task 18 as active, then run the unchanged
+  `node --test tests/release/acceptance.spec.ts`. Record commit, branch, command,
+  exit code, and stdout/stderr SHA-256. Remove the clean worktree and delete the
+  temporary local branch. Do not edit the frozen test, copy Task 19 controls into
+  the historical tree, switch the Task 19 branch, create a remote branch, or
+  push. The final report must cite this result separately.
+
+- [ ] **Step 5: Repeat the ordered matrix in `rollback/`.**
+
+  Run Step 1, Step 2, then the four frozen behavior/security specs, root test,
+  and coverage from Step 3 in that exact order. Do not run the Task 18
+  repository-lifecycle suite in rollback. The Task 19 verifier files and Stage A
   documents remain validation-only overlays for the explicit Prettier gate; the
   rollback does not claim them as product bytes. Expected: every command exits 0
   and product/lock bytes match the accepted Task 18 rollback target.
 
-- [ ] **Step 5: Persist exact command evidence.**
+- [ ] **Step 6: Persist exact command evidence.**
 
   Record working directory, executable version, full command, start/end UTC,
   exit code, stdout/stderr SHA-256, and pass/fail for every command. Do not write
   a success value before observing exit 0.
+
+  The invalidated infrastructure run used the declared `pnpm@11.22.0`, but both
+  temporary installs added `apps/user-web: {}` under `importers:`. Record its
+  classification as `SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`. The minimal
+  proposed source repair is that one empty importer; this plan does not authorize
+  modifying the source `pnpm-lock.yaml`.
 
 ## Task 6: Run localhost E2E and visual acceptance
 
@@ -495,8 +532,10 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 Owner Review requires fresh exit-0 command evidence, all 21 inspectable visual
 cases, zero unresolved security/privacy blocker, measured performance fields
 without SLA claims, offline install and rollback reproduction, byte-identical
-ZIP rebuilds, independent hash agreement, exact write-set closure, and no frozen
-or protected drift. A partial package, missing browser case, unreviewed warning,
-or need for another path is not a pass.
+ZIP rebuilds, independent hash agreement, exact write-set closure, a separately
+recorded exit-0 Task 18 historical repository-lifecycle result, and no frozen or
+protected drift. A partial package, missing browser case, unreviewed warning,
+missing historical result, lockfile mutation, or need for another path is not a
+pass.
 
 Stage A ends now at `TASK19_STAGE_A_OWNER_REVIEW_GATE`.
