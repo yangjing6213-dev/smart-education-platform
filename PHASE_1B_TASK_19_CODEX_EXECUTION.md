@@ -10,6 +10,8 @@ TASK19_STAGE_B_AUTHORIZATION=GRANTED
 TASK19_STAGE_B_STATUS=IN_PROGRESS_OWNER_ACCEPTED_HISTORICAL_EXCEPTION
 TASK19_HISTORICAL_EVIDENCE_STATUS=UNAVAILABLE
 TASK19_HISTORICAL_EXCEPTION=OWNER_ACCEPTED_HISTORICAL_EXCEPTION
+TASK18_HISTORICAL_LIFECYCLE_EVIDENCE=UNAVAILABLE
+OWNER_ACCEPTED_HISTORICAL_EXCEPTION=YES
 TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK20_PLUS_STARTED=NO
@@ -63,7 +65,28 @@ The existing Task 19 verifier provides the allowed current equivalent command:
 current workspace dependency direction, package manifests and exports,
 tenant/auth/API boundaries, reverse-import detection, current
 lockfile/workspace configuration, and the declared 31-path Task 19 delivery
-boundary. Its output is current evidence only.
+boundary. Its output is current evidence only and cannot replace the missing
+historical lifecycle evidence.
+
+The Task 18 repository-lifecycle test remains frozen and unchanged. The exact
+`e0c41bb859a87a031cf8b7d39373aea3b712681a` commit cannot encode the 71/77
+untracked-path baseline that existed in its historical working tree. The
+precise historical worktree therefore produced
+`CHECKPOINT_UNTRACKED_COUNT_MISMATCH:0`; this result is not `PASS` and must not
+be presented as historical acceptance. The exception state is formally
+`TASK18_HISTORICAL_LIFECYCLE_EVIDENCE=UNAVAILABLE` and
+`OWNER_ACCEPTED_HISTORICAL_EXCEPTION=YES`.
+
+Task 19 may perform a present-head equivalent lifecycle verification only as
+supplementary evidence. It must use the existing Task 19 verifier, the existing
+run ledger, and the current worktree to verify: the exact current HEAD; clean
+tracked worktree and index; the ledger's exact 71-path protected set with
+type/size/mtime metadata; no reparse point or out-of-bound link; the
+ledger-registered creation and cleanup lifecycle of `current/` and `rollback/`;
+the ledger, 31-path permanent-output and temporary-write boundaries; and no
+contract-external modification. This current verification cannot replace the
+missing historical result, must not create a 32nd permanent output, and must
+not delete or rebuild the preserved invalid outputs, temporary tree, or ledger.
 
 ## 2. Goal and user value
 
@@ -396,24 +419,16 @@ mismatch, ambiguous branch/detached state, or cleanup failure is a hard
 infrastructure blocker.
 
 The frozen `tests/release/acceptance.spec.ts` repository-lifecycle suite is not
-run in either Task 19 current/rollback export. It must instead run unchanged in
-an isolated Git worktree at Task 18 checkpoint
-`e0c41bb859a87a031cf8b7d39373aea3b712681a`, with the historical local branch
-identity `feature/phase-1b-task-17-audit-logs` and that commit's Task 18-active
-`AGENTS.md` and `PLANS.md`. The exact temporary worktree path is
-`C:\Users\HU\Documents\student-care-saas-platform-task18-history-e0c41`.
-Before creation, both that path and local historical branch must be absent.
-Stage B creates the local branch and worktree from the exact commit, runs only
-`node --test tests/release/acceptance.spec.ts`, records the commit, command, exit
-code, and stdout/stderr SHA-256, then removes the clean worktree and deletes the
-temporary local branch. It never changes the current Task 19 branch, creates a
-remote branch, pushes, edits the frozen suite, or treats copied Task 19 control
-files as Task 18 history. The final Task 19 report must cite this independent
-historical result together with the four-spec current/rollback results.
-This suite is also Git-aware, but its asserted Task 18 control-plane semantics
-require the separately pinned historical worktree rather than the current
-Task 19 HEAD. The ledger's complete Git-aware inventory must list it as the
-seventh item with execution root `TASK18_HISTORICAL_CHECKPOINT`.
+run in either Task 19 current/rollback export. Its exact Task 18 checkpoint
+worktree remains the only historical execution lane, but the missing
+untracked-path baseline means its observed result is unavailable for PASS
+acceptance. The test must remain unchanged, must not be skipped or weakened,
+and must not be rerun in a fabricated worktree. The ledger and final report
+must cite the historical failure and the owner-accepted exception separately
+from the four-spec current/rollback results. The present-head lifecycle check
+described above is supplementary only. Record this test as the seventh
+Git-aware inventory item with execution root
+`TASK18_HISTORICAL_CHECKPOINT`.
 
 The final browser matrix is exactly seven routes by three viewports, 21 cases:
 
@@ -657,9 +672,10 @@ quality command runs first in `artifacts/task-19/tmp/current/` and then in
 14. explicit copy and created-this-run cleanup operations confined to the paths
     in Sections 5 and 6;
 15. the exact local-only six-item current-HEAD Git-aware worktree lifecycle
-    in Section 7, followed by the Task 18 historical worktree lifecycle,
-    including temporary branch creation/deletion and clean worktree
-    creation/removal, solely to run the unchanged frozen suites.
+    in Section 7, the recorded unavailable Task 18 historical result, and the
+    supplementary present-head lifecycle verification, including temporary
+    branch/worktree cleanup evidence, solely to preserve the unchanged frozen
+    suites and verify current boundaries.
 
 The current permanent outputs, `artifacts/task-19/tmp/`, and existing
 `run-ledger.json` are preserved; continuation appends events and never deletes,
@@ -681,8 +697,10 @@ unexpected path, existing output collision, external request, real data,
 failed deny test, incomplete browser matrix, visual defect, command failure,
 offline-store miss, invalid encoding, manifest/ZIP mismatch, nondeterministic
 rebuild, cleanup boundary failure, `PNPM_VERSION_MISMATCH`,
-`SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`, missing or failed independent
-Task 18 historical lifecycle evidence, or need for a 32nd permanent path.
+`SOURCE_LOCKFILE_WORKSPACE_IMPORTER_MISMATCH`, missing owner-exception record,
+failed supplementary present-head lifecycle verification, or need for a 32nd
+permanent path. The accepted unavailable Task 18 historical lifecycle result is
+not itself a new blocker and must never be relabeled as `PASS`.
 
 After two repair attempts for the same failure:
 
@@ -724,6 +742,8 @@ TASK19_STAGE_B_AUTHORIZATION=GRANTED
 TASK19_STAGE_B_STATUS=IN_PROGRESS_OWNER_ACCEPTED_HISTORICAL_EXCEPTION
 TASK19_HISTORICAL_EVIDENCE_STATUS=UNAVAILABLE
 TASK19_HISTORICAL_EXCEPTION=OWNER_ACCEPTED_HISTORICAL_EXCEPTION
+TASK18_HISTORICAL_LIFECYCLE_EVIDENCE=UNAVAILABLE
+OWNER_ACCEPTED_HISTORICAL_EXCEPTION=YES
 TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK20_PLUS_STARTED=NO

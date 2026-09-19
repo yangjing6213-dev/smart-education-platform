@@ -34,6 +34,8 @@ TASK19_STAGE_B_AUTHORIZATION=GRANTED
 TASK19_STAGE_B_STATUS=IN_PROGRESS_OWNER_ACCEPTED_HISTORICAL_EXCEPTION
 TASK19_HISTORICAL_EVIDENCE_STATUS=UNAVAILABLE
 TASK19_HISTORICAL_EXCEPTION=OWNER_ACCEPTED_HISTORICAL_EXCEPTION
+TASK18_HISTORICAL_LIFECYCLE_EVIDENCE=UNAVAILABLE
+OWNER_ACCEPTED_HISTORICAL_EXCEPTION=YES
 TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED
 TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED
 TASK20_PLUS_STARTED=NO
@@ -62,6 +64,26 @@ It covers current dependency direction, manifests, exports, tenant/auth/API
 boundaries, reverse imports, lockfile/workspace configuration, and the 31-path
 Task 19 delivery boundary. It cannot replace historical Task 06 evidence.
 The final result must include `OWNER_ACCEPTED_HISTORICAL_EXCEPTION`.
+
+The separate Task 18 repository-lifecycle evidence is also unavailable in the
+current repository state. The frozen `tests/release/acceptance.spec.ts` remains
+unchanged. The exact `e0c41bb859a87a031cf8b7d39373aea3b712681a` checkpoint cannot
+encode the historical 71/77 untracked-path baseline; its exact worktree
+reported `CHECKPOINT_UNTRACKED_COUNT_MISMATCH:0`. This result is not `PASS`,
+and the current Task 19 worktree must not be presented as that historical state.
+The owner-accepted exception is recorded as
+`TASK18_HISTORICAL_LIFECYCLE_EVIDENCE=UNAVAILABLE` and
+`OWNER_ACCEPTED_HISTORICAL_EXCEPTION=YES`.
+
+Task 19 may run a current-head equivalent lifecycle check only as supplementary
+evidence, using the existing Task 19 verifier, run ledger, and current
+worktree. It must cover the exact HEAD, clean tracked worktree/index, the
+ledger's 71 protected paths with type/size/mtime metadata, reparse and
+out-of-bound link absence, the ledger-recorded current/rollback creation and
+cleanup lifecycle, the ledger and 31-path write boundaries, and absence of
+contract-external modifications. It cannot replace historical evidence and
+must preserve the invalid outputs, temporary tree, and ledger without creating
+a 32nd permanent output.
 
 The Stage B run rooted at `8449d85c2a111746d6464d4ab92aad4a9a97955b`
 is `INVALIDATED_INFRASTRUCTURE_RUN`. Its existing
@@ -390,21 +412,16 @@ not be cleaned. Broad Git cleanup commands are prohibited.
   worktree. A missing inventory entry, root mismatch, HEAD mismatch, ambiguous
   branch state, or cleanup failure is an infrastructure blocker.
 
-  Require the temporary path
-  `C:\Users\HU\Documents\student-care-saas-platform-task18-history-e0c41`
-  and local branch `feature/phase-1b-task-17-audit-logs` to be absent. Create an
-  isolated local worktree and that temporary local branch at exact checkpoint
-  `e0c41bb859a87a031cf8b7d39373aea3b712681a`. Confirm its committed
-  `AGENTS.md` and `PLANS.md` identify Task 18 as active, then run the unchanged
-  `node --test tests/release/acceptance.spec.ts`. Record commit, branch, command,
-  exit code, and stdout/stderr SHA-256. Remove the clean worktree and delete the
-  temporary local branch. Do not edit the frozen test, copy Task 19 controls into
-  the historical tree, switch the Task 19 branch, create a remote branch, or
-  push. The final report must cite this result separately.
-  Record `tests/release/acceptance.spec.ts` as the seventh Git-aware inventory item
-  with classification `TASK18_HISTORICAL_REPOSITORY_LIFECYCLE` and execution
-  root `TASK18_HISTORICAL_CHECKPOINT`; its Task 18 assertions make the historical
-  checkpoint, not current Task 19 HEAD, the authoritative execution root.
+  The exact checkpoint worktree and unchanged
+  `node --test tests/release/acceptance.spec.ts` remain the only historical
+  lane. The observed `CHECKPOINT_UNTRACKED_COUNT_MISMATCH:0` result is recorded
+  as `TASK18_HISTORICAL_LIFECYCLE_EVIDENCE=UNAVAILABLE`, never as `PASS`.
+  Do not edit, skip, weaken, copy, or fabricate the frozen test or historical
+  untracked files. The final report must cite the failure and
+  `OWNER_ACCEPTED_HISTORICAL_EXCEPTION=YES` separately. Record the test as the
+  seventh Git-aware inventory item with execution root
+  `TASK18_HISTORICAL_CHECKPOINT`, and run the current-head equivalent lifecycle
+  check only as supplementary present-state evidence.
 
 - [ ] **Step 5: Repeat the ordered matrix in `rollback/`.**
 
@@ -585,8 +602,9 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 
   Report `TASK19_STAGE_B_STATUS=IMPLEMENTED_AND_VERIFIED_PENDING_OWNER_REVIEW`
   only if every fresh gate passed, and include
-  `OWNER_ACCEPTED_HISTORICAL_EXCEPTION` plus the current-only package-boundary
-  result. Otherwise report `STATUS=BLOCKED` with
+  `OWNER_ACCEPTED_HISTORICAL_EXCEPTION`, the current-only package-boundary
+  result, and the supplementary present-head lifecycle result. Otherwise report
+  `STATUS=BLOCKED` with
   `PRODUCT_ISSUE` or `INFRASTRUCTURE_ISSUE`. Do not stage, commit, start C1/C2,
   release, deploy, or start Task 20.
 
@@ -595,11 +613,12 @@ not be cleaned. Broad Git cleanup commands are prohibited.
 Owner Review requires fresh exit-0 command evidence, all 21 inspectable visual
 cases, zero unresolved security/privacy blocker, measured performance fields
 without SLA claims, offline install and rollback reproduction, byte-identical
-ZIP rebuilds, independent hash agreement, exact write-set closure, a separately
-recorded exit-0 Task 18 historical repository-lifecycle result, and no frozen or
-protected drift. A partial package, missing browser case, unreviewed warning,
-missing historical result, lockfile mutation, or need for another path is not a
-pass.
+ZIP rebuilds, independent hash agreement, exact write-set closure, the recorded
+Task 18 historical lifecycle exception, a passing supplementary present-head
+lifecycle result, and no frozen or protected drift. The unavailable historical
+result must not be labeled `PASS`. A partial package, missing browser case,
+missing exception evidence, failed current lifecycle check, lockfile mutation,
+or need for another path is not a pass.
 
 Stage B ends at `TASK19_STAGE_B_OWNER_REVIEW_GATE`. C1/C2 and Task 20+ remain
 unauthorized.
