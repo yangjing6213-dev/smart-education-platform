@@ -48,7 +48,14 @@ Task 18 已通过负责人审阅和 checkpoint Manager Review，状态为 `ACCEP
 
 ## Task 19 R1 Stage A 当前边界
 
-`TASK19_R1_USER_WEB_RUNTIME_AND_VISUAL_READINESS` 是 Task 19 的阻塞修复子任务，不是 Task 20。当前仅完成 Stage A formalization：`TASK19_R1_STARTED=NO`、`TASK19_R1_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`、`TASK19_R1_IMPLEMENTATION_AUTHORIZED=NO`。R1 只覆盖真实 user-web HTML/CSS 入口、无依赖可复现 build、`127.0.0.1:0` preview、`/visitor` 与 `/web/visitor/home` 兼容映射及三视口真实视觉就绪核验；不新增课程、校区、接送、报名等业务功能。R1 Stage B、Task 19 C1/C2、push、部署、release 与 Task 20+ 均未授权。
+`TASK19_R1_USER_WEB_RUNTIME_AND_VISUAL_READINESS` 是 Task 19 的阻塞修复子任务，不是 Task 20。Stage A formalization 当时记录为：`TASK19_R1_STARTED=NO`、`TASK19_R1_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`、`TASK19_R1_IMPLEMENTATION_AUTHORIZED=NO`。R1 只覆盖真实 user-web HTML/CSS 入口、无依赖可复现 build、`127.0.0.1:0` preview、`/visitor` 与 `/web/visitor/home` 兼容映射及三视口真实视觉就绪核验；不新增课程、校区、接送、报名等业务功能。Task 19 C1/C2 与 Task 20+ 均未授权；push 授权无法从当前记录核验，远端观测状态见下。
+
+R1 远端状态观测：
+`GIT_PUSH_EXECUTED=YES`
+`GIT_PUSH_COMMIT=6f02fa113e69b14e05ca5a8ea03d3c1769aa8da2`
+`GIT_PUSH_TIME=2026-09-21T01:36:02+08:00`
+`GIT_PUSH_ACTOR=UNKNOWN`
+`PUSH_AUTHORIZATION=NOT_VERIFIABLE_FROM_CURRENT_RECORD`
 
 R1 Stage A 的治理写集严格为 `AGENTS.md`、`PLANS.md`、`PHASE_1B_TASK_19_R1_CODEX_EXECUTION.md` 和 `docs/project/PHASE_1B_TASK_19_R1_PLAN.md`。候选产品/测试文件的 CREATE/MODIFY 分类、无新增依赖结论、验证矩阵和停止条件以 R1 合同与计划为准；本轮不得修改产品、测试、lockfile、V42、冻结证据、保护路径或 Task 19 永久输出。
 
@@ -323,7 +330,7 @@ Batch A 已由项目负责人验收为 `PASS`，其 ZIP、根清单、报告、�
 PHASE_1A_BATCH_B_STATUS=PASS|BLOCKED
 PHASE_1B_STARTED=NO
 PRODUCTION_DEPLOYMENT_EXECUTED=NO
-GIT_PUSH_EXECUTED=NO
+HISTORICAL_BATCH_B_PUSH_EXECUTED=NO
 REAL_PERSONAL_DATA_USED=NO
 LIVE_AI_MODEL_USED=NO
 PROJECT_OWNER_ACCEPTANCE=PENDING

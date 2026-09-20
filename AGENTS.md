@@ -125,7 +125,14 @@ V42 冻结任务锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `OWNER_REVIEW_GATE=TASK19_R1_STAGE_A_OWNER_REVIEW_GATE`、
 `STOP_REASON=TASK19_R1_STAGE_A_OWNER_REVIEW_GATE`。
 
-Task 18 checkpoint 与控制面 checkpoint 已通过独立复核，但 checkpoint 仍只保存本地可恢复状态，不等于发布或 release。Task 19 当前暂停在 R1 blocker-repair formalization；本次授权只允许形成 R1 合同、计划和当前控制面，不构成 R1 实施、Task 19 Stage B/C1/C2、push、deploy、release 或 Task 20+ 授权。
+Task 18 checkpoint 与控制面 checkpoint 已通过独立复核，但 checkpoint 仍只保存本地可恢复状态，不等于发布或 release。Task 19 当前暂停在 R1 blocker-repair formalization；本次授权只允许形成 R1 合同、计划和当前控制面，不构成 R1 实施、Task 19 Stage B/C1/C2、push、deploy、release 或 Task 20+ 授权。后续远端 push 观测结果单独记录如下，不反推授权来源。
+
+R1 远端状态观测：
+`GIT_PUSH_EXECUTED=YES`、
+`GIT_PUSH_COMMIT=6f02fa113e69b14e05ca5a8ea03d3c1769aa8da2`、
+`GIT_PUSH_TIME=2026-09-21T01:36:02+08:00`、
+`GIT_PUSH_ACTOR=UNKNOWN`、
+`PUSH_AUTHORIZATION=NOT_VERIFIABLE_FROM_CURRENT_RECORD`。
 
 当前 R1 控制面为：
 `TASK19_R1_USER_WEB_RUNTIME_AND_VISUAL_READINESS`、

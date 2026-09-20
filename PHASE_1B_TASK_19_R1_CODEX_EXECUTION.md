@@ -31,6 +31,12 @@ STOP_REASON=TASK19_R1_STAGE_A_OWNER_REVIEW_GATE
 - R1 is a blocker-repair subtask inside Task 19. It is not Task 20 and does
   not authorize Task 19 Stage B, C1, C2, push, deployment, release, or any
   production operation.
+- Observed R1 remote state (authorization is not inferred):
+  `GIT_PUSH_EXECUTED=YES`,
+  `GIT_PUSH_COMMIT=6f02fa113e69b14e05ca5a8ea03d3c1769aa8da2`,
+  `GIT_PUSH_TIME=2026-09-21T01:36:02+08:00`,
+  `GIT_PUSH_ACTOR=UNKNOWN`,
+  `PUSH_AUTHORIZATION=NOT_VERIFIABLE_FROM_CURRENT_RECORD`.
 - R1 does not change the existing Task 06 or Task 18 historical-evidence
   exceptions. Those limitations remain exactly as recorded by the accepted
   Task 19 contracts and evidence.
@@ -290,7 +296,8 @@ Owner review passes only when:
 - `TASK19_R1_STARTED=NO` and
   `TASK19_R1_IMPLEMENTATION_AUTHORIZED=NO` remain true;
 - Task 19 Stage B, C1, C2, and Task 20+ remain unauthorized; and
-- no implementation, test, browser, service, staging, commit, push, deployment,
-  or release action has occurred.
+- at the Stage A checkpoint, no implementation, test, browser, service, staging,
+  commit, push, deployment, or release action had occurred; later remote state
+  is recorded by the convergence fields above.
 
 Stage A stops at `TASK19_R1_STAGE_A_OWNER_REVIEW_GATE`.
