@@ -76,7 +76,7 @@ export function renderVisitorHome(
   const focusOrder =
     resolvedState === "EMPTY"
       ? ["visitor-home-empty-action"]
-      : items.map((item) => `visitor-content-${item.slug}`);
+      : ["visitor-primary-action", ...items.map((item) => `visitor-content-${item.slug}`)];
 
   return {
     route: "/visitor",
@@ -103,26 +103,78 @@ function visitorHomeHtml(
       ? items
           .map(
             (item) => `
-              <article data-synthetic="true" data-visibility="public">
+              <article class="content-card" data-synthetic="true" data-visibility="public">
+                <p class="eyebrow">公开内容 · 模拟数据</p>
                 <h2>${escapeHtml(item.title)}</h2>
-                <p>${escapeHtml(item.summary)}</p>
-                <a id="visitor-content-${escapeHtml(item.slug)}" href="/visitor/content/${escapeHtml(item.slug)}" aria-label="Open ${escapeHtml(item.title)}">Open content</a>
+                <p class="content-card-summary">${escapeHtml(item.summary)}</p>
+                <a class="text-link" id="visitor-content-${escapeHtml(item.slug)}" href="/visitor/content/${escapeHtml(item.slug)}" aria-label="查看${escapeHtml(item.title)}">查看内容 <span aria-hidden="true">→</span></a>
               </article>`,
           )
           .join("")
       : "";
-  const emptyAction =
-    state === "EMPTY"
-      ? '<a id="visitor-home-empty-action" href="/visitor" aria-label="重新查看公开内容">重新查看公开内容</a>'
-      : "";
+  const primaryAction =
+    state === "PUBLISHED" && items[0] !== undefined
+      ? `<a class="button button-primary" id="visitor-primary-action" href="/visitor/content/${escapeHtml(items[0].slug)}">查看公开内容 <span aria-hidden="true">→</span></a>`
+      : '<a class="button button-primary" id="visitor-home-empty-action" href="/visitor" aria-label="重新查看公开内容">重新查看公开内容</a>';
 
   return `
-    <main aria-labelledby="visitor-home-heading" style="max-inline-size:100%;min-inline-size:0;overflow-x:hidden">
-      <h1 id="visitor-home-heading">访客首页</h1>
-      <p>模拟数据</p>
-      <p role="status" aria-live="polite">${escapeHtml(statusAnnouncement)}</p>
-      ${emptyAction}
-      ${itemMarkup}
+    <main id="main-content" class="visitor-main" aria-labelledby="visitor-home-heading">
+      <section class="hero" aria-labelledby="visitor-home-heading">
+        <div class="hero-copy">
+          <p class="eyebrow">家长端 · 模拟数据</p>
+          <h1 id="visitor-home-heading">访客首页</h1>
+          <p class="hero-lede">查看课后成长服务的公开信息，内容以清晰、安心的方式呈现给家长。</p>
+          <p class="status-message" role="status" aria-live="polite">${escapeHtml(statusAnnouncement)}</p>
+          <div class="hero-actions">
+            ${primaryAction}
+            <a class="text-link" href="#visitor-empty-states">查看服务状态 <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <div class="hero-media" aria-label="托管服务模拟预览">
+          <span class="hero-media-label">安全 · 清晰 · 可查</span>
+          <strong>每一次成长，都值得被认真记录。</strong>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="public-content-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">公开内容</p>
+            <h2 id="public-content-heading">给家长的最新消息</h2>
+          </div>
+          <p class="section-note">仅展示已发布的模拟内容</p>
+        </div>
+        <div class="content-grid">
+          ${itemMarkup || '<p class="empty-copy">当前没有可展示的公开内容。</p>'}
+        </div>
+      </section>
+
+      <section id="visitor-empty-states" class="content-section" aria-labelledby="empty-states-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">服务状态</p>
+            <h2 id="empty-states-heading">正在准备的服务</h2>
+          </div>
+          <p class="section-note">暂无业务数据时保持诚实透明</p>
+        </div>
+        <div class="empty-state-grid">
+          <article class="empty-state" aria-labelledby="courses-empty-heading">
+            <span class="empty-state-index">01</span>
+            <h3 id="courses-empty-heading">暂无课程</h3>
+            <p>课程信息准备好后会在这里展示。</p>
+          </article>
+          <article class="empty-state" aria-labelledby="events-empty-heading">
+            <span class="empty-state-index">02</span>
+            <h3 id="events-empty-heading">暂无活动</h3>
+            <p>活动安排将在确认后公开呈现。</p>
+          </article>
+          <article class="empty-state" aria-labelledby="campuses-empty-heading">
+            <span class="empty-state-index">03</span>
+            <h3 id="campuses-empty-heading">暂无校区</h3>
+            <p>校区信息仅在正式发布后出现。</p>
+          </article>
+        </div>
+      </section>
     </main>
   `.trim();
 }

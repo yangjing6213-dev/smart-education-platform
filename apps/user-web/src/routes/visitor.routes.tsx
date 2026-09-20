@@ -84,7 +84,7 @@ export function createSyntheticVisitorResponse(): PublicVisitorResponse {
 
 export function selectVisitorRoute(input: VisitorRouteInput): VisitorRoute {
   const normalizedPath = input.path.split("?")[0]?.replace(/\/+$/, "") || "/";
-  if (normalizedPath === "/visitor") {
+  if (normalizedPath === "/visitor" || normalizedPath === "/web/visitor/home") {
     return {
       kind: "HOME",
       view: renderVisitorHome(input.response, input.state),

@@ -68,11 +68,14 @@ function visitorContentHtml(
       : "";
 
   return `
-    <main aria-labelledby="visitor-content-heading" style="max-inline-size:100%;min-inline-size:0;overflow-x:hidden">
-      <p role="status" aria-live="polite">${escapeHtml(statusAnnouncement)}</p>
-      <h1 id="visitor-content-heading">${escapeHtml(item?.title ?? "Visitor content unavailable")}</h1>
-      ${bodyMarkup}
-      <a href="/visitor" aria-label="Return to visitor home">Back to visitor home</a>
+    <main id="main-content" class="visitor-main" aria-labelledby="visitor-content-heading">
+      <article class="content-page">
+        <p class="eyebrow">公开内容 · 模拟数据</p>
+        <p class="status-message" role="status" aria-live="polite">${escapeHtml(statusAnnouncement)}</p>
+        <h1 id="visitor-content-heading">${escapeHtml(item?.title ?? "访客内容暂不可用")}</h1>
+        <div class="content-body">${bodyMarkup}</div>
+        <a class="button button-secondary" href="/visitor" aria-label="返回访客首页">返回访客首页 <span aria-hidden="true">←</span></a>
+      </article>
     </main>
   `.trim();
 }

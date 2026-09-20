@@ -63,7 +63,10 @@ test("visitor actions have a stable keyboard order and narrow viewport guard", (
   });
 
   assert.equal(route.kind, "HOME");
-  assert.deepEqual(route.view.focusOrder, ["visitor-content-welcome-to-synthetic-learning"]);
+  assert.deepEqual(route.view.focusOrder, [
+    "visitor-primary-action",
+    "visitor-content-welcome-to-synthetic-learning",
+  ]);
   assert.equal(route.view.layout.maxInlineSize, "100%");
   assert.equal(route.view.layout.overflowX, "hidden");
   assert.equal(route.view.layout.minInlineSize, "0");
@@ -156,4 +159,27 @@ test("visitor route rejects unknown content without requests or external destina
   assert.match(route.view.statusAnnouncement, /unavailable/i);
   assert.deepEqual(route.view.requests, []);
   assert.deepEqual(route.view.externalDestinations, []);
+});
+
+test("visitor home compatibility route preserves the accepted projection", () => {
+  const response = createSyntheticVisitorResponse();
+  const primary = selectVisitorRoute({ path: "/visitor", response });
+  const compatibility = selectVisitorRoute({ path: "/web/visitor/home", response });
+
+  assert.equal(primary.kind, "HOME");
+  assert.equal(compatibility.kind, "HOME");
+  assert.deepEqual(compatibility.view, primary.view);
+});
+
+test("visitor home declares the supported empty states without business routes", () => {
+  const route = selectVisitorRoute({
+    path: "/visitor",
+    response: createSyntheticVisitorResponse(),
+  });
+
+  assert.equal(route.kind, "HOME");
+  assert.match(route.view.html, /暂无课程/);
+  assert.match(route.view.html, /暂无活动/);
+  assert.match(route.view.html, /暂无校区/);
+  assert.doesNotMatch(route.view.html, /href="\/(courses|campuses|pickup|enrollment)/i);
 });
