@@ -1,5 +1,10 @@
 {
-  "pages": ["pages/visitor/home/index", "pages/visitor/content/index"],
+  "pages": [
+    "pages/visitor/home/index",
+    "pages/visitor/content/index",
+    "pages/staff/workbench/index",
+    "pages/staff/quick-action/index"
+  ],
   "window": {
     "navigationBarBackgroundColor": "#f7f8fc",
     "navigationBarTextStyle": "black",

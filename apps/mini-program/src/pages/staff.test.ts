@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 import {
   STAFF_ROUTES,
@@ -157,4 +158,30 @@ test("does not invoke fetch or persistence while evaluating local staff flows", 
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("native staff shell registers only the approved local pages", async () => {
+  const app = JSON.parse(await readFile("apps/mini-program/app.json", "utf8")) as {
+    pages: string[];
+  };
+
+  assert.deepEqual(app.pages, [
+    "pages/visitor/home/index",
+    "pages/visitor/content/index",
+    "pages/staff/workbench/index",
+    "pages/staff/quick-action/index",
+  ]);
+
+  const source = (
+    await Promise.all([
+      readFile("apps/mini-program/pages/staff/workbench/index.ts", "utf8"),
+      readFile("apps/mini-program/pages/staff/quick-action/index.ts", "utf8"),
+      readFile("apps/mini-program/pages/staff/workbench/index.wxml", "utf8"),
+      readFile("apps/mini-program/pages/staff/quick-action/index.wxml", "utf8"),
+    ])
+  ).join("\n");
+
+  assert.doesNotMatch(source, /fetch|wx\.request|localStorage|wx\.setStorage|https?:\/\//i);
+  assert.match(source, /pages\/visitor\/home\/index/u);
+  assert.match(source, /pages\/staff\/quick-action\/index/u);
 });

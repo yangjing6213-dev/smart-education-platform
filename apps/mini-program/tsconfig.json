@@ -9,6 +9,8 @@
     "app.ts",
     "pages/visitor/home/index.ts",
     "pages/visitor/content/index.ts",
+    "pages/staff/workbench/index.ts",
+    "pages/staff/quick-action/index.ts",
     "src/routes/staff.routes.ts",
     "src/pages/staff/workbench.ts",
     "src/pages/staff/quick-action.ts",

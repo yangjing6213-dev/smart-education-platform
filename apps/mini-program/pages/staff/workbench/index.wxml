@@ -1,0 +1,44 @@
+<view class="page-shell staff-page">
+  <view class="staff-topbar">
+    <view>
+      <text class="eyebrow">STAFF WORKBENCH</text>
+      <text class="page-title">员工工作台</text>
+    </view>
+    <text class="synthetic-badge">模拟员工端</text>
+  </view>
+
+  <view class="status-announcement" role="status" aria-live="polite">{{statusAnnouncement}}</view>
+
+  <view wx:if="{{isReady}}" class="staff-list">
+    <view wx:for="{{items}}" wx:key="id" class="staff-card">
+      <text class="staff-card-label">模拟任务</text>
+      <text class="staff-card-title">{{item.title}}</text>
+      <text class="staff-card-copy">仅展示当前合成校区范围内的公开工作提示。</text>
+    </view>
+  </view>
+
+  <view wx:elif="{{isEmpty}}" class="state-card">
+    <text class="state-title">暂无可用任务</text>
+    <text class="muted-copy">新的模拟工作提示准备后会显示在这里。</text>
+  </view>
+
+  <view wx:else class="state-card state-card-error">
+    <text class="state-title">员工访问不可用</text>
+    <text class="muted-copy">当前页面不会展示未确认的员工内容。</text>
+  </view>
+
+  <button
+    class="tap-target primary-button"
+    type="primary"
+    aria-label="打开员工快捷动作"
+    bindtap="handleQuickAction"
+  >
+    打开快捷动作
+  </button>
+
+  <button class="tap-target secondary-button" bindtap="handleHome" aria-label="返回访客首页">
+    返回访客首页
+  </button>
+
+  <text class="footer-note">仅供本地演示 · 不连接正式服务</text>
+</view>

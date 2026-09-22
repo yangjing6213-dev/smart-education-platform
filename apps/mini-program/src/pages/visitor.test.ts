@@ -151,7 +151,12 @@ test("native visitor shell registers only the approved local pages", async () =>
   );
   const appConfig = JSON.parse(contents.appConfig) as { pages?: string[] };
 
-  assert.deepEqual(appConfig.pages, ["pages/visitor/home/index", "pages/visitor/content/index"]);
+  assert.deepEqual(appConfig.pages, [
+    "pages/visitor/home/index",
+    "pages/visitor/content/index",
+    "pages/staff/workbench/index",
+    "pages/staff/quick-action/index",
+  ]);
   for (const source of [
     contents.appSource,
     contents.homeSource,

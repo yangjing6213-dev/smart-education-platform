@@ -1,0 +1,43 @@
+<view class="page-shell action-page">
+  <view class="action-topbar">
+    <button class="tap-target back-button" bindtap="handleBack" aria-label="返回员工工作台">
+      返回工作台
+    </button>
+    <text class="topbar-label">快捷动作</text>
+  </view>
+
+  <view class="action-heading">
+    <text class="eyebrow">QUICK ACTIONS</text>
+    <text class="page-title">选择一个本地动作</text>
+    <text class="page-copy">仅执行合成数据演示，不连接正式服务。</text>
+  </view>
+
+  <view class="status-announcement" role="status" aria-live="polite">{{statusAnnouncement}}</view>
+
+  <view class="action-list">
+    <button
+      class="tap-target action-button"
+      data-action="REVIEW_TASKS"
+      bindtap="handleAction"
+    >
+      查看模拟任务
+    </button>
+    <button
+      class="tap-target action-button action-button-light"
+      data-action="CHECK_SYNTHETIC_STATUS"
+      bindtap="handleAction"
+    >
+      检查模拟状态
+    </button>
+  </view>
+
+  <view wx:if="{{isReady && result}}" class="result-card">
+    <text class="result-label">执行结果</text>
+    <text class="result-copy">{{result}}</text>
+  </view>
+
+  <view wx:elif="{{isDenied}}" class="state-card state-card-error">
+    <text class="state-title">快捷动作不可用</text>
+    <text class="muted-copy">当前动作未被确认。</text>
+  </view>
+</view>

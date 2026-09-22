@@ -1,0 +1,141 @@
+.action-page {
+  padding-top: 24rpx;
+}
+
+.action-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  margin-bottom: 50rpx;
+}
+
+.back-button {
+  min-width: 176rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #dfe3f0;
+  border-radius: 999rpx;
+  color: #273bce;
+  background: #ffffff;
+  font-size: 24rpx;
+  line-height: 84rpx;
+  text-align: center;
+}
+
+.back-button::after {
+  border: 0;
+}
+
+.topbar-label {
+  color: #8b92a7;
+  font-size: 22rpx;
+}
+
+.action-heading {
+  min-width: 0;
+  margin-bottom: 34rpx;
+}
+
+.eyebrow {
+  display: block;
+  color: #6b61df;
+  font-size: 19rpx;
+  font-weight: 700;
+  letter-spacing: 3rpx;
+}
+
+.page-title {
+  display: block;
+  margin-top: 16rpx;
+  color: #17213b;
+  font-size: 48rpx;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.page-copy {
+  display: block;
+  margin-top: 14rpx;
+  color: #65708b;
+  font-size: 24rpx;
+  line-height: 1.6;
+}
+
+.status-announcement {
+  margin-bottom: 20rpx;
+  color: #65708b;
+  font-size: 22rpx;
+}
+
+.action-list {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.action-button {
+  width: 100%;
+  border: 0;
+  border-radius: 999rpx;
+  color: #ffffff;
+  background: #273bce;
+  font-size: 26rpx;
+  font-weight: 700;
+  line-height: 88rpx;
+}
+
+.action-button-light {
+  color: #273bce;
+  background: #e9ebff;
+}
+
+.action-button::after {
+  border: 0;
+}
+
+.result-card,
+.state-card {
+  min-width: 0;
+  margin-top: 28rpx;
+  padding: 30rpx;
+  border: 2rpx solid #e5e8f3;
+  border-radius: 24rpx 8rpx 24rpx 8rpx;
+  background: #ffffff;
+  box-shadow: 0 12rpx 34rpx rgba(25, 35, 75, 0.06);
+}
+
+.result-label {
+  display: block;
+  color: #6b61df;
+  font-size: 19rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.result-copy {
+  display: block;
+  margin-top: 14rpx;
+  color: #17213b;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.state-card-error {
+  border-color: #f2d6d6;
+  background: #fff8f8;
+}
+
+.state-title {
+  display: block;
+  color: #17213b;
+  font-size: 29rpx;
+  font-weight: 700;
+}
+
+.muted-copy {
+  display: block;
+  margin-top: 8rpx;
+  color: #65708b;
+  font-size: 23rpx;
+}
