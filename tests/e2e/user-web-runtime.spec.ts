@@ -63,8 +63,11 @@ function waitForStartup(processInstance: ReturnType<typeof spawn>): Promise<{
 
 test("user-web preview serves the real visitor runtime on loopback", async () => {
   const indexHtml = await readFile(resolve(packageRoot, "index.html"), "utf8");
-  assert.match(indexHtml, /\.\/styles\/user-web\.css/u);
-  assert.match(indexHtml, /\.\/main\.js/u);
+  const stylesheet = await readFile(resolve(packageRoot, "src/styles/user-web.css"), "utf8");
+  assert.match(indexHtml, /href="\/styles\/user-web\.css"/u);
+  assert.match(indexHtml, /src="\/main\.js"/u);
+  assert.match(indexHtml, /href="\/assets\/tongxin-logo\.png"/u);
+  assert.match(stylesheet, /font-family:\s*"Microsoft YaHei"/u);
   assert.doesNotMatch(indexHtml, /https?:\/\//u);
 
   const preview = spawn(process.execPath, ["preview.mjs"], {

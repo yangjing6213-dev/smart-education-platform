@@ -20,6 +20,30 @@ function render(): void {
     response,
   });
   appRoot.replaceChildren(document.createRange().createContextualFragment(renderShell(route)));
+  setupRevealAnimations();
+}
+
+function setupRevealAnimations(): void {
+  const revealNodes = document.querySelectorAll<HTMLElement>("[data-reveal]");
+  if (revealNodes.length === 0 || !("IntersectionObserver" in window)) {
+    revealNodes.forEach((node) => node.classList.add("is-revealed"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+        entry.target.classList.add("is-revealed");
+        currentObserver.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -12%", threshold: 0.08 },
+  );
+
+  revealNodes.forEach((node) => observer.observe(node));
 }
 
 function renderShell(route: VisitorRoute): string {
@@ -27,18 +51,18 @@ function renderShell(route: VisitorRoute): string {
     <header class="site-header">
       <div class="site-header-inner">
         <a class="brand" href="/visitor" aria-label="同芯托管访客首页">
-          <span class="brand-mark" aria-hidden="true">同</span>
-          <span class="brand-copy"><strong>同芯</strong><small>托管服务</small></span>
+          <img class="brand-logo" src="/assets/tongxin-logo.png" alt="同芯学园" />
         </a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">
-          <span class="menu-toggle-label">菜单</span>
-          <span class="menu-toggle-icon" aria-hidden="true">☰</span>
+        <button class="menu-toggle" type="button" aria-label="菜单" aria-expanded="false" aria-controls="site-navigation">
+          <span class="menu-toggle-icon" aria-hidden="true">＋</span>
         </button>
         <nav id="site-navigation" class="site-navigation" aria-label="主导航">
-          <a href="/visitor" aria-current="${route.kind === "HOME" ? "page" : "false"}">访客首页</a>
-          <a href="/visitor#visitor-empty-states">服务状态</a>
+          <a href="/visitor" aria-current="${route.kind === "HOME" ? "page" : "false"}">首页</a>
+          <a href="/visitor#about">关于我们</a>
+          <a href="/visitor#visitor-empty-states">服务方向</a>
           <a href="/visitor#site-footer">联系我们</a>
         </nav>
+        <a class="header-action" href="${route.kind === "CONTENT" ? "/visitor" : "/visitor#visitor-empty-states"}">家长咨询 <span aria-hidden="true">↗</span></a>
       </div>
     </header>
   `;
@@ -48,11 +72,35 @@ function renderShell(route: VisitorRoute): string {
     ${route.view.html}
     <footer id="site-footer" class="site-footer">
       <div class="site-footer-inner">
-        <div>
-          <p class="eyebrow">同芯托管 · 模拟数据</p>
-          <p class="footer-title">让家长看见每一步安心。</p>
+        <div class="footer-brand">
+          <a class="brand brand-footer" href="/visitor" aria-label="同芯托管访客首页">
+            <img class="brand-logo" src="/assets/tongxin-logo.png" alt="同芯学园" />
+          </a>
+          <p class="footer-description">让每个孩子在放学后的时光里，继续学习、探索与成长。</p>
+          <p class="footer-meta">全部内容均为模拟数据 · 访客端公开信息预览</p>
         </div>
-        <p class="footer-meta">访客端公开信息预览</p>
+        <div class="footer-column">
+          <h2>快速导航</h2>
+          <a href="/visitor">访客首页</a>
+          <a href="/visitor#about">关于我们</a>
+          <a href="/visitor#visitor-empty-states">服务状态</a>
+        </div>
+        <div class="footer-column">
+          <h2>服务方向</h2>
+          <span>课后托管</span>
+          <span>兴趣探索</span>
+          <span>成长陪伴</span>
+        </div>
+        <div class="footer-column footer-contact">
+          <h2>联系我们</h2>
+          <span>家长咨询 · 模拟入口</span>
+          <span>信息准备好后公开呈现</span>
+          <a href="/visitor#site-footer">查看访客信息</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>同芯托管 · 模拟数据</span>
+        <span>© 2026 同芯托管</span>
       </div>
     </footer>
   `;
@@ -101,6 +149,30 @@ document.addEventListener("click", (event) => {
   const expanded = toggle.getAttribute("aria-expanded") === "true";
   toggle.setAttribute("aria-expanded", String(!expanded));
   navigation.toggleAttribute("data-open", !expanded);
+});
+
+document.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element) || target.closest(".menu-toggle") !== null) {
+    return;
+  }
+
+  const navigation = document.querySelector<HTMLElement>("#site-navigation");
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  if (navigation?.hasAttribute("data-open") && target.closest("#site-navigation a") !== null) {
+    navigation.removeAttribute("data-open");
+    toggle?.setAttribute("aria-expanded", "false");
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") {
+    return;
+  }
+  const navigation = document.querySelector<HTMLElement>("#site-navigation");
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  navigation?.removeAttribute("data-open");
+  toggle?.setAttribute("aria-expanded", "false");
 });
 
 window.addEventListener("popstate", render);

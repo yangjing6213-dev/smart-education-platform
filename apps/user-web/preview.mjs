@@ -11,6 +11,7 @@ const DIST_ROOT = resolve(packageRoot, "dist");
 const MIME_TYPES = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
+  [".avif", "image/avif"],
   [".js", "text/javascript; charset=utf-8"],
   [".map", "application/json; charset=utf-8"],
 ]);

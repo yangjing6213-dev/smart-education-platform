@@ -8,6 +8,13 @@ const distRoot = resolve(packageRoot, "dist");
 const browserEntry = resolve(distRoot, "main.js");
 const indexSource = resolve(packageRoot, "index.html");
 const stylesheetSource = resolve(sourceRoot, "styles/user-web.css");
+const assetNames = [
+  "childcare-hero.avif",
+  "children-cutout.avif",
+  "classroom-learning.avif",
+  "playroom-discovery.avif",
+  "tongxin-logo.png",
+];
 
 const BARE_IMPORT = /(?:from\s*|import\s*\(\s*)["'](?![./])[^"']+["']/u;
 const EXTERNAL_URL = /https?:\/\//iu;
@@ -44,6 +51,10 @@ if (EXTERNAL_URL.test(indexHtml) || EXTERNAL_URL.test(stylesheet)) {
 }
 
 await mkdir(join(distRoot, "styles"), { recursive: true });
+await mkdir(join(distRoot, "assets"), { recursive: true });
 await cp(indexSource, resolve(distRoot, "index.html"));
 await cp(stylesheetSource, resolve(distRoot, "styles/user-web.css"));
+for (const assetName of assetNames) {
+  await cp(resolve(sourceRoot, "assets", assetName), resolve(distRoot, "assets", assetName));
+}
 await readFile(browserEntry);
