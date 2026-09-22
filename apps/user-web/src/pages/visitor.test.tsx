@@ -86,6 +86,27 @@ test("empty visitor home exposes a safe keyboard-reachable next action", () => {
   assert.match(route.view.html, /href="\/visitor"/);
 });
 
+test("empty visitor content is announced as a live status", () => {
+  const route = selectVisitorRoute({
+    path: "/visitor",
+    response: { items: [] },
+  });
+
+  assert.match(
+    route.view.html,
+    /<p class="empty-copy" role="status" aria-live="polite">当前没有可展示的公开内容。<\/p>/u,
+  );
+});
+
+test("below-fold visitor imagery uses lazy loading", () => {
+  const route = selectVisitorRoute({
+    path: "/visitor",
+    response: createSyntheticVisitorResponse(),
+  });
+
+  assert.equal((route.view.html.match(/loading="lazy"/gu) ?? []).length, 3);
+});
+
 test("stale and disabled public items are excluded from the projection", () => {
   const response = createSyntheticVisitorResponse();
   const published = response.items[0];

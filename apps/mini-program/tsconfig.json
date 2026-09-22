@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "app.ts",
+    "pages/visitor/home/index.ts",
+    "pages/visitor/content/index.ts",
+    "src/routes/staff.routes.ts",
+    "src/pages/staff/workbench.ts",
+    "src/pages/staff/quick-action.ts",
+    "src/pages/staff.test.ts"
+  ]
+}

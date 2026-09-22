@@ -1,0 +1,54 @@
+page {
+  box-sizing: border-box;
+  color: #17213b;
+  background: #f7f8fc;
+  font-family:
+    "Microsoft YaHei",
+    "微软雅黑",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+page,
+view,
+text,
+button {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+}
+
+.page-shell {
+  min-width: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding: 32rpx 32rpx 64rpx;
+}
+
+.tap-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 6rpx solid #f2c94c;
+  outline-offset: 4rpx;
+}
+
+.muted-copy {
+  color: #65708b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe {
+    animation: none !important;
+    transition: none !important;
+  }
+}

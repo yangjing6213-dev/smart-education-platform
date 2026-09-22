@@ -90,6 +90,19 @@ test("user-web preview serves the real visitor runtime on loopback", async () =>
     assert.equal(visitor.body, compatibility.body);
     assert.match(visitor.body, /data-app-root/u);
 
+    for (const path of [
+      "/staff/workbench",
+      "/staff/report",
+      "/staff/guides",
+      "/web/staff/resources",
+    ] as const) {
+      const page = await getText(`${startup.baseUrl}${path}`);
+      assert.equal(page.statusCode, 200, path);
+      assert.match(page.body, /data-app-root/u, path);
+      assert.match(page.body, /src="\/main\.js"/u, path);
+      assert.equal(page.body, visitor.body, path);
+    }
+
     const traversal = await getText(`${startup.baseUrl}/%2e%2e/%2e%2e/package.json`);
     assert.equal(traversal.statusCode, 404);
   } finally {

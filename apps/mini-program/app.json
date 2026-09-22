@@ -1,0 +1,11 @@
+{
+  "pages": ["pages/visitor/home/index", "pages/visitor/content/index"],
+  "window": {
+    "navigationBarBackgroundColor": "#f7f8fc",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f8fc",
+    "backgroundTextStyle": "light",
+    "navigationStyle": "default"
+  },
+  "style": "v2"
+}

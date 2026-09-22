@@ -20,7 +20,11 @@ function routeToFile(pathname) {
   if (
     pathname === "/visitor" ||
     pathname === "/web/visitor/home" ||
-    pathname.startsWith("/visitor/content/")
+    pathname.startsWith("/visitor/content/") ||
+    pathname === "/staff/workbench" ||
+    pathname === "/staff/report" ||
+    pathname === "/staff/guides" ||
+    pathname === "/web/staff/resources"
   ) {
     return resolve(DIST_ROOT, "index.html");
   }

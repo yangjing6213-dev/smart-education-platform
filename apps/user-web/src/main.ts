@@ -4,6 +4,27 @@ import {
   type VisitorRoute,
   // @ts-expect-error TS6142: this package intentionally keeps JSX-free .tsx page boundaries.
 } from "./routes/visitor.routes.js";
+import {
+  selectStaffRoute,
+  type StaffAccess,
+  // @ts-expect-error TS6142: this package intentionally keeps JSX-free .tsx page boundaries.
+} from "./routes/staff.routes.js";
+import {
+  projectStaffReport,
+  // @ts-expect-error TS6142: this package intentionally keeps JSX-free .tsx page boundaries.
+} from "./pages/staff-report.js";
+import {
+  projectStaffWorkbench,
+  // @ts-expect-error TS6142: this package intentionally keeps JSX-free .tsx page boundaries.
+} from "./pages/staff-workbench.js";
+import {
+  StaffGuidesPage,
+  // @ts-expect-error TS6142: this package intentionally keeps JSX-free .tsx page boundaries.
+} from "./pages/staff-guides.js";
+import {
+  TeachingResourcesPage,
+  // @ts-expect-error TS6142: this package intentionally keeps JSX-free .tsx page boundaries.
+} from "./pages/resources.js";
 
 const root = document.querySelector<HTMLElement>("[data-app-root]");
 
@@ -13,14 +34,138 @@ if (root === null) {
 const appRoot = root;
 
 const response = createSyntheticVisitorResponse();
+const syntheticStaffAccess: StaffAccess = {
+  session: "synthetic-staff-session",
+  membership: "active",
+  role: "teacher",
+  capabilities: ["employee:workbench", "teacher:summary"],
+  tenantId: "tenant-synthetic-a",
+  campusId: "campus-synthetic-east",
+};
+
+const syntheticStaffTasks = [
+  {
+    id: "task-synthetic-1",
+    tenantId: syntheticStaffAccess.tenantId,
+    campusId: syntheticStaffAccess.campusId,
+    status: "published" as const,
+    title: "模拟数据：完成交接清单",
+    dueLabel: "今天",
+  },
+];
+
+const syntheticStaffResources = [
+  {
+    id: "guide-synthetic-1",
+    tenantId: syntheticStaffAccess.tenantId,
+    campusId: syntheticStaffAccess.campusId,
+    status: "published" as const,
+    title: "模拟数据：今日带班指南",
+    summary: "仅展示当前校区的工作提示。",
+    kind: "guide" as const,
+  },
+];
 
 function render(): void {
+  const internalPage = renderInternalPage(window.location.pathname);
+  if (internalPage !== null) {
+    appRoot.replaceChildren(document.createRange().createContextualFragment(internalPage));
+    setupRevealAnimations();
+    return;
+  }
+
   const route = selectVisitorRoute({
     path: window.location.pathname,
     response,
   });
   appRoot.replaceChildren(document.createRange().createContextualFragment(renderShell(route)));
   setupRevealAnimations();
+}
+
+function renderInternalPage(pathname: string): string | null {
+  if (pathname === "/staff/workbench") {
+    const route = selectStaffRoute(syntheticStaffAccess, "workbench");
+    const view =
+      route.kind === "authorized"
+        ? projectStaffWorkbench({
+            access: syntheticStaffAccess,
+            state: "published",
+            resources: syntheticStaffResources,
+            tasks: syntheticStaffTasks,
+          })
+        : projectStaffWorkbench({
+            access: undefined,
+            state: "error",
+            resources: [],
+            tasks: [],
+          });
+    return renderInternalShell(view.html, view.heading);
+  }
+
+  if (pathname === "/staff/report") {
+    const route = selectStaffRoute(syntheticStaffAccess, "report");
+    const view = projectStaffReport({
+      access: route.kind === "authorized" ? syntheticStaffAccess : undefined,
+      state: "published",
+      report:
+        route.kind === "authorized"
+          ? {
+              tenantId: syntheticStaffAccess.tenantId,
+              campusId: syntheticStaffAccess.campusId,
+              status: "published" as const,
+              summary: "模拟数据：今日教学摘要已准备好。",
+            }
+          : undefined,
+    });
+    return renderInternalShell(view.html, view.heading);
+  }
+
+  if (pathname === "/staff/guides") {
+    const route = selectStaffRoute(syntheticStaffAccess, "guides");
+    const view = StaffGuidesPage({ query: "", limit: 20 });
+    return route.kind === "authorized"
+      ? renderInternalShell(view.html, view.heading)
+      : renderInternalShell("<main><h1>员工访问不可用</h1></main>", "新员工指南");
+  }
+
+  if (pathname === "/web/staff/resources") {
+    const route = selectStaffRoute(syntheticStaffAccess, "resources");
+    const view = TeachingResourcesPage({ query: "", limit: 20 });
+    return route.kind === "authorized"
+      ? renderInternalShell(view.html, view.heading)
+      : renderInternalShell("<main><h1>员工访问不可用</h1></main>", "教学资源");
+  }
+
+  return null;
+}
+
+function renderInternalShell(content: string, heading: string): string {
+  return `
+    <header class="site-header internal-header">
+      <div class="site-header-inner">
+        <a class="brand" href="/visitor" aria-label="同芯托管访客首页">
+          <img class="brand-logo" src="/assets/tongxin-logo.png" alt="同芯学园" />
+        </a>
+        <nav class="site-navigation internal-navigation" aria-label="员工导航">
+          <a href="/visitor">访客首页</a>
+          <a href="/staff/workbench" aria-current="${heading === "员工工作台" ? "page" : "false"}">工作台</a>
+          <a href="/staff/report" aria-current="${heading === "每日报告" ? "page" : "false"}">每日报告</a>
+          <a href="/staff/guides" aria-current="${heading === "新员工指南" ? "page" : "false"}">新员工指南</a>
+          <a href="/web/staff/resources" aria-current="${heading === "教学资源" ? "page" : "false"}">教学资源</a>
+        </nav>
+        <span class="header-action internal-badge">模拟员工端</span>
+      </div>
+    </header>
+    ${content}
+    <footer id="site-footer" class="site-footer">
+      <div class="site-footer-inner">
+        <div class="footer-brand">
+          <strong>同芯员工端</strong>
+          <p class="footer-description">仅展示当前校区范围内的合成数据，不连接正式服务。</p>
+        </div>
+      </div>
+    </footer>
+  `;
 }
 
 function setupRevealAnimations(): void {

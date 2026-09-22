@@ -163,7 +163,7 @@ function visitorHomeHtml(
         <div class="program-grid">
           <article class="program-card program-card-green">
             <span class="program-number">01</span>
-            <img class="program-photo" src="/assets/playroom-discovery.avif" alt="孩子在游戏角探索玩具" />
+            <img class="program-photo" src="/assets/playroom-discovery.avif" alt="孩子在游戏角探索玩具" loading="lazy" decoding="async" />
             <div class="program-icon" aria-hidden="true">✦</div>
             <h3>课后托管</h3>
             <p>从放学到回家，给孩子一段安心、有节奏的成长时间。</p>
@@ -171,7 +171,7 @@ function visitorHomeHtml(
           </article>
           <article class="program-card program-card-blue">
             <span class="program-number">02</span>
-            <img class="program-photo" src="/assets/classroom-learning.avif" alt="孩子在教室里探索学习工具" />
+            <img class="program-photo" src="/assets/classroom-learning.avif" alt="孩子在教室里探索学习工具" loading="lazy" decoding="async" />
             <div class="program-icon" aria-hidden="true">◌</div>
             <h3>兴趣探索</h3>
             <p>用轻松的活动打开好奇心，让每一次尝试都值得被鼓励。</p>
@@ -179,7 +179,7 @@ function visitorHomeHtml(
           </article>
           <article class="program-card program-card-yellow">
             <span class="program-number">03</span>
-            <img class="program-photo program-photo-cutout" src="/assets/children-cutout.avif" alt="孩子们背着书包准备探索新知识" />
+            <img class="program-photo program-photo-cutout" src="/assets/children-cutout.avif" alt="孩子们背着书包准备探索新知识" loading="lazy" decoding="async" />
             <div class="program-icon" aria-hidden="true">↗</div>
             <h3>家长可见</h3>
             <p>重要的服务信息清晰呈现，帮助家长安心了解每一步。</p>
@@ -218,7 +218,7 @@ function visitorHomeHtml(
           <p class="section-note">仅展示已发布的模拟内容</p>
         </div>
         <div class="content-grid">
-          ${itemMarkup || '<p class="empty-copy">当前没有可展示的公开内容。</p>'}
+          ${itemMarkup || '<p class="empty-copy" role="status" aria-live="polite">当前没有可展示的公开内容。</p>'}
         </div>
       </section>
 

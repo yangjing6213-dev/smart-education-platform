@@ -1,0 +1,128 @@
+.content-page {
+  padding-top: 24rpx;
+}
+
+.content-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  margin-bottom: 40rpx;
+}
+
+.back-button {
+  min-width: 176rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #dfe3f0;
+  border-radius: 999rpx;
+  color: #273bce;
+  background: #ffffff;
+  font-size: 24rpx;
+  line-height: 84rpx;
+  text-align: center;
+}
+
+.back-button::after,
+.primary-back-button::after {
+  border: 0;
+}
+
+.content-topbar-label {
+  color: #8b92a7;
+  font-size: 22rpx;
+}
+
+.status-announcement {
+  margin-bottom: 20rpx;
+  color: #65708b;
+  font-size: 22rpx;
+}
+
+.article-card,
+.state-card {
+  min-width: 0;
+  padding: 38rpx 32rpx;
+  border: 2rpx solid #e5e8f3;
+  border-radius: 30rpx 10rpx 30rpx 10rpx;
+  background: #ffffff;
+  box-shadow: 0 14rpx 38rpx rgba(25, 35, 75, 0.07);
+}
+
+.article-kicker {
+  display: block;
+  color: #6b61df;
+  font-size: 20rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.article-title {
+  display: block;
+  margin-top: 26rpx;
+  color: #17213b;
+  font-size: 46rpx;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.article-summary {
+  display: block;
+  margin-top: 20rpx;
+  color: #65708b;
+  font-size: 27rpx;
+  line-height: 1.7;
+}
+
+.article-divider {
+  height: 2rpx;
+  margin: 34rpx 0 28rpx;
+  background: #edf0f7;
+}
+
+.article-body {
+  display: block;
+  margin-top: 20rpx;
+  color: #303b57;
+  font-size: 28rpx;
+  line-height: 1.85;
+}
+
+.article-badge {
+  display: inline-block;
+  margin-top: 36rpx;
+  padding: 12rpx 18rpx;
+  border-radius: 999rpx;
+  color: #5a4bc3;
+  background: #f0eeff;
+  font-size: 20rpx;
+}
+
+.state-card-error {
+  border-color: #f2d6d6;
+  background: #fff8f8;
+}
+
+.state-title {
+  display: block;
+  color: #17213b;
+  font-size: 29rpx;
+  font-weight: 700;
+}
+
+.state-card .muted-copy {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 23rpx;
+}
+
+.primary-back-button {
+  width: 100%;
+  margin-top: 28rpx;
+  border: 0;
+  border-radius: 999rpx;
+  color: #ffffff;
+  background: #273bce;
+  font-size: 26rpx;
+  font-weight: 700;
+  line-height: 88rpx;
+}

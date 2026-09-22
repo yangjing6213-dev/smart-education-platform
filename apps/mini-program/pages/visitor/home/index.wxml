@@ -1,0 +1,99 @@
+<view class="page-shell home-page">
+  <view class="home-header">
+    <view class="brand-lockup">
+      <view class="brand-mark">同芯</view>
+      <view>
+        <text class="brand-name">同芯成长</text>
+        <text class="brand-caption">让每个孩子安心成长</text>
+      </view>
+    </view>
+    <text class="header-status">访客端</text>
+  </view>
+
+  <view class="hero-panel motion-safe">
+    <view class="hero-copy">
+      <text class="eyebrow">AFTER SCHOOL CARE</text>
+      <text class="hero-title"
+        >放学之后，
+        <text class="hero-title-accent">安心成长</text>
+      </text>
+      <text class="hero-description">课后托管、兴趣探索与温暖陪伴，给家长一份清晰的选择。</text>
+      <view class="hero-badge">模拟展示 · 合成数据</view>
+    </view>
+    <view class="hero-shape hero-shape-main"></view>
+    <view class="hero-shape hero-shape-small"></view>
+    <view class="hero-sparkle">✦</view>
+  </view>
+
+  <view class="section-heading">
+    <view>
+      <text class="section-kicker">OUR CARE</text>
+      <text class="section-title">我们关注的成长</text>
+    </view>
+    <text class="section-note">为家长提供清晰信息</text>
+  </view>
+
+  <view class="service-list" aria-label="服务方向">
+    <view class="service-card service-card-blue">
+      <text class="service-number">01</text>
+      <text class="service-title">课后托管</text>
+      <text class="service-description">规律的放学后陪伴与学习空间。</text>
+    </view>
+    <view class="service-card service-card-yellow">
+      <text class="service-number">02</text>
+      <text class="service-title">兴趣课程</text>
+      <text class="service-description">让好奇心有机会变成持续的热爱。</text>
+    </view>
+    <view class="service-card service-card-purple">
+      <text class="service-number">03</text>
+      <text class="service-title">接送服务</text>
+      <text class="service-description">清晰的服务说明，方便家长了解。</text>
+    </view>
+  </view>
+
+  <view class="content-section">
+    <view class="section-heading content-heading">
+      <view>
+        <text class="section-kicker">PUBLIC NOTES</text>
+        <text class="section-title">公开内容</text>
+      </view>
+      <text class="section-note">家长可浏览</text>
+    </view>
+
+    <view class="status-announcement" role="status" aria-live="polite">{{statusAnnouncement}}</view>
+
+    <view wx:if="{{isLoading}}" class="state-card">
+      <text class="state-title">正在准备内容</text>
+      <text class="muted-copy">请稍候查看。</text>
+    </view>
+    <view wx:elif="{{isEmpty}}" class="state-card">
+      <text class="state-title">暂无公开内容</text>
+      <text class="muted-copy">新的课程与活动信息准备后会在这里展示。</text>
+    </view>
+    <view wx:elif="{{isError}}" class="state-card state-card-error">
+      <text class="state-title">公开内容暂不可用</text>
+      <text class="muted-copy">请稍后再试，当前不会展示未确认的信息。</text>
+    </view>
+    <view wx:else class="content-list">
+      <view wx:for="{{cards}}" wx:key="contentKey" class="content-card">
+        <view class="content-card-topline">
+          <text class="content-label">公开内容</text>
+          <text class="content-arrow">↗</text>
+        </view>
+        <text class="content-title">{{item.title}}</text>
+        <text class="content-summary">{{item.summary}}</text>
+        <button
+          class="tap-target content-button"
+          data-content-key="{{item.contentKey}}"
+          bindtap="handleContentTap"
+        >
+          查看内容
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer-note">
+    <text>同芯成长 · 本页面为模拟数据展示</text>
+  </view>
+</view>

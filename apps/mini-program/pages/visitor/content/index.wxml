@@ -1,0 +1,33 @@
+<view class="page-shell content-page">
+  <view class="content-topbar">
+    <button class="tap-target back-button" bindtap="handleBack">← 返回</button>
+    <text class="content-topbar-label">公开内容</text>
+  </view>
+
+  <view class="status-announcement" role="status" aria-live="polite">{{statusAnnouncement}}</view>
+
+  <view wx:if="{{isLoading}}" class="state-card">
+    <text class="state-title">正在准备内容</text>
+    <text class="muted-copy">请稍候查看。</text>
+  </view>
+  <view wx:elif="{{isEmpty}}" class="state-card">
+    <text class="state-title">暂无公开内容</text>
+    <text class="muted-copy">请返回首页查看其他已确认信息。</text>
+  </view>
+  <view wx:elif="{{isError}}" class="state-card state-card-error">
+    <text class="state-title">公开内容暂不可用</text>
+    <text class="muted-copy">当前不会展示未确认的信息。</text>
+  </view>
+  <view wx:else class="article-card">
+    <text class="article-kicker">同芯成长 · 模拟公开内容</text>
+    <text class="article-title">{{title}}</text>
+    <text class="article-summary">{{summary}}</text>
+    <view class="article-divider"></view>
+    <view wx:for="{{body}}" wx:key="*this" class="article-body">
+      <text>{{item}}</text>
+    </view>
+    <view class="article-badge">内容已确认 · 合成数据</view>
+  </view>
+
+  <button class="tap-target primary-back-button" bindtap="handleBack">返回访客首页</button>
+</view>
