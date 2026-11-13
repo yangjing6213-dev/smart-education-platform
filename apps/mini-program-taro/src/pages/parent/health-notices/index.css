@@ -1,0 +1,164 @@
+.parent-health-page {
+  min-height: 100vh;
+  padding: 38rpx 30rpx 76rpx;
+  background: #f5f8ec;
+  color: #284c34;
+}
+
+.parent-health-brand {
+  display: flex;
+  align-items: center;
+  margin: 6rpx 8rpx 30rpx;
+}
+
+.parent-health-brand-mark {
+  display: flex;
+  width: 72rpx;
+  height: 72rpx;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  border-radius: 50%;
+  background: #9bcf42;
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.parent-health-brand-name,
+.parent-health-brand-subtitle,
+.parent-health-eyebrow,
+.parent-health-title,
+.parent-health-copy,
+.parent-health-section-title,
+.parent-health-message,
+.parent-health-empty,
+.parent-health-student,
+.parent-health-summary,
+.parent-health-meta,
+.parent-health-receipt,
+.parent-health-footnote {
+  display: block;
+}
+
+.parent-health-brand-name {
+  color: #8fc735;
+  font-size: 34rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.parent-health-brand-subtitle {
+  margin-top: 2rpx;
+  color: #75a932;
+  font-size: 15rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.parent-health-card {
+  margin-bottom: 22rpx;
+  padding: 28rpx;
+  border: 1rpx solid rgba(124, 174, 56, 0.18);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12rpx 30rpx rgba(65, 100, 48, 0.07);
+}
+
+.parent-health-eyebrow {
+  margin-bottom: 10rpx;
+  color: #78ad37;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.parent-health-title {
+  margin-bottom: 12rpx;
+  color: #244c31;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.parent-health-copy,
+.parent-health-message,
+.parent-health-meta,
+.parent-health-empty,
+.parent-health-footnote {
+  color: #71836f;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.parent-health-section-title {
+  margin-bottom: 14rpx;
+  color: #355b3c;
+  font-size: 30rpx;
+  font-weight: 750;
+}
+
+.parent-health-notice {
+  margin-top: 18rpx;
+  padding: 22rpx;
+  border: 1rpx solid #e2ebd5;
+  border-radius: 20rpx;
+  background: #fbfcf7;
+}
+
+.parent-health-student {
+  margin-bottom: 10rpx;
+  color: #34583a;
+  font-size: 28rpx;
+  font-weight: 750;
+}
+
+.parent-health-summary {
+  color: #49644a;
+  font-size: 27rpx;
+  line-height: 1.7;
+}
+
+.parent-health-meta {
+  margin-top: 10rpx;
+  font-size: 21rpx;
+}
+
+.parent-health-button {
+  display: flex;
+  width: 100%;
+  min-height: 82rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 18rpx 0 0;
+  padding: 0 18rpx;
+  border: 0;
+  border-radius: 22rpx;
+  background: #7ead34;
+  color: #fff;
+  font-size: 27rpx;
+  font-weight: 750;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.parent-health-button::after {
+  border: 0;
+}
+
+.parent-health-button-secondary {
+  border: 1rpx solid #dce9c8;
+  background: #f8fbf0;
+  color: #557a3a;
+}
+
+.parent-health-receipt {
+  margin-top: 18rpx;
+  color: #78ad37;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.parent-health-footnote {
+  padding: 8rpx 10rpx;
+  text-align: center;
+  font-size: 21rpx;
+}

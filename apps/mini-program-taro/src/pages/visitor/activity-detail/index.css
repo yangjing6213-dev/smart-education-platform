@@ -1,0 +1,90 @@
+.activity-detail-page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 28rpx 28rpx 56rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.2), transparent 24%), #f5f8ec;
+}
+
+.activity-detail-page .activity-detail-return {
+  display: flex;
+  width: auto;
+  height: 72rpx;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 24rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.2);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.74);
+  color: #4c762b;
+  font-size: 24rpx;
+  line-height: 1;
+  text-align: left;
+}
+
+.activity-detail-page .activity-detail-return::after {
+  border: 0;
+}
+
+.activity-detail-card {
+  padding: 30rpx 28rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.92);
+  border-radius: 32rpx;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.07);
+}
+
+.activity-detail-eyebrow,
+.activity-detail-title,
+.activity-detail-summary,
+.activity-detail-paragraph,
+.activity-detail-note {
+  display: block;
+}
+
+.activity-detail-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.activity-detail-title {
+  margin-top: 14rpx;
+  color: #244b32;
+  font-size: 38rpx;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.activity-detail-summary {
+  margin-top: 12rpx;
+  color: #667864;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.activity-detail-body {
+  margin-top: 24rpx;
+  padding: 20rpx 22rpx;
+  border-radius: 24rpx;
+  background: rgba(155, 207, 66, 0.1);
+}
+
+.activity-detail-paragraph {
+  color: #52674e;
+  font-size: 22rpx;
+  line-height: 1.75;
+}
+
+.activity-detail-paragraph + .activity-detail-paragraph {
+  margin-top: 14rpx;
+}
+
+.activity-detail-note {
+  margin-top: 22rpx;
+  color: #83a64b;
+  font-size: 20rpx;
+  font-weight: 700;
+}

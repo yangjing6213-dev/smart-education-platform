@@ -1,20 +1,44 @@
 # 项目执行规则
 
+## 当前原方案对齐决定（2026-10-11）
+
+负责人明确“方案差异按照原方案执行”。以 `student-care-platform-complete-plan-v2.0.pdf`（SHA-256 `4375343BB2D32148500E5F4DC09780440784426819DEC2DABA910D3717D988C5`）为产品及目标架构依据，当前实施顺序和证据沿用 `PLANS.md` 与 `docs/exec-plans/active/project-completion.md`，不另建治理版本，不改 V42。以下旧阶段授权快照不能覆盖本节及当前自主执行决定。
+
+- 按 PDF 第 17、40 页，目标为 Mini `Taro + React + TypeScript`、用户网页 `Next.js + React`、管理网页 `Next.js 独立应用/路由`、后端 `NestJS 模块化单体`、数据 `PostgreSQL + Prisma` 和 `OpenAPI/统一类型契约`；Redis 按需启用。现有原生 Mini/网页和 Fastify 是迁移基线，不是目标架构已完成的证据。按端、按流程分批迁移，保留已验证功能和回退现场。
+- 按 PDF 第 14、29、37–39、41、44 页，家长可查看已批准绑定孩子的使用时长、完成情况、知识点摘要和需关注项，并开启/关闭、限制时长、联系教师；不开放模型内部日志、其他学生或教师待复核材料。敏感判断不得自动发给家长；教师保留负责班级内的教学摘要与人工复核职责。
+- 本次确认目标方向时，框架迁移与家长限定摘要尚未完成。后续 A1 架构迁移不受旧目标摘要中“一律不改依赖或 lockfile”的限制：目标栈确有需要时，可以安装必要依赖并修改应用/workspace 清单及 lockfile；实施前在 `PLANS.md` 与 `docs/exec-plans/active/project-completion.md` 记录准确包名/版本、写集、用途、影响、兼容性、验证和回退，不做无关升级，也不逐包重复请求授权。此例外只适用于 A1 架构迁移，不扩展到其他批次；真实认证/生产数据/外部服务和付费云资源边界仍保持；commit/push/网站部署/小程序上传与发布依本文件及 PLANS.md 中 2026-11-02 Owner Release Authorization Addendum 执行。普通本地实施按当前授权连续推进。
+
+## 当前 Owner 发布授权补充（2026-11-02）
+
+负责人明确授权：本学生托管平台在共享计划规定的全部本地发布门禁通过后，无需为同一范围再次确认，直接执行以下发布动作：
+- 将已验证版本推送到已配置的 GitHub 远端和指定分支；不创建 PR，不新建远端。
+- 将已验证的网站构建部署到既有、已配置的腾讯云网站目标；不创建新的付费资源。
+- 将已验证的 Taro 小程序产物上传到既有、已授权的微信小程序应用；按平台流程提交审核，平台审核通过后发布，不绕过审核。
+执行前须核对目标仓库/分支、网站环境、应用标识、构建产物清单与哈希，且共享计划要求的本地验证全部为 PASS、没有未解决发布阻塞。当前至少包括 A1.470 的 15 项本地发布矩阵，以及对同一候选 Taro 产物的微信开发者工具复核；目标身份不明、产物不匹配、授权凭据不可用或操作会产生未批准费用时停止并报告。
+此授权只取消 GitHub 推送、网站部署及小程序上传/发布的旧禁令，不取消其他限制：不得泄露或输出密钥，不得使用真实儿童数据或生产数据库，不得新增真实认证、伙伴云/AI 等服务或付费资源。发布仅使用已配置且获授权的目标与凭据。平台审批、账号安全和法律要求照常遵守。
+本地门禁通过前不得执行任何远端写入；现阶段 WEBSITE_RELEASE_READY=NO、MINI_UPLOAD_READY=NO、RELEASE_READY=NO，故本授权尚不可执行。
+
+## 当前 Owner 授权补充（2026-09-23）
+
+V42 文件保持不变。负责人于 2026-09-23 明确授权有限的 Task 20 Wave 1：仅完善 user-web 与原生微信小程序的本地演示体验。该授权记录在 `PLANS.md`，不追溯推断任何更早操作的授权，不代表 Task 19 最终工件已完成或可发布，也不授权 Task 21+、真实认证、伙伴云 API 或依赖/lockfile 变更；其中关于腾讯云部署、小程序上传、审核和 release 的旧限制由 2026-11-02 Owner Release Authorization Addendum 在全部本地门禁通过后取代。Wave 1 使用合成数据；伙伴云仅允许非交互说明入口，不接入服务。下文旧 R1 与 Task 20+ 未授权文字仅记录此 Owner Addendum 之前的授权快照；如与本补充冲突，以本补充和 `PLANS.md` 当前字段为准。
+
+Wave 0 基线为 branch `feature/phase-1b-task-19-final-delivery-acceptance`、HEAD `bd0001faa8e2fd7bbabe86e3d778ba24431107e8`、index clean、23 个既存 tracked 修改（小程序 17、user-web 5、E2E 1）和 896 个既存未跟踪路径。其 SHA 与路径集指纹记录在 `PLANS.md`。这些路径均为既有现场；不得清理，新的双端实现必须在相互隔离的 worktree 中进行，并由 Manager 按后续任务合同定义的精确写集整合。
+
 ## 当前活动治理与历史边界
 
-本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；V41 治理同步已通过负责人审阅并冻结；Phase 1B Task 01—16 均已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 14 Stage B/C1/C2 与 Task 16 Stage B/C1/C2 已完成并通过负责人审阅；Task 17 已完成并接受冻结，API/admin-web 入口与六动作审计集成已完成本地验证，C1 已完成、C2 已接受并冻结。Task 18 跨端回归、安全隔离、localhost 浏览器 smoke 与只读发布就绪门禁已通过负责人审阅，本地 checkpoint 已通过 Manager Review，Task 18 已接受并冻结；Task 19 Stage B 当前暂停，唯一活动边界为 Task 19 R1 user-web runtime 与视觉就绪阻塞修复的 Stage A formalization，R1 实施、Task 19 C1/C2 与 Task 20+ 均未获授权。
+本仓库用于“学生托管机构智能化系统平台”的多租户 SaaS 规划、原型与早期基础实现。Phase 1A Batch A、Batch B 均为 `HISTORICAL/FROZEN`；V41 治理同步已通过负责人审阅并冻结；Phase 1B Task 01—16 均已接受并冻结，Task 12 post-acceptance minimal route repair 已通过负责人审阅并冻结，Task 14 Stage B/C1/C2 与 Task 16 Stage B/C1/C2 已完成并通过负责人审阅；Task 17 已完成并接受冻结，API/admin-web 入口与六动作审计集成已完成本地验证，C1 已完成、C2 已接受并冻结。Task 18 跨端回归、安全隔离、localhost 浏览器 smoke 与只读发布就绪门禁已通过负责人审阅，本地 checkpoint 已通过 Manager Review，Task 18 已接受并冻结。Task 19 R1 Stage A 与 Stage B checkpoint 均已通过负责人审阅；Task 19 最终交付工件仍未闭合，`TASK19_FINAL_ARTIFACT_COMPLETION=BLOCKED`、`TASK19_RELEASE_READY=NO`。上述 Task 20 Wave 1 文字是 2026-09-23 的授权快照；当前网站/小程序发布准备以 PLANS.md 与 2026-11-02 Owner Release Authorization Addendum 为准。Task 19 C1/C2 和 Task 21+ 的实现仍未授权；这不影响当前发布目标通过门禁后执行已授权的推送、部署与上传/发布。
 
 当前唯一活动治理以 `docs/project/PHASE_1B_GOVERNANCE_AND_API_FRAMEWORK_AUTHORITY_V42.md` 为准（SHA-256：`7BECA819534A223D84C4D95FD117FC68C4B9CD4CDFC2E5345AF09E9547D188AB`）。不得为普通开发继续创建 V43、V44 或其他并行治理文件；治理冲突应在现有 `AGENTS.md` 与 `PLANS.md` 当前控制面中收敛并等待负责人验收。
 
 ## 当前执行模式与长期稳定规则
 
-- `ACTIVE_GOVERNANCE=V42`；`PHASE_1B_ACTIVE_TASK=TASK19_R1_STAGE_A_FORMALIZATION`；同一时刻只允许一个当前治理版本和一个当前任务边界。V42 之前的版本、V42 内旧 Task 17/Task 18+ 时点字段和下文明确标注的状态块仅是 `HISTORICAL/FROZEN` 证据，不得被解释为第二个活动控制面。
+- `ACTIVE_GOVERNANCE=V42`；当前活动目标为 `WEBSITE_AND_MINI_RELEASE_PREPARATION`；同一时刻只允许一个当前治理版本和一个当前任务边界。V42 文件不修改，其授权时旧 Task 18/19/20+ 时点字段为 `HISTORICAL/FROZEN`；本次负责人对 Task 20 Wave 1 的有限授权以 `PLANS.md` 记录为当前补充，不扩展到 Task 21+。
 - `DEVELOPMENT_MODE` 用于任务实现与本地稳定化。获得一次任务波次授权后，普通本地读取、白名单内编辑、测试、Lint、typecheck、构建和本地 checkpoint 默认允许连续执行，不得按子步骤重复请求授权。
-- `ACCEPTANCE_MODE` 只在任务实现和验证结束后进入。负责人验收、ZIP、最终 SHA 清单、完整 E2E、发布审计和交付包只在明确的验收或交付边界执行；checkpoint 提交只保存可恢复现场，不等于产品验收通过，也不自动授权 C1、C2、下一任务、push、deploy 或 release。
+- `ACCEPTANCE_MODE` 只在任务实现和验证结束后进入。负责人验收、ZIP、最终 SHA 清单、完整 E2E、发布审计和交付包只在明确的验收或交付边界执行；checkpoint 提交只保存可恢复现场，不等于产品验收通过。除 2026-11-02 Owner Release Authorization 明确覆盖且满足门禁的 push、website deploy、Mini upload/release 外，checkpoint 不自动授权 C1、C2、下一任务或其他外部写入。
 - `UNKNOWN` 与 `REPORTED_ONLY` 必须给出警告、路径分类和影响，但只要不触及保护路径、高风险操作或明确验收门禁，就不得阻塞普通开发。未跟踪路径只按 Git 元数据分类；未获授权时不得读取、删除、移动、覆盖或批量暂存其内容。
-- 仅以下高风险操作暂停并请求一次明确确认：删除或覆盖数据、真实数据库迁移、权限边界变化、重大依赖变更、push、deploy、release 和任何外部写入。生产密钥、真实数据和外部服务仍禁止接入。
+- 删除或覆盖数据、真实数据库迁移、权限边界变化、重大依赖变更及未获明确授权的外部写入仍须暂停确认。2026-11-02 Owner Release Authorization 已对本项目的既有 GitHub 远端推送、既有腾讯云网站部署及既有微信小程序上传/发布作出条件式授权；全部本地发布门禁通过前不得执行。生产密钥不得读取或泄露，真实儿童数据、生产数据库和未授权外部服务仍禁止接入。
 - 同一错误最多自动修复两轮。两轮后仍失败必须停止试错，并分类为 `PRODUCT_ISSUE` 或 `INFRASTRUCTURE_ISSUE`，记录证据、影响和下一步，不得通过放宽断言、权限或隔离要求制造通过。
-- Task 18 精确八路径写集、验证矩阵和 checkpoint 边界已完成并冻结，其历史明细保留在 `PLANS.md`。Task 19 R1 Stage A 当前写集严格限于 `PHASE_1B_TASK_19_R1_CODEX_EXECUTION.md`、`docs/project/PHASE_1B_TASK_19_R1_PLAN.md`、`AGENTS.md`、`PLANS.md`；本阶段不得暂存或提交。禁止 `git add .`、`git add -A` 和对白名单外路径的顺手清理；71 条保护未跟踪路径本阶段不得读取内容、删除、移动或修改。R1 Stage B 只有在负责人另行明确授权后，才可按 R1 合同中的 11 路径 CREATE/MODIFY 白名单实施。
+- Task 18 精确八路径写集、验证矩阵和 checkpoint 边界已完成并冻结，其历史明细保留在 `PLANS.md`。R1 Stage A 与 Stage B checkpoint 已通过负责人审阅；Task 19 最终工件仍未闭合。当前网站/小程序发布准备按 PLANS.md 与唯一活动计划实施；首次产品代码修改前必须记录精确 CREATE/MODIFY 写集，网页与小程序子智能体使用独立 worktree 且不共享文件。禁止 `git add .`、`git add -A` 和对白名单外路径的顺手清理；896 条 Wave 0 既有未跟踪路径不得清理或覆盖。
 
 V42 冻结任务锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `TASK_10_STATUS=ACCEPTED_AND_FROZEN`、
@@ -108,24 +132,30 @@ V42 冻结任务锚点：`TASK_10_STAGE_C2_STATUS=ACCEPTED`、
 `TASK18_CHECKPOINT_COMMIT=e0c41bb859a87a031cf8b7d39373aea3b712681a`、
 `TASK18_CHECKPOINT_STATUS=MANAGER_REVIEW_PASSED`、
 `TASK18_CONTROL_PLANE_CHECKPOINT_COMMIT=b3f300cd3c749cc06dc462d149353ac8cd0f5528`、
-`TASK19_STARTED=NO`、
+`TASK19_STARTED=YES_FINAL_ARTIFACTS_BLOCKED`、
 `TASK19_IMPLEMENTATION_AUTHORIZED=NO`、
 `TASK19_STAGE_A_AUTHORIZATION=GRANTED`、
-`TASK19_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`、
+`TASK19_STAGE_A_STATUS=OWNER_REVIEW_PASSED`、
 `TASK19_TYPE=PHASE_1B_V0_1_FINAL_DELIVERY_ACCEPTANCE`、
-`TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED`、
+`TASK19_STAGE_B_AUTHORIZATION=GRANTED`、
 `TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED`、
 `TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED`、
-`TASK19_R1_STARTED=NO`、
-`TASK19_R1_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`、
-`TASK19_R1_IMPLEMENTATION_AUTHORIZED=NO`、
+`TASK19_R1_STARTED=YES_STAGE_B_CHECKPOINT_REVIEWED`、
+`TASK19_R1_STAGE_A_STATUS=OWNER_REVIEW_PASSED`、
+`TASK19_R1_IMPLEMENTATION_AUTHORIZED=GRANTED`、
+`TASK19_R1_STAGE_B_STATUS=CHECKPOINT_OWNER_REVIEW_PASSED`、
+`TASK19_FINAL_ARTIFACT_COMPLETION=BLOCKED`、
+`TASK19_RELEASE_READY=NO`、
 `TASK20_PLUS_STARTED=NO`、
-`TASK20_PLUS_AUTHORIZATION=NOT_GRANTED`、
-`PHASE_1B_ACTIVE_TASK=TASK19_R1_STAGE_A_FORMALIZATION`、
-`OWNER_REVIEW_GATE=TASK19_R1_STAGE_A_OWNER_REVIEW_GATE`、
-`STOP_REASON=TASK19_R1_STAGE_A_OWNER_REVIEW_GATE`。
+`TASK20_PLUS_AUTHORIZATION=GRANTED_TASK20_WAVE1_ONLY`、
+`TASK20_WAVE1_AUTHORIZATION=GRANTED_BY_OWNER_2026-09-23`、
+`TASK20_WAVE1_STATUS=AUTHORIZED_PENDING_DESIGN_REVIEW`、
+`TASK21_PLUS_AUTHORIZATION=NOT_GRANTED`、
+`PHASE_1B_ACTIVE_TASK=TASK20_WAVE1_LOCAL_DEMO_EXPERIENCE`、
+`OWNER_REVIEW_GATE=TASK20_WAVE1_OWNER_REVIEW_GATE`、
+`STOP_REASON=TASK20_WAVE1_OWNER_REVIEW_GATE`。
 
-Task 18 checkpoint 与控制面 checkpoint 已通过独立复核，但 checkpoint 仍只保存本地可恢复状态，不等于发布或 release。Task 19 当前暂停在 R1 blocker-repair formalization；本次授权只允许形成 R1 合同、计划和当前控制面，不构成 R1 实施、Task 19 Stage B/C1/C2、push、deploy、release 或 Task 20+ 授权。后续远端 push 观测结果单独记录如下，不反推授权来源。
+Task 18 checkpoint 与控制面 checkpoint 已通过独立复核，但 checkpoint 仍只保存本地可恢复状态，不等于发布或 release。R1 Stage A 和 Stage B checkpoint review 已通过；Task 19 最终交付工件仍 BLOCKED，C1/C2 未授权。上述授权是截至 2026-09-23 的历史快照，不追溯改变早期授权事实；其中 push/deploy/release 限制已由 2026-11-02 Owner Release Authorization 在门禁通过后取代。后续远端 push 观测结果单独记录，不反推授权来源。
 
 R1 远端状态观测：
 `GIT_PUSH_EXECUTED=YES`、
@@ -136,11 +166,17 @@ R1 远端状态观测：
 
 当前 R1 控制面为：
 `TASK19_R1_USER_WEB_RUNTIME_AND_VISUAL_READINESS`、
-`TASK19_R1_STARTED=NO`、
-`TASK19_R1_STAGE_A_STATUS=PROPOSED_PENDING_OWNER_REVIEW`、
-`TASK19_R1_IMPLEMENTATION_AUTHORIZED=NO`、
-`TASK19_STAGE_B_AUTHORIZATION=NOT_GRANTED`、
-`TASK20_PLUS_STARTED=NO`。R1 仅 formalize Task 19 的 user-web runtime 与视觉就绪阻塞修复；不得执行实现、测试、浏览器、服务、提交、push、部署或 release。
+`TASK19_R1_STARTED=YES_STAGE_B_CHECKPOINT_REVIEWED`、
+`TASK19_R1_STAGE_A_STATUS=OWNER_REVIEW_PASSED`、
+`TASK19_R1_IMPLEMENTATION_AUTHORIZED=GRANTED`、
+`TASK19_R1_STAGE_B_STATUS=CHECKPOINT_OWNER_REVIEW_PASSED`、
+`TASK19_FINAL_ARTIFACT_COMPLETION=BLOCKED`、
+`TASK19_STAGE_C1_AUTHORIZATION=NOT_GRANTED`、
+`TASK19_STAGE_C2_AUTHORIZATION=NOT_GRANTED`、
+`TASK20_PLUS_STARTED=NO`、
+`TASK20_PLUS_AUTHORIZATION=GRANTED_TASK20_WAVE1_ONLY`、
+`TASK20_WAVE1_STATUS=AUTHORIZED_PENDING_BASELINE_RECONCILIATION`、
+`TASK21_PLUS_AUTHORIZATION=NOT_GRANTED`。R1 的授权与阶段状态按本次负责人复核记录收敛；后续 Wave 1 严格使用合成数据和本地演示，不连接伙伴云或真实认证。
 
 ## HISTORICAL/FROZEN：Phase 1A 自举与必读顺序
 
@@ -184,13 +220,14 @@ Batch B 固定交付为 47 个 A 级页面、12 个 B 级流程、59 个浏览�
 
 ## 同芯AI学习助手边界
 
-- 定位仅为“小学作业引导 + 错题巩固”：学生先尝试，再依次使用第0、1、2、3层提示，最后进入巩固层；学习摘要只能回流教师。
+- 定位仅为“小学作业引导 + 错题巩固”：学生先尝试，再依次使用第0、1、2、3层提示，最后进入巩固层；多次尝试后第3层可讲解完整过程并标注 AI 辅助，保留最大轮次和转教师阈值，不默认直接给答案。
+- 教学摘要及待复核内容回流负责班级的教师；家长可见已批准绑定孩子的使用时长、完成情况、知识点摘要、需关注项及监督控制，范围以本文件当前原方案对齐决定为准。禁止将教师详情接口直接开放给家长或自动发送敏感判断。
 - 学生首期不独立注册；由教师或家长从学生档案开启。当前批次只做规格、安全边界和模拟原型，不调用正式模型。
 - 禁止开放式万能聊天、代写、作弊、情感陪伴、虚拟好友、心理诊断、情绪识别、自动能力标签、自动纪律/处罚/绩效结论，以及未经教师或家长确认发送敏感结论。
 
 ## 禁止操作
 
-- 禁止配置远程、推送、创建 PR、发布、上传腾讯云或部署测试/生产环境。
+- 禁止新建 Git 远端或创建 PR。GitHub 推送、既有腾讯云网站部署、既有微信小程序上传/发布仅可在 2026-11-02 Owner Release Authorization 所列本地门禁全部通过后执行；门禁未通过前仍禁止任何远端写入。
 - 禁止接入真实登录、短信、微信授权、微信支付、伙伴云 API、正式 AI、生产数据库或真实数据。
 - 禁止读取、生成、填入、提交或回显生产密钥；不得把任何密钥写入文档、原型、日志或 Git。
 - A0—A7 与 B0—B7 一律禁止安装依赖；浏览器验证失败时必须改用静态链接与内容检查，不得为截图或浏览器自动化安装工具。

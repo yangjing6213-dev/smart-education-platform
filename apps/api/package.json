@@ -7,17 +7,32 @@
     ".": "./dist/src/index.js"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "pnpm run db:generate && tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
-    "test": "tsc -p tsconfig.json && node --test dist/test/health.route.test.js dist/test/scope.plugin.test.js dist/test/task04.routes.test.js dist/src/modules/content/content.test.js dist/src/modules/institution/institution.test.js",
-    "test:coverage": "tsc -p tsconfig.json && node --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=100 --test-coverage-include=dist/src/plugins/auth.plugin.js --test-coverage-include=dist/src/routes/me.route.js --test-coverage-include=dist/src/routes/memberships.route.js --test-coverage-include=dist/src/modules/content/content.service.js --test-coverage-include=dist/src/modules/content/content.repository.js --test-coverage-include=dist/src/routes/public-content.route.js --test dist/test/task04.routes.test.js dist/src/modules/content/content.test.js dist/src/modules/institution/institution.test.js",
-    "build": "tsc -p tsconfig.json"
+    "db:generate": "node node_modules/prisma/build/index.js generate --config prisma7.config.ts --schema prisma/schema.prisma",
+    "db:schema:validate": "node node_modules/prisma/build/index.js validate --config prisma7.config.ts --schema prisma/schema.prisma",
+    "test": "pnpm run db:generate && tsc -p tsconfig.json && cd ../.. && node --test --test-concurrency=1 apps/api/dist/test/health.route.test.js apps/api/dist/test/invited-trial-startup.test.js apps/api/dist/test/nest-health.module.test.js apps/api/dist/test/nest-public-content.module.test.js apps/api/dist/test/nest-public-institution.module.test.js apps/api/dist/test/nest-admin-institution.module.test.js apps/api/dist/test/nest-files.module.test.js apps/api/dist/test/nest-partner-links.module.test.js apps/api/dist/test/prisma-org-scope-schema.test.js apps/api/dist/test/prisma-monthly-feedback-schema.test.js apps/api/dist/test/prisma-monthly-feedback.integration.test.js apps/api/dist/test/prisma-child-monthly.integration.test.js apps/api/dist/test/monthly-feedback-http.test.js apps/api/dist/test/child-monthly-http.test.js apps/api/dist/test/prisma-monthly-feedback-production-wiring.test.js apps/api/dist/test/parent-pickup-controller.test.js apps/api/dist/test/prisma-parent-pickup.integration.test.js apps/api/dist/test/prisma-parent-pickup-production-wiring.test.js apps/api/dist/test/nest-public-teachers.module.test.js apps/api/dist/test/nest-public-activities.module.test.js apps/api/dist/test/nest-public-meals.module.test.js apps/api/dist/test/nest-staff-guides.module.test.js apps/api/dist/test/nest-staff-resources.module.test.js apps/api/dist/test/nest-admin-audit.module.test.js apps/api/dist/src/modules/resources/resource.test.js apps/api/dist/test/nest-identity.module.test.js apps/api/dist/test/scope.plugin.test.js apps/api/dist/test/task04.routes.test.js apps/api/dist/src/modules/content/content.test.js apps/api/dist/src/modules/institution/institution.test.js apps/api/dist/test/prisma-health-incident-review-production-wiring.test.js apps/api/dist/test/prisma-notice-production-wiring.test.js apps/api/dist/test/fees-nest-auth.test.js apps/api/dist/test/learning-institution-setting.controller.test.js apps/api/dist/test/nest-admin-meals.module.test.js apps/api/dist/test/nest-guardian-binding-review-labels.test.js apps/api/dist/test/nest-parent-binding-candidates.test.js apps/api/dist/test/parent-learning-session.controller.test.js apps/api/dist/test/parent-learning.controller.test.js apps/api/dist/test/prisma-fees-production-wiring.test.js apps/api/dist/test/prisma-guardian-binding-release.test.js apps/api/dist/test/prisma-institution-production-wiring.test.js apps/api/dist/test/prisma-institution.service.test.js apps/api/dist/test/prisma-learning-institution-setting-production-wiring.test.js apps/api/dist/test/prisma-learning-institution-setting.test.js apps/api/dist/test/prisma-meal-publication-audit.test.js apps/api/dist/test/prisma-meals-production-wiring.test.js apps/api/dist/test/prisma-parent-learning-production-wiring.test.js apps/api/dist/test/prisma-parent-learning-session-production-wiring.test.js apps/api/dist/test/prisma-parent-learning-session-schema.test.js apps/api/dist/test/prisma-parent-learning-session.test.js apps/api/dist/test/prisma-parent-learning-summary.test.js apps/api/dist/test/prisma-staff-daily-production-wiring.test.js apps/api/dist/test/prisma-staff-task-production-wiring.test.js apps/api/dist/src/modules/activities/activity.test.js apps/api/dist/src/modules/files/file.test.js apps/api/dist/src/modules/guides/guide.test.js apps/api/dist/src/modules/partner-links/partner-link.test.js apps/api/dist/test/local-synthetic-*.test.js apps/api/dist/test/student-transfer-schema.test.js apps/api/dist/test/student-transfer-nest-auth.test.js apps/api/dist/test/prisma-student-transfer.integration.test.js && node --test --test-concurrency=1 apps/api/src/modules/audit/audit.test.ts",
+    "test:coverage": "pnpm run db:generate && tsc -p tsconfig.json && node --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=100 --test-coverage-include=dist/src/plugins/auth.plugin.js --test-coverage-include=dist/src/routes/me.route.js --test-coverage-include=dist/src/routes/memberships.route.js --test-coverage-include=dist/src/modules/content/content.service.js --test-coverage-include=dist/src/modules/content/content.repository.js --test-coverage-include=dist/src/routes/public-content.route.js --test-concurrency=1 --test dist/test/task04.routes.test.js dist/src/modules/content/content.test.js dist/src/modules/institution/institution.test.js",
+    "build": "pnpm run db:generate && tsc -p tsconfig.json",
+    "start:nest-health": "node dist/src/nest/health-main.js",
+    "start:nest-api": "node dist/src/nest/api-main.js",
+    "start:nest-api:trial": "node dist/src/nest/api-main.js --invited-trial"
   },
   "dependencies": {
+    "@nestjs/common": "12.0.3",
+    "@nestjs/core": "12.0.3",
+    "@nestjs/platform-express": "12.0.3",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
     "@student-care/auth": "workspace:*",
     "@student-care/contracts": "workspace:*",
     "@student-care/tenant": "workspace:*",
     "@student-care/validation": "workspace:*",
-    "fastify": "5.12.1"
+    "fastify": "5.12.1",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2"
+  },
+  "devDependencies": {
+    "prisma": "7.10.0"
   }
 }

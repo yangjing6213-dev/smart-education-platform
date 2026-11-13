@@ -1,0 +1,342 @@
+.main {
+  padding: 28px 24px 88px;
+}
+
+.container {
+  width: min(100%, 960px);
+  margin: 0 auto;
+}
+
+.backLink {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-bottom: 24px;
+  color: #386d35;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #6b8d34;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.container h1 {
+  max-inline-size: none;
+  margin: 0;
+  color: #173b2d;
+  font-size: clamp(34px, 5vw, 52px);
+  line-height: 1.12;
+}
+
+.intro {
+  max-width: 650px;
+  margin: 16px 0 12px;
+  color: #506657;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.notice {
+  margin: 0 0 26px;
+  padding: 12px 16px;
+  border: 1px solid #dce9c7;
+  border-radius: 12px;
+  color: #586b43;
+  background: #f7faee;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.panel {
+  display: grid;
+  gap: 18px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid #e0e9d7;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 82%);
+}
+
+.status {
+  margin: 0;
+  color: #506657;
+  line-height: 1.5;
+}
+
+.studentList {
+  display: grid;
+  gap: 18px;
+}
+
+.studentCard {
+  display: grid;
+  gap: 22px;
+  padding: clamp(18px, 3vw, 28px);
+  border: 1px solid #e0e9d7;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 14px 36px rgb(34 65 44 / 7%);
+}
+
+.studentHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.studentClass {
+  margin: 0 0 7px;
+  color: #71834d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.studentHeading h2 {
+  margin: 0;
+  color: #173b2d;
+  font-size: 26px;
+}
+
+.approvedBadge {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #386d35;
+  background: #edf5dc;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.summary,
+.controls {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #f8faf4;
+}
+
+.summary h3,
+.controls h3 {
+  margin: 0;
+  color: #244b34;
+  font-size: 18px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.metrics > div {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #e2ead9;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.metrics dt {
+  color: #708071;
+  font-size: 13px;
+}
+
+.metrics dd {
+  margin: 0;
+  color: #244b34;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.knowledgeList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.knowledgeList li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 11px 12px;
+  border-radius: 10px;
+  color: #435849;
+  background: #fff;
+}
+
+.muted {
+  margin: 0;
+  color: #708071;
+}
+
+.controlsForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 220px);
+  align-items: center;
+  gap: 12px 18px;
+  color: #506657;
+}
+
+.controlsForm select {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #d2dfc5;
+  border-radius: 9px;
+  color: #244b34;
+  background: #fff;
+  font: inherit;
+}
+
+.toggle {
+  display: inline-flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  color: #244b34;
+  font-weight: 700;
+}
+
+.toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: #70a632;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: #fff;
+  background: #5f922d;
+}
+
+.primaryButton:hover:not(:disabled) {
+  background: #497722;
+}
+
+.secondaryButton {
+  color: #386d35;
+  border-color: #d2dfc5;
+  background: #fff;
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background: #f1f6e8;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.contactRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid #e0e9d7;
+}
+
+.contactRow p {
+  margin: 0;
+  color: #708071;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.emptyState {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+  border: 1px solid #e0e9d7;
+  border-radius: 16px;
+  color: #506657;
+  background: #fff;
+  line-height: 1.6;
+}
+
+.emptyState strong {
+  color: #244b34;
+  font-size: 18px;
+}
+
+.emptyState p {
+  margin: 0;
+}
+
+.emptyState button {
+  justify-self: start;
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding: 20px 16px 64px;
+  }
+
+  .toolbar,
+  .studentHeading,
+  .contactRow {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar button,
+  .contactRow button {
+    width: 100%;
+  }
+
+  .summary,
+  .controls {
+    padding: 16px;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .controlsForm {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .controlsForm select {
+    width: 100%;
+  }
+}

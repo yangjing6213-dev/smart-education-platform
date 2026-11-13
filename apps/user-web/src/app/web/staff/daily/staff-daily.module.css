@@ -1,0 +1,201 @@
+.panel,
+.form,
+.list,
+.card {
+  display: grid;
+  min-width: 0;
+  gap: 16px;
+}
+
+.panel {
+  align-content: start;
+  padding: clamp(16px, 2.5vw, 24px);
+  border: 1px solid #dce7d3;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 26px rgb(35 70 48 / 7%);
+}
+
+.heading,
+.cardHeading,
+.listHeading,
+.actions {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.heading,
+.cardHeading,
+.listHeading {
+  justify-content: space-between;
+}
+
+.heading h2,
+.form h3,
+.listHeading h3,
+.cardHeading h4 {
+  margin: 0;
+  color: #173b2d;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.heading h2 {
+  font-size: clamp(22px, 2.5vw, 30px);
+}
+
+.heading p,
+.note,
+.message,
+.error,
+.notice,
+.footnote {
+  margin: 0;
+  color: #647366;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: #62843d !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.error {
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #8f302b;
+  background: #fff3f1;
+}
+
+.form,
+.card {
+  padding: clamp(14px, 2vw, 20px);
+  border: 1px solid #e1e9d7;
+  border-radius: 14px;
+  background: #fbfcf8;
+}
+
+.fields,
+.details {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.field {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #304d37;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 11px;
+  border: 1px solid #ccdcbc;
+  border-radius: 10px;
+  color: #304d37;
+  background: #fff;
+  font: inherit;
+  font-weight: 400;
+}
+
+.primaryButton,
+.secondaryButton {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 9px 15px;
+  border: 1px solid #6c963f;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: #fff;
+  background: #557f34;
+}
+
+.secondaryButton {
+  color: #386d35;
+  background: #f7faef;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible,
+.field input:focus-visible,
+.field select:focus-visible {
+  outline: 3px solid #82ae50;
+  outline-offset: 3px;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 999px;
+  color: #386d35;
+  background: #edf4e3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.details > div {
+  min-width: 0;
+}
+
+.details dt {
+  color: #647366;
+  font-size: 13px;
+}
+
+.details dd {
+  margin: 4px 0 0;
+  color: #304d37;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.notice {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #f7faef;
+}
+
+.footnote {
+  border-top: 1px solid #e6ecdf;
+  padding-top: 12px;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .fields,
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .actions > button {
+    flex: 1 1 160px;
+  }
+}

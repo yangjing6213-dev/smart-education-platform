@@ -1,13 +1,12 @@
-export const AUDIT_ACTIONS = Object.freeze([
-  "CONTENT_DRAFT_CREATED",
-  "CONTENT_DRAFT_UPDATED",
-  "CONTENT_PUBLISHED",
-  "CONTENT_UNPUBLISHED",
-  "FILE_INTENT_CREATED",
-  "PARTNER_LINK_HANDOFF_CREATED",
-] as const);
+import {
+  ADMIN_AUDIT_ACTIONS,
+  type AdminAuditMetadata,
+  type AdminAuditAction,
+} from "@student-care/contracts";
 
-export type AuditAction = (typeof AUDIT_ACTIONS)[number];
+export const AUDIT_ACTIONS = ADMIN_AUDIT_ACTIONS;
+
+export type AuditAction = AdminAuditAction;
 
 export const AUDIT_ADMIN_PERMISSION_MATRIX = Object.freeze({
   read: "memberships:read",
@@ -31,8 +30,8 @@ export interface AuditActorContext {
 
 export type AuditReadContext = AuditActorContext;
 
-export type AuditMetadataValue = string | number | boolean;
-export type AuditMetadata = Readonly<Record<string, AuditMetadataValue>>;
+export type AuditMetadataValue = Exclude<AdminAuditMetadata[keyof AdminAuditMetadata], undefined>;
+export type AuditMetadata = AdminAuditMetadata;
 
 export interface AuditTarget {
   readonly type: string;

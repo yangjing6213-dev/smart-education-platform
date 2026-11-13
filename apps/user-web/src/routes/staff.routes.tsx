@@ -8,15 +8,24 @@ export interface StaffAccess {
   readonly capabilities: readonly string[];
   readonly tenantId: string;
   readonly campusId: string;
+  readonly classIds?: readonly string[];
+  readonly scopeTenantId?: string;
+  readonly scopeCampusId?: string;
 }
 
-export type StaffRouteKey = "workbench" | "report" | "guides" | "resources";
+export type StaffRouteKey =
+  "workbench" | "report" | "guides" | "resources" | "partner-cloud" | "leave-review";
 
 export type StaffRoute =
   | {
       readonly kind: "authorized";
       readonly path:
-        "/staff/workbench" | "/staff/report" | "/staff/guides" | "/web/staff/resources";
+        | "/staff/workbench"
+        | "/staff/report"
+        | "/staff/report?view=leave-review"
+        | "/staff/guides"
+        | "/web/staff/resources"
+        | "/web/staff/partner-cloud";
     }
   | {
       readonly kind: "denied";
@@ -36,13 +45,17 @@ export function selectStaffRoute(access: unknown, route: StaffRouteKey): StaffRo
   return {
     kind: "authorized",
     path:
-      route === "report"
-        ? "/staff/report"
-        : route === "guides"
-          ? "/staff/guides"
-          : route === "resources"
-            ? "/web/staff/resources"
-            : "/staff/workbench",
+      route === "leave-review"
+        ? "/staff/report?view=leave-review"
+        : route === "report"
+          ? "/staff/report"
+          : route === "guides"
+            ? "/staff/guides"
+            : route === "resources"
+              ? "/web/staff/resources"
+              : route === "partner-cloud"
+                ? "/web/staff/partner-cloud"
+                : "/staff/workbench",
   };
 }
 
@@ -66,14 +79,51 @@ export function isAuthorizedStaff(
     access.campusId.length === 0 ||
     !Array.isArray(capabilities) ||
     !capabilities.every((capability) => typeof capability === "string") ||
-    !capabilities.includes("employee:workbench")
+    !hasValidSyntheticScope(access)
   ) {
     return false;
   }
 
-  return (
-    route !== "report" || (access.role === "teacher" && capabilities.includes("teacher:summary"))
-  );
+  const requiredCapability =
+    route === "leave-review"
+      ? "teacher:leave-review"
+      : route === "report"
+        ? "teacher:summary"
+        : route === "partner-cloud"
+          ? "employee:partner-cloud"
+          : "employee:workbench";
+
+  if (!capabilities.includes(requiredCapability)) return false;
+  if (route === "report" || route === "leave-review") {
+    if (access.role !== "teacher") return false;
+  }
+  if (route === "leave-review") {
+    return (
+      Array.isArray(access.classIds) &&
+      access.classIds.length > 0 &&
+      access.classIds.every((classId) => typeof classId === "string" && classId.length > 0)
+    );
+  }
+  return true;
+}
+
+function hasValidSyntheticScope(access: Record<string, unknown>): boolean {
+  for (const [scopeKey, identityKey] of [
+    ["scopeTenantId", "tenantId"],
+    ["scopeCampusId", "campusId"],
+  ] as const) {
+    const scopeValue = access[scopeKey];
+    if (
+      scopeValue !== undefined &&
+      (typeof scopeValue !== "string" ||
+        scopeValue.length === 0 ||
+        scopeValue !== access[identityKey])
+    ) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

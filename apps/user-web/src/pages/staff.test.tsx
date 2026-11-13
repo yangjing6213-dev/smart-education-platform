@@ -108,6 +108,44 @@ test("denies visitor, suspended, missing, revoked, and incapable staff routes", 
     kind: "authorized",
     path: "/web/staff/resources",
   });
+  assert.deepEqual(
+    selectStaffRoute(
+      {
+        ...allowedTeacher,
+        capabilities: [...allowedTeacher.capabilities, "employee:partner-cloud"],
+      },
+      "partner-cloud",
+    ),
+    {
+      kind: "authorized",
+      path: "/web/staff/partner-cloud",
+    },
+  );
+  assert.equal(selectStaffRoute(allowedTeacher, "partner-cloud").kind, "denied");
+});
+
+test("denies partner access for a foreign or malformed synthetic scope", () => {
+  const partnerAccess = {
+    ...allowedTeacher,
+    capabilities: [...allowedTeacher.capabilities, "employee:partner-cloud"],
+    scopeTenantId: allowedTeacher.tenantId,
+    scopeCampusId: allowedTeacher.campusId,
+  };
+
+  assert.equal(
+    selectStaffRoute({ ...partnerAccess, tenantId: "tenant-synthetic-foreign" }, "partner-cloud")
+      .kind,
+    "denied",
+  );
+  assert.equal(
+    selectStaffRoute({ ...partnerAccess, campusId: "campus-synthetic-foreign" }, "partner-cloud")
+      .kind,
+    "denied",
+  );
+  assert.equal(
+    selectStaffRoute({ ...partnerAccess, scopeTenantId: "" }, "partner-cloud").kind,
+    "denied",
+  );
 });
 
 test("projects only published synthetic workbench data in tenant and campus scope", () => {

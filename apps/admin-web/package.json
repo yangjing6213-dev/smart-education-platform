@@ -6,7 +6,23 @@
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
-    "test": "tsc -p tsconfig.json && node --test test/home-content.test.mjs",
-    "build": "tsc -p tsconfig.json"
+    "test": "tsc -p tsconfig.json && node --test --test-concurrency=1 test/*.test.mjs",
+    "build": "tsc -p tsconfig.json",
+    "next:dev": "next dev",
+    "next:build": "next build",
+    "next:start": "next start",
+    "next:typecheck": "tsc -p next.tsconfig.json --noEmit",
+    "next:lint": "eslint src/app",
+    "next:e2e": "node --test test/next-admin-shell-browser.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "playwright": "1.60.0"
   }
 }

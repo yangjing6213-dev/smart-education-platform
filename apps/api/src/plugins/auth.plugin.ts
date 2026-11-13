@@ -6,6 +6,7 @@ import {
 } from "@student-care/auth";
 import type { IdentityCapability } from "@student-care/contracts";
 import type { FastifyPluginAsync, FastifyRequest } from "fastify";
+import { containsForgedIdentityClaim } from "./forged-identity-claims.js";
 
 declare module "fastify" {
   interface FastifyContextConfig {
@@ -22,18 +23,7 @@ export interface AuthPluginOptions {
   readonly getTrustedAuthResult: (
     request: FastifyRequest,
   ) => TrustedAuthResult | null | undefined | Promise<TrustedAuthResult | null | undefined>;
-}
-
-const FORGED_IDENTITY_QUERY_FIELDS = ["actor_id", "identity_id", "role", "roles"];
-const FORGED_IDENTITY_HEADERS = ["x-actor-id", "x-identity-id", "x-role", "x-roles"];
-
-function containsForgedIdentityClaim(request: FastifyRequest): boolean {
-  const query = request.query as Record<string, unknown>;
-
-  return (
-    FORGED_IDENTITY_QUERY_FIELDS.some((field) => field in query) ||
-    FORGED_IDENTITY_HEADERS.some((header) => request.headers[header] !== undefined)
-  );
+  readonly now?: () => Date;
 }
 
 export const authPlugin: FastifyPluginAsync<AuthPluginOptions> = async (app, options) => {
@@ -42,9 +32,12 @@ export const authPlugin: FastifyPluginAsync<AuthPluginOptions> = async (app, opt
   app.addHook("preHandler", async (request, reply) => {
     if (request.routeOptions.config.authRequired !== true) return;
 
-    const resolution = containsForgedIdentityClaim(request)
+    const resolution = containsForgedIdentityClaim(request.query, request.headers)
       ? { ok: false as const, reason: "UNAUTHENTICATED" as const }
-      : resolveAuthContext(await options.getTrustedAuthResult(request));
+      : resolveAuthContext(
+          await options.getTrustedAuthResult(request),
+          options.now?.() ?? new Date(),
+        );
     if (!resolution.ok) {
       return reply.code(401).send({
         error: { code: "UNAUTHENTICATED", message: "Authentication is required." },

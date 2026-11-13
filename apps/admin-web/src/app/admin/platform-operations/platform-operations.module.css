@@ -1,0 +1,264 @@
+.page {
+  display: grid;
+  gap: 1.5rem;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.header,
+.section,
+.stateCard {
+  border: 1px solid #e1e8dc;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgb(30 55 35 / 6%);
+}
+
+.header {
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: #648447;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.header h1,
+.sectionHeader h2,
+.stateCard h2 {
+  margin: 0;
+  color: #203b2a;
+}
+
+.header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+}
+
+.header > p:not(.eyebrow),
+.stateCard p {
+  max-width: 68ch;
+  color: #617365;
+  line-height: 1.65;
+}
+
+.notice,
+.modeNotice {
+  border-radius: 12px;
+  background: #f2f7e9;
+  padding: 0.75rem 0.9rem;
+}
+
+.content {
+  display: grid;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.feedback,
+.modeNotice {
+  margin: 0;
+  color: #48613d;
+  line-height: 1.5;
+}
+
+.section {
+  min-width: 0;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.sectionHeader,
+.recordHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionHeader {
+  margin-bottom: 1rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.3rem;
+}
+
+.sectionHeader > span {
+  flex: none;
+  color: #71836f;
+  font-size: 0.85rem;
+}
+
+.summaryGrid,
+.recordGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.summaryCard,
+.businessCard,
+.recordCard {
+  min-width: 0;
+  border: 1px solid #e3eadf;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fbfdf7, #f5f8ee);
+  padding: 1rem;
+}
+
+.summaryCard {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.summaryCard > span,
+.summaryCard small {
+  color: #708070;
+}
+
+.summaryCard strong {
+  color: #254532;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+}
+
+.businessGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.8rem;
+}
+
+.businessCard {
+  color: #526653;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.recordCard {
+  display: grid;
+  align-content: start;
+  gap: 0.8rem;
+  background: #fff;
+}
+
+.recordHeading h3 {
+  margin: 0;
+  color: #284732;
+  font-size: 1.1rem;
+}
+
+.status {
+  flex: none;
+  border-radius: 999px;
+  background: #edf5df;
+  padding: 0.35rem 0.65rem;
+  color: #517638;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.quota,
+.history {
+  margin: 0;
+  color: #637565;
+  line-height: 1.55;
+}
+
+.history {
+  font-size: 0.82rem;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.form label {
+  display: grid;
+  gap: 0.4rem;
+  color: #526653;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.form select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid #d5e2ca;
+  border-radius: 10px;
+  background: #fff;
+  padding: 0.55rem 0.7rem;
+  color: #294732;
+  font: inherit;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 44px;
+  border: 0;
+  border-radius: 12px;
+  padding: 0.65rem 0.9rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  grid-column: 1 / -1;
+  background: #77a936;
+  color: #fff;
+}
+
+.secondaryButton {
+  background: #edf5df;
+  color: #456d2b;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled,
+.form select:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible,
+.form select:focus-visible {
+  outline: 3px solid #f5ce3d;
+  outline-offset: 2px;
+}
+
+.stateCard {
+  padding: 1.5rem;
+}
+
+@media (max-width: 760px) {
+  .summaryGrid,
+  .recordGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .businessGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 380px) {
+  .businessGrid,
+  .form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .primaryButton {
+    grid-column: auto;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+  }
+}

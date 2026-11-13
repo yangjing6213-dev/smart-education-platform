@@ -152,3 +152,36 @@ test("auth policy accepts the Task 06 content capabilities", () => {
     { ok: true, membership: contentResult.ok ? contentResult.context.memberships[0] : undefined },
   );
 });
+
+test("invitation identity accepts only the dedicated learning summary capability", () => {
+  const learningResult = resolveAuthContext({
+    ...activeResult,
+    memberships: [
+      {
+        ...activeResult.memberships[0],
+        capabilities: ["learning:summary"],
+      },
+    ],
+  });
+  assert.equal(learningResult.ok, true);
+  assert.deepEqual(
+    authorizeMembershipAccess(learningResult, TENANT_ID, CAMPUS_ID, "learning:summary"),
+    {
+      ok: true,
+      membership: learningResult.ok ? learningResult.context.memberships[0] : undefined,
+    },
+  );
+
+  assert.deepEqual(
+    resolveAuthContext({
+      ...activeResult,
+      memberships: [
+        {
+          ...activeResult.memberships[0],
+          capabilities: ["learning:all"],
+        },
+      ],
+    }),
+    { ok: false, reason: "UNAUTHENTICATED" },
+  );
+});

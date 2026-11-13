@@ -1,0 +1,157 @@
+.staff-leave-page {
+  min-height: 100vh;
+  padding: 38rpx 30rpx 76rpx;
+  background: radial-gradient(circle at 88% 5%, rgba(255, 216, 77, 0.16), transparent 23%), #f5f8ec;
+  color: #284c34;
+}
+
+.staff-leave-brand,
+.staff-leave-brand-name,
+.staff-leave-brand-subtitle,
+.staff-leave-eyebrow,
+.staff-leave-title,
+.staff-leave-copy,
+.staff-leave-section-title,
+.staff-leave-message,
+.staff-leave-request-title,
+.staff-leave-meta,
+.staff-leave-empty,
+.staff-leave-footnote {
+  display: block;
+}
+
+.staff-leave-brand {
+  display: flex;
+  align-items: center;
+  margin: 6rpx 8rpx 30rpx;
+}
+
+.staff-leave-brand-mark {
+  display: flex;
+  width: 72rpx;
+  height: 72rpx;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  border-radius: 50%;
+  background: #9bcf42;
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.staff-leave-brand-name {
+  color: #8fc735;
+  font-size: 34rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.staff-leave-brand-subtitle {
+  margin-top: 2rpx;
+  color: #75a932;
+  font-size: 15rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.staff-leave-card {
+  margin-bottom: 22rpx;
+  padding: 28rpx;
+  border: 1rpx solid rgba(124, 174, 56, 0.18);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12rpx 30rpx rgba(65, 100, 48, 0.07);
+}
+
+.staff-leave-eyebrow {
+  margin-bottom: 10rpx;
+  color: #78ad37;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.staff-leave-title {
+  margin-bottom: 12rpx;
+  color: #244c31;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.staff-leave-copy,
+.staff-leave-message,
+.staff-leave-meta,
+.staff-leave-empty,
+.staff-leave-footnote {
+  color: #71836f;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.staff-leave-section-title {
+  margin-bottom: 8rpx;
+  color: #355b3c;
+  font-size: 30rpx;
+  font-weight: 750;
+}
+
+.staff-leave-message {
+  margin-top: 8rpx;
+}
+
+.staff-leave-error {
+  color: #a34c38;
+}
+
+.staff-leave-request-title {
+  margin: 6rpx 0 10rpx;
+  color: #36593b;
+  font-size: 28rpx;
+  font-weight: 750;
+}
+
+.staff-leave-action-row {
+  display: flex;
+  align-items: stretch;
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+
+.staff-leave-button {
+  display: flex;
+  min-height: 82rpx;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 12rpx;
+  border: 0;
+  border-radius: 22rpx;
+  background: #7ead34;
+  color: #fff;
+  font-size: 25rpx;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.staff-leave-button::after {
+  border: 0;
+}
+
+.staff-leave-button-secondary {
+  border: 1rpx solid #dce9c8;
+  background: #f8fbf0;
+  color: #557a3a;
+}
+
+.staff-leave-wide-button {
+  width: 100%;
+  margin-top: 14rpx;
+}
+
+.staff-leave-footnote {
+  padding: 8rpx 10rpx;
+  text-align: center;
+  font-size: 21rpx;
+}

@@ -27,6 +27,85 @@ export interface InstitutionPublicScope {
   readonly campusId?: string;
 }
 
+type SyncOrAsync<T> = T | Promise<T>;
+
+export interface InstitutionServiceOperations {
+  createInstitutionDraft(
+    context: InstitutionActorContext,
+    contentKey: string,
+    payload: DraftPayload,
+    expectedVersion?: number | null,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  updateInstitutionDraft(
+    context: InstitutionActorContext,
+    contentKey: string,
+    payload: DraftPayload,
+    expectedCurrentVersion: number,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  publishInstitution(
+    context: InstitutionActorContext,
+    contentKey: string,
+    expectedCurrentVersion: number,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  unpublishInstitution(
+    context: InstitutionActorContext,
+    contentKey: string,
+    expectedCurrentVersion: number,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  readInstitutionDraft(
+    context: InstitutionActorContext,
+    contentKey: string,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  readInstitutionPublic(
+    context: InstitutionActorContext,
+    contentKey: string,
+  ): SyncOrAsync<ContentOperationResult<PublicContentProjection>>;
+  readInstitutionPublicForVisitor(
+    scope: InstitutionPublicScope,
+    contentKey: string,
+  ): SyncOrAsync<ContentOperationResult<PublicContentProjection>>;
+  listInstitutionPublicForVisitor(
+    scope: InstitutionPublicScope,
+  ): SyncOrAsync<ContentOperationResult<readonly PublicContentProjection[]>>;
+  createHomeDraft(
+    context: InstitutionActorContext,
+    contentKey: string,
+    payload: DraftPayload,
+    expectedVersion?: number | null,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  updateHomeDraft(
+    context: InstitutionActorContext,
+    contentKey: string,
+    payload: DraftPayload,
+    expectedCurrentVersion: number,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  publishHome(
+    context: InstitutionActorContext,
+    contentKey: string,
+    expectedCurrentVersion: number,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  unpublishHome(
+    context: InstitutionActorContext,
+    contentKey: string,
+    expectedCurrentVersion: number,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  readHomeDraft(
+    context: InstitutionActorContext,
+    contentKey: string,
+  ): SyncOrAsync<ContentOperationResult<ContentRecord>>;
+  readHomePublic(
+    context: InstitutionActorContext,
+    contentKey: string,
+  ): SyncOrAsync<ContentOperationResult<PublicContentProjection>>;
+  readHomePublicForVisitor(
+    scope: InstitutionPublicScope,
+    contentKey: string,
+  ): SyncOrAsync<ContentOperationResult<PublicContentProjection>>;
+  listHomePublicForVisitor(
+    scope: InstitutionPublicScope,
+  ): SyncOrAsync<ContentOperationResult<readonly PublicContentProjection[]>>;
+}
+
 export interface InstitutionServiceOptions {
   readonly now?: () => Date;
   readonly onPublicationAuditEvent?: (event: PublicationAuditEvent) => void;
@@ -195,6 +274,12 @@ export class InstitutionService {
     return this.readPublic("INSTITUTION", visitorContext(scope), contentKey);
   }
 
+  public listInstitutionPublicForVisitor(
+    scope: InstitutionPublicScope,
+  ): ContentOperationResult<readonly PublicContentProjection[]> {
+    return this.listPublic("INSTITUTION", visitorContext(scope));
+  }
+
   public createHomeDraft(
     context: InstitutionActorContext,
     contentKey: string,
@@ -248,6 +333,12 @@ export class InstitutionService {
     contentKey: string,
   ): ContentOperationResult<PublicContentProjection> {
     return this.readPublic("HOME_BLOCK", visitorContext(scope), contentKey);
+  }
+
+  public listHomePublicForVisitor(
+    scope: InstitutionPublicScope,
+  ): ContentOperationResult<readonly PublicContentProjection[]> {
+    return this.listPublic("HOME_BLOCK", visitorContext(scope));
   }
 
   private createDraft(
@@ -344,6 +435,22 @@ export class InstitutionService {
       return failure("NOT_FOUND_SCOPED");
     }
     return this.contentService.readPublic(normalized, contentKey);
+  }
+
+  private listPublic(
+    kind: InstitutionContentKind,
+    context: InstitutionActorContext,
+  ): ContentOperationResult<readonly PublicContentProjection[]> {
+    const normalized = normalizeContext(context, kind);
+    if (!isAuthorizedContext(normalized)) return failure("FORBIDDEN_SCOPE");
+    const records = this.repository
+      .list(normalized.scope)
+      .filter((record) => record.type === contentTypeFor(kind));
+    const projections = records.flatMap((record) => {
+      const result = this.contentService.readPublic(normalized, record.content_key);
+      return result.ok ? [result.data] : [];
+    });
+    return { ok: true, data: projections };
   }
 
   private isOtherContentKind(

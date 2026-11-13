@@ -39,7 +39,7 @@ test("visitor web and mini projections expose only synthetic public content", as
   assert.equal(webRoute.kind, "HOME");
   assert.deepEqual(
     webRoute.view.items?.map((item) => item.slug),
-    ["welcome-to-synthetic-learning"],
+    ["teacher-team", "seasonal-activities", "meal-plan", "environment-and-contact"],
   );
   assert.doesNotMatch(webRoute.view.html, /private|draft|foreign|https?:\/\//iu);
   assert.deepEqual(webRoute.view.requests, []);
@@ -80,4 +80,20 @@ test("visitor browser evidence rejects any external request", () => {
   assert.equal(result.ok, false);
   assert.ok(result.blockers.some((blocker) => blocker.startsWith("EXTERNAL_REQUEST:")));
   assert.ok(result.blockers.some((blocker) => blocker.startsWith("HORIZONTAL_OVERFLOW:")));
+});
+
+test("visitor web exposes a local contact intent entry without network behavior", async () => {
+  const web = await loadVisitorModule("apps/user-web/dist/routes/visitor.routes.js");
+  const route = web.selectVisitorRoute({
+    path: "/visitor",
+    response: web.createSyntheticVisitorResponse(),
+  });
+
+  assert.equal(route.kind, "HOME");
+  assert.match(route.view.html, /data-contact-intent-form="true"/u);
+  assert.match(route.view.html, /name="contactName"/u);
+  assert.match(route.view.html, /name="contactTopic"/u);
+  assert.doesNotMatch(route.view.html, /action="|https?:\/\//iu);
+  assert.deepEqual(route.view.requests, []);
+  assert.deepEqual(route.view.externalDestinations, []);
 });

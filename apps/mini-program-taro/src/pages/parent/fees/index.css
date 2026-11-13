@@ -1,0 +1,200 @@
+.parent-fees-page {
+  min-height: 100vh;
+  padding: 30rpx 30rpx 72rpx;
+  background: radial-gradient(circle at 88% 7%, rgba(255, 216, 77, 0.14), transparent 24%), #f5f8ec;
+}
+
+.parent-fees-topbar,
+.parent-fees-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.parent-fees-topbar {
+  margin: 4rpx 2rpx 24rpx;
+}
+
+.parent-fees-topbar .parent-fees-back {
+  display: flex;
+  flex: 0 0 auto;
+  width: auto;
+  min-height: 68rpx;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 auto 0 0;
+  padding: 0 24rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.2);
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.78);
+  color: #4c762b;
+  font-size: 22rpx;
+  font-weight: 700;
+  line-height: 1;
+  text-align: left;
+}
+
+.parent-fees-back::after,
+.parent-fees-button::after {
+  border: 0;
+}
+
+.parent-fees-role {
+  padding: 12rpx 18rpx;
+  border-radius: 24rpx;
+  background: rgba(232, 244, 216, 0.9);
+  color: #5e8a32;
+  font-size: 19rpx;
+  font-weight: 700;
+}
+
+.parent-fees-intro,
+.parent-fees-state,
+.parent-fees-balance,
+.parent-fees-empty,
+.parent-fees-card {
+  padding: 28rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.96);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.08);
+}
+
+.parent-fees-eyebrow,
+.parent-fees-title,
+.parent-fees-copy,
+.parent-fees-message,
+.parent-fees-balance-label,
+.parent-fees-balance-value,
+.parent-fees-muted,
+.parent-fees-section-title,
+.parent-fees-card-title,
+.parent-fees-status,
+.parent-fees-student,
+.parent-fees-amount,
+.parent-fees-summary,
+.parent-fees-footnote {
+  display: block;
+}
+
+.parent-fees-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.parent-fees-title {
+  margin-top: 10rpx;
+  color: #244b32;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.parent-fees-copy,
+.parent-fees-message,
+.parent-fees-muted,
+.parent-fees-summary {
+  margin-top: 10rpx;
+  color: #71806c;
+  font-size: 21rpx;
+  line-height: 1.65;
+}
+
+.parent-fees-state,
+.parent-fees-balance,
+.parent-fees-list,
+.parent-fees-empty {
+  margin-top: 18rpx;
+}
+
+.parent-fees-button {
+  display: flex;
+  min-height: 68rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 18rpx 0 0;
+  padding: 0 24rpx;
+  border: 0;
+  border-radius: 22rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.parent-fees-balance {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(242, 248, 230, 0.92));
+}
+
+.parent-fees-balance-label {
+  margin-top: 16rpx;
+  color: #52664a;
+  font-size: 22rpx;
+}
+
+.parent-fees-balance-value {
+  margin-top: 6rpx;
+  color: #31583a;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.parent-fees-section-title,
+.parent-fees-card-title {
+  color: #31583a;
+  font-size: 27rpx;
+  font-weight: 800;
+}
+
+.parent-fees-card {
+  margin-top: 14rpx;
+}
+
+.parent-fees-card-heading {
+  gap: 12rpx;
+}
+
+.parent-fees-card-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.parent-fees-status {
+  padding: 9rpx 13rpx;
+  border-radius: 22rpx;
+  background: #eef6df;
+  color: #59802e;
+  font-size: 18rpx;
+  font-weight: 700;
+}
+
+.parent-fees-student {
+  margin-top: 14rpx;
+  color: #52664a;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.parent-fees-amount {
+  margin-top: 12rpx;
+  color: #31583a;
+  font-size: 29rpx;
+  font-weight: 800;
+}
+
+.parent-fees-summary {
+  margin-top: 16rpx;
+  padding: 16rpx 18rpx;
+  border-radius: 18rpx;
+  background: rgba(245, 248, 236, 0.86);
+  white-space: pre-wrap;
+}
+
+.parent-fees-footnote {
+  margin: 24rpx 8rpx 0;
+  color: #83917b;
+  font-size: 19rpx;
+  line-height: 1.6;
+  text-align: center;
+}

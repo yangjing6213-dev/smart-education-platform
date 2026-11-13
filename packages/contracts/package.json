@@ -7,12 +7,17 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./dist/src/index.js"
+    },
+    "./openapi/v1.json": {
+      "types": "./openapi/v1.json",
+      "import": "./openapi/v1.json",
+      "default": "./openapi/v1.json"
     }
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint src test",
-    "test": "tsc -p tsconfig.json && node --test dist/test/schema.test.js dist/test/identity.test.js",
+    "test": "tsc -p tsconfig.json && node --test --test-concurrency=1 dist/test/schema.test.js dist/test/identity.test.js",
     "build": "tsc -p tsconfig.json"
   }
 }

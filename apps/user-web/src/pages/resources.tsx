@@ -97,6 +97,7 @@ function resourcesHtml(items: readonly TeachingResourceItem[]): string {
         <h1>教学资源</h1>
         <p>模拟数据 · 仅供授权员工查看</p>
       </header>
+      <p data-staff-action-status role="status" aria-live="polite" tabindex="-1">选择一项资源查看本地详情。</p>
       <section class="staff-content-grid" aria-label="教学资源列表">
         ${list || '<p data-state="empty">暂无资源或无结果</p>'}
       </section>

@@ -358,8 +358,11 @@ test("user resource page and toolchain are local synthetic contracts", () => {
   assert.match(source, /\/web\/staff\/resources/);
   assert.match(source, /AUTHORIZED_STAFF/);
   assert.match(source, /模拟数据/);
-  assert.equal(packageJson.scripts.typecheck, "tsc -p tsconfig.json --noEmit");
+  assert.equal(
+    packageJson.scripts.typecheck,
+    "tsc -p tsconfig.json --noEmit && tsc -p next-test.tsconfig.json --noEmit",
+  );
   assert.equal(packageJson.scripts.lint, "eslint src");
-  assert.equal(packageJson.scripts.build, "tsc -p tsconfig.json");
+  assert.equal(packageJson.scripts.build, "tsc -p tsconfig.json && node build.mjs");
   assert.match(tsconfig, /"extends"\s*:\s*"\.\.\/\.\.\/tsconfig\.base\.json"/);
 });

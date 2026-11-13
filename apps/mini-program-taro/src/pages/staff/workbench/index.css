@@ -1,0 +1,201 @@
+.staff-workbench-page {
+  min-height: 100vh;
+  padding: 34rpx 32rpx 72rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.16), transparent 24%), #f5f8ec;
+}
+
+.staff-brand {
+  display: flex;
+  align-items: center;
+  margin: 8rpx 8rpx 28rpx;
+}
+
+.staff-brand-mark {
+  display: flex;
+  width: 70rpx;
+  height: 70rpx;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15rpx;
+  border-radius: 50%;
+  background: #9bcf42;
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.staff-brand-name,
+.staff-brand-subtitle,
+.staff-eyebrow,
+.staff-title,
+.staff-copy,
+.staff-section-title,
+.staff-message,
+.staff-state-title,
+.staff-application-eyebrow,
+.staff-application-title,
+.staff-application-date,
+.staff-footnote {
+  display: block;
+}
+
+.staff-brand-name {
+  color: #8fc735;
+  font-size: 34rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.staff-brand-subtitle {
+  color: #75a932;
+  font-size: 15rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.staff-intro,
+.staff-state-card,
+.staff-application-card {
+  padding: 30rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.94);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.08);
+}
+
+.staff-eyebrow,
+.staff-application-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.staff-title {
+  margin-top: 10rpx;
+  color: #244b32;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.staff-copy,
+.staff-message {
+  margin-top: 10rpx;
+  color: #71806c;
+  font-size: 22rpx;
+  line-height: 1.65;
+}
+
+.staff-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 24rpx 4rpx 16rpx;
+}
+
+.staff-section-title,
+.staff-state-title,
+.staff-application-title {
+  color: #31583a;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.staff-refresh-button {
+  display: flex;
+  min-width: 104rpx;
+  height: 62rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 0 14rpx;
+  padding: 0 20rpx;
+  border: 0;
+  border-radius: 21rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 21rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.staff-application-card,
+.staff-state-card {
+  margin-top: 16rpx;
+}
+
+.staff-application-title {
+  margin-top: 14rpx;
+}
+
+.staff-application-date {
+  margin-top: 16rpx;
+  color: #87927e;
+  font-size: 19rpx;
+}
+
+.staff-decision-row,
+.staff-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  margin-top: 20rpx;
+}
+
+.staff-primary-button,
+.staff-secondary-button {
+  display: flex;
+  min-height: 78rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 18rpx 0 0;
+  padding: 0 24rpx;
+  border: 0;
+  border-radius: 22rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 23rpx;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.staff-decision-row .staff-decision-button {
+  box-sizing: border-box;
+  width: auto;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+
+.staff-secondary-button {
+  border: 1rpx solid rgba(125, 174, 59, 0.26);
+  background: rgba(255, 255, 255, 0.76);
+  color: #4c762b;
+}
+
+.staff-primary-button::after,
+.staff-secondary-button::after,
+.staff-refresh-button::after {
+  border: 0;
+}
+
+.staff-footer-actions {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.staff-footer-actions .staff-secondary-button {
+  min-height: 68rpx;
+  margin: 0;
+}
+
+.staff-footer-actions .staff-primary-button {
+  min-height: 68rpx;
+  margin: 0;
+}
+
+.staff-footnote {
+  margin: 24rpx 8rpx 0;
+  color: #8a9782;
+  font-size: 18rpx;
+  line-height: 1.6;
+  text-align: center;
+}

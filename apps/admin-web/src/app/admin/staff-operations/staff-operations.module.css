@@ -1,0 +1,232 @@
+.page {
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 78rem);
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem;
+}
+
+.header,
+.section {
+  min-width: 0;
+  border: 1px solid #dfead1;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 0.6rem 1.8rem rgb(30 65 30 / 7%);
+}
+
+.header {
+  padding: clamp(1.1rem, 3vw, 2rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.4rem;
+  color: #6c9e31;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.header h1 {
+  margin: 0;
+  color: #234c31;
+  font-size: clamp(1.8rem, 4vw, 2.45rem);
+}
+
+.header > p:not(.eyebrow) {
+  color: #617564;
+  line-height: 1.65;
+}
+
+.notice,
+.feedback {
+  border-radius: 0.8rem;
+  padding: 0.75rem 0.9rem;
+  background: #f2f7e8;
+  color: #526e4d;
+}
+
+.content {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.feedback {
+  margin: 0;
+}
+
+.section {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sectionHeader h2,
+.record h3 {
+  margin: 0;
+  color: #234c31;
+}
+
+.sectionHeader > span {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  background: #f2f7e8;
+  color: #526e4d;
+  font-size: 0.85rem;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  align-items: end;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid #e7eedc;
+  border-radius: 1rem;
+  background: #fbfcf7;
+}
+
+.form label,
+.followUpForm label {
+  display: grid;
+  min-width: 0;
+  gap: 0.4rem;
+  color: #526e4d;
+  font-size: 0.88rem;
+  font-weight: 650;
+}
+
+.form select,
+.form input,
+.followUpForm select,
+.followUpForm input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 2.7rem;
+  border: 1px solid #d9e6ca;
+  border-radius: 0.7rem;
+  padding: 0.5rem 0.65rem;
+  background: #fff;
+  color: #304c36;
+  font: inherit;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 2.7rem;
+  border: 1px solid #78a92f;
+  border-radius: 0.75rem;
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: #78a92f;
+  color: #fff;
+}
+
+.secondaryButton {
+  background: #fff;
+  color: #315d2d;
+}
+
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible,
+.form select:focus-visible,
+.form input:focus-visible,
+.followUpForm select:focus-visible,
+.followUpForm input:focus-visible {
+  outline: 3px solid rgb(120 169 47 / 35%);
+  outline-offset: 2px;
+}
+
+.records {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.record {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.7rem 1rem;
+  min-width: 0;
+  border: 1px solid #e7eedc;
+  border-radius: 0.9rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.record p {
+  margin: 0.4rem 0 0;
+  color: #687c69;
+  line-height: 1.5;
+}
+
+.status {
+  border-radius: 999px;
+  padding: 0.4rem 0.65rem;
+  background: #f2f7e8;
+  color: #526e4d;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.followUpForm {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  align-items: end;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.followUpForm > span {
+  grid-column: 1 / -1;
+  color: #526e4d;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 520px) {
+  .page {
+    padding-inline: 0.75rem;
+  }
+
+  .sectionHeader {
+    align-items: flex-start;
+  }
+
+  .record {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .status {
+    justify-self: start;
+  }
+
+  .actions > button,
+  .followUpForm > button,
+  .form > button {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}

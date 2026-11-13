@@ -1,0 +1,150 @@
+.day-flow-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 28rpx 28rpx 56rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.2), transparent 24%), #f5f8ec;
+}
+
+.day-flow-page .return-button {
+  display: flex;
+  width: auto;
+  height: 72rpx;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 24rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.22);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10rpx 28rpx rgba(75, 105, 47, 0.06);
+  color: #4c762b;
+  font-size: 24rpx;
+  line-height: 1;
+  text-align: left;
+}
+
+.day-flow-page .return-button::after,
+.day-flow-page .flow-step::after {
+  border: 0;
+}
+
+.day-flow-hero,
+.day-flow-note {
+  border: 1rpx solid rgba(255, 255, 255, 0.92);
+  border-radius: 32rpx;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.07);
+}
+
+.day-flow-hero {
+  padding: 32rpx 28rpx;
+}
+
+.day-flow-eyebrow,
+.day-flow-title,
+.day-flow-intro,
+.flow-time,
+.flow-step-title,
+.flow-step-description,
+.day-flow-note-title,
+.day-flow-note-copy {
+  display: block;
+}
+
+.day-flow-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.day-flow-title {
+  margin-top: 14rpx;
+  color: #244b32;
+  font-size: 46rpx;
+  font-weight: 800;
+}
+
+.day-flow-intro {
+  margin-top: 12rpx;
+  color: #667864;
+  font-size: 24rpx;
+  line-height: 1.65;
+}
+
+.day-flow-list {
+  margin-top: 28rpx;
+}
+
+.day-flow-page .flow-step {
+  display: flex;
+  width: 100%;
+  min-height: 112rpx;
+  align-items: center;
+  margin: 0 0 16rpx;
+  padding: 22rpx 24rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.18);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.78);
+  color: #31583a;
+  text-align: left;
+  box-shadow: 0 10rpx 26rpx rgba(75, 105, 47, 0.05);
+}
+
+.day-flow-page .flow-step-active {
+  border-color: rgba(255, 210, 57, 0.82);
+  background: rgba(255, 253, 240, 0.92);
+}
+
+.flow-time {
+  width: 100rpx;
+  flex-shrink: 0;
+  color: #78a936;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.flow-step-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.flow-step-title {
+  color: #31583a;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.flow-step-description {
+  margin-top: 8rpx;
+  color: #71806c;
+  font-size: 21rpx;
+  line-height: 1.55;
+}
+
+.flow-step-marker {
+  margin-left: 12rpx;
+  color: #83b83a;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.day-flow-note {
+  margin-top: 26rpx;
+  padding: 22rpx 24rpx;
+  background: rgba(155, 207, 66, 0.1);
+}
+
+.day-flow-note-title {
+  color: #638e30;
+  font-size: 20rpx;
+  font-weight: 800;
+}
+
+.day-flow-note-copy {
+  margin-top: 8rpx;
+  color: #71806c;
+  font-size: 20rpx;
+  line-height: 1.6;
+}

@@ -1,0 +1,172 @@
+.public-info-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 28rpx 28rpx 56rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.2), transparent 24%), #f5f8ec;
+}
+
+.public-info-page .return-button {
+  display: flex;
+  width: auto;
+  height: 72rpx;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 0 24rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.22);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10rpx 28rpx rgba(75, 105, 47, 0.06);
+  color: #4c762b;
+  font-size: 24rpx;
+  line-height: 1;
+  text-align: left;
+}
+
+.public-info-page button::after {
+  border: 0;
+}
+
+.public-info-hero,
+.public-info-section,
+.public-info-card,
+.public-info-note {
+  border: 1rpx solid rgba(255, 255, 255, 0.92);
+  border-radius: 32rpx;
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.07);
+}
+
+.public-info-hero {
+  padding: 32rpx 28rpx;
+}
+
+.public-info-hero-warm {
+  background: rgba(255, 249, 222, 0.86);
+}
+
+.public-info-eyebrow,
+.public-info-title,
+.public-info-summary,
+.public-info-section-kicker,
+.public-info-section-title,
+.public-info-copy,
+.public-info-card-index,
+.public-info-card-title,
+.public-info-card-copy,
+.public-info-note-title,
+.public-info-note-copy {
+  display: block;
+}
+
+.public-info-eyebrow,
+.public-info-section-kicker,
+.public-info-card-index,
+.public-info-note-title {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 800;
+}
+
+.public-info-title {
+  margin-top: 14rpx;
+  color: #244b32;
+  font-size: 46rpx;
+  font-weight: 800;
+}
+
+.public-info-summary,
+.public-info-copy,
+.public-info-card-copy,
+.public-info-note-copy {
+  color: #667864;
+  font-size: 23rpx;
+  line-height: 1.7;
+}
+
+.public-info-summary {
+  margin-top: 14rpx;
+}
+
+.public-info-section {
+  margin-top: 24rpx;
+  padding: 26rpx 24rpx;
+}
+
+.public-info-section-title {
+  margin-top: 8rpx;
+  color: #31583a;
+  font-size: 29rpx;
+  font-weight: 800;
+}
+
+.public-info-copy {
+  margin-top: 12rpx;
+}
+
+.public-info-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+  margin-top: 22rpx;
+}
+
+.public-info-card {
+  padding: 24rpx;
+}
+
+.public-info-card-title {
+  margin-top: 8rpx;
+  color: #31583a;
+  font-size: 26rpx;
+  font-weight: 800;
+}
+
+.public-info-card-copy {
+  margin-top: 6rpx;
+}
+
+.public-info-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  margin-top: 24rpx;
+}
+
+.public-info-page .public-info-action {
+  display: flex;
+  min-width: 240rpx;
+  height: 76rpx;
+  flex: 1 1 260rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 18rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.2);
+  border-radius: 26rpx;
+  background: rgba(255, 255, 255, 0.78);
+  color: #4c762b;
+  font-size: 23rpx;
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+}
+
+.public-info-page .public-info-action-primary {
+  border-color: rgba(125, 174, 59, 0.7);
+  background: rgba(155, 207, 66, 0.24);
+}
+
+.public-info-note {
+  margin-top: 22rpx;
+  padding: 20rpx 22rpx;
+  background: rgba(155, 207, 66, 0.1);
+}
+
+.public-info-note-copy {
+  margin-top: 6rpx;
+  font-size: 20rpx;
+}

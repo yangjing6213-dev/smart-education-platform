@@ -1,0 +1,43 @@
+.actions,
+.completionForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.completionForm {
+  width: 100%;
+  align-items: flex-end;
+}
+
+.completionForm label {
+  display: grid;
+  min-width: 0;
+  max-width: 100%;
+  flex: 0 1 280px;
+  gap: 7px;
+  color: #304d37;
+  font-weight: 700;
+}
+
+.completionForm select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #ccdcbc;
+  border-radius: 10px;
+  color: #304d37;
+  background: #fff;
+  font: inherit;
+  font-weight: 400;
+}
+
+.completionForm select:focus-visible {
+  outline: 3px solid #557f34;
+  outline-offset: 3px;
+}
+
+.completionForm button {
+  align-self: flex-end;
+}

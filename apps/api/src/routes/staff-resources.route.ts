@@ -48,6 +48,7 @@ function contextFromRequest(request: FastifyRequest): ResourceActorContext | und
   const membership = authContext.memberships.find(
     (candidate) =>
       candidate.status === "ACTIVE" &&
+      candidate.capabilities.includes("content:write") &&
       candidate.tenant_id === scope.tenantId &&
       candidate.campus_ids.includes(scope.campusId!),
   );

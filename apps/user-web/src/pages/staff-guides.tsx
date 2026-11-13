@@ -87,6 +87,7 @@ function guidesHtml(items: readonly StaffGuideItem[]): string {
         <h1>新员工指南</h1>
         <p>模拟数据 · 仅供授权员工查看</p>
       </header>
+      <p data-staff-action-status role="status" aria-live="polite" tabindex="-1">选择一条指南查看本地详情。</p>
       <section class="staff-content-grid" aria-label="指南列表">
         ${list || '<p data-state="empty">暂无匹配指南</p>'}
       </section>

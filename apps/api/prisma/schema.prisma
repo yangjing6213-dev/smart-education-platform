@@ -1,0 +1,1971 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MembershipStatus {
+  ACTIVE
+  SUSPENDED
+  REVOKED
+  INVITED
+
+  @@map("membership_status")
+}
+
+enum BindingApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  WITHDRAWN
+  EXPIRED
+
+  @@map("binding_application_status")
+}
+
+enum GuardianRelationshipStatus {
+  ACTIVE
+  RELEASED
+
+  @@map("guardian_relationship_status")
+}
+
+enum GuardianRelationshipAuditAction {
+  ACTIVATED
+  RELEASED
+
+  @@map("guardian_relationship_audit_action")
+}
+
+enum FeeDocumentType {
+  FEE_ITEM
+  BILL
+  RECEIPT
+  AGREEMENT
+
+  @@map("fee_document_type")
+}
+
+enum FeeDocumentStatus {
+  AVAILABLE
+  PAID
+  VOIDED
+  EXPIRED
+  REVOKED
+
+  @@map("fee_document_status")
+}
+
+enum FeeLedgerEntryType {
+  CHARGE
+  PAYMENT
+  REFUND
+
+  @@map("fee_ledger_entry_type")
+}
+
+enum FeeDocumentAuditAction {
+  CREATED
+  UPDATED
+  REVOKED
+
+  @@map("fee_document_audit_action")
+}
+
+enum GuardianConsentScope {
+  LEARNING_SUPPORT
+
+  @@map("guardian_consent_scope")
+}
+
+enum GuardianConsentVersion {
+  LEARNING_DEMO_V2
+
+  @@map("guardian_consent_version")
+}
+
+enum GuardianConsentNoticeVersion {
+  LEARNING_SUPPORT_NOTICE_V1
+
+  @@map("guardian_consent_notice_version")
+}
+
+enum GuardianConsentPolicyVersion {
+  AI_LEARNING_POLICY_SYNTHETIC_V1
+
+  @@map("guardian_consent_policy_version")
+}
+
+enum GuardianConsentStatus {
+  ACTIVE
+  REVOKED
+
+  @@map("guardian_consent_status")
+}
+
+enum StaffTaskCode {
+  DAILY_CHECK
+  TEMPORARY_SUPPORT
+  STUDENT_FOLLOW_UP
+  ACTIVITY_SETUP
+  SAFETY_RESPONSE
+
+  @@map("staff_task_code")
+}
+
+enum StaffTaskTargetType {
+  CLASS
+  STUDENT
+  ACTIVITY
+  CAMPUS
+
+  @@map("staff_task_target_type")
+}
+
+enum StaffTaskPriority {
+  NORMAL
+  IMPORTANT
+  URGENT
+
+  @@map("staff_task_priority")
+}
+
+enum StaffTaskStatus {
+  ASSIGNED
+  CLAIMED
+  IN_PROGRESS
+  COMPLETED
+  CHECKED
+  RETURNED
+  CANCELLED
+
+  @@map("staff_task_status")
+}
+
+enum StaffTaskResult {
+  COMPLETED_AS_PLANNED
+  FOLLOW_UP_REQUIRED
+  BLOCKED
+
+  @@map("staff_task_result")
+}
+
+enum PickupExceptionCategory {
+  NO_AUTHORIZATION
+  INFORMATION_MISMATCH
+  INVALID_CREDENTIAL
+  OVERDUE
+
+  @@map("pickup_exception_category")
+}
+
+enum PickupExceptionStatus {
+  OPEN
+  FOLLOWING
+  RESOLVED
+
+  @@map("pickup_exception_status")
+}
+
+enum PickupExceptionOutcome {
+  CONTACT_GUARDIAN
+  INFORMATION_RECHECKED
+  ARRANGEMENT_CONFIRMED
+
+  @@map("pickup_exception_outcome")
+}
+
+enum StaffDailyStatus {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  CONFIRMED
+
+  @@map("staff_daily_status")
+}
+
+enum StaffDailyAuditAction {
+  CREATED
+  EDITED
+  SUBMITTED
+  RESUBMITTED
+  REVIEW_CONFIRMED
+  REVIEW_RETURNED
+  CONFIRMATION_WITHDRAWN
+  SOURCES_INVALIDATED
+
+  @@map("staff_daily_audit_action")
+}
+
+enum StaffDailyArrivalCode {
+  ARRIVED_AS_PLANNED
+  LATE
+  ABSENT
+
+  @@map("staff_daily_arrival_code")
+}
+
+enum StaffDailyHomeworkCode {
+  COMPLETED
+  IN_PROGRESS
+  NEEDS_SUPPORT
+
+  @@map("staff_daily_homework_code")
+}
+
+enum StaffDailyActivityCode {
+  PARTICIPATED
+  OBSERVED
+  NOT_RECORDED
+
+  @@map("staff_daily_activity_code")
+}
+
+enum StaffDailyClassroomCode {
+  ROUTINE
+  NEEDS_ATTENTION
+  NEEDS_FOLLOW_UP
+
+  @@map("staff_daily_classroom_code")
+}
+
+enum StaffDailyFollowUpCode {
+  NONE
+  OBSERVE_TOMORROW
+  OWNER_ATTENTION
+
+  @@map("staff_daily_follow_up_code")
+}
+
+enum CareRecordReceiptStatus {
+  UNREAD
+  READ
+  ACKNOWLEDGED
+
+  @@map("care_record_receipt_status")
+}
+
+enum CareRecordAuditAction {
+  CREATED
+  EDITED
+  SUBMITTED
+  RESUBMITTED
+  REVIEW_CONFIRMED
+  REVIEW_RETURNED
+  PUBLISHED
+  WITHDRAWN
+  PUBLICATION_REVOKED
+  RECEIPT_READ
+  RECEIPT_ACKNOWLEDGED
+  SOURCES_CHANGED
+
+  @@map("care_record_audit_action")
+}
+
+enum CareRecordStatus {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  CONFIRMED
+  CANCELLED
+  EXCEPTION_PENDING
+
+  @@map("care_record_status")
+}
+
+enum CareArrival {
+  ARRIVED_AS_PLANNED
+  LATE
+  ABSENT
+
+  @@map("care_arrival")
+}
+
+enum CareHomework {
+  COMPLETED
+  IN_PROGRESS
+  NEEDS_SUPPORT
+
+  @@map("care_homework")
+}
+
+enum CareMeal {
+  FINISHED
+  PARTIAL
+  NOT_RECORDED
+
+  @@map("care_meal")
+}
+
+enum CareRest {
+  RESTED
+  QUIET_ACTIVITY
+  NOT_RECORDED
+
+  @@map("care_rest")
+}
+
+enum CareActivity {
+  PARTICIPATED
+  OBSERVED
+  NOT_RECORDED
+
+  @@map("care_activity")
+}
+
+enum CareWellbeing {
+  ROUTINE
+  CHECK_IN
+  FOLLOW_UP
+
+  @@map("care_wellbeing")
+}
+
+enum AttendanceStatus {
+  NOT_ARRIVED
+  ARRIVED
+  DEPARTED
+
+  @@map("attendance_status")
+}
+
+enum AttendanceCorrectionStatus {
+  PENDING
+  APPROVED
+  RETURNED
+
+  @@map("attendance_correction_status")
+}
+
+enum AttendanceCorrectionReason {
+  TIME_ENTRY_ERROR
+  EVENT_ENTRY_ERROR
+  LATE_ENTRY
+
+  @@map("attendance_correction_reason")
+}
+
+enum AttendanceRevisionAction {
+  MIGRATED
+  CREATED
+  ARRIVED
+  DEPARTED
+  CORRECTION_REQUESTED
+  CORRECTION_APPROVED
+  CORRECTION_RETURNED
+
+  @@map("attendance_revision_action")
+}
+
+enum MealPeriod {
+  BREAKFAST
+  LUNCH
+  SNACK
+  DINNER
+
+  @@map("meal_period")
+}
+
+enum MealPlanStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+
+  @@map("meal_plan_status")
+}
+
+enum LeaveReasonCategory {
+  FAMILY_ARRANGEMENT
+  TEMPORARY_MATTER
+
+  @@map("leave_reason_category")
+}
+
+enum LeaveRequestStatus {
+  SUBMITTED
+  RETURNED
+  CONFIRMED
+  WITHDRAWN
+
+  @@map("leave_request_status")
+}
+
+enum PickupRecipient {
+  PICKUP_ALPHA @map("pickup-alpha")
+  PICKUP_BETA  @map("pickup-beta")
+
+  @@map("pickup_recipient")
+}
+
+enum PickupAuthorizationType {
+  REGULAR
+  TEMPORARY
+
+  @@map("pickup_authorization_type")
+}
+
+enum PickupAuthorizationStatus {
+  DRAFT
+  ACTIVE
+  REVOKED
+
+  @@map("pickup_authorization_status")
+}
+
+enum PickupRecordStatus {
+  COMPLETED
+
+  @@map("pickup_record_status")
+}
+
+enum HealthIncidentObservationCode {
+  ROUTINE_OBSERVATION
+  NEEDS_FOLLOW_UP
+  URGENT_REVIEW
+
+  @@map("health_incident_observation_code")
+}
+
+enum HealthIncidentDispositionCode {
+  OBSERVATION_RECHECKED
+  FOLLOW_UP_SCHEDULED
+  GUARDIAN_SUMMARY_PREPARED
+
+  @@map("health_incident_disposition_code")
+}
+
+enum HealthIncidentSummaryCode {
+  FOLLOW_UP_IN_PROGRESS
+  FOLLOW_UP_COMPLETED
+  PLEASE_CHECK_PAGE_LATER
+
+  @@map("health_incident_summary_code")
+}
+
+enum HealthIncidentStatus {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  CONFIRMED
+  EXCEPTION_PENDING
+  PUBLISHED
+  REVOKED
+  WITHDRAWN
+
+  @@map("health_incident_status")
+}
+
+enum HealthIncidentReceiptStatus {
+  READ
+  ACKNOWLEDGED
+
+  @@map("health_incident_receipt_status")
+}
+
+enum NoticeTemplateCode {
+  INSTITUTION_ANNOUNCEMENT
+  CLASS_ACTIVITY
+
+  @@map("notice_template_code")
+}
+
+enum NoticeTarget {
+  INSTITUTION
+  CLASS
+
+  @@map("notice_target")
+}
+
+enum NoticeStatus {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  APPROVED
+  PUBLISHED
+  REVOKED
+
+  @@map("notice_status")
+}
+
+enum NoticeReceiptStatus {
+  READ
+  ACKNOWLEDGED
+
+  @@map("notice_receipt_status")
+}
+
+model Tenant {
+  id                                  String                               @id @default(uuid()) @db.Uuid
+  name                                String
+  slug                                String
+  status                              String
+  createdAt                           DateTime                             @default(now()) @map("created_at") @db.Timestamptz(6)
+  campuses                            Campus[]                             @relation("TenantCampuses")
+  memberships                         Membership[]                         @relation("TenantMemberships")
+  institutionContentRecords           InstitutionContentRecord[]           @relation("InstitutionContentRecordTenant")
+  institutionContentPublicationEvents InstitutionContentPublicationEvent[] @relation("InstitutionContentPublicationEventTenant")
+
+  @@index([slug])
+  @@map("tenants")
+}
+
+model Campus {
+  tenantId                            String                               @map("tenant_id") @db.Uuid
+  id                                  String                               @default(uuid()) @db.Uuid
+  name                                String
+  status                              String
+  publicProfileRef                    String?                              @map("public_profile_ref")
+  createdAt                           DateTime                             @default(now()) @map("created_at") @db.Timestamptz(6)
+  tenant                              Tenant                               @relation("TenantCampuses", fields: [tenantId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  membershipScopes                    MembershipCampus[]
+  students                            Student[]
+  mealPlans                           MealPlan[]                           @relation("MealPlanCampus")
+  mealPublicationEvents               MealPublicationEvent[]               @relation("MealPublicationEventCampus")
+  bindingApplications                 BindingApplication[]                 @relation("BindingApplicationCampus")
+  guardianRelationships               GuardianRelationship[]               @relation("GuardianRelationshipCampus")
+  guardianRelationshipAuditEvents     GuardianRelationshipAuditEvent[]     @relation("GuardianRelationshipAuditEventCampus")
+  guardianConsents                    GuardianConsent[]                    @relation("GuardianConsentCampus")
+  parentLearningSessions              ParentLearningSession[]              @relation("ParentLearningSessionCampus")
+  workTasks                           WorkTask[]                           @relation("WorkTaskCampus")
+  pickupExceptions                    PickupException[]                    @relation("PickupExceptionCampus")
+  staffDailyReports                   StaffDailyReport[]                   @relation("StaffDailyReportCampus")
+  monthlyFeedbackReports              MonthlyFeedbackReport[]              @relation("MonthlyFeedbackCampus")
+  childMonthlyReports                 ChildMonthlyReport[]                 @relation("ChildMonthlyCampus")
+  aiInstitutionSetting                AIInstitutionSetting?                @relation("AIInstitutionSettingCampus")
+  notices                             Notice[]                             @relation("NoticeCampus")
+  parentLearningSummaries             ParentLearningSummarySnapshot[]      @relation("ParentLearningSummaryCampus")
+  parentLearningControls              ParentLearningControl[]              @relation("ParentLearningControlCampus")
+  parentLearningContactIntents        ParentLearningContactIntent[]        @relation("ParentLearningContactIntentCampus")
+  feeDocuments                        FeeDocument[]                        @relation("FeeDocumentCampus")
+  feeLedgerEntries                    FeeLedgerEntry[]                     @relation("FeeLedgerCampus")
+  feeDocumentAuditEvents              FeeDocumentAuditEvent[]              @relation("FeeDocumentAuditCampus")
+  institutionContentRecords           InstitutionContentRecord[]           @relation("InstitutionContentRecordCampus")
+  institutionContentPublicationEvents InstitutionContentPublicationEvent[] @relation("InstitutionContentPublicationEventCampus")
+
+  @@id([tenantId, id])
+  @@index([tenantId, status])
+  @@index([publicProfileRef])
+  @@map("campuses")
+}
+
+model InstitutionContentRecord {
+  id                String                               @id @default(uuid()) @db.Uuid
+  tenantId          String                               @map("tenant_id") @db.Uuid
+  campusId          String?                              @map("campus_id") @db.Uuid
+  contentKey        String                               @map("content_key") @db.VarChar(128)
+  contentType       String                               @map("content_type") @db.VarChar(32)
+  status            String                               @db.VarChar(16)
+  title             String                               @db.VarChar(160)
+  version           Int                                  @default(1)
+  visibility        String                               @db.VarChar(16)
+  body              Json                                 @db.JsonB
+  publishedAt       DateTime?                            @map("published_at") @db.Timestamptz(6)
+  syntheticData     Boolean                              @default(true) @map("synthetic_data")
+  editorNote        String                               @default("") @map("editor_note") @db.VarChar(2000)
+  moderationState   String                               @default("UNREVIEWED") @map("moderation_state") @db.VarChar(32)
+  tenantAdminNote   String                               @default("") @map("tenant_admin_note") @db.VarChar(2000)
+  campusAdminNote   String                               @default("") @map("campus_admin_note") @db.VarChar(2000)
+  updatedBy         String                               @map("updated_by") @db.VarChar(128)
+  updatedAt         DateTime                             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  tenant            Tenant                               @relation("InstitutionContentRecordTenant", fields: [tenantId], references: [id], onDelete: Restrict, onUpdate: Cascade, map: "institution_content_records_tenant_id_fkey")
+  campus            Campus?                              @relation("InstitutionContentRecordCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "institution_content_records_tenant_id_campus_id_fkey")
+  publicationEvents InstitutionContentPublicationEvent[] @relation("InstitutionContentPublicationEventContent")
+
+  @@unique([tenantId, id])
+  @@index([tenantId, campusId, contentKey], map: "institution_content_records_scope_key_idx")
+  @@index([tenantId, campusId, contentType, status, publishedAt(sort: Desc)], map: "institution_content_records_scope_type_status_published_idx")
+  @@map("institution_content_records")
+}
+
+model InstitutionContentPublicationEvent {
+  id               String                   @id @default(uuid()) @db.Uuid
+  tenantId         String                   @map("tenant_id") @db.Uuid
+  campusId         String?                  @map("campus_id") @db.Uuid
+  contentId        String                   @map("content_id") @db.Uuid
+  contentKey       String                   @map("content_key") @db.VarChar(128)
+  action           String                   @db.VarChar(16)
+  resultingVersion Int                      @map("resulting_version")
+  actorReference   String                   @map("actor_reference") @db.VarChar(128)
+  occurredAt       DateTime                 @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  tenant           Tenant                   @relation("InstitutionContentPublicationEventTenant", fields: [tenantId], references: [id], onDelete: Restrict, onUpdate: Cascade, map: "institution_content_publication_events_tenant_id_fkey")
+  campus           Campus?                  @relation("InstitutionContentPublicationEventCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "institution_content_publication_events_tenant_id_campus_id_fkey")
+  content          InstitutionContentRecord @relation("InstitutionContentPublicationEventContent", fields: [tenantId, contentId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "institution_content_publication_events_tenant_id_content_id_fke")
+
+  @@index([tenantId, campusId, occurredAt(sort: Desc)], map: "institution_content_publication_events_scope_time_idx")
+  @@index([tenantId, contentId, occurredAt(sort: Desc)], map: "institution_content_publication_events_content_time_idx")
+  @@map("institution_content_publication_events")
+}
+
+model User {
+  id                     String                  @id @default(uuid()) @db.Uuid
+  status                 String
+  createdAt              DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  memberships            Membership[]
+  inviteAuthSessions     InviteAuthSession[]
+  bindingApplications    BindingApplication[]    @relation("BindingApplicationApplicant")
+  guardianRelationships  GuardianRelationship[]  @relation("GuardianRelationshipGuardian")
+  guardianConsents       GuardianConsent[]       @relation("GuardianConsentGuardian")
+  parentLearningSessions ParentLearningSession[] @relation("ParentLearningSessionGuardian")
+  leaveRequests          LeaveRequest[]          @relation("LeaveRequestRequester")
+  noticeReceipts         NoticeReceipt[]         @relation("NoticeReceiptGuardian")
+  childMonthlyEvents     ChildMonthlyEvent[]     @relation("ChildMonthlyActor")
+  transfersRequested     StudentTransferRequest[] @relation("TransferRequesterUser")
+  transfersReviewed      StudentTransferRequest[] @relation("TransferReviewerUser")
+  transferAuditEvents    StudentTransferAuditEvent[] @relation("TransferAuditUser")
+
+  @@map("users")
+}
+
+model InviteAuthSession {
+  tokenHash String   @id @map("token_hash") @db.Char(64)
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+  @@map("invite_auth_sessions")
+}
+
+model Membership {
+  tenantId  String             @map("tenant_id") @db.Uuid
+  id        String             @default(uuid()) @db.Uuid
+  userId    String             @map("user_id") @db.Uuid
+  status    MembershipStatus
+  version   Int                @default(1)
+  createdAt DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  tenant    Tenant             @relation("TenantMemberships", fields: [tenantId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  user      User               @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  campuses  MembershipCampus[]
+
+  @@id([tenantId, id])
+  @@index([tenantId, status])
+  @@index([tenantId, userId])
+  @@map("memberships")
+}
+
+model MembershipCampus {
+  tenantId                        String                           @map("tenant_id") @db.Uuid
+  membershipId                    String                           @map("membership_id") @db.Uuid
+  campusId                        String                           @map("campus_id") @db.Uuid
+  createdAt                       DateTime                         @default(now()) @map("created_at") @db.Timestamptz(6)
+  membership                      Membership                       @relation(fields: [tenantId, membershipId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  campus                          Campus                           @relation(fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  careRecordsCreated              CareRecord[]                     @relation("CareRecordCreator")
+  careRecordsReviewed             CareRecord[]                     @relation("CareRecordReviewer")
+  careRecordsUpdated              CareRecord[]                     @relation("CareRecordUpdater")
+  careRecordRevisionsReviewed     CareRecordRevision[]             @relation("CareRevisionReviewer")
+  careRecordRevisionsUpdated      CareRecordRevision[]             @relation("CareRevisionUpdater")
+  attendanceRecordsRecorded       AttendanceRecord[]               @relation("AttendanceRecorder")
+  attendanceRecordsUpdated        AttendanceRecord[]               @relation("AttendanceUpdater")
+  attendanceRevisionsUpdated      AttendanceRecordRevision[]       @relation("AttendanceRevisionUpdater")
+  attendanceCorrectionsRequested  AttendanceCorrection[]           @relation("AttendanceCorrectionRequester")
+  attendanceCorrectionsReviewed   AttendanceCorrection[]           @relation("AttendanceCorrectionReviewer")
+  mealPlansUpdated                MealPlan[]                       @relation("MealPlanUpdater")
+  mealPublicationEvents           MealPublicationEvent[]           @relation("MealPublicationEventActor")
+  bindingApplicationsReviewed     BindingApplication[]             @relation("BindingApplicationReviewer")
+  guardianRelationshipsApproved   GuardianRelationship[]           @relation("GuardianRelationshipApprover")
+  guardianRelationshipAuditEvents GuardianRelationshipAuditEvent[] @relation("GuardianRelationshipAuditEventActor")
+  leaveRequestsUpdated            LeaveRequest[]                   @relation("LeaveRequestUpdater")
+  leaveRequestRevisionsUpdated    LeaveRequestRevision[]           @relation("LeaveRequestRevisionUpdater")
+  pickupAuthorizationsCreated     PickupAuthorization[]            @relation("PickupAuthorizationCreator")
+  pickupAuthorizationsUpdated     PickupAuthorization[]            @relation("PickupAuthorizationUpdater")
+  pickupCredentialsIssued         PickupCredential[]               @relation("PickupCredentialIssuer")
+  pickupRecordsChecked            PickupRecord[]                   @relation("PickupRecordChecker")
+  healthIncidentsCreated          HealthIncident[]                 @relation("HealthIncidentCreator")
+  healthIncidentsReviewed         HealthIncident[]                 @relation("HealthIncidentReviewer")
+  healthIncidentsUpdated          HealthIncident[]                 @relation("HealthIncidentUpdater")
+  noticesCreated                  Notice[]                         @relation("NoticeCreator")
+  noticesReviewed                 Notice[]                         @relation("NoticeReviewer")
+  workTasksCreated                WorkTask[]                       @relation("WorkTaskCreator")
+  workTasksAssigned               WorkTask[]                       @relation("WorkTaskAssignee")
+  workTasksClaimed                WorkTask[]                       @relation("WorkTaskClaimer")
+  workTasksCompleted              WorkTask[]                       @relation("WorkTaskCompleter")
+  workTasksChecked                WorkTask[]                       @relation("WorkTaskChecker")
+  workTasksUpdated                WorkTask[]                       @relation("WorkTaskUpdater")
+  pickupExceptionsCreated         PickupException[]                @relation("PickupExceptionCreator")
+  pickupExceptionsReviewed        PickupException[]                @relation("PickupExceptionReviewer")
+  staffDailyReportsCreated        StaffDailyReport[]               @relation("StaffDailyReportCreator")
+  staffDailyReportsReviewed       StaffDailyReport[]               @relation("StaffDailyReportReviewer")
+  staffDailyReportsUpdated        StaffDailyReport[]               @relation("StaffDailyReportUpdater")
+  staffDailyAuditEventsActed      StaffDailyReportAuditEvent[]     @relation("StaffDailyAuditActor")
+  staffDailyAuditEventsInitiated  StaffDailyReportAuditEvent[]     @relation("StaffDailyAuditInitiator")
+  monthlyFeedbackCreated          MonthlyFeedbackReport[]          @relation("MonthlyFeedbackCreator")
+  monthlyFeedbackReviewed         MonthlyFeedbackReport[]          @relation("MonthlyFeedbackReviewer")
+  monthlyFeedbackUpdated          MonthlyFeedbackReport[]          @relation("MonthlyFeedbackUpdater")
+  monthlyFeedbackEvents           MonthlyFeedbackEvent[]           @relation("MonthlyFeedbackActor")
+  childMonthlyCreated             ChildMonthlyReport[]             @relation("ChildMonthlyCreator")
+  childMonthlyReviewed            ChildMonthlyReport[]             @relation("ChildMonthlyReviewer")
+  childMonthlyUpdated             ChildMonthlyReport[]             @relation("ChildMonthlyUpdater")
+  aiInstitutionSettingsUpdated    AIInstitutionSetting[]           @relation("AIInstitutionSettingUpdater")
+  classAssignments                MembershipClass[]                @relation("MembershipClassMembershipCampus")
+  careRecordAuditEvents           CareRecordAuditEvent[]           @relation("CareRecordAuditActor")
+  parentLearningSummariesReviewed ParentLearningSummarySnapshot[]  @relation("ParentLearningSummaryReviewer")
+  feeDocumentsCreated             FeeDocument[]                    @relation("FeeDocumentCreator")
+  feeLedgerEntriesCreated         FeeLedgerEntry[]                 @relation("FeeLedgerCreator")
+  feeDocumentAuditEvents          FeeDocumentAuditEvent[]          @relation("FeeDocumentAuditActor")
+  transfersRequested              StudentTransferRequest[]         @relation("TransferRequester")
+  transfersReviewed               StudentTransferRequest[]         @relation("TransferReviewer")
+  transferAuditEvents              StudentTransferAuditEvent[]      @relation("TransferAuditMembership")
+
+  @@id([tenantId, membershipId, campusId])
+  @@index([tenantId, campusId])
+  @@map("membership_campuses")
+}
+
+model MembershipClass {
+  tenantId         String           @map("tenant_id") @db.Uuid
+  membershipId     String           @map("membership_id") @db.Uuid
+  campusId         String           @map("campus_id") @db.Uuid
+  classRef         String           @map("class_ref") @db.VarChar(80)
+  createdAt        DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  membershipCampus MembershipCampus @relation("MembershipClassMembershipCampus", fields: [tenantId, membershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "membership_classes_membership_campus_fkey")
+
+  @@id([tenantId, membershipId, campusId, classRef])
+  @@index([tenantId, campusId, classRef])
+  @@map("membership_classes")
+}
+
+model Student {
+  tenantId                String                          @map("tenant_id") @db.Uuid
+  campusId                String                          @map("campus_id") @db.Uuid
+  id                      String                          @default(uuid()) @db.Uuid
+  classRef                String                          @map("class_ref")
+  status                  String
+  displayRef              String                          @map("display_ref")
+  createdAt               DateTime                        @default(now()) @map("created_at") @db.Timestamptz(6)
+  campus                  Campus                          @relation(fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  careRecords             CareRecord[]                    @relation("CareRecordStudent")
+  childMonthlyReports     ChildMonthlyReport[]            @relation("ChildMonthlyStudent")
+  parentLearningSummaries ParentLearningSummarySnapshot[] @relation("ParentLearningSummaryStudent")
+  attendanceRecords       AttendanceRecord[]              @relation("AttendanceStudent")
+  guardianRelationships   GuardianRelationship[]          @relation("GuardianRelationshipStudent")
+  feeDocuments            FeeDocument[]                   @relation("FeeDocumentStudent")
+  feeLedgerEntries        FeeLedgerEntry[]                @relation("FeeLedgerStudent")
+  guardianConsents        GuardianConsent[]               @relation("GuardianConsentStudent")
+  parentLearningSessions  ParentLearningSession[]         @relation("ParentLearningSessionStudent")
+  leaveRequests           LeaveRequest[]                  @relation("LeaveRequestStudent")
+  pickupAuthorizations    PickupAuthorization[]           @relation("PickupAuthorizationStudent")
+  pickupRecords           PickupRecord[]                  @relation("PickupRecordStudent")
+  healthIncidents         HealthIncident[]                @relation("HealthIncidentStudent")
+  workTasks               WorkTask[]                      @relation("WorkTaskStudentTarget")
+  pickupExceptions        PickupException[]               @relation("PickupExceptionStudent")
+  transferRequests        StudentTransferRequest[]         @relation("TransferStudent")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, status])
+  @@map("students")
+}
+
+enum StudentTransferStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  @@map("student_transfer_status")
+}
+
+enum StudentTransferAuditAction {
+  CREATED
+  APPROVED
+  REJECTED
+  @@map("student_transfer_audit_action")
+}
+
+model StudentTransferRequest {
+  tenantId                String @map("tenant_id") @db.Uuid
+  campusId                String @map("campus_id") @db.Uuid
+  id                      String @default(uuid()) @db.Uuid
+  studentId               String @map("student_id") @db.Uuid
+  sourceClassRef          String @map("source_class_ref") @db.VarChar(80)
+  destinationClassRef     String @map("destination_class_ref") @db.VarChar(80)
+  status                  StudentTransferStatus @default(PENDING)
+  version                 Int @default(1)
+  requestedByMembershipId String @map("requested_by_membership_id") @db.Uuid
+  requestedByUserId       String @map("requested_by_user_id") @db.Uuid
+  reviewedByMembershipId  String? @map("reviewed_by_membership_id") @db.Uuid
+  reviewedByUserId        String? @map("reviewed_by_user_id") @db.Uuid
+  requestedAt             DateTime @default(now()) @map("requested_at") @db.Timestamptz(6)
+  reviewedAt              DateTime? @map("reviewed_at") @db.Timestamptz(6)
+  student                 Student @relation("TransferStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  requester               MembershipCampus @relation("TransferRequester", fields: [tenantId, requestedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  reviewer                MembershipCampus? @relation("TransferReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  requesterUser           User @relation("TransferRequesterUser", fields: [requestedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  reviewerUser            User? @relation("TransferReviewerUser", fields: [reviewedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  events                  StudentTransferAuditEvent[] @relation("TransferAuditRequest")
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, status, requestedAt], map: "student_transfer_queue_idx")
+  @@map("student_transfer_requests")
+}
+
+model StudentTransferAuditEvent {
+  tenantId          String @map("tenant_id") @db.Uuid
+  campusId          String @map("campus_id") @db.Uuid
+  id                String @default(uuid()) @db.Uuid
+  requestId         String @map("request_id") @db.Uuid
+  actorMembershipId String @map("actor_membership_id") @db.Uuid
+  actorUserId       String @map("actor_user_id") @db.Uuid
+  action            StudentTransferAuditAction
+  requestVersion    Int @map("request_version")
+  occurredAt        DateTime @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  request           StudentTransferRequest @relation("TransferAuditRequest", fields: [tenantId, campusId, requestId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  actor             MembershipCampus @relation("TransferAuditMembership", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  actorUser         User @relation("TransferAuditUser", fields: [actorUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, requestId, requestVersion], map: "student_transfer_audit_version_key")
+  @@map("student_transfer_audit_events")
+}
+
+model CareRecord {
+  tenantId                String                             @map("tenant_id") @db.Uuid
+  campusId                String                             @map("campus_id") @db.Uuid
+  id                      String                             @default(uuid()) @db.Uuid
+  studentId               String                             @map("student_id") @db.Uuid
+  classRef                String                             @map("class_ref")
+  serviceDate             DateTime                           @map("service_date") @db.Date
+  arrival                 CareArrival
+  homework                CareHomework
+  meal                    CareMeal
+  rest                    CareRest
+  activity                CareActivity
+  wellbeing               CareWellbeing
+  status                  CareRecordStatus                   @default(DRAFT)
+  version                 Int                                @default(1)
+  createdByMembershipId   String                             @map("created_by_membership_id") @db.Uuid
+  reviewedByMembershipId  String?                            @map("reviewed_by_membership_id") @db.Uuid
+  updatedByMembershipId   String                             @map("updated_by_membership_id") @db.Uuid
+  updatedAt               DateTime                           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  published               Boolean                            @default(false)
+  publicationVersion      Int                                @default(0) @map("publication_version")
+  student                 Student                            @relation("CareRecordStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  createdBy               MembershipCampus                   @relation("CareRecordCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy              MembershipCampus?                  @relation("CareRecordReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy               MembershipCampus                   @relation("CareRecordUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  revisions               CareRecordRevision[]               @relation("CareRecordRevisions")
+  attendanceSources       CareRecordAttendanceSource[]       @relation("CareRecordAttendanceSources")
+  mealPlanSources         CareRecordMealPlanSource[]         @relation("CareRecordMealPlanSources")
+  pickupRecordSources     CareRecordPickupRecordSource[]     @relation("CareRecordPickupRecordSources")
+  receipts                CareRecordReceipt[]                @relation("CareRecordReceipts")
+  auditEvents             CareRecordAuditEvent[]             @relation("CareRecordAuditRecord")
+  staffDailyReportSources StaffDailyReportCareRecordSource[] @relation("StaffDailyReportCareRecordTarget")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, id, studentId, serviceDate])
+  @@index([tenantId, campusId, studentId, serviceDate])
+  @@map("care_records")
+}
+
+model CareRecordRevision {
+  tenantId               String                         @map("tenant_id") @db.Uuid
+  campusId               String                         @map("campus_id") @db.Uuid
+  careRecordId           String                         @map("care_record_id") @db.Uuid
+  version                Int
+  arrival                CareArrival
+  homework               CareHomework
+  meal                   CareMeal
+  rest                   CareRest
+  activity               CareActivity
+  wellbeing              CareWellbeing
+  status                 CareRecordStatus
+  reviewedByMembershipId String?                        @map("reviewed_by_membership_id") @db.Uuid
+  updatedByMembershipId  String                         @map("updated_by_membership_id") @db.Uuid
+  updatedAt              DateTime                       @map("updated_at") @db.Timestamptz(6)
+  published              Boolean
+  publicationVersion     Int                            @map("publication_version")
+  sourcesCaptured        Boolean                        @default(false) @map("sources_captured")
+  careRecord             CareRecord                     @relation("CareRecordRevisions", fields: [tenantId, campusId, careRecordId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy             MembershipCampus?              @relation("CareRevisionReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy              MembershipCampus               @relation("CareRevisionUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  attendanceSources      CareRecordAttendanceSource[]   @relation("CareRecordRevisionAttendanceSources")
+  mealPlanSources        CareRecordMealPlanSource[]     @relation("CareRecordRevisionMealPlanSources")
+  pickupRecordSources    CareRecordPickupRecordSource[] @relation("CareRecordRevisionPickupRecordSources")
+
+  @@id([tenantId, campusId, careRecordId, version])
+  @@index([tenantId, campusId, updatedAt])
+  @@map("care_record_revisions")
+}
+
+model CareRecordReceipt {
+  tenantId               String                  @map("tenant_id") @db.Uuid
+  campusId               String                  @map("campus_id") @db.Uuid
+  careRecordId           String                  @map("care_record_id") @db.Uuid
+  studentId              String                  @map("student_id") @db.Uuid
+  serviceDate            DateTime                @map("service_date") @db.Date
+  guardianRelationshipId String                  @map("guardian_relationship_id") @db.Uuid
+  guardianUserId         String                  @map("guardian_user_id") @db.Uuid
+  publicationVersion     Int                     @map("publication_version")
+  status                 CareRecordReceiptStatus
+  readAt                 DateTime?               @map("read_at") @db.Timestamptz(6)
+  acknowledgedAt         DateTime?               @map("acknowledged_at") @db.Timestamptz(6)
+  careRecord             CareRecord              @relation("CareRecordReceipts", fields: [tenantId, campusId, careRecordId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_receipts_care_record_fkey")
+  guardianRelationship   GuardianRelationship    @relation("CareRecordGuardianReceipts", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade, map: "care_record_receipts_guardian_relationship_fkey")
+
+  @@id([tenantId, campusId, careRecordId, guardianRelationshipId, publicationVersion])
+  @@index([tenantId, campusId, guardianRelationshipId, publicationVersion], map: "care_record_receipts_tenant_id_campus_id_guardian_relationship_")
+  @@map("care_record_receipts")
+}
+
+model CareRecordAuditEvent {
+  tenantId          String                @map("tenant_id") @db.Uuid
+  campusId          String                @map("campus_id") @db.Uuid
+  id                String                @default(uuid()) @db.Uuid
+  careRecordId      String                @map("care_record_id") @db.Uuid
+  actorMembershipId String                @map("actor_membership_id") @db.Uuid
+  action            CareRecordAuditAction
+  version           Int
+  occurredAt        DateTime              @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  careRecord        CareRecord            @relation("CareRecordAuditRecord", fields: [tenantId, campusId, careRecordId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "care_record_audit_events_record_fkey")
+  actor             MembershipCampus      @relation("CareRecordAuditActor", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "care_record_audit_events_actor_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, careRecordId, occurredAt], map: "care_record_audit_events_tenant_id_campus_id_care_record_id_occ")
+  @@map("care_record_audit_events")
+}
+
+model CareRecordAttendanceSource {
+  tenantId          String             @map("tenant_id") @db.Uuid
+  campusId          String             @map("campus_id") @db.Uuid
+  careRecordId      String             @map("care_record_id") @db.Uuid
+  careRecordVersion Int                @map("care_record_version")
+  studentId         String             @map("student_id") @db.Uuid
+  serviceDate       DateTime           @map("service_date") @db.Date
+  sourceId          String             @map("source_id") @db.Uuid
+  sourceVersion     Int                @map("source_version")
+  careRecord        CareRecord         @relation("CareRecordAttendanceSources", fields: [tenantId, campusId, careRecordId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_attendance_sources_care_record_fkey")
+  revision          CareRecordRevision @relation("CareRecordRevisionAttendanceSources", fields: [tenantId, campusId, careRecordId, careRecordVersion], references: [tenantId, campusId, careRecordId, version], onDelete: Restrict, onUpdate: Cascade, map: "care_record_attendance_sources_revision_fkey")
+  attendance        AttendanceRecord   @relation("CareRecordAttendanceTarget", fields: [tenantId, campusId, sourceId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_attendance_sources_source_fkey")
+
+  @@id([tenantId, campusId, careRecordId, careRecordVersion, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("care_record_attendance_sources")
+}
+
+model CareRecordMealPlanSource {
+  tenantId          String             @map("tenant_id") @db.Uuid
+  campusId          String             @map("campus_id") @db.Uuid
+  careRecordId      String             @map("care_record_id") @db.Uuid
+  careRecordVersion Int                @map("care_record_version")
+  studentId         String             @map("student_id") @db.Uuid
+  serviceDate       DateTime           @map("service_date") @db.Date
+  sourceId          String             @map("source_id") @db.Uuid
+  sourceVersion     Int                @map("source_version")
+  careRecord        CareRecord         @relation("CareRecordMealPlanSources", fields: [tenantId, campusId, careRecordId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_meal_plan_sources_care_record_fkey")
+  revision          CareRecordRevision @relation("CareRecordRevisionMealPlanSources", fields: [tenantId, campusId, careRecordId, careRecordVersion], references: [tenantId, campusId, careRecordId, version], onDelete: Restrict, onUpdate: Cascade, map: "care_record_meal_plan_sources_revision_fkey")
+  mealPlan          MealPlan           @relation("CareRecordMealPlanTarget", fields: [tenantId, campusId, sourceId, serviceDate], references: [tenantId, campusId, id, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_meal_plan_sources_source_fkey")
+
+  @@id([tenantId, campusId, careRecordId, careRecordVersion, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("care_record_meal_plan_sources")
+}
+
+model CareRecordPickupRecordSource {
+  tenantId          String             @map("tenant_id") @db.Uuid
+  campusId          String             @map("campus_id") @db.Uuid
+  careRecordId      String             @map("care_record_id") @db.Uuid
+  careRecordVersion Int                @map("care_record_version")
+  studentId         String             @map("student_id") @db.Uuid
+  serviceDate       DateTime           @map("service_date") @db.Date
+  sourceId          String             @map("source_id") @db.Uuid
+  careRecord        CareRecord         @relation("CareRecordPickupRecordSources", fields: [tenantId, campusId, careRecordId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_pickup_record_sources_care_record_fkey")
+  revision          CareRecordRevision @relation("CareRecordRevisionPickupRecordSources", fields: [tenantId, campusId, careRecordId, careRecordVersion], references: [tenantId, campusId, careRecordId, version], onDelete: Restrict, onUpdate: Cascade, map: "care_record_pickup_record_sources_revision_fkey")
+  pickupRecord      PickupRecord       @relation("CareRecordPickupRecordTarget", fields: [tenantId, campusId, sourceId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "care_record_pickup_record_sources_source_fkey")
+
+  @@id([tenantId, campusId, careRecordId, careRecordVersion, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("care_record_pickup_record_sources")
+}
+
+model AttendanceRecord {
+  tenantId                String                             @map("tenant_id") @db.Uuid
+  campusId                String                             @map("campus_id") @db.Uuid
+  id                      String                             @default(uuid()) @db.Uuid
+  studentId               String                             @map("student_id") @db.Uuid
+  classRef                String                             @map("class_ref")
+  serviceDate             DateTime                           @map("service_date") @db.Date
+  status                  AttendanceStatus
+  arrivalTime             String?                            @map("arrival_time") @db.VarChar(5)
+  departureTime           String?                            @map("departure_time") @db.VarChar(5)
+  corrected               Boolean                            @default(false)
+  version                 Int                                @default(1)
+  recordedByMembershipId  String                             @map("recorded_by_membership_id") @db.Uuid
+  updatedByMembershipId   String                             @map("updated_by_membership_id") @db.Uuid
+  updatedAt               DateTime                           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  student                 Student                            @relation("AttendanceStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  recordedBy              MembershipCampus                   @relation("AttendanceRecorder", fields: [tenantId, recordedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy               MembershipCampus                   @relation("AttendanceUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  revisions               AttendanceRecordRevision[]         @relation("AttendanceRecordRevisions")
+  corrections             AttendanceCorrection[]             @relation("AttendanceRecordCorrections")
+  pickupRecords           PickupRecord[]                     @relation("PickupRecordAttendance")
+  careRecordSources       CareRecordAttendanceSource[]       @relation("CareRecordAttendanceTarget")
+  staffDailyReportSources StaffDailyReportAttendanceSource[] @relation("StaffDailyReportAttendanceTarget")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, studentId, serviceDate])
+  @@unique([tenantId, campusId, id, studentId, serviceDate])
+  @@index([tenantId, campusId, serviceDate])
+  @@map("attendance_records")
+}
+
+model AttendanceRecordRevision {
+  tenantId              String                   @map("tenant_id") @db.Uuid
+  campusId              String                   @map("campus_id") @db.Uuid
+  attendanceRecordId    String                   @map("attendance_record_id") @db.Uuid
+  version               Int
+  status                AttendanceStatus
+  arrivalTime           String?                  @map("arrival_time") @db.VarChar(5)
+  departureTime         String?                  @map("departure_time") @db.VarChar(5)
+  corrected             Boolean
+  action                AttendanceRevisionAction
+  updatedByMembershipId String                   @map("updated_by_membership_id") @db.Uuid
+  updatedAt             DateTime                 @map("updated_at") @db.Timestamptz(6)
+  attendanceRecord      AttendanceRecord         @relation("AttendanceRecordRevisions", fields: [tenantId, campusId, attendanceRecordId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy             MembershipCampus         @relation("AttendanceRevisionUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, attendanceRecordId, version])
+  @@index([tenantId, campusId, updatedAt])
+  @@map("attendance_record_revisions")
+}
+
+model AttendanceCorrection {
+  tenantId                String                     @map("tenant_id") @db.Uuid
+  campusId                String                     @map("campus_id") @db.Uuid
+  id                      String                     @default(uuid()) @db.Uuid
+  attendanceRecordId      String                     @map("attendance_record_id") @db.Uuid
+  studentId               String                     @map("student_id") @db.Uuid
+  serviceDate             DateTime                   @map("service_date") @db.Date
+  requestedByMembershipId String                     @map("requested_by_membership_id") @db.Uuid
+  reviewedByMembershipId  String?                    @map("reviewed_by_membership_id") @db.Uuid
+  reason                  AttendanceCorrectionReason
+  status                  AttendanceCorrectionStatus @default(PENDING)
+  originalStatus          AttendanceStatus           @map("original_status")
+  originalArrivalTime     String?                    @map("original_arrival_time") @db.VarChar(5)
+  originalDepartureTime   String?                    @map("original_departure_time") @db.VarChar(5)
+  proposedStatus          AttendanceStatus           @map("proposed_status")
+  proposedArrivalTime     String?                    @map("proposed_arrival_time") @db.VarChar(5)
+  proposedDepartureTime   String?                    @map("proposed_departure_time") @db.VarChar(5)
+  requestVersion          Int                        @map("request_version")
+  reviewedAt              DateTime?                  @map("reviewed_at") @db.Timestamptz(6)
+  createdAt               DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime                   @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  attendanceRecord        AttendanceRecord           @relation("AttendanceRecordCorrections", fields: [tenantId, campusId, attendanceRecordId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade, map: "attendance_corrections_record_fkey")
+  requestedBy             MembershipCampus           @relation("AttendanceCorrectionRequester", fields: [tenantId, requestedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "attendance_corrections_requester_fkey")
+  reviewedBy              MembershipCampus?          @relation("AttendanceCorrectionReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "attendance_corrections_reviewer_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, attendanceRecordId, status], map: "attendance_corrections_tenant_campus_record_status_idx")
+  @@index([tenantId, campusId, requestedByMembershipId, createdAt], map: "attendance_corrections_tenant_campus_requester_created_idx")
+  @@map("attendance_corrections")
+}
+
+model MealPlan {
+  tenantId              String                     @map("tenant_id") @db.Uuid
+  campusId              String                     @map("campus_id") @db.Uuid
+  id                    String                     @default(uuid()) @db.Uuid
+  serviceDate           DateTime                   @map("service_date") @db.Date
+  mealPeriod            MealPeriod                 @map("meal_period")
+  notes                 String                     @db.VarChar(500)
+  publishStatus         MealPlanStatus             @map("publish_status")
+  version               Int                        @default(1)
+  publishedAt           DateTime?                  @map("published_at") @db.Timestamptz(6)
+  updatedByMembershipId String                     @map("updated_by_membership_id") @db.Uuid
+  updatedAt             DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                Campus                     @relation("MealPlanCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy             MembershipCampus           @relation("MealPlanUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  items                 MealPlanItem[]             @relation("MealPlanItems")
+  careRecordSources     CareRecordMealPlanSource[] @relation("CareRecordMealPlanTarget")
+  publicationEvents     MealPublicationEvent[]     @relation("MealPublicationEventMealPlan")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, id, serviceDate])
+  @@index([tenantId, campusId, serviceDate, mealPeriod])
+  @@map("meal_plans")
+}
+
+model MealPublicationEvent {
+  tenantId          String           @map("tenant_id") @db.Uuid
+  campusId          String           @map("campus_id") @db.Uuid
+  id                String           @default(uuid()) @db.Uuid
+  mealPlanId        String           @map("meal_plan_id") @db.Uuid
+  action            String           @db.VarChar(16)
+  resultingVersion  Int              @map("resulting_version")
+  actorMembershipId String           @map("actor_membership_id") @db.Uuid
+  occurredAt        DateTime         @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  campus            Campus           @relation("MealPublicationEventCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  mealPlan          MealPlan         @relation("MealPublicationEventMealPlan", fields: [tenantId, campusId, mealPlanId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  actor             MembershipCampus @relation("MealPublicationEventActor", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "meal_publication_events_tenant_id_actor_membership_id_campus_id")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, occurredAt(sort: Desc)])
+  @@map("meal_publication_events")
+}
+
+model MealPlanItem {
+  tenantId   String   @map("tenant_id") @db.Uuid
+  campusId   String   @map("campus_id") @db.Uuid
+  mealPlanId String   @map("meal_plan_id") @db.Uuid
+  position   Int
+  itemName   String   @map("item_name") @db.VarChar(120)
+  mealPlan   MealPlan @relation("MealPlanItems", fields: [tenantId, campusId, mealPlanId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, mealPlanId, position])
+  @@map("meal_plan_items")
+}
+
+model BindingApplication {
+  tenantId               String                   @map("tenant_id") @db.Uuid
+  campusId               String                   @map("campus_id") @db.Uuid
+  id                     String                   @default(uuid()) @db.Uuid
+  applicantUserId        String                   @map("applicant_user_id") @db.Uuid
+  onboardingScopeRef     String                   @map("onboarding_scope_ref") @db.Uuid
+  studentCandidateRef    String                   @map("student_candidate_ref") @db.Uuid
+  status                 BindingApplicationStatus @default(PENDING)
+  reasonCategory         String?                  @map("reason_category") @db.VarChar(80)
+  version                Int                      @default(1)
+  reviewedByMembershipId String?                  @map("reviewed_by_membership_id") @db.Uuid
+  reviewedAt             DateTime?                @map("reviewed_at") @db.Timestamptz(6)
+  createdAt              DateTime                 @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime                 @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus                   @relation("BindingApplicationCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  applicant              User                     @relation("BindingApplicationApplicant", fields: [applicantUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy             MembershipCampus?        @relation("BindingApplicationReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  relationships          GuardianRelationship[]   @relation("BindingApplicationRelationship")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, onboardingScopeRef])
+  @@unique([tenantId, campusId, id, applicantUserId])
+  @@index([tenantId, campusId, applicantUserId, studentCandidateRef], map: "binding_applications_tenant_campus_applicant_student_idx")
+  @@index([tenantId, campusId, applicantUserId, status])
+  @@map("binding_applications")
+}
+
+model GuardianRelationship {
+  tenantId                    String                           @map("tenant_id") @db.Uuid
+  campusId                    String                           @map("campus_id") @db.Uuid
+  id                          String                           @default(uuid()) @db.Uuid
+  bindingApplicationId        String                           @map("binding_application_id") @db.Uuid
+  guardianUserId              String                           @map("guardian_user_id") @db.Uuid
+  studentId                   String                           @map("student_id") @db.Uuid
+  status                      GuardianRelationshipStatus       @default(ACTIVE)
+  version                     Int                              @default(1)
+  approvedByMembershipId      String                           @map("approved_by_membership_id") @db.Uuid
+  approvedAt                  DateTime                         @map("approved_at") @db.Timestamptz(6)
+  releasedAt                  DateTime?                        @map("released_at") @db.Timestamptz(6)
+  createdAt                   DateTime                         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                   DateTime                         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                      Campus                           @relation("GuardianRelationshipCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardian                    User                             @relation("GuardianRelationshipGuardian", fields: [guardianUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  student                     Student                          @relation("GuardianRelationshipStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  sourceApplication           BindingApplication               @relation("BindingApplicationRelationship", fields: [tenantId, campusId, bindingApplicationId, guardianUserId], references: [tenantId, campusId, id, applicantUserId], onDelete: Restrict, onUpdate: Cascade)
+  approvedBy                  MembershipCampus                 @relation("GuardianRelationshipApprover", fields: [tenantId, approvedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  leaveRequests               LeaveRequest[]                   @relation("LeaveRequestRelationship")
+  pickupAuthorizations        PickupAuthorization[]            @relation("PickupAuthorizationRelationship")
+  healthIncidents             HealthIncident[]                 @relation("HealthIncidentRelationship")
+  guardianConsents            GuardianConsent[]                @relation("GuardianConsentRelationship")
+  parentLearningSessions      ParentLearningSession[]          @relation("ParentLearningSessionRelationship")
+  auditEvents                 GuardianRelationshipAuditEvent[] @relation("GuardianRelationshipAuditEvents")
+  careRecordReceipts          CareRecordReceipt[]              @relation("CareRecordGuardianReceipts")
+  childMonthlyReceipts        ChildMonthlyReceipt[]            @relation("ChildMonthlyGuardianReceipts")
+  parentLearningControl       ParentLearningControl?           @relation("ParentLearningControlRelationship")
+  parentLearningContactIntent ParentLearningContactIntent?     @relation("ParentLearningContactIntentRelationship")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, bindingApplicationId])
+  @@unique([tenantId, campusId, id, studentId, guardianUserId])
+  @@index([tenantId, campusId, guardianUserId, status])
+  @@index([tenantId, campusId, studentId, status])
+  @@map("guardian_relationships")
+}
+
+model GuardianRelationshipAuditEvent {
+  tenantId               String                          @map("tenant_id") @db.Uuid
+  campusId               String                          @map("campus_id") @db.Uuid
+  id                     String                          @default(uuid()) @db.Uuid
+  guardianRelationshipId String                          @map("guardian_relationship_id") @db.Uuid
+  actorMembershipId      String                          @map("actor_membership_id") @db.Uuid
+  action                 GuardianRelationshipAuditAction
+  relationshipVersion    Int                             @map("relationship_version")
+  occurredAt             DateTime                        @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  campus                 Campus                          @relation("GuardianRelationshipAuditEventCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "guardian_relationship_audit_events_campus_fkey")
+  guardianRelationship   GuardianRelationship            @relation("GuardianRelationshipAuditEvents", fields: [tenantId, campusId, guardianRelationshipId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "guardian_relationship_audit_events_relationship_fkey")
+  actor                  MembershipCampus                @relation("GuardianRelationshipAuditEventActor", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "guardian_relationship_audit_events_actor_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, guardianRelationshipId, relationshipVersion], map: "guardian_relationship_audit_relationship_version_key")
+  @@index([tenantId, campusId, occurredAt(sort: Desc)], map: "guardian_relationship_audit_scope_time_idx")
+  @@map("guardian_relationship_audit_events")
+}
+
+model LeaveRequest {
+  tenantId               String                 @map("tenant_id") @db.Uuid
+  campusId               String                 @map("campus_id") @db.Uuid
+  id                     String                 @default(uuid()) @db.Uuid
+  studentId              String                 @map("student_id") @db.Uuid
+  guardianRelationshipId String                 @map("guardian_relationship_id") @db.Uuid
+  requesterUserId        String                 @map("requester_user_id") @db.Uuid
+  startDate              DateTime               @map("start_date") @db.Date
+  endDate                DateTime               @map("end_date") @db.Date
+  reasonCategory         LeaveReasonCategory    @map("reason_category")
+  status                 LeaveRequestStatus     @default(SUBMITTED)
+  version                Int                    @default(1)
+  acknowledged           Boolean                @default(false)
+  updatedByMembershipId  String                 @map("updated_by_membership_id") @db.Uuid
+  updatedAt              DateTime               @updatedAt @map("updated_at") @db.Timestamptz(6)
+  student                Student                @relation("LeaveRequestStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship   GuardianRelationship   @relation("LeaveRequestRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, requesterUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+  requester              User                   @relation("LeaveRequestRequester", fields: [requesterUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy              MembershipCampus       @relation("LeaveRequestUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  revisions              LeaveRequestRevision[] @relation("LeaveRequestRevisions")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, guardianRelationshipId, status])
+  @@index([tenantId, campusId, studentId, startDate])
+  @@map("leave_requests")
+}
+
+model LeaveRequestRevision {
+  tenantId              String              @map("tenant_id") @db.Uuid
+  campusId              String              @map("campus_id") @db.Uuid
+  leaveRequestId        String              @map("leave_request_id") @db.Uuid
+  version               Int
+  startDate             DateTime            @map("start_date") @db.Date
+  endDate               DateTime            @map("end_date") @db.Date
+  reasonCategory        LeaveReasonCategory @map("reason_category")
+  status                LeaveRequestStatus  @map("status")
+  acknowledged          Boolean             @map("acknowledged")
+  updatedByMembershipId String              @map("updated_by_membership_id") @db.Uuid
+  updatedAt             DateTime            @map("updated_at") @db.Timestamptz(6)
+  leaveRequest          LeaveRequest        @relation("LeaveRequestRevisions", fields: [tenantId, campusId, leaveRequestId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy             MembershipCampus    @relation("LeaveRequestRevisionUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, leaveRequestId, version])
+  @@index([tenantId, campusId, updatedAt])
+  @@map("leave_request_revisions")
+}
+
+model PickupAuthorization {
+  tenantId               String                    @map("tenant_id") @db.Uuid
+  campusId               String                    @map("campus_id") @db.Uuid
+  id                     String                    @default(uuid()) @db.Uuid
+  studentId              String                    @map("student_id") @db.Uuid
+  guardianRelationshipId String                    @map("guardian_relationship_id") @db.Uuid
+  guardianUserId         String                    @map("guardian_user_id") @db.Uuid
+  authorizedPartyRef     PickupRecipient           @map("authorized_party_ref")
+  type                   PickupAuthorizationType
+  startDate              DateTime                  @map("start_date") @db.Date
+  endDate                DateTime                  @map("end_date") @db.Date
+  startTime              String                    @map("start_time") @db.VarChar(5)
+  endTime                String                    @map("end_time") @db.VarChar(5)
+  status                 PickupAuthorizationStatus @default(DRAFT)
+  version                Int                       @default(1)
+  createdByMembershipId  String                    @map("created_by_membership_id") @db.Uuid
+  createdAt              DateTime                  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedByMembershipId  String                    @map("updated_by_membership_id") @db.Uuid
+  updatedAt              DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  student                Student                   @relation("PickupAuthorizationStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship   GuardianRelationship      @relation("PickupAuthorizationRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+  createdBy              MembershipCampus          @relation("PickupAuthorizationCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy              MembershipCampus          @relation("PickupAuthorizationUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  records                PickupRecord[]            @relation("PickupRecordAuthorization")
+  credentials            PickupCredential[]        @relation("PickupCredentialAuthorization")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, id, studentId, guardianRelationshipId, guardianUserId])
+  @@index([tenantId, campusId, guardianRelationshipId, status])
+  @@index([tenantId, campusId, studentId, startDate])
+  @@map("pickup_authorizations")
+}
+
+model PickupCredential {
+  tenantId             String              @map("tenant_id") @db.Uuid
+  campusId             String              @map("campus_id") @db.Uuid
+  id                   String              @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authorizationId      String              @map("authorization_id") @db.Uuid
+  authorizationVersion Int                 @map("authorization_version")
+  credentialHash       String              @unique @map("credential_hash") @db.VarChar(64)
+  issuedByMembershipId String              @map("issued_by_membership_id") @db.Uuid
+  expiresAt            DateTime            @map("expires_at") @db.Timestamptz(6)
+  consumedAt           DateTime?           @map("consumed_at") @db.Timestamptz(6)
+  invalidatedAt        DateTime?           @map("invalidated_at") @db.Timestamptz(6)
+  createdAt            DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  authorization        PickupAuthorization @relation("PickupCredentialAuthorization", fields: [tenantId, campusId, authorizationId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "pickup_credentials_authorization_fkey")
+  issuedBy             MembershipCampus    @relation("PickupCredentialIssuer", fields: [tenantId, issuedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "pickup_credentials_issuer_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, authorizationId, createdAt], map: "pickup_credentials_tenant_id_campus_id_authorization_id_created")
+  @@index([tenantId, campusId, expiresAt])
+  @@map("pickup_credentials")
+}
+
+model PickupRecord {
+  tenantId                String                               @map("tenant_id") @db.Uuid
+  campusId                String                               @map("campus_id") @db.Uuid
+  id                      String                               @default(uuid()) @db.Uuid
+  authorizationId         String                               @map("authorization_id") @db.Uuid
+  authorizationVersion    Int                                  @map("authorization_version")
+  guardianRelationshipId  String                               @map("guardian_relationship_id") @db.Uuid
+  guardianUserId          String                               @map("guardian_user_id") @db.Uuid
+  studentId               String                               @map("student_id") @db.Uuid
+  attendanceRecordId      String                               @map("attendance_record_id") @db.Uuid
+  attendanceVersion       Int                                  @map("attendance_version")
+  authorizedPartyRef      PickupRecipient                      @map("authorized_party_ref")
+  serviceDate             DateTime                             @map("service_date") @db.Date
+  status                  PickupRecordStatus                   @default(COMPLETED)
+  studentChecked          Boolean                              @map("student_checked")
+  recipientChecked        Boolean                              @map("recipient_checked")
+  authorizationChecked    Boolean                              @map("authorization_checked")
+  checkedByMembershipId   String                               @map("checked_by_membership_id") @db.Uuid
+  occurredAt              DateTime                             @map("occurred_at") @db.Timestamptz(6)
+  student                 Student                              @relation("PickupRecordStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  authorization           PickupAuthorization                  @relation("PickupRecordAuthorization", fields: [tenantId, campusId, authorizationId, studentId, guardianRelationshipId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianRelationshipId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+  attendanceRecord        AttendanceRecord                     @relation("PickupRecordAttendance", fields: [tenantId, campusId, attendanceRecordId, studentId, serviceDate], references: [tenantId, campusId, id, studentId, serviceDate], onDelete: Restrict, onUpdate: Cascade)
+  checkedBy               MembershipCampus                     @relation("PickupRecordChecker", fields: [tenantId, checkedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  careRecordSources       CareRecordPickupRecordSource[]       @relation("CareRecordPickupRecordTarget")
+  staffDailyReportSources StaffDailyReportPickupRecordSource[] @relation("StaffDailyReportPickupRecordTarget")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, id, studentId, serviceDate])
+  @@unique([tenantId, campusId, studentId, serviceDate])
+  @@index([tenantId, campusId, authorizationId, serviceDate])
+  @@index([tenantId, campusId, checkedByMembershipId, occurredAt])
+  @@map("pickup_records")
+}
+
+model HealthIncident {
+  tenantId                    String                        @map("tenant_id") @db.Uuid
+  campusId                    String                        @map("campus_id") @db.Uuid
+  id                          String                        @default(uuid()) @db.Uuid
+  studentId                   String                        @map("student_id") @db.Uuid
+  guardianRelationshipId      String                        @map("guardian_relationship_id") @db.Uuid
+  guardianUserId              String                        @map("guardian_user_id") @db.Uuid
+  guardianRelationshipVersion Int                           @map("guardian_relationship_version")
+  observationCode             HealthIncidentObservationCode @map("observation_code")
+  dispositionCode             HealthIncidentDispositionCode @map("disposition_code")
+  summaryCode                 HealthIncidentSummaryCode?    @map("summary_code")
+  status                      HealthIncidentStatus          @default(DRAFT)
+  published                   Boolean                       @default(false)
+  version                     Int                           @default(1)
+  createdByMembershipId       String                        @map("created_by_membership_id") @db.Uuid
+  createdAt                   DateTime                      @default(now()) @map("created_at") @db.Timestamptz(6)
+  reviewedByMembershipId      String?                       @map("reviewed_by_membership_id") @db.Uuid
+  updatedByMembershipId       String                        @map("updated_by_membership_id") @db.Uuid
+  updatedAt                   DateTime                      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  student                     Student                       @relation("HealthIncidentStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship        GuardianRelationship          @relation("HealthIncidentRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+  createdBy                   MembershipCampus              @relation("HealthIncidentCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy                  MembershipCampus?             @relation("HealthIncidentReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy                   MembershipCampus              @relation("HealthIncidentUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  receipts                    HealthIncidentReceipt[]       @relation("HealthIncidentReceipts")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, guardianRelationshipId, status])
+  @@index([tenantId, campusId, status, updatedAt])
+  @@map("health_incidents")
+}
+
+model HealthIncidentReceipt {
+  tenantId   String                      @map("tenant_id") @db.Uuid
+  campusId   String                      @map("campus_id") @db.Uuid
+  incidentId String                      @map("incident_id") @db.Uuid
+  version    Int
+  status     HealthIncidentReceiptStatus
+  updatedAt  DateTime                    @updatedAt @map("updated_at") @db.Timestamptz(6)
+  incident   HealthIncident              @relation("HealthIncidentReceipts", fields: [tenantId, campusId, incidentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, incidentId])
+  @@index([tenantId, campusId, status, updatedAt])
+  @@map("health_incident_receipts")
+}
+
+model Notice {
+  tenantId               String             @map("tenant_id") @db.Uuid
+  campusId               String             @map("campus_id") @db.Uuid
+  id                     String             @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  templateCode           NoticeTemplateCode @map("template_code")
+  target                 NoticeTarget
+  classRef               String?            @map("class_ref") @db.VarChar(80)
+  status                 NoticeStatus       @default(DRAFT)
+  published              Boolean            @default(false)
+  version                Int                @default(1)
+  createdByMembershipId  String             @map("created_by_membership_id") @db.Uuid
+  reviewedByMembershipId String?            @map("reviewed_by_membership_id") @db.Uuid
+  publishedAt            DateTime?          @map("published_at") @db.Timestamptz(6)
+  revokedAt              DateTime?          @map("revoked_at") @db.Timestamptz(6)
+  createdAt              DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus             @relation("NoticeCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "notices_campus_fkey")
+  createdBy              MembershipCampus   @relation("NoticeCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "notices_creator_fkey")
+  reviewedBy             MembershipCampus?  @relation("NoticeReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "notices_reviewer_fkey")
+  receipts               NoticeReceipt[]    @relation("NoticeReceipts")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, status, updatedAt], map: "notices_tenant_campus_status_updated_at_idx")
+  @@index([tenantId, campusId, createdByMembershipId, updatedAt], map: "notices_tenant_campus_creator_updated_at_idx")
+  @@index([tenantId, campusId, target, classRef, status], map: "notices_tenant_campus_target_class_status_idx")
+  @@map("notices")
+}
+
+model NoticeReceipt {
+  tenantId       String              @map("tenant_id") @db.Uuid
+  campusId       String              @map("campus_id") @db.Uuid
+  noticeId       String              @map("notice_id") @db.Uuid
+  guardianUserId String              @map("guardian_user_id") @db.Uuid
+  version        Int
+  status         NoticeReceiptStatus
+  updatedAt      DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  notice         Notice              @relation("NoticeReceipts", fields: [tenantId, campusId, noticeId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "notice_receipts_notice_fkey")
+  guardian       User                @relation("NoticeReceiptGuardian", fields: [guardianUserId], references: [id], onDelete: Restrict, onUpdate: Cascade, map: "notice_receipts_guardian_fkey")
+
+  @@id([tenantId, campusId, noticeId, guardianUserId, version])
+  @@index([tenantId, campusId, guardianUserId, status, updatedAt], map: "notice_receipts_tenant_campus_guardian_status_updated_at_idx")
+  @@map("notice_receipts")
+}
+
+model GuardianConsent {
+  tenantId               String                       @map("tenant_id") @db.Uuid
+  campusId               String                       @map("campus_id") @db.Uuid
+  id                     String                       @default(uuid()) @db.Uuid
+  guardianRelationshipId String                       @map("guardian_relationship_id") @db.Uuid
+  studentId              String                       @map("student_id") @db.Uuid
+  guardianUserId         String                       @map("guardian_user_id") @db.Uuid
+  scope                  GuardianConsentScope
+  consentVersion         GuardianConsentVersion       @map("consent_version")
+  noticeVersion          GuardianConsentNoticeVersion @map("notice_version")
+  policyVersion          GuardianConsentPolicyVersion @map("policy_version")
+  status                 GuardianConsentStatus        @default(ACTIVE)
+  version                Int                          @default(1)
+  confirmedAt            DateTime                     @map("confirmed_at") @db.Timestamptz(6)
+  withdrawnAt            DateTime?                    @map("withdrawn_at") @db.Timestamptz(6)
+  createdAt              DateTime                     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus                       @relation("GuardianConsentCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  student                Student                      @relation("GuardianConsentStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardian               User                         @relation("GuardianConsentGuardian", fields: [guardianUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship   GuardianRelationship         @relation("GuardianConsentRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+  parentLearningSessions ParentLearningSession[]      @relation("ParentLearningSessionConsent")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, id, guardianRelationshipId, studentId, guardianUserId], map: "guardian_consents_session_scope_key")
+  @@index([tenantId, campusId, guardianRelationshipId, scope, status])
+  @@index([tenantId, campusId, studentId, status])
+  @@map("guardian_consents")
+}
+
+model ParentLearningSession {
+  tenantId               String                       @map("tenant_id") @db.Uuid
+  campusId               String                       @map("campus_id") @db.Uuid
+  id                     String                       @default(uuid()) @db.Uuid
+  guardianRelationshipId String                       @map("guardian_relationship_id") @db.Uuid
+  studentId              String                       @map("student_id") @db.Uuid
+  guardianUserId         String                       @map("guardian_user_id") @db.Uuid
+  consentId              String                       @map("consent_id") @db.Uuid
+  consentVersion         GuardianConsentVersion       @map("consent_version")
+  policyVersion          GuardianConsentPolicyVersion @map("policy_version")
+  status                 String                       @default("ACTIVE") @db.VarChar(16)
+  version                Int                          @default(1)
+  durationMinutes        Int                          @map("duration_minutes")
+  startedAt              DateTime                     @default(now()) @map("started_at") @db.Timestamptz(6)
+  endsAt                 DateTime                     @map("ends_at") @db.Timestamptz(6)
+  endedAt                DateTime?                    @map("ended_at") @db.Timestamptz(6)
+  mainAttempts           Int                          @default(0) @map("main_attempts")
+  lastHintAtAttempt      Int                          @default(0) @map("last_hint_at_attempt")
+  mainWrongAttempts      Int                          @default(0) @map("main_wrong_attempts")
+  answeredAfterHint      Boolean                      @default(false) @map("answered_after_hint")
+  mainCorrect            Boolean                      @default(false) @map("main_correct")
+  highestHintLevel       Int                          @default(-1) @map("highest_hint_level")
+  visibleHintLevel       Int?                         @map("visible_hint_level")
+  practiceOneAnswered    Boolean                      @default(false) @map("practice_one_answered")
+  practiceOneCorrect     Boolean?                     @map("practice_one_correct")
+  practiceTwoAnswered    Boolean                      @default(false) @map("practice_two_answered")
+  practiceTwoCorrect     Boolean?                     @map("practice_two_correct")
+  needsTeacherFollowUp   Boolean                      @default(false) @map("needs_teacher_follow_up")
+  createdAt              DateTime                     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus                       @relation("ParentLearningSessionCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  student                Student                      @relation("ParentLearningSessionStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardian               User                         @relation("ParentLearningSessionGuardian", fields: [guardianUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship   GuardianRelationship         @relation("ParentLearningSessionRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+  consent                GuardianConsent              @relation("ParentLearningSessionConsent", fields: [tenantId, campusId, consentId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, guardianRelationshipId, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, guardianUserId, status, startedAt])
+  @@index([tenantId, campusId, studentId, startedAt])
+  @@index([tenantId, campusId, guardianRelationshipId, status])
+  @@map("parent_learning_sessions")
+}
+
+model ParentLearningSummarySnapshot {
+  tenantId               String           @map("tenant_id") @db.Uuid
+  campusId               String           @map("campus_id") @db.Uuid
+  id                     String           @default(uuid()) @db.Uuid
+  studentId              String           @map("student_id") @db.Uuid
+  classRef               String           @map("class_ref") @db.VarChar(80)
+  summaryDate            DateTime         @map("summary_date") @db.Date
+  usedMinutes            Int              @map("used_minutes")
+  sessionCount           Int              @map("session_count")
+  completedSessions      Int              @map("completed_sessions")
+  knowledgePoints        Json             @default("[]") @map("knowledge_points")
+  attentionCount         Int              @map("attention_count")
+  reviewedByMembershipId String           @map("reviewed_by_membership_id") @db.Uuid
+  reviewedAt             DateTime         @map("reviewed_at") @db.Timestamptz(6)
+  createdAt              DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus           @relation("ParentLearningSummaryCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  student                Student          @relation("ParentLearningSummaryStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy             MembershipCampus @relation("ParentLearningSummaryReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, studentId, summaryDate])
+  @@index([tenantId, campusId, studentId, reviewedAt])
+  @@map("parent_learning_summary_snapshots")
+}
+
+model ParentLearningControl {
+  tenantId               String               @map("tenant_id") @db.Uuid
+  campusId               String               @map("campus_id") @db.Uuid
+  id                     String               @default(uuid()) @db.Uuid
+  guardianRelationshipId String               @map("guardian_relationship_id") @db.Uuid
+  studentId              String               @map("student_id") @db.Uuid
+  guardianUserId         String               @map("guardian_user_id") @db.Uuid
+  enabled                Boolean              @default(true)
+  maxDurationMinutes     Int                  @default(15) @map("max_duration_minutes")
+  maxHintLevel           Int                  @default(3) @map("max_hint_level")
+  version                Int                  @default(1)
+  createdAt              DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus               @relation("ParentLearningControlCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship   GuardianRelationship @relation("ParentLearningControlRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, guardianRelationshipId, studentId, guardianUserId])
+  @@index([tenantId, campusId, studentId])
+  @@map("parent_learning_controls")
+}
+
+model ParentLearningContactIntent {
+  tenantId               String               @map("tenant_id") @db.Uuid
+  campusId               String               @map("campus_id") @db.Uuid
+  id                     String               @default(uuid()) @db.Uuid
+  guardianRelationshipId String               @map("guardian_relationship_id") @db.Uuid
+  studentId              String               @map("student_id") @db.Uuid
+  guardianUserId         String               @map("guardian_user_id") @db.Uuid
+  createdAt              DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  campus                 Campus               @relation("ParentLearningContactIntentCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  guardianRelationship   GuardianRelationship @relation("ParentLearningContactIntentRelationship", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, guardianRelationshipId, studentId, guardianUserId])
+  @@index([tenantId, campusId, studentId, createdAt])
+  @@map("parent_learning_contact_intents")
+}
+
+model AIInstitutionSetting {
+  tenantId              String           @map("tenant_id") @db.Uuid
+  campusId              String           @map("campus_id") @db.Uuid
+  enabled               Boolean          @default(false)
+  version               Int              @default(1)
+  updatedByMembershipId String           @map("updated_by_membership_id") @db.Uuid
+  updatedAt             DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                Campus           @relation("AIInstitutionSettingCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "ai_institution_settings_campus_fkey")
+  updatedBy             MembershipCampus @relation("AIInstitutionSettingUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "ai_institution_settings_updater_fkey")
+
+  @@id([tenantId, campusId])
+  @@map("ai_institution_settings")
+}
+
+model WorkTask {
+  tenantId                String                           @map("tenant_id") @db.Uuid
+  campusId                String                           @map("campus_id") @db.Uuid
+  id                      String                           @default(uuid()) @db.Uuid
+  classRef                String                           @map("class_ref") @db.VarChar(80)
+  code                    StaffTaskCode
+  targetType              StaffTaskTargetType              @map("target_type")
+  targetRef               String                           @map("target_ref") @db.VarChar(80)
+  studentId               String?                          @map("student_id") @db.Uuid
+  dueDate                 DateTime                         @map("due_date") @db.Date
+  priority                StaffTaskPriority
+  status                  StaffTaskStatus                  @default(ASSIGNED)
+  result                  StaffTaskResult?
+  version                 Int                              @default(1)
+  createdByMembershipId   String                           @map("created_by_membership_id") @db.Uuid
+  assigneeMembershipId    String                           @map("assignee_membership_id") @db.Uuid
+  claimedByMembershipId   String?                          @map("claimed_by_membership_id") @db.Uuid
+  completedByMembershipId String?                          @map("completed_by_membership_id") @db.Uuid
+  checkedByMembershipId   String?                          @map("checked_by_membership_id") @db.Uuid
+  updatedByMembershipId   String                           @map("updated_by_membership_id") @db.Uuid
+  updatedAt               DateTime                         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                  Campus                           @relation("WorkTaskCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  student                 Student?                         @relation("WorkTaskStudentTarget", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  createdBy               MembershipCampus                 @relation("WorkTaskCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  assignee                MembershipCampus                 @relation("WorkTaskAssignee", fields: [tenantId, assigneeMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  claimedBy               MembershipCampus?                @relation("WorkTaskClaimer", fields: [tenantId, claimedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  completedBy             MembershipCampus?                @relation("WorkTaskCompleter", fields: [tenantId, completedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  checkedBy               MembershipCampus?                @relation("WorkTaskChecker", fields: [tenantId, checkedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy               MembershipCampus                 @relation("WorkTaskUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  staffDailyReportSources StaffDailyReportWorkTaskSource[] @relation("StaffDailyReportWorkTaskTarget")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, assigneeMembershipId, status, dueDate])
+  @@index([tenantId, campusId, classRef, dueDate])
+  @@map("work_tasks")
+}
+
+model PickupException {
+  tenantId                String                                  @map("tenant_id") @db.Uuid
+  campusId                String                                  @map("campus_id") @db.Uuid
+  id                      String                                  @default(uuid()) @db.Uuid
+  studentId               String                                  @map("student_id") @db.Uuid
+  classRef                String                                  @map("class_ref") @db.VarChar(80)
+  date                    DateTime                                @db.Date
+  category                PickupExceptionCategory
+  status                  PickupExceptionStatus                   @default(OPEN)
+  version                 Int                                     @default(1)
+  createdByMembershipId   String                                  @map("created_by_membership_id") @db.Uuid
+  createdAt               DateTime                                @default(now()) @map("created_at") @db.Timestamptz(6)
+  reviewedByMembershipId  String?                                 @map("reviewed_by_membership_id") @db.Uuid
+  reviewedAt              DateTime?                               @map("reviewed_at") @db.Timestamptz(6)
+  outcome                 PickupExceptionOutcome?
+  campus                  Campus                                  @relation("PickupExceptionCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  student                 Student                                 @relation("PickupExceptionStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade)
+  createdBy               MembershipCampus                        @relation("PickupExceptionCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy              MembershipCampus?                       @relation("PickupExceptionReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  staffDailyReportSources StaffDailyReportPickupExceptionSource[] @relation("StaffDailyReportPickupExceptionTarget")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, classRef, date, status])
+  @@index([tenantId, campusId, studentId, date])
+  @@map("pickup_exceptions")
+}
+
+enum MonthlyFeedbackStatus {
+  DRAFT
+  SUBMITTED
+  RETURNED
+  CONFIRMED
+  PUBLISHED
+  REVIEW_REQUIRED
+
+  @@map("monthly_feedback_status")
+}
+
+enum MonthlyFeedbackSupplement {
+  KEEP_WATCHING
+  PROGRESSING
+  FOLLOW_UP
+
+  @@map("monthly_feedback_supplement")
+}
+
+model MonthlyFeedbackReport {
+  tenantId                  String                    @map("tenant_id") @db.Uuid
+  campusId                  String                    @map("campus_id") @db.Uuid
+  id                        String                    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  classRef                  String                    @map("class_ref") @db.VarChar(80)
+  month                     String                    @db.VarChar(7)
+  learningParticipation     MonthlyFeedbackSupplement @map("learning_participation")
+  dailyHabits               MonthlyFeedbackSupplement @map("daily_habits")
+  activityParticipation     MonthlyFeedbackSupplement @map("activity_participation")
+  familySchoolCollaboration MonthlyFeedbackSupplement @map("family_school_collaboration")
+  status                    MonthlyFeedbackStatus     @default(DRAFT)
+  version                   Int                       @default(1)
+  sourceVersion             Int                       @default(1) @map("source_version")
+  sources                   Json
+  createdByMembershipId     String                    @map("created_by_membership_id") @db.Uuid
+  reviewedByMembershipId    String?                   @map("reviewed_by_membership_id") @db.Uuid
+  updatedByMembershipId     String                    @map("updated_by_membership_id") @db.Uuid
+  updatedAt                 DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                    Campus                    @relation("MonthlyFeedbackCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "monthly_feedback_campus_fkey")
+  createdBy                 MembershipCampus          @relation("MonthlyFeedbackCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "monthly_feedback_creator_fkey")
+  reviewedBy                MembershipCampus?         @relation("MonthlyFeedbackReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "monthly_feedback_reviewer_fkey")
+  updatedBy                 MembershipCampus          @relation("MonthlyFeedbackUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "monthly_feedback_updater_fkey")
+  events                    MonthlyFeedbackEvent[]    @relation("MonthlyFeedbackEvents")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, classRef, month], map: "monthly_feedback_reports_tenant_id_campus_id_class_ref_month_ke")
+  @@index([tenantId, campusId, classRef, status], map: "monthly_feedback_reports_tenant_id_campus_id_class_ref_status_i")
+  @@map("monthly_feedback_reports")
+}
+
+model MonthlyFeedbackEvent {
+  tenantId          String                @map("tenant_id") @db.Uuid
+  campusId          String                @map("campus_id") @db.Uuid
+  reportId          String                @map("report_id") @db.Uuid
+  version           Int
+  sourceVersion     Int                   @map("source_version")
+  status            MonthlyFeedbackStatus
+  action            String                @db.VarChar(24)
+  actorMembershipId String                @map("actor_membership_id") @db.Uuid
+  createdAt         DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  report            MonthlyFeedbackReport @relation("MonthlyFeedbackEvents", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "monthly_feedback_event_report_fkey")
+  actor             MembershipCampus      @relation("MonthlyFeedbackActor", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "monthly_feedback_event_actor_fkey")
+
+  @@id([tenantId, campusId, reportId, version])
+  @@map("monthly_feedback_events")
+}
+
+model ChildMonthlyReport {
+  tenantId                  String                    @map("tenant_id") @db.Uuid
+  campusId                  String                    @map("campus_id") @db.Uuid
+  id                        String                    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId                 String                    @map("student_id") @db.Uuid
+  classRef                  String                    @map("class_ref") @db.VarChar(80)
+  month                     String                    @db.VarChar(7)
+  learningParticipation     MonthlyFeedbackSupplement @map("learning_participation")
+  dailyHabits               MonthlyFeedbackSupplement @map("daily_habits")
+  activityParticipation     MonthlyFeedbackSupplement @map("activity_participation")
+  familySchoolCollaboration MonthlyFeedbackSupplement @map("family_school_collaboration")
+  status                    MonthlyFeedbackStatus     @default(DRAFT)
+  version                   Int                       @default(1)
+  sourceVersion             Int                       @default(1) @map("source_version")
+  publicationVersion        Int                       @default(0) @map("publication_version")
+  sources                   Json
+  createdByMembershipId     String                    @map("created_by_membership_id") @db.Uuid
+  reviewedByMembershipId    String?                   @map("reviewed_by_membership_id") @db.Uuid
+  updatedByMembershipId     String                    @map("updated_by_membership_id") @db.Uuid
+  updatedAt                 DateTime                  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                    Campus                    @relation("ChildMonthlyCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_campus_fkey")
+  student                   Student                   @relation("ChildMonthlyStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_student_fkey")
+  createdBy                 MembershipCampus          @relation("ChildMonthlyCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_creator_fkey")
+  reviewedBy                MembershipCampus?         @relation("ChildMonthlyReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_reviewer_fkey")
+  updatedBy                 MembershipCampus          @relation("ChildMonthlyUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_updater_fkey")
+  events                    ChildMonthlyEvent[]       @relation("ChildMonthlyEvents")
+  receipts                  ChildMonthlyReceipt[]     @relation("ChildMonthlyReceipts")
+
+  @@id([tenantId, campusId, id], map: "child_monthly_reports_pkey")
+  @@unique([tenantId, campusId, studentId, month], map: "child_monthly_student_month_key")
+  @@unique([tenantId, campusId, id, studentId], map: "child_monthly_report_student_key")
+  @@index([tenantId, campusId, classRef, status], map: "child_monthly_class_status_idx")
+  @@map("child_monthly_reports")
+}
+
+model ChildMonthlyEvent {
+  tenantId      String                @map("tenant_id") @db.Uuid
+  campusId      String                @map("campus_id") @db.Uuid
+  reportId      String                @map("report_id") @db.Uuid
+  version       Int
+  sourceVersion Int                   @map("source_version")
+  status        MonthlyFeedbackStatus
+  action        String                @db.VarChar(24)
+  actorUserId   String                @map("actor_user_id") @db.Uuid
+  createdAt     DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  report        ChildMonthlyReport    @relation("ChildMonthlyEvents", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_event_report_fkey")
+  actor         User                  @relation("ChildMonthlyActor", fields: [actorUserId], references: [id], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_event_actor_fkey")
+
+  @@id([tenantId, campusId, reportId, version], map: "child_monthly_events_pkey")
+  @@map("child_monthly_events")
+}
+
+model ChildMonthlyReceipt {
+  tenantId                    String               @map("tenant_id") @db.Uuid
+  campusId                    String               @map("campus_id") @db.Uuid
+  reportId                    String               @map("report_id") @db.Uuid
+  studentId                   String               @map("student_id") @db.Uuid
+  guardianRelationshipId      String               @map("guardian_relationship_id") @db.Uuid
+  guardianUserId              String               @map("guardian_user_id") @db.Uuid
+  guardianRelationshipVersion Int                  @map("guardian_relationship_version")
+  publicationVersion          Int                  @map("publication_version")
+  acknowledgedAt              DateTime             @default(now()) @map("acknowledged_at") @db.Timestamptz(6)
+  report                      ChildMonthlyReport   @relation("ChildMonthlyReceipts", fields: [tenantId, campusId, reportId, studentId], references: [tenantId, campusId, id, studentId], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_receipt_report_fkey")
+  guardianRelationship        GuardianRelationship @relation("ChildMonthlyGuardianReceipts", fields: [tenantId, campusId, guardianRelationshipId, studentId, guardianUserId], references: [tenantId, campusId, id, studentId, guardianUserId], onDelete: Restrict, onUpdate: Cascade, map: "child_monthly_receipt_relationship_fkey")
+
+  @@id([tenantId, campusId, reportId, guardianRelationshipId, guardianRelationshipVersion, publicationVersion], map: "child_monthly_receipts_pkey")
+  @@index([tenantId, campusId, guardianRelationshipId, guardianRelationshipVersion, publicationVersion], map: "child_monthly_receipt_relationship_version_idx")
+  @@map("child_monthly_receipts")
+}
+
+model StaffDailyReport {
+  tenantId               String                                  @map("tenant_id") @db.Uuid
+  campusId               String                                  @map("campus_id") @db.Uuid
+  id                     String                                  @default(uuid()) @db.Uuid
+  classRef               String                                  @map("class_ref") @db.VarChar(80)
+  date                   DateTime                                @db.Date
+  arrival                StaffDailyArrivalCode
+  homework               StaffDailyHomeworkCode
+  activity               StaffDailyActivityCode
+  classroom              StaffDailyClassroomCode
+  followUp               StaffDailyFollowUpCode                  @map("follow_up")
+  status                 StaffDailyStatus                        @default(DRAFT)
+  version                Int                                     @default(1)
+  createdByMembershipId  String                                  @map("created_by_membership_id") @db.Uuid
+  reviewedByMembershipId String?                                 @map("reviewed_by_membership_id") @db.Uuid
+  updatedByMembershipId  String                                  @map("updated_by_membership_id") @db.Uuid
+  updatedAt              DateTime                                @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                 Campus                                  @relation("StaffDailyReportCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  createdBy              MembershipCampus                        @relation("StaffDailyReportCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  reviewedBy             MembershipCampus?                       @relation("StaffDailyReportReviewer", fields: [tenantId, reviewedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  updatedBy              MembershipCampus                        @relation("StaffDailyReportUpdater", fields: [tenantId, updatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade)
+  workTaskSources        StaffDailyReportWorkTaskSource[]        @relation("StaffDailyReportWorkTaskReport")
+  attendanceSources      StaffDailyReportAttendanceSource[]      @relation("StaffDailyReportAttendanceReport")
+  careRecordSources      StaffDailyReportCareRecordSource[]      @relation("StaffDailyReportCareRecordReport")
+  pickupRecordSources    StaffDailyReportPickupRecordSource[]    @relation("StaffDailyReportPickupRecordReport")
+  pickupExceptionSources StaffDailyReportPickupExceptionSource[] @relation("StaffDailyReportPickupExceptionReport")
+  auditEvents            StaffDailyReportAuditEvent[]             @relation("StaffDailyAuditReport")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, createdByMembershipId, date])
+  @@index([tenantId, campusId, classRef, date, status])
+  @@map("staff_daily_reports")
+}
+
+model StaffDailyReportAuditEvent {
+  tenantId                String                @map("tenant_id") @db.Uuid
+  campusId                String                @map("campus_id") @db.Uuid
+  id                      String                @default(uuid()) @db.Uuid
+  reportId                String                @map("report_id") @db.Uuid
+  actorMembershipId       String?               @map("actor_membership_id") @db.Uuid
+  initiatedByMembershipId String                @map("initiated_by_membership_id") @db.Uuid
+  action                  StaffDailyAuditAction
+  reportVersion           Int                   @map("report_version")
+  occurredAt              DateTime              @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  report                  StaffDailyReport      @relation("StaffDailyAuditReport", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_audit_events_report_fkey")
+  actorMembership         MembershipCampus?     @relation("StaffDailyAuditActor", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_audit_events_actor_fkey")
+  initiatedByMembership   MembershipCampus     @relation("StaffDailyAuditInitiator", fields: [tenantId, initiatedByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_audit_events_initiator_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, reportId, reportVersion], map: "staff_daily_report_audit_events_report_version_key")
+  @@map("staff_daily_report_audit_events")
+}
+
+model StaffDailyReportWorkTaskSource {
+  tenantId      String           @map("tenant_id") @db.Uuid
+  campusId      String           @map("campus_id") @db.Uuid
+  reportId      String           @map("report_id") @db.Uuid
+  sourceId      String           @map("source_id") @db.Uuid
+  sourceVersion Int              @map("source_version")
+  report        StaffDailyReport @relation("StaffDailyReportWorkTaskReport", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_work_task_sources_report_fkey")
+  workTask      WorkTask         @relation("StaffDailyReportWorkTaskTarget", fields: [tenantId, campusId, sourceId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_work_task_sources_source_fkey")
+
+  @@id([tenantId, campusId, reportId, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("staff_daily_report_work_task_sources")
+}
+
+model StaffDailyReportAttendanceSource {
+  tenantId         String           @map("tenant_id") @db.Uuid
+  campusId         String           @map("campus_id") @db.Uuid
+  reportId         String           @map("report_id") @db.Uuid
+  sourceId         String           @map("source_id") @db.Uuid
+  sourceVersion    Int              @map("source_version")
+  report           StaffDailyReport @relation("StaffDailyReportAttendanceReport", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_attendance_sources_report_fkey")
+  attendanceRecord AttendanceRecord @relation("StaffDailyReportAttendanceTarget", fields: [tenantId, campusId, sourceId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_attendance_sources_source_fkey")
+
+  @@id([tenantId, campusId, reportId, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("staff_daily_report_attendance_sources")
+}
+
+model StaffDailyReportCareRecordSource {
+  tenantId      String           @map("tenant_id") @db.Uuid
+  campusId      String           @map("campus_id") @db.Uuid
+  reportId      String           @map("report_id") @db.Uuid
+  sourceId      String           @map("source_id") @db.Uuid
+  sourceVersion Int              @map("source_version")
+  report        StaffDailyReport @relation("StaffDailyReportCareRecordReport", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_care_record_sources_report_fkey")
+  careRecord    CareRecord       @relation("StaffDailyReportCareRecordTarget", fields: [tenantId, campusId, sourceId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_care_record_sources_source_fkey")
+
+  @@id([tenantId, campusId, reportId, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("staff_daily_report_care_record_sources")
+}
+
+model StaffDailyReportPickupRecordSource {
+  tenantId      String           @map("tenant_id") @db.Uuid
+  campusId      String           @map("campus_id") @db.Uuid
+  reportId      String           @map("report_id") @db.Uuid
+  sourceId      String           @map("source_id") @db.Uuid
+  sourceVersion Int              @map("source_version")
+  report        StaffDailyReport @relation("StaffDailyReportPickupRecordReport", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_pickup_record_sources_report_fkey")
+  pickupRecord  PickupRecord     @relation("StaffDailyReportPickupRecordTarget", fields: [tenantId, campusId, sourceId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_pickup_record_sources_source_fkey")
+
+  @@id([tenantId, campusId, reportId, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("staff_daily_report_pickup_record_sources")
+}
+
+model StaffDailyReportPickupExceptionSource {
+  tenantId        String           @map("tenant_id") @db.Uuid
+  campusId        String           @map("campus_id") @db.Uuid
+  reportId        String           @map("report_id") @db.Uuid
+  sourceId        String           @map("source_id") @db.Uuid
+  sourceVersion   Int              @map("source_version")
+  report          StaffDailyReport @relation("StaffDailyReportPickupExceptionReport", fields: [tenantId, campusId, reportId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_pickup_exception_sources_report_fkey")
+  pickupException PickupException  @relation("StaffDailyReportPickupExceptionTarget", fields: [tenantId, campusId, sourceId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_daily_report_pickup_exception_sources_source_fkey")
+
+  @@id([tenantId, campusId, reportId, sourceId])
+  @@index([tenantId, campusId, sourceId])
+  @@map("staff_daily_report_pickup_exception_sources")
+}
+
+model FeeDocument {
+  tenantId              String                  @map("tenant_id") @db.Uuid
+  campusId              String                  @map("campus_id") @db.Uuid
+  id                    String                  @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  studentId             String                  @map("student_id") @db.Uuid
+  documentType          FeeDocumentType         @map("document_type")
+  title                 String                  @db.VarChar(120)
+  period                String                  @db.VarChar(7)
+  amountMinor           BigInt?                 @map("amount_minor")
+  currency              String                  @default("CNY") @db.VarChar(3)
+  validFrom             DateTime                @map("valid_from") @db.Date
+  validTo               DateTime                @map("valid_to") @db.Date
+  status                FeeDocumentStatus       @default(AVAILABLE)
+  summary               String                  @db.VarChar(500)
+  version               Int                     @default(1)
+  createdByMembershipId String                  @map("created_by_membership_id") @db.Uuid
+  createdAt             DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime                @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  campus                Campus                  @relation("FeeDocumentCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "fee_documents_campus_fkey")
+  student               Student                 @relation("FeeDocumentStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "fee_documents_student_fkey")
+  createdBy             MembershipCampus        @relation("FeeDocumentCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "fee_documents_creator_fkey")
+  ledgerEntries         FeeLedgerEntry[]        @relation("FeeLedgerDocument")
+  auditEvents           FeeDocumentAuditEvent[] @relation("FeeDocumentAuditDocument")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, studentId, status, createdAt(sort: Desc)], map: "fee_documents_scope_student_status_created_idx")
+  @@map("fee_documents")
+}
+
+model FeeLedgerEntry {
+  tenantId              String             @map("tenant_id") @db.Uuid
+  campusId              String             @map("campus_id") @db.Uuid
+  id                    String             @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId            String             @map("document_id") @db.Uuid
+  studentId             String             @map("student_id") @db.Uuid
+  entryType             FeeLedgerEntryType @map("entry_type")
+  amountMinor           BigInt             @map("amount_minor")
+  currency              String             @default("CNY") @db.VarChar(3)
+  period                String             @db.VarChar(7)
+  occurredOn            DateTime           @map("occurred_on") @db.Date
+  createdByMembershipId String             @map("created_by_membership_id") @db.Uuid
+  createdAt             DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  campus                Campus             @relation("FeeLedgerCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade)
+  document              FeeDocument        @relation("FeeLedgerDocument", fields: [tenantId, campusId, documentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "fee_ledger_entries_document_fkey")
+  student               Student            @relation("FeeLedgerStudent", fields: [tenantId, campusId, studentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "fee_ledger_entries_student_fkey")
+  createdBy             MembershipCampus   @relation("FeeLedgerCreator", fields: [tenantId, createdByMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "fee_ledger_entries_creator_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, studentId, occurredOn(sort: Desc)], map: "fee_ledger_entries_scope_student_date_idx")
+  @@map("fee_ledger_entries")
+}
+
+model FeeDocumentAuditEvent {
+  tenantId          String                 @map("tenant_id") @db.Uuid
+  campusId          String                 @map("campus_id") @db.Uuid
+  id                String                 @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  documentId        String                 @map("document_id") @db.Uuid
+  actorMembershipId String                 @map("actor_membership_id") @db.Uuid
+  action            FeeDocumentAuditAction
+  documentVersion   Int                    @map("document_version")
+  occurredAt        DateTime               @default(now()) @map("occurred_at") @db.Timestamptz(6)
+  campus            Campus                 @relation("FeeDocumentAuditCampus", fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "fee_document_audit_events_campus_fkey")
+  document          FeeDocument            @relation("FeeDocumentAuditDocument", fields: [tenantId, campusId, documentId], references: [tenantId, campusId, id], onDelete: Restrict, onUpdate: Cascade, map: "fee_document_audit_events_document_fkey")
+  actor             MembershipCampus       @relation("FeeDocumentAuditActor", fields: [tenantId, actorMembershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Restrict, onUpdate: Cascade, map: "fee_document_audit_events_actor_fkey")
+
+  @@id([tenantId, campusId, id])
+  @@unique([tenantId, campusId, documentId, documentVersion], map: "fee_document_audit_events_document_version_key")
+  @@index([tenantId, campusId, occurredAt(sort: Desc)], map: "fee_document_audit_events_scope_time_idx")
+  @@map("fee_document_audit_events")
+}

@@ -36,6 +36,9 @@ export interface PartnerLinkPageView {
   readonly expiredState: "入口已过期";
   readonly deniedState: "访问已拒绝";
   readonly unavailableState: "入口暂不可用";
+  readonly externalRequests: readonly string[];
+  readonly externalResources: readonly string[];
+  readonly html: string;
 }
 
 const SYNTHETIC_LINKS: readonly PartnerLinkItem[] = [
@@ -75,7 +78,7 @@ export function PartnerLinkPage(input: PartnerLinkPageInput = {}): PartnerLinkPa
       .toLocaleLowerCase()
       .includes(query.toLocaleLowerCase()),
   );
-  const state = input.state ?? (items.length === 0 ? "EMPTY" : "LIST");
+  const state = "UNAVAILABLE" as const;
   const selected = SYNTHETIC_LINKS.find((link) => link.id === input.selectedId);
 
   return {
@@ -93,5 +96,43 @@ export function PartnerLinkPage(input: PartnerLinkPageInput = {}): PartnerLinkPa
     expiredState: "入口已过期",
     deniedState: "访问已拒绝",
     unavailableState: "入口暂不可用",
+    externalRequests: [],
+    externalResources: [],
+    html: partnerHtml(),
   };
+}
+
+function partnerHtml(): string {
+  const entries = SYNTHETIC_LINKS.map(
+    (link) => `
+      <article class="staff-content-card">
+        <p class="staff-content-meta">模拟伙伴入口 · ${escapeHtml(link.symbolicDestination)}</p>
+        <h2>${escapeHtml(link.title)}</h2>
+        <p>${escapeHtml(link.description)}</p>
+        <p class="staff-content-meta">角色说明：仅供已授权员工查看入口说明。</p>
+      </article>`,
+  ).join("");
+
+  return `
+    <main class="internal-main" data-page="partner-link" data-external-requests="0">
+      <p role="status" aria-live="polite">伙伴云入口暂未开放，当前不连接外部服务。</p>
+      <header class="internal-page-heading">
+        <p class="section-kicker">PARTNER CLOUD BOUNDARY</p>
+        <h1>伙伴云入口</h1>
+        <p>本页仅展示本地合成说明，不提供跳转、登录或外部请求。</p>
+      </header>
+      <section class="staff-content-grid" aria-label="伙伴入口说明">
+        ${entries}
+      </section>
+    </main>
+  `.trim();
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }

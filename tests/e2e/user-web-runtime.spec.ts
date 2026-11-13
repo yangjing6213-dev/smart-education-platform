@@ -64,10 +64,21 @@ function waitForStartup(processInstance: ReturnType<typeof spawn>): Promise<{
 test("user-web preview serves the real visitor runtime on loopback", async () => {
   const indexHtml = await readFile(resolve(packageRoot, "index.html"), "utf8");
   const stylesheet = await readFile(resolve(packageRoot, "src/styles/user-web.css"), "utf8");
+  const runtimeSource = await readFile(resolve(packageRoot, "src/main.ts"), "utf8");
+  const runtimeBundle = await readFile(resolve(packageRoot, "dist/main.js"), "utf8");
   assert.match(indexHtml, /href="\/styles\/user-web\.css"/u);
   assert.match(indexHtml, /src="\/main\.js"/u);
   assert.match(indexHtml, /href="\/assets\/tongxin-logo\.png"/u);
   assert.match(stylesheet, /font-family:\s*"Microsoft YaHei"/u);
+  assert.match(stylesheet, /prefers-reduced-motion:\s*reduce/u);
+  assert.match(stylesheet, /min-block-size:\s*44px/u);
+  assert.match(stylesheet, /\.footer-column a\s*\{[^}]*min-block-size:\s*44px/u);
+  assert.match(stylesheet, /overflow-x:\s*hidden/u);
+  assert.match(runtimeSource, /员工演示入口/u);
+  assert.match(runtimeSource, /本地合成身份演示/u);
+  assert.match(runtimeSource, /非真实认证/u);
+  assert.match(runtimeSource, /href="\/staff\/workbench"/u);
+  assert.match(runtimeBundle, /\/web\/staff\/partner-cloud/u);
   assert.doesNotMatch(indexHtml, /https?:\/\//u);
 
   const preview = spawn(process.execPath, ["preview.mjs"], {
@@ -85,10 +96,22 @@ test("user-web preview serves the real visitor runtime on loopback", async () =>
 
     const visitor = await getText(`${startup.baseUrl}/visitor`);
     const compatibility = await getText(`${startup.baseUrl}/web/visitor/home`);
+    const institution = await getText(`${startup.baseUrl}/web/visitor/institution`);
+    const dayFlow = await getText(`${startup.baseUrl}/web/visitor/day-flow`);
     assert.equal(visitor.statusCode, 200);
     assert.equal(compatibility.statusCode, 200);
+    assert.equal(institution.statusCode, 200);
+    assert.equal(dayFlow.statusCode, 200);
     assert.equal(visitor.body, compatibility.body);
+    assert.match(institution.body, /data-app-root/u);
+    assert.match(dayFlow.body, /data-app-root/u);
     assert.match(visitor.body, /data-app-root/u);
+    assert.doesNotMatch(visitor.body, /https?:\/\//u);
+
+    const runtimeResponse = await getText(`${startup.baseUrl}/main.js`);
+    assert.equal(runtimeResponse.statusCode, 200);
+    assert.match(runtimeResponse.body, /routes\/visitor\.routes\.js/u);
+    assert.doesNotMatch(runtimeResponse.body, /https?:\/\//u);
 
     for (const path of [
       "/staff/workbench",

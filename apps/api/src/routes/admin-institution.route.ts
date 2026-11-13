@@ -114,6 +114,38 @@ export function registerAdminInstitutionRoute(
   service: InstitutionService,
   publicScopeResolver?: PublicScopeResolver,
 ): void {
+  app.get(
+    "/admin/institution/:kind/:contentKey/draft",
+    {
+      config: {
+        authRequired: true,
+        scopeRequired: true,
+        capabilityRequired: "content:write",
+      },
+    },
+    async (request, reply) => {
+      const kind = requestKind(request);
+      const context = contextFromRequest(request);
+      if (kind === undefined) {
+        return reply.code(400).send({
+          error: { code: "VALIDATION_FAILED", message: "Content input is invalid." },
+          request_id: request.id,
+        });
+      }
+      if (context === undefined || !context.capabilities.includes("content:write")) {
+        return reply.code(403).send({
+          error: { code: "FORBIDDEN_SCOPE", message: "Content scope access is not permitted." },
+          request_id: request.id,
+        });
+      }
+      const result =
+        kind === "profile"
+          ? await service.readInstitutionDraft(context, contentKey(request))
+          : await service.readHomeDraft(context, contentKey(request));
+      return sendResult(request, reply, result);
+    },
+  );
+
   app.post(
     "/admin/institution/:kind/:contentKey/draft",
     { config: { authRequired: true, scopeRequired: true } },

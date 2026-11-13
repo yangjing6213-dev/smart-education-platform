@@ -250,6 +250,65 @@ test("admin route derives scope from trusted membership and rejects client scope
   }
 });
 
+test("admin home draft reads require write access and stay inside the resolved campus", async () => {
+  const service = new InstitutionService(new InMemoryContentRepository());
+  const app = makeRouteApp(service);
+  try {
+    const created = await app.inject({
+      method: "POST",
+      url: "/admin/institution/home/home-content-synthetic-east/draft",
+      payload: { payload: homePayload },
+    });
+    assert.equal(created.statusCode, 201);
+
+    const read = await app.inject({
+      method: "GET",
+      url: "/admin/institution/home/home-content-synthetic-east/draft",
+    });
+    assert.equal(read.statusCode, 200);
+    assert.equal(read.json().data.content_key, "home-content-synthetic-east");
+    assert.equal(read.json().data.version, 1);
+    assert.equal(read.json().data.status, "DRAFT");
+
+    const missing = await app.inject({
+      method: "GET",
+      url: "/admin/institution/home/not-configured/draft",
+    });
+    assert.equal(missing.statusCode, 404);
+    assert.equal(missing.json().error.code, "NOT_FOUND_SCOPED");
+  } finally {
+    await app.close();
+  }
+
+  const readOnly = makeRouteApp(service, makeAuthResult(["identity:read"]));
+  try {
+    const denied = await readOnly.inject({
+      method: "GET",
+      url: "/admin/institution/home/home-content-synthetic-east/draft",
+    });
+    assert.equal(denied.statusCode, 403);
+    assert.equal(denied.json().error.code, "FORBIDDEN_SCOPE");
+  } finally {
+    await readOnly.close();
+  }
+
+  const foreignCampus = makeRouteApp(
+    service,
+    makeAuthResult(["content:write"]),
+    { actorId: ACTOR_ID, tenantId: TENANT_ID, campusId: FOREIGN_CAMPUS_ID },
+  );
+  try {
+    const hidden = await foreignCampus.inject({
+      method: "GET",
+      url: "/admin/institution/home/home-content-synthetic-east/draft",
+    });
+    assert.equal(hidden.statusCode, 403);
+    assert.equal(hidden.json().error.code, "FORBIDDEN_SCOPE");
+  } finally {
+    await foreignCampus.close();
+  }
+});
+
 test("admin route fails closed when trusted membership does not cover resolved campus", async () => {
   const service = new InstitutionService(new InMemoryContentRepository());
   const app = makeRouteApp(service, makeAuthResult(["content:write", "content:publish"]), {

@@ -1,4 +1,4 @@
-export type AuditLogPageStatus = "LOADING" | "EMPTY" | "DENIED" | "ERROR" | "READY";
+export type AuditLogPageStatus = "LOADING" | "EMPTY" | "DENIED" | "ERROR" | "CONFLICT" | "READY";
 
 export interface AuditLogEventViewModel {
   readonly event_id: string;
@@ -17,6 +17,10 @@ export interface AuditLogEventViewModel {
 
 export interface AuditLogsPageState {
   readonly status: AuditLogPageStatus;
+  readonly scope?: {
+    readonly tenantId: string;
+    readonly campusId: string;
+  };
   readonly events: readonly AuditLogEventViewModel[];
 }
 
@@ -36,6 +40,7 @@ export type AuditLogsMessage =
   | "LOADING_AUDIT_EVENTS"
   | "NO_AUDIT_EVENTS"
   | "ACCESS_DENIED"
+  | "AUDIT_LOG_CONFLICT"
   | "AUDIT_LOGS_UNAVAILABLE"
   | "AUDIT_EVENTS_READY";
 
@@ -60,6 +65,11 @@ export interface AuditLogsPageView {
     "REDACTED_METADATA",
   ];
   readonly availableActions: readonly ["REFRESH"];
+  readonly summary: {
+    readonly total: number;
+    readonly synthetic: number;
+    readonly scopeLabel: string;
+  };
   readonly message: AuditLogsMessage;
   readonly rows: readonly AuditLogRow[];
 }
@@ -88,15 +98,22 @@ const AVAILABLE_ACTIONS = Object.freeze(["REFRESH"] as const);
 function messageFor(status: AuditLogPageStatus, eventCount: number): AuditLogsMessage {
   if (status === "LOADING") return "LOADING_AUDIT_EVENTS";
   if (status === "DENIED") return "ACCESS_DENIED";
+  if (status === "CONFLICT") return "AUDIT_LOG_CONFLICT";
   if (status === "ERROR") return "AUDIT_LOGS_UNAVAILABLE";
   if (status === "EMPTY" || eventCount === 0) return "NO_AUDIT_EVENTS";
   return "AUDIT_EVENTS_READY";
 }
 
 export function AuditLogsPage(state: AuditLogsPageState): AuditLogsPageView {
+  const scopedEvents = state.scope
+    ? state.events.filter(
+        (event) =>
+          event.tenant_id === state.scope?.tenantId && event.campus_id === state.scope?.campusId,
+      )
+    : state.events;
   const rows =
     state.status === "READY"
-      ? state.events.map((event) => ({
+      ? scopedEvents.map((event) => ({
           eventId: event.event_id,
           occurredAt: event.occurred_at,
           actorReference: event.actor_id,
@@ -108,6 +125,9 @@ export function AuditLogsPage(state: AuditLogsPageState): AuditLogsPageView {
           syntheticData: true as const,
         }))
       : [];
+  const scopeLabel = state.scope
+    ? `${state.scope.tenantId} · ${state.scope.campusId}`
+    : "当前模拟租户 · 当前模拟校区";
 
   return {
     route: "/admin/audit-logs",
@@ -115,6 +135,11 @@ export function AuditLogsPage(state: AuditLogsPageState): AuditLogsPageView {
     filters: FILTERS,
     columns: COLUMNS,
     availableActions: AVAILABLE_ACTIONS,
+    summary: {
+      total: rows.length,
+      synthetic: rows.filter((row) => row.syntheticData).length,
+      scopeLabel,
+    },
     message: messageFor(state.status, rows.length),
     rows,
   };

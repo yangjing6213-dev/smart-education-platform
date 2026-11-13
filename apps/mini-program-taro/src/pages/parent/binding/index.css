@@ -1,0 +1,257 @@
+.parent-binding-page {
+  min-height: 100vh;
+  padding: 28rpx 32rpx 72rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.16), transparent 24%), #f5f8ec;
+}
+
+.binding-back-button {
+  display: flex;
+  width: auto;
+  min-height: 64rpx;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 auto 24rpx 0;
+  padding: 0 18rpx 0 0;
+  border: 0;
+  background: transparent;
+  color: #4c762b;
+  font-size: 23rpx;
+  text-align: left;
+}
+
+.binding-back-button::after,
+.binding-primary-button::after,
+.binding-secondary-button::after,
+.binding-release-button::after {
+  border: 0;
+}
+
+.binding-brand {
+  display: flex;
+  align-items: center;
+  margin: 4rpx 8rpx 30rpx;
+}
+
+.binding-brand-mark {
+  display: flex;
+  width: 70rpx;
+  height: 70rpx;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15rpx;
+  border-radius: 50%;
+  background: #9bcf42;
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.binding-brand-name,
+.binding-brand-subtitle,
+.binding-eyebrow,
+.binding-title,
+.binding-copy,
+.binding-section-title,
+.binding-message,
+.binding-picker-label,
+.binding-picker-arrow,
+.binding-consent-copy,
+.binding-receipt-title,
+.binding-application-name,
+.binding-footnote {
+  display: block;
+}
+
+.binding-brand-name {
+  color: #8fc735;
+  font-size: 34rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.binding-brand-subtitle {
+  color: #75a932;
+  font-size: 15rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.binding-intro,
+.binding-card {
+  padding: 30rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.94);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.08);
+}
+
+.binding-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.binding-title {
+  margin-top: 10rpx;
+  color: #244b32;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.binding-copy,
+.binding-message {
+  margin-top: 12rpx;
+  color: #71806c;
+  font-size: 22rpx;
+  line-height: 1.65;
+}
+
+.binding-card {
+  margin-top: 20rpx;
+}
+
+.binding-section-title,
+.binding-receipt-title {
+  color: #31583a;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.binding-picker {
+  display: flex;
+  min-height: 82rpx;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.3);
+  border-radius: 22rpx;
+  background: rgba(246, 249, 239, 0.9);
+}
+
+.binding-picker-label {
+  color: #31583a;
+  font-size: 24rpx;
+}
+
+.binding-picker-arrow {
+  color: #79a936;
+  font-size: 30rpx;
+}
+
+.binding-consent-row {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 20rpx;
+}
+
+.binding-consent-control {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+}
+
+.binding-consent-copy {
+  flex: 1;
+  margin-left: 12rpx;
+  color: #71806c;
+  font-size: 21rpx;
+  line-height: 1.6;
+}
+
+.binding-primary-button,
+.binding-secondary-button {
+  display: flex;
+  width: 100%;
+  min-height: 82rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 22rpx 0 0;
+  border-radius: 23rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 25rpx;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.binding-secondary-button {
+  min-height: 70rpx;
+  background: rgba(255, 255, 255, 0.72);
+  color: #4c762b;
+  font-size: 22rpx;
+}
+
+.binding-receipt {
+  margin-top: 22rpx;
+  padding: 22rpx;
+  border-radius: 20rpx;
+  background: rgba(130, 180, 53, 0.1);
+}
+
+.binding-existing-status,
+.binding-application-list {
+  margin-top: 22rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  background: rgba(130, 180, 53, 0.08);
+}
+
+.binding-relationship-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 16rpx;
+  padding: 18rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.16);
+  border-radius: 20rpx;
+  background: rgba(246, 249, 239, 0.82);
+}
+
+.binding-relationship-summary {
+  flex: 1;
+  min-width: 0;
+}
+
+.binding-release-button {
+  display: flex;
+  width: auto;
+  min-width: 132rpx;
+  min-height: 64rpx;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 20rpx;
+  border-radius: 18rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 21rpx;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.binding-ended-label {
+  flex-shrink: 0;
+  color: #71806c;
+  font-size: 21rpx;
+}
+
+.binding-application-row {
+  padding: 16rpx 0 8rpx;
+  border-bottom: 1rpx solid rgba(125, 174, 59, 0.16);
+}
+
+.binding-application-name {
+  color: #31583a;
+  font-size: 23rpx;
+  font-weight: 700;
+}
+
+.binding-footnote {
+  margin: 24rpx 8rpx 0;
+  color: #8a9782;
+  font-size: 18rpx;
+  line-height: 1.6;
+  text-align: center;
+}

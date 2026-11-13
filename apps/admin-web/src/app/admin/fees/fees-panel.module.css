@@ -1,0 +1,156 @@
+.page {
+  display: grid;
+  gap: 1.25rem;
+  color: #1f2937;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.header h1 {
+  margin: 0.2rem 0 0.35rem;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+}
+
+.header p,
+.card > p,
+.row p {
+  margin: 0.4rem 0 0;
+  color: #5b6472;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  color: #477b21 !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.notice {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d8e6c9;
+  border-radius: 0.8rem;
+  background: #f5f9ef;
+  color: #35551f;
+}
+
+.card {
+  padding: 1.25rem;
+  border: 1px solid #e1e6dc;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 6px 20px rgb(24 39 18 / 5%);
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form label {
+  display: grid;
+  gap: 0.4rem;
+  color: #364152;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  min-height: 2.75rem;
+  box-sizing: border-box;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #d4dce0;
+  border-radius: 0.65rem;
+  background: #fff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.form textarea {
+  resize: vertical;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 2.65rem;
+  padding: 0.55rem 1rem;
+  border-radius: 0.7rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton {
+  justify-self: start;
+  border: 1px solid #4e8f20;
+  background: #5b9f25;
+  color: white;
+}
+
+.secondaryButton {
+  border: 1px solid #d4e3c5;
+  background: #f7faF3;
+  color: #416b24;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem;
+  border: 1px solid #e5e9e2;
+  border-radius: 0.8rem;
+}
+
+.row h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .header,
+  .row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .fullWidth {
+    grid-column: auto;
+  }
+}

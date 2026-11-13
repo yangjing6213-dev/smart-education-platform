@@ -34,6 +34,8 @@ import {
 import { registerFileIntentRoutes } from "./routes/file-intent.route.js";
 import { PartnerLinkService } from "./modules/partner-links/partner-link.service.js";
 import { registerPartnerLinkRoutes } from "./routes/partner-link.route.js";
+import { ResourceService } from "./modules/resources/resource.service.js";
+import { registerStaffResourceRoutes } from "./routes/staff-resources.route.js";
 
 export interface ServerOptions {
   readonly getTrustedAuthResult?: (
@@ -62,6 +64,7 @@ export interface ServerOptions {
   readonly fileService?: FileService;
   readonly auditService?: AuditService;
   readonly partnerLinkService?: PartnerLinkService;
+  readonly resourceService?: ResourceService;
 }
 
 function queryRecord(request: FastifyRequest): Record<string, unknown> {
@@ -106,6 +109,7 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
       const derivesTask08Campus =
         request.url.startsWith("/admin/activities/") || request.url.startsWith("/admin/meals/");
       const derivesStaffGuideCampus = request.url.startsWith("/staff/guides");
+      const derivesStaffResourceCampus = request.url.startsWith("/staff/resources");
       const derivesFileCampus = request.url.startsWith("/files/");
       const derivesAuditCampus = request.url.startsWith("/admin/audit-logs");
       const derivesInstitutionCampus = request.url.startsWith("/admin/institution/");
@@ -114,6 +118,7 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
         requestedCampusIdValue ??
         (derivesTask08Campus ||
         derivesStaffGuideCampus ||
+        derivesStaffResourceCampus ||
         derivesFileCampus ||
         derivesAuditCampus ||
         derivesInstitutionCampus ||
@@ -169,6 +174,7 @@ export function buildServer(options: ServerOptions = {}): FastifyInstance {
     options.guideService ?? new GuideService(),
     options.getStaffGuideScope,
   );
+  registerStaffResourceRoutes(app, options.resourceService ?? new ResourceService());
   registerFileIntentRoutes(
     app,
     options.fileService ?? new FileService(new InMemoryCosStorage(), { auditService }),

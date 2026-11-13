@@ -1,0 +1,271 @@
+.panel {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.header,
+.sectionHeading,
+.groupHeading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.header,
+.results,
+.stateCard {
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 1px solid #dce7da;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(36 68 49 / 5%);
+}
+
+.header h1,
+.sectionHeading h2,
+.results h2,
+.stateCard h2 {
+  margin: 0;
+  color: #183f2c;
+}
+
+.header h1 {
+  font-size: clamp(1.55rem, 3vw, 2rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: #688b4d;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.description,
+.message,
+.footnote {
+  color: #5c7061;
+  line-height: 1.6;
+}
+
+.description {
+  margin: 0.55rem 0 0;
+}
+
+.syntheticBadge,
+.count {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #eff6df;
+  color: #557e2e;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.syntheticBadge {
+  margin-top: 0.8rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.profileField,
+.filterForm label {
+  display: grid;
+  gap: 0.45rem;
+  color: #365542;
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.profileField {
+  min-width: min(13rem, 100%);
+}
+
+.profileField select,
+.filterForm input,
+.filterForm select {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cdddc9;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #234633;
+  font: inherit;
+}
+
+.profileField select:focus-visible,
+.filterForm input:focus-visible,
+.filterForm select:focus-visible,
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible {
+  outline: 3px solid rgb(130 174 50 / 35%);
+  outline-offset: 2px;
+}
+
+.message {
+  min-height: 1.5rem;
+  margin: 0;
+  padding: 0.15rem 0.25rem;
+}
+
+.results,
+.stateCard {
+  display: grid;
+  gap: 1rem;
+}
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.totals div {
+  min-width: 0;
+  padding: 0.9rem;
+  border-radius: 0.8rem;
+  background: #f5f8ee;
+}
+
+.totals dt {
+  color: #627866;
+  font-size: 0.82rem;
+}
+
+.totals dd {
+  margin: 0.4rem 0 0;
+  color: #234633;
+  font-size: 1.45rem;
+  font-weight: 750;
+}
+
+.filterForm {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #e2eadb;
+  border-radius: 0.85rem;
+  background: #fbfcf8;
+}
+
+.primaryButton,
+.secondaryButton {
+  min-height: 2.75rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid #719f31;
+  border-radius: 0.7rem;
+  background: #78a936;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.secondaryButton {
+  border-color: #cdddc9;
+  background: #f6f9ef;
+  color: #345a3e;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.groupList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.groupCard {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid #e2eadb;
+  border-radius: 0.85rem;
+  background: #fff;
+}
+
+.groupCard h3 {
+  margin: 0;
+  color: #244b32;
+  font-size: 1.05rem;
+}
+
+.count {
+  flex: none;
+  padding: 0.35rem 0.65rem;
+}
+
+.groupStatus {
+  margin: 0.85rem 0 0;
+  color: #355b40;
+  font-weight: 650;
+}
+
+.sourceList {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+  color: #687a6a;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.emptyState {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #f5f8ee;
+  color: #627866;
+}
+
+.footnote {
+  margin: 0;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 850px) {
+  .totals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filterForm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .groupList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .header,
+  .sectionHeading {
+    flex-direction: column;
+  }
+
+  .profileField {
+    width: 100%;
+  }
+
+  .filterForm {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    white-space: normal;
+  }
+}

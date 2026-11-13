@@ -1,0 +1,348 @@
+.parent-learning-page {
+  min-height: 100vh;
+  padding: 40rpx 32rpx 72rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.18), transparent 24%), #f5f8ec;
+}
+
+.parent-brand {
+  display: flex;
+  align-items: center;
+  margin: 12rpx 8rpx 34rpx;
+}
+
+.parent-brand-mark {
+  display: flex;
+  width: 74rpx;
+  height: 74rpx;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  border-radius: 50%;
+  background: #9bcf42;
+  color: #fff;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.parent-brand-name,
+.parent-brand-subtitle,
+.parent-eyebrow,
+.parent-title,
+.parent-copy,
+.parent-state-title,
+.parent-section-title,
+.parent-student-name,
+.parent-stat-value,
+.parent-stat-label,
+.parent-section-label,
+.parent-knowledge-name,
+.parent-knowledge-count,
+.parent-muted,
+.parent-updated,
+.parent-footnote {
+  display: block;
+}
+
+.parent-brand-name {
+  color: #8fc735;
+  font-size: 36rpx;
+  font-weight: 800;
+  letter-spacing: 5rpx;
+}
+
+.parent-brand-subtitle {
+  margin-top: 2rpx;
+  color: #75a932;
+  font-size: 16rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.parent-intro,
+.parent-state-card,
+.parent-summary-card {
+  padding: 32rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.96);
+  border-radius: 30rpx;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 16rpx 40rpx rgba(75, 105, 47, 0.08);
+}
+
+.parent-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.parent-title {
+  margin-top: 12rpx;
+  color: #244b32;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.parent-copy,
+.parent-muted {
+  margin-top: 12rpx;
+  color: #71806c;
+  font-size: 22rpx;
+  line-height: 1.65;
+}
+
+.parent-state-card,
+.parent-results {
+  margin-top: 22rpx;
+}
+
+.parent-state-title,
+.parent-section-title {
+  color: #31583a;
+  font-size: 29rpx;
+  font-weight: 800;
+}
+
+.parent-results-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2rpx 16rpx;
+}
+
+.parent-results-heading .parent-muted {
+  margin-top: 5rpx;
+}
+
+.parent-child-selector {
+  margin-bottom: 16rpx;
+  padding: 18rpx 20rpx 6rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.16);
+  border-radius: 22rpx;
+  background: rgba(242, 247, 229, 0.84);
+}
+
+.parent-child-selector-label {
+  display: block;
+  margin-bottom: 12rpx;
+  color: #5e8a32;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.parent-child-options {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.parent-child-option {
+  display: flex;
+  min-height: 60rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 0 12rpx 12rpx 0;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.28);
+  border-radius: 20rpx;
+  background: rgba(255, 255, 255, 0.72);
+  color: #4c762b;
+  font-size: 21rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.parent-child-option-active {
+  border-color: #82b435;
+  background: #82b435;
+  color: #fff;
+}
+
+.parent-child-option::after {
+  border: 0;
+}
+
+.parent-refresh-button {
+  display: flex;
+  min-width: 108rpx;
+  height: 64rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 0 16rpx;
+  padding: 0 22rpx;
+  border: 0;
+  border-radius: 22rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.parent-refresh-button::after {
+  border: 0;
+}
+
+.parent-summary-card {
+  margin-bottom: 16rpx;
+}
+
+.parent-practice-card {
+  margin-bottom: 16rpx;
+}
+
+.parent-practice-entry {
+  margin-top: 20rpx;
+}
+
+.parent-student-name {
+  color: #244b32;
+  font-size: 30rpx;
+  font-weight: 800;
+}
+
+.parent-stats {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 22rpx -8rpx 0;
+}
+
+.parent-stat {
+  box-sizing: border-box;
+  width: 33.333%;
+  padding: 0 8rpx;
+}
+
+.parent-stat-value {
+  color: #4c762b;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.parent-stat-label {
+  margin-top: 8rpx;
+  color: #84927c;
+  font-size: 18rpx;
+  line-height: 1.4;
+}
+
+.parent-knowledge {
+  margin-top: 24rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid rgba(125, 174, 59, 0.18);
+}
+
+.parent-section-label {
+  color: #5e8a32;
+  font-size: 22rpx;
+  font-weight: 800;
+}
+
+.parent-knowledge-list {
+  margin-top: 12rpx;
+}
+
+.parent-knowledge-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13rpx 0;
+  border-bottom: 1rpx solid rgba(125, 174, 59, 0.11);
+}
+
+.parent-knowledge-name {
+  color: #31583a;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.parent-knowledge-count {
+  margin-left: 16rpx;
+  color: #84927c;
+  font-size: 19rpx;
+}
+
+.parent-updated {
+  margin-top: 18rpx;
+  color: #8a9782;
+  font-size: 18rpx;
+  text-align: right;
+}
+
+.parent-button {
+  display: flex;
+  width: 100%;
+  min-height: 84rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 18rpx 0 0;
+  padding: 0 26rpx;
+  border: 0;
+  border-radius: 24rpx;
+  background: #82b435;
+  color: #fff;
+  font-size: 25rpx;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.parent-button-secondary {
+  border: 1rpx solid rgba(125, 174, 59, 0.24);
+  background: rgba(255, 255, 255, 0.72);
+  color: #4c762b;
+}
+
+.parent-button::after {
+  border: 0;
+}
+
+.parent-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24rpx;
+}
+
+.parent-control-label {
+  display: block;
+  margin: 22rpx 0 10rpx;
+  color: #5e8a32;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.parent-control-picker {
+  padding: 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.24);
+  border-radius: 18rpx;
+  background: rgba(255, 255, 255, 0.72);
+  color: #31583a;
+  font-size: 23rpx;
+  line-height: 1.5;
+}
+
+.parent-control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-top: 22rpx;
+}
+
+.parent-control-actions .parent-button {
+  width: auto;
+  max-width: 100%;
+  min-height: 80rpx;
+  margin: 0;
+  padding: 18rpx 26rpx;
+  box-sizing: border-box;
+  line-height: 1.35;
+}
+
+.parent-controls-card .parent-button[disabled] {
+  opacity: 0.65;
+}
+
+.parent-footnote {
+  margin: 24rpx 6rpx 0;
+  color: #8a9782;
+  font-size: 18rpx;
+  line-height: 1.6;
+  text-align: center;
+}

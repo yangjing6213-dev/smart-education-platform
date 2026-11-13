@@ -1,0 +1,163 @@
+.health-report-page {
+  min-height: 100vh;
+  padding: 34rpx 28rpx 72rpx;
+  background: #f5f8ec;
+  color: #284c34;
+}
+
+.health-report-brand {
+  display: flex;
+  align-items: center;
+  margin: 8rpx 8rpx 28rpx;
+}
+
+.health-report-brand-mark {
+  display: flex;
+  width: 72rpx;
+  height: 72rpx;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  border-radius: 50%;
+  background: #9bcf42;
+  color: #fff;
+  font-size: 40rpx;
+  font-weight: 800;
+}
+
+.health-report-brand-name,
+.health-report-brand-subtitle,
+.health-report-eyebrow,
+.health-report-title,
+.health-report-copy,
+.health-report-section-title,
+.health-report-label,
+.health-report-picker,
+.health-report-message,
+.health-report-draft-title,
+.health-report-footnote {
+  display: block;
+}
+
+.health-report-brand-name {
+  color: #8fc735;
+  font-size: 34rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.health-report-brand-subtitle {
+  margin-top: 2rpx;
+  color: #75a932;
+  font-size: 15rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+}
+
+.health-report-card {
+  margin-bottom: 22rpx;
+  padding: 28rpx;
+  border: 1rpx solid rgba(124, 174, 56, 0.18);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12rpx 30rpx rgba(65, 100, 48, 0.07);
+}
+
+.health-report-eyebrow,
+.health-report-label {
+  margin-bottom: 10rpx;
+  color: #78ad37;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.health-report-title {
+  margin-bottom: 10rpx;
+  color: #244c31;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.health-report-copy,
+.health-report-message,
+.health-report-footnote {
+  color: #71836f;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.health-report-section-title,
+.health-report-draft-title {
+  margin-bottom: 20rpx;
+  color: #355b3c;
+  font-size: 30rpx;
+  font-weight: 750;
+}
+
+.health-report-field {
+  margin-bottom: 22rpx;
+}
+
+.health-report-picker {
+  box-sizing: border-box;
+  min-height: 86rpx;
+  padding: 23rpx 24rpx;
+  border: 1rpx solid #dce9c8;
+  border-radius: 18rpx;
+  background: rgba(250, 252, 245, 0.92);
+  color: #365a3c;
+  font-size: 26rpx;
+}
+
+.health-report-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+
+.health-report-button {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 84rpx;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 12rpx;
+  border: 0;
+  border-radius: 22rpx;
+  background: #7ead34;
+  color: #fff;
+  font-size: 27rpx;
+  font-weight: 750;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.health-report-button::after {
+  border: 0;
+}
+
+.health-report-button-secondary {
+  border: 1rpx solid #dce9c8;
+  background: #f8fbf0;
+  color: #557a3a;
+}
+
+.health-report-message {
+  margin-top: 18rpx;
+}
+
+.health-report-draft {
+  margin-top: 18rpx;
+  padding: 22rpx;
+  border-radius: 18rpx;
+  background: #f6faee;
+}
+
+.health-report-footnote {
+  padding: 8rpx 10rpx;
+  text-align: center;
+  font-size: 21rpx;
+}

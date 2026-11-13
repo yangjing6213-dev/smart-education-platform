@@ -11,6 +11,18 @@ export function registerMembershipsRoute(app: FastifyInstance): void {
         scopeRequired: true,
         capabilityRequired: "memberships:read",
       },
+      async preHandler(request, reply) {
+        const requestedCampusId = (request.query as Record<string, unknown>).campus_id;
+        if (requestedCampusId !== undefined && typeof requestedCampusId !== "string") {
+          reply.code(403).send({
+            error: {
+              code: "FORBIDDEN_SCOPE",
+              message: "Scope access is not permitted.",
+            },
+            request_id: request.id,
+          });
+        }
+      },
     },
     async (request): Promise<SuccessEnvelope<MembershipsResponseDto>> => {
       const authContext = request.authContext!;

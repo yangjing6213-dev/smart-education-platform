@@ -33,6 +33,7 @@ export interface ContentRecord {
 
 export interface ContentRepository {
   get(scope: ContentScope, contentKey: string): ContentRecord | undefined;
+  list(scope: ContentScope): readonly ContentRecord[];
   save(record: ContentRecord): void;
 }
 
@@ -62,6 +63,16 @@ export class InMemoryContentRepository implements ContentRepository {
   public get(scope: ContentScope, contentKey: string): ContentRecord | undefined {
     const record = this.records.get(storageKey(scope, contentKey));
     return record === undefined ? undefined : cloneRecord(record);
+  }
+
+  public list(scope: ContentScope): readonly ContentRecord[] {
+    const records: ContentRecord[] = [];
+    for (const record of this.records.values()) {
+      if (record.tenant_id === scope.tenantId && record.campus_id === (scope.campusId ?? null)) {
+        records.push(cloneRecord(record));
+      }
+    }
+    return records;
   }
 
   public save(record: ContentRecord): void {

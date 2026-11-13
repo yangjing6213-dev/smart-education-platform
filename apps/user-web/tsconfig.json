@@ -9,5 +9,5 @@
     "sourceMap": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "src/app", "src/pages/visitor-public-institution.test.ts"]
 }

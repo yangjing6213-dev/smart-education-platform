@@ -8,7 +8,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 type StaffWebModule = {
   selectStaffRoute(
     access: unknown,
-    route: "workbench" | "report",
+    route: "workbench" | "report" | "partner-cloud",
   ): {
     kind: string;
     path: string;
@@ -113,4 +113,23 @@ test("mini staff route denies foreign tenant and missing capability", async () =
     route: "/access-denied",
     reason: "CAPABILITY_REQUIRED",
   });
+});
+
+test("partner cloud is a local unavailable explanation without external requests", async () => {
+  const partner = await loadModule<{
+    PartnerLinkPage(input?: unknown): {
+      state: string;
+      html: string;
+      externalRequests: readonly string[];
+      externalResources: readonly string[];
+    };
+  }>("apps/user-web/dist/pages/partner-link.js");
+  const view = partner.PartnerLinkPage({ state: "UNAVAILABLE" });
+
+  assert.equal(view.state, "UNAVAILABLE");
+  assert.match(view.html, /伙伴云入口/);
+  assert.match(view.html, /暂未开放|入口不可用/);
+  assert.doesNotMatch(view.html, /<a\b|href=|https?:\/\//iu);
+  assert.deepEqual(view.externalRequests, []);
+  assert.deepEqual(view.externalResources, []);
 });

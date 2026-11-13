@@ -135,6 +135,40 @@ export interface MealSuccess<T> {
 
 export type MealResult<T> = MealSuccess<T> | MealError;
 
+export interface MealOperations {
+  listAdmin(
+    context: MealActorContext,
+  ): MealResult<readonly MealRecord[]> | Promise<MealResult<readonly MealRecord[]>>;
+  createDraft(
+    context: MealActorContext,
+    mealId: string,
+    payload: MealDraftPayload,
+    expectedVersion?: number | null,
+  ): MealResult<MealRecord> | Promise<MealResult<MealRecord>>;
+  updateDraft(
+    context: MealActorContext,
+    mealId: string,
+    payload: MealDraftPayload,
+    expectedVersion: number,
+  ): MealResult<MealRecord> | Promise<MealResult<MealRecord>>;
+  publish(
+    context: MealActorContext,
+    mealId: string,
+    expectedVersion: number,
+  ): MealResult<MealRecord> | Promise<MealResult<MealRecord>>;
+  unpublish(
+    context: MealActorContext,
+    mealId: string,
+    expectedVersion: number,
+  ): MealResult<MealRecord> | Promise<MealResult<MealRecord>>;
+  listPublic(
+    scope: MealScope,
+    onDate: string,
+  ):
+    | MealResult<readonly PublicMealProjection[]>
+    | Promise<MealResult<readonly PublicMealProjection[]>>;
+}
+
 export interface MealServiceOptions {
   readonly now?: () => Date;
   readonly onPublicationAuditEvent?: (event: MealPublicationAuditEvent) => void;
@@ -242,6 +276,8 @@ function isValidPayload(value: unknown): value is MealDraftPayload {
   );
 }
 
+export { failure as mealFailure, isValidPayload as isMealDraftPayload };
+
 function isVersion(value: unknown): value is number {
   return typeof value === "number" && Number.isInteger(value) && value >= 0;
 }
@@ -270,6 +306,11 @@ export class MealService {
     this.repository = repository;
     this.now = options.now ?? (() => new Date());
     this.onPublicationAuditEvent = options.onPublicationAuditEvent ?? (() => undefined);
+  }
+
+  public listAdmin(context: MealActorContext): MealResult<readonly MealRecord[]> {
+    if (!isAuthorized(context, "content:write")) return failure("FORBIDDEN_SCOPE");
+    return { ok: true, data: this.repository.list(context.scope) };
   }
 
   public createDraft(
@@ -323,6 +364,7 @@ export class MealService {
     if (existing === undefined) return failure("NOT_FOUND_SCOPED");
     if (!isVersion(expectedCurrentVersion) || existing.version !== expectedCurrentVersion)
       return failure("VERSION_MISMATCH");
+    if (existing.status === "PUBLISHED") return failure("CONFLICT_STATE");
     const record: MealRecord = {
       ...existing,
       status: "DRAFT",

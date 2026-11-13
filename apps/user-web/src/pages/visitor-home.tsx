@@ -1,4 +1,5 @@
 export type VisitorPageState = "LOADING" | "EMPTY" | "ERROR" | "PUBLISHED";
+export type VisitorContactIntentState = "IDLE" | "INVALID" | "SUBMITTING" | "CONFIRMED";
 
 export interface PublicVisitorItem {
   readonly slug: string;
@@ -34,6 +35,7 @@ export interface VisitorHomeView {
   readonly layout: VisitorLayoutConstraints;
   readonly requests: readonly string[];
   readonly externalDestinations: readonly string[];
+  readonly contactIntentState: "IDLE";
   readonly html: string;
 }
 
@@ -50,6 +52,56 @@ export function publishedVisitorItems(response: unknown): readonly PublicVisitor
   }
 
   return parsed.items.filter(isPublishedVisitorItem);
+}
+
+export function renderVisitorContactIntent(state: VisitorContactIntentState): string {
+  if (state === "SUBMITTING") {
+    return `
+      <div class="contact-intent-state contact-intent-state-submitting" data-contact-intent-state="SUBMITTING" role="status" aria-live="polite">
+        <span class="visitor-card-index">处理中</span>
+        <h3>模拟提交中</h3>
+        <p>正在准备本地演示确认，不会发送网络请求。</p>
+      </div>
+    `.trim();
+  }
+
+  if (state === "CONFIRMED") {
+    return `
+      <div class="contact-intent-state contact-intent-state-confirmed" data-contact-intent-state="CONFIRMED" role="status" aria-live="polite">
+        <span class="visitor-card-index">已确认</span>
+        <h3>已收到你的模拟意向</h3>
+        <p>这是本地演示确认态，不会保存信息、不会发送消息或连接外部服务。</p>
+      </div>
+    `.trim();
+  }
+
+  const errorMessage =
+    state === "INVALID"
+      ? '<p class="contact-intent-error" id="contact-intent-error" role="alert">请填写模拟称呼并选择想了解的内容。</p>'
+      : "";
+
+  return `
+    <form class="contact-intent-form" data-contact-intent-form="true" data-contact-intent-state="${state}" novalidate>
+      <p class="contact-intent-note" id="contact-intent-note">仅用于当前浏览器演示，不保存、不发送。</p>
+      ${errorMessage}
+      <div class="contact-intent-fields">
+        <label class="contact-intent-field">
+          <span>联系人称呼（模拟）</span>
+          <input id="contact-intent-name" name="contactName" type="text" autocomplete="off" placeholder="例如：示例家长" aria-describedby="contact-intent-note${state === "INVALID" ? " contact-intent-error" : ""}" />
+        </label>
+        <label class="contact-intent-field">
+          <span>想先了解什么</span>
+          <select id="contact-intent-topic" name="contactTopic" aria-describedby="contact-intent-note${state === "INVALID" ? " contact-intent-error" : ""}">
+            <option value="">请选择一个方向</option>
+            <option value="care">课后托管</option>
+            <option value="team">教师团队</option>
+            <option value="routine">一日流程</option>
+          </select>
+        </label>
+      </div>
+      <button id="contact-intent-submit" class="button button-dark" type="submit">提交模拟意向 <span aria-hidden="true">→</span></button>
+    </form>
+  `.trim();
 }
 
 export function renderVisitorHome(
@@ -72,11 +124,18 @@ export function renderVisitorHome(
         ? "No published visitor content"
         : resolvedState === "ERROR"
           ? "Visitor content is unavailable"
-          : `Published visitor content: ${items[0]?.title ?? "Synthetic learning welcome"}`;
-  const focusOrder =
-    resolvedState === "EMPTY"
-      ? ["visitor-home-empty-action"]
-      : ["visitor-primary-action", ...items.map((item) => `visitor-content-${item.slug}`)];
+          : `已发布公开内容：${items[0]?.title ?? "家校共育"}`;
+  const primaryActionId =
+    resolvedState === "PUBLISHED" && items[0] !== undefined
+      ? "visitor-primary-action"
+      : "visitor-home-empty-action";
+  const focusOrder = [
+    primaryActionId,
+    ...items.map((item) => `visitor-content-${item.slug}`),
+    "contact-intent-name",
+    "contact-intent-topic",
+    "contact-intent-submit",
+  ];
 
   return {
     route: "/visitor",
@@ -89,6 +148,7 @@ export function renderVisitorHome(
     layout: LAYOUT,
     requests: [],
     externalDestinations: [],
+    contactIntentState: "IDLE",
     html: visitorHomeHtml(resolvedState, statusAnnouncement, items),
   };
 }
@@ -105,7 +165,7 @@ function visitorHomeHtml(
             (item) => `
               <article class="content-card" data-synthetic="true" data-visibility="public">
                 <p class="eyebrow">公开内容 · 模拟数据</p>
-                <h2>${escapeHtml(item.title)}</h2>
+                <h3>${escapeHtml(item.title)}</h3>
                 <p class="content-card-summary">${escapeHtml(item.summary)}</p>
                 <a class="text-link" id="visitor-content-${escapeHtml(item.slug)}" href="/visitor/content/${escapeHtml(item.slug)}" aria-label="查看${escapeHtml(item.title)}">查看内容 <span aria-hidden="true">→</span></a>
               </article>`,
@@ -118,191 +178,142 @@ function visitorHomeHtml(
       : '<a class="button button-primary" id="visitor-home-empty-action" href="/visitor" aria-label="重新查看公开内容">重新查看公开内容</a>';
 
   return `
-    <main id="main-content" class="visitor-main" aria-labelledby="visitor-home-heading">
-      <section class="hero hero-panel" aria-labelledby="visitor-home-heading">
-        <div class="hero-copy">
-          <p class="eyebrow eyebrow-dark">课后成长服务 · 模拟数据</p>
-          <h1 id="visitor-home-heading">让成长从放学后继续发生</h1>
-          <p class="hero-lede">在安全、轻松、有趣的陪伴里，帮助孩子学习新技能，发现小小的热爱。</p>
+    <main id="main-content" class="visitor-main" aria-labelledby="visitor-home-heading" data-synthetic="true">
+      <section class="visitor-hero" aria-labelledby="visitor-home-heading">
+        <div class="visitor-hero-copy">
+          <p class="eyebrow eyebrow-dark">同芯学园 · 公开访客预览 · 模拟数据</p>
+          <h1 id="visitor-home-heading">同芯学园</h1>
+          <p class="visitor-hero-title">让成长从放学后继续发生</p>
+          <p class="hero-lede">给孩子一段安全、有节奏、愿意探索的课后时光，也让家长清楚看见机构如何陪伴成长。</p>
           <p class="status-message" role="status" aria-live="polite">${escapeHtml(statusAnnouncement)}</p>
           <div class="hero-actions">
             ${primaryAction}
-            <a class="button button-light" href="#about">了解同芯 <span aria-hidden="true">↓</span></a>
+            <a class="button button-light" href="/web/visitor/institution">了解机构 <span aria-hidden="true">→</span></a>
           </div>
         </div>
-        <div class="hero-media" aria-label="孩子们在课后教室合作学习的场景图片">
-          <img class="hero-photo" src="/assets/childcare-hero.avif" alt="孩子们在明亮教室里一起学习" />
-          <img class="hero-cutout" src="/assets/children-cutout.avif" alt="" />
-          <div class="hero-media-copy">
-            <span class="hero-media-label">安心托管 · 快乐成长</span>
+        <div class="visitor-hero-media" aria-label="孩子们在课后教室合作学习的模拟场景">
+          <img class="visitor-hero-photo" src="/assets/childcare-hero.avif" alt="孩子们在明亮教室里一起学习" />
+          <img class="visitor-hero-cutout" src="/assets/children-cutout.avif" alt="" />
+          <div class="visitor-hero-caption">
+            <span>安心托管 · 快乐成长</span>
             <strong>每一步，都值得被认真记录。</strong>
           </div>
         </div>
       </section>
 
-      <section id="about" class="intro-section section-band" data-reveal aria-labelledby="about-heading">
-        <div class="section-kicker">关于同芯</div>
-        <div class="intro-copy">
-          <h2 id="about-heading">用心陪伴每一个<br />小小的明天</h2>
+      <section id="about" class="visitor-home-section visitor-intro" data-reveal aria-labelledby="about-heading">
+        <div class="visitor-section-kicker">机构介绍</div>
+        <div class="visitor-section-split">
           <div>
-            <p>我们相信，孩子的好奇心、创造力和自信心，应该在每天放学后继续被看见。</p>
-            <p>同芯为家长提供清晰、安心的公开信息预览。当前页面使用模拟数据，真实服务上线前会经过确认后再公开。</p>
-            <a class="button button-outline" href="#visitor-empty-states">认识我们的服务 <span aria-hidden="true">↗</span></a>
+            <h2 id="about-heading">先认识同芯，再了解每一天</h2>
+            <p class="visitor-lede">同芯学园是面向访客的课后成长服务品牌示例。我们用稳定的日常、清晰的边界和家长可理解的信息，支持孩子在放学后继续学习与表达。</p>
+            <a class="button button-dark" href="/web/visitor/institution">查看机构介绍 <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="visitor-fact-list">
+            <div class="visitor-fact"><span>品牌</span><strong>同芯学园</strong><small>模拟机构品牌信息</small></div>
+            <div class="visitor-fact"><span>定位</span><strong>课后成长陪伴</strong><small>公开访客信息预览</small></div>
+            <div class="visitor-fact"><span>状态</span><strong>内容准备中</strong><small>真实服务信息确认后公开</small></div>
           </div>
         </div>
       </section>
 
-      <section class="program-section section-band" data-reveal aria-labelledby="program-heading">
-        <div class="section-heading section-heading-split">
+      <section id="family" class="visitor-home-section visitor-family" data-reveal aria-labelledby="family-heading">
+        <div class="visitor-section-heading">
           <div>
-            <p class="section-kicker">服务方向</p>
-            <h2 id="program-heading">学习有趣，成长有迹可循</h2>
+            <p class="visitor-section-kicker">家校共育</p>
+            <h2 id="family-heading">让家长看见过程，也参与成长</h2>
           </div>
-          <p class="section-note">暂无业务数据时，先用清晰的空状态告诉家长下一步。</p>
+          <p class="section-note">用模拟信息展示家长与教师之间的共同语言。</p>
         </div>
-        <div class="program-grid">
-          <article class="program-card program-card-green">
-            <span class="program-number">01</span>
-            <img class="program-photo" src="/assets/playroom-discovery.avif" alt="孩子在游戏角探索玩具" loading="lazy" decoding="async" />
-            <div class="program-icon" aria-hidden="true">✦</div>
-            <h3>课后托管</h3>
-            <p>从放学到回家，给孩子一段安心、有节奏的成长时间。</p>
-            <span class="program-status">信息准备中</span>
-          </article>
-          <article class="program-card program-card-blue">
-            <span class="program-number">02</span>
-            <img class="program-photo" src="/assets/classroom-learning.avif" alt="孩子在教室里探索学习工具" loading="lazy" decoding="async" />
-            <div class="program-icon" aria-hidden="true">◌</div>
-            <h3>兴趣探索</h3>
-            <p>用轻松的活动打开好奇心，让每一次尝试都值得被鼓励。</p>
-            <span class="program-status">暂无课程</span>
-          </article>
-          <article class="program-card program-card-yellow">
-            <span class="program-number">03</span>
-            <img class="program-photo program-photo-cutout" src="/assets/children-cutout.avif" alt="孩子们背着书包准备探索新知识" loading="lazy" decoding="async" />
-            <div class="program-icon" aria-hidden="true">↗</div>
-            <h3>家长可见</h3>
-            <p>重要的服务信息清晰呈现，帮助家长安心了解每一步。</p>
-            <span class="program-status">访客预览</span>
-          </article>
+        <div class="visitor-family-grid">
+          <article class="visitor-family-card visitor-family-card-green"><span class="visitor-card-index">01</span><h3>孩子先尝试</h3><p>保留孩子自己动手、提问和表达的空间，再把值得分享的小进步带回家。</p></article>
+          <article class="visitor-family-card visitor-family-card-yellow"><span class="visitor-card-index">02</span><h3>教师做记录</h3><p>用清晰、克制的日常观察帮助家长了解过程，不生成未经确认的评价。</p></article>
+          <article class="visitor-family-card visitor-family-card-blue"><span class="visitor-card-index">03</span><h3>家庭有回应</h3><p>家长可以从公开内容开始了解机构，再在合适的时机与团队沟通。</p></article>
         </div>
       </section>
 
-      <section class="routine-section section-band" data-reveal aria-labelledby="routine-heading">
-        <div class="routine-heading">
-          <p class="section-kicker">成长日常</p>
-          <h2 id="routine-heading">一段有学习、有玩耍的放学后时光</h2>
-        </div>
-        <div class="routine-list">
-          <article class="routine-step">
-            <span class="routine-time">15:30</span>
-            <div><h3>抵达与安顿</h3><p>先放下书包，也放松心情。</p></div>
-          </article>
-          <article class="routine-step">
-            <span class="routine-time">16:00</span>
-            <div><h3>专注与探索</h3><p>完成当天的小目标，发现新的兴趣。</p></div>
-          </article>
-          <article class="routine-step">
-            <span class="routine-time">17:30</span>
-            <div><h3>分享与回家</h3><p>把今天的收获带回家，也带走好心情。</p></div>
-          </article>
+      <section id="routine" class="visitor-home-section visitor-routine" data-reveal aria-labelledby="routine-heading">
+        <div class="visitor-section-split visitor-routine-layout">
+          <div>
+            <p class="visitor-section-kicker">一日流程</p>
+            <h2 id="routine-heading">一段有学习、有玩耍的放学后时光</h2>
+            <p class="visitor-lede">以下是明确标注的模拟流程，用来帮助访客理解服务节奏，不代表任何真实校区排班。</p>
+          </div>
+          <div class="visitor-routine-list">
+            <article class="visitor-routine-step"><time>15:30</time><div><h3>抵达与安顿</h3><p>放下书包，也放松心情。</p></div></article>
+            <article class="visitor-routine-step"><time>16:00</time><div><h3>专注与探索</h3><p>完成当天的小目标，发现新的兴趣。</p></div></article>
+            <article class="visitor-routine-step"><time>17:30</time><div><h3>分享与回家</h3><p>把今天的收获带回家，也带走好心情。</p></div></article>
+            <a class="button button-dark" href="/web/visitor/day-flow">查看完整一日流程 <span aria-hidden="true">→</span></a>
+          </div>
         </div>
       </section>
 
-      <section class="content-section section-band" data-reveal aria-labelledby="public-content-heading">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">公开内容</p>
-            <h2 id="public-content-heading">给家长的最新消息</h2>
-          </div>
-          <p class="section-note">仅展示已发布的模拟内容</p>
+      <section id="teachers" class="visitor-home-section visitor-teachers" data-reveal aria-labelledby="teachers-heading">
+        <div class="visitor-section-heading">
+          <div><p class="visitor-section-kicker">教师团队</p><h2 id="teachers-heading">有耐心，也有边界的陪伴者</h2></div>
+          <p class="section-note">团队资料均为不可对应真人的模拟信息。</p>
         </div>
-        <div class="content-grid">
+        <div class="visitor-team-grid">
+          <article class="visitor-team-card" data-synthetic="true"><img src="/assets/classroom-learning.avif" alt="模拟教师团队活动场景" loading="lazy" decoding="async" /><p class="visitor-card-label">模拟教师 01</p><h3>林老师</h3><p>负责日常陪伴与家长沟通示例。</p></article>
+          <article class="visitor-team-card" data-synthetic="true"><img src="/assets/playroom-discovery.avif" alt="模拟教师团队活动空间" loading="lazy" decoding="async" /><p class="visitor-card-label">模拟教师 02</p><h3>周老师</h3><p>关注孩子的探索过程与表达空间。</p></article>
+          <article class="visitor-team-card" data-synthetic="true"><p class="visitor-card-label">模拟教师 03</p><h3>许老师</h3><p>协助整理日常信息与家庭反馈。</p></article>
+        </div>
+      </section>
+
+      <section id="activities" class="visitor-home-section visitor-public-updates" data-reveal aria-labelledby="activities-heading">
+        <div class="visitor-section-heading">
+          <div><p class="visitor-section-kicker">活动与消息</p><h2 id="activities-heading">公开内容会在确认后出现</h2></div>
+          <p class="section-note">仅展示已发布、可公开的模拟内容。</p>
+        </div>
+        <div class="visitor-update-grid">
           ${itemMarkup || '<p class="empty-copy" role="status" aria-live="polite">当前没有可展示的公开内容。</p>'}
+          <article class="visitor-empty-panel" aria-labelledby="activities-empty-heading"><span class="visitor-card-index">状态</span><h3 id="activities-empty-heading">暂无活动</h3><p>暂无已发布活动，确认后会在这里展示。</p></article>
         </div>
       </section>
 
-      <section class="benefits-section section-band" data-reveal aria-labelledby="benefits-heading">
-        <div class="section-heading section-heading-split">
-          <div>
-            <p class="section-kicker">为什么选择同芯</p>
-            <h2 id="benefits-heading">让孩子学习、玩耍，也好好长大</h2>
-          </div>
-          <p class="section-note">把家长最关心的体验，变成简单清楚的承诺。</p>
-        </div>
-        <div class="benefit-grid">
-          <article class="benefit-item"><span>01</span><h3>安全感</h3><p>明确的服务边界，让每一次公开都值得信赖。</p></article>
-          <article class="benefit-item"><span>02</span><h3>好奇心</h3><p>给孩子空间去提问、尝试和表达自己的想法。</p></article>
-          <article class="benefit-item"><span>03</span><h3>小目标</h3><p>把大成长拆成每一天可以完成的一小步。</p></article>
-          <article class="benefit-item"><span>04</span><h3>好习惯</h3><p>在稳定的节奏里，慢慢建立属于自己的秩序。</p></article>
-          <article class="benefit-item"><span>05</span><h3>被看见</h3><p>让孩子的努力被认真记录，也被温柔回应。</p></article>
-          <article class="benefit-item"><span>06</span><h3>同成长</h3><p>让家长和孩子一起看见变化发生的过程。</p></article>
+      <section id="meals" class="visitor-home-section visitor-meals" data-reveal aria-labelledby="meals-heading">
+        <div class="visitor-section-split">
+          <div><p class="visitor-section-kicker">餐食与食谱</p><h2 id="meals-heading">与孩子有关的信息，等确认后再公开</h2></div>
+          <article class="visitor-empty-panel" aria-labelledby="meals-empty-heading"><span class="visitor-card-index">状态</span><h3 id="meals-empty-heading">暂无餐食</h3><p>暂无公开餐食或食谱，准备完成后会明确标注日期与适用范围。</p></article>
         </div>
       </section>
 
-      <section id="visitor-empty-states" class="content-section section-band" data-reveal aria-labelledby="empty-states-heading">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">服务状态</p>
-            <h2 id="empty-states-heading">正在准备的服务</h2>
-          </div>
-          <p class="section-note">暂无业务数据时保持诚实透明</p>
+      <section id="campus" class="visitor-home-section visitor-environment" data-reveal aria-labelledby="campus-heading">
+        <div class="visitor-section-heading">
+          <div><p class="visitor-section-kicker">环境与校区</p><h2 id="campus-heading">先看看空间气质，校区资料保持空状态</h2></div>
+          <p class="section-note">图片来自项目自有 first-party 资产，仅作视觉示例。</p>
         </div>
-        <div class="empty-state-grid">
-          <article class="empty-state" aria-labelledby="courses-empty-heading">
-            <span class="empty-state-index">01</span>
-            <h3 id="courses-empty-heading">暂无课程</h3>
-            <p>课程信息准备好后会在这里展示。</p>
-          </article>
-          <article class="empty-state" aria-labelledby="events-empty-heading">
-            <span class="empty-state-index">02</span>
-            <h3 id="events-empty-heading">暂无活动</h3>
-            <p>活动安排将在确认后公开呈现。</p>
-          </article>
-          <article class="empty-state" aria-labelledby="campuses-empty-heading">
-            <span class="empty-state-index">03</span>
-            <h3 id="campuses-empty-heading">暂无校区</h3>
-            <p>校区信息仅在正式发布后出现。</p>
-          </article>
+        <div class="visitor-environment-grid">
+          <figure class="visitor-environment-photo"><img src="/assets/playroom-discovery.avif" alt="明亮开放的模拟活动空间" loading="lazy" decoding="async" /><figcaption>模拟环境示例 · 明亮、可探索、可照看</figcaption></figure>
+          <article class="visitor-empty-panel" aria-labelledby="campus-empty-heading"><span class="visitor-card-index">状态</span><h3 id="campus-empty-heading">暂无校区</h3><p>暂无公开校区信息，不推断校区或地址。</p></article>
+          <article id="contact-status" class="visitor-empty-panel visitor-contact-panel" aria-labelledby="contact-heading"><span class="visitor-card-index">状态</span><h3 id="contact-heading">联系状态</h3><p>联系信息准备中。当前页面不连接真实电话、表单或外部服务。</p></article>
         </div>
       </section>
 
-      <section class="stories-section section-band" data-reveal aria-labelledby="stories-heading">
-        <div class="stories-heading">
-          <p class="section-kicker">模拟反馈</p>
-          <h2 id="stories-heading">来自家长的安心时刻</h2>
+      <section id="contact-intent" class="visitor-home-section visitor-contact-intent" data-reveal aria-labelledby="contact-intent-heading">
+        <div class="visitor-section-heading">
+          <div><p class="visitor-section-kicker">联系意向 · 模拟</p><h2 id="contact-intent-heading">想进一步了解同芯？</h2></div>
+          <p class="section-note">只展示本地确认流程，不接入真实联系服务。</p>
         </div>
-        <div class="stories-grid">
-          <blockquote class="story-card story-card-purple">
-            <p>“信息清清楚楚地展示出来，作为家长，我更容易知道现在有什么、还缺什么。”</p>
-            <footer>模拟家长 · 小雨的妈妈</footer>
-          </blockquote>
-          <blockquote class="story-card story-card-peach">
-            <p>“孩子愿意分享他今天学到的小事情，这就是我期待的成长。”</p>
-            <footer>模拟家长 · 乐乐的爸爸</footer>
-          </blockquote>
+        <div id="contact-intent-body" data-contact-intent-body>${renderVisitorContactIntent("IDLE")}</div>
+      </section>
+
+      <section id="visitor-empty-states" class="visitor-home-section visitor-service-status" data-reveal aria-labelledby="empty-states-heading">
+        <div class="visitor-section-heading">
+          <div><p class="visitor-section-kicker">服务状态</p><h2 id="empty-states-heading">没有真实内容时，就清楚显示空状态</h2></div>
+          <p class="section-note">访客可以知道当前有什么，也知道还没有什么。</p>
+        </div>
+        <div class="visitor-empty-grid">
+          <article class="visitor-empty-panel" aria-labelledby="courses-empty-heading"><span class="visitor-card-index">01</span><h3 id="courses-empty-heading">暂无课程</h3><p>课程安排确认后再公开。</p></article>
+          <article class="visitor-empty-panel" aria-labelledby="events-empty-heading"><span class="visitor-card-index">02</span><h3 id="events-empty-heading">暂无活动</h3><p>暂无已发布活动。</p></article>
+          <article class="visitor-empty-panel" aria-labelledby="campuses-empty-heading"><span class="visitor-card-index">03</span><h3 id="campuses-empty-heading">暂无校区</h3><p>暂无公开校区信息。</p></article>
         </div>
       </section>
 
-      <section class="faq-section section-band" data-reveal aria-labelledby="faq-heading">
-        <div class="faq-heading">
-          <p class="section-kicker">家长常见问题</p>
-          <h2 id="faq-heading">想了解的，都可以先问问</h2>
-        </div>
-        <div class="faq-list">
-          <details><summary>目前页面展示的内容是真实业务数据吗？</summary><p>不是。本页面只使用明确标记的模拟数据，真实服务信息确认后才会公开。</p></details>
-          <details><summary>什么时候可以看到课程和校区信息？</summary><p>课程、活动和校区信息准备完成并经过确认后，会从对应的空状态更新为公开内容。</p></details>
-          <details><summary>家长可以从哪里了解最新进展？</summary><p>请关注访客首页的公开内容区域，页面会优先呈现已发布、可公开的信息。</p></details>
-        </div>
-      </section>
-
-      <section class="cta-band" aria-labelledby="cta-heading">
-        <div class="cta-decor cta-decor-one" aria-hidden="true"></div>
-        <div class="cta-decor cta-decor-two" aria-hidden="true"></div>
-        <p class="section-kicker">准备好一起成长了吗？</p>
-        <h2 id="cta-heading">给孩子一个<br />充满可能的开始</h2>
-        <p>先从公开信息开始了解同芯，服务准备好后，我们会把每个重要细节说清楚。</p>
-        <a class="button button-dark" href="#site-footer">查看联系信息 <span aria-hidden="true">↗</span></a>
+      <section class="visitor-home-section visitor-closing-note" aria-labelledby="closing-heading">
+        <p class="visitor-section-kicker">访客端说明</p><h2 id="closing-heading">所有内容均为模拟数据</h2>
+        <p>这是 V0.1 公开访客页面的静态预览。真实机构、校区、人员、餐食和联系信息均未接入，也不会从页面推断。</p>
+        <a class="button button-dark" href="/visitor#contact-status">查看联系状态 <span aria-hidden="true">↓</span></a>
       </section>
     </main>
   `.trim();

@@ -1,0 +1,152 @@
+.visitor-meals-page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 28rpx 28rpx 56rpx;
+  background: radial-gradient(circle at 88% 8%, rgba(255, 216, 77, 0.2), transparent 24%), #f5f8ec;
+}
+
+.visitor-meals-page .visitor-meals-return,
+.visitor-meals-page .visitor-meals-retry {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: flex-start;
+  height: 72rpx;
+  align-self: flex-start;
+  margin: 0 0 24rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.2);
+  border-radius: 28rpx;
+  background: rgba(255, 255, 255, 0.74);
+  color: #4c762b;
+  font-size: 24rpx;
+  line-height: 1;
+  text-align: left;
+}
+
+.visitor-meals-page .visitor-meals-return::after,
+.visitor-meals-page .visitor-meals-retry::after {
+  border: 0;
+}
+
+.visitor-meals-heading,
+.visitor-meals-state,
+.visitor-meal-card {
+  padding: 30rpx 28rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.92);
+  border-radius: 32rpx;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14rpx 36rpx rgba(75, 105, 47, 0.07);
+}
+
+.visitor-meals-eyebrow,
+.visitor-meals-title,
+.visitor-meals-intro,
+.visitor-meals-date-label,
+.visitor-meals-date-value,
+.visitor-meals-state-title,
+.visitor-meal-type,
+.visitor-meal-item,
+.visitor-meal-notes {
+  display: block;
+}
+
+.visitor-meals-eyebrow {
+  color: #79a936;
+  font-size: 21rpx;
+  font-weight: 700;
+}
+
+.visitor-meals-title {
+  margin-top: 12rpx;
+  color: #244b32;
+  font-size: 44rpx;
+  font-weight: 800;
+}
+
+.visitor-meals-intro {
+  margin-top: 10rpx;
+  color: #667864;
+  font-size: 23rpx;
+  line-height: 1.65;
+}
+
+.visitor-meals-date-picker {
+  display: flex;
+  min-height: 76rpx;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 22rpx;
+  padding: 0 22rpx;
+  border: 1rpx solid rgba(125, 174, 59, 0.22);
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.visitor-meals-date-label {
+  margin-right: 24rpx;
+  color: #71806c;
+  font-size: 21rpx;
+}
+
+.visitor-meals-date-value {
+  color: #4c762b;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.visitor-meals-state {
+  margin-top: 18rpx;
+  color: #71806c;
+  font-size: 21rpx;
+  line-height: 1.6;
+}
+
+.visitor-meals-state-title {
+  margin-bottom: 8rpx;
+  color: #31583a;
+  font-size: 25rpx;
+  font-weight: 800;
+}
+
+.visitor-meals-page .visitor-meals-retry {
+  height: 68rpx;
+  margin: 18rpx 0 0;
+  background: #7dac35;
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.visitor-meal-card {
+  margin-top: 18rpx;
+}
+
+.visitor-meal-type {
+  color: #31583a;
+  font-size: 27rpx;
+  font-weight: 800;
+}
+
+.visitor-meal-items {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10rpx;
+}
+
+.visitor-meal-item {
+  margin: 0 12rpx 10rpx 0;
+  padding: 9rpx 14rpx;
+  border-radius: 18rpx;
+  background: rgba(155, 207, 66, 0.13);
+  color: #4c762b;
+  font-size: 21rpx;
+}
+
+.visitor-meal-notes {
+  margin-top: 4rpx;
+  color: #71806c;
+  font-size: 20rpx;
+  line-height: 1.6;
+}

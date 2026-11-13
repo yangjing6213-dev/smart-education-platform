@@ -4,10 +4,28 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "next:dev": "next dev --webpack",
+    "next:build": "next build --webpack",
+    "next:start": "next start",
+    "next:typecheck": "tsc -p next.tsconfig.json --noEmit",
+    "next:lint": "eslint src/app",
+    "next:e2e": "node --test --test-concurrency=1 ../../tests/e2e/helpers/user-web-next-browser.test.mjs ../../tests/e2e/user-web-next-startup.spec.mjs ../../tests/e2e/user-web-next-public-institution.spec.mjs ../../tests/e2e/user-web-next-visitor-public.spec.mjs ../../tests/e2e/user-web-next-parent-binding-invite.spec.mjs ../../tests/e2e/user-web-next-parent-fees-monthly.spec.mjs ../../tests/e2e/user-web-next-parent-pickup.spec.mjs ../../tests/e2e/user-web-next-parent-staff-leave.spec.mjs ../../tests/e2e/user-web-next-staff-workbench.spec.mjs ../../tests/e2e/user-web-next-care-review-parent-confirmation.spec.mjs ../../tests/e2e/user-web-next-admin-staff-tasks.spec.mjs ../../tests/e2e/user-web-next-staff-daily.spec.mjs ../../tests/e2e/user-web-next-invited-tasks-current.spec.mjs ../../tests/e2e/user-web-next-staff-monthly-invite.spec.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p next-test.tsconfig.json --noEmit",
     "lint": "eslint src",
     "build": "tsc -p tsconfig.json && node build.mjs",
     "preview": "node preview.mjs",
-    "test": "tsc -p tsconfig.json && node --test dist/pages/visitor.test.js"
+    "test": "tsc -p tsconfig.json && node --test --test-concurrency=1 dist/pages/*.test.js dist/local-synthetic/*.test.js && node test-next-unit.mjs",
+    "test:next-unit": "node test-next-unit.mjs",
+    "test:child-monthly-proxy": "node --test --test-concurrency=1 test/child-monthly-invite-proxy.test.mjs"
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "@student-care/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
   }
 }

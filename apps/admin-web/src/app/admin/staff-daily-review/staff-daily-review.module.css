@@ -1,0 +1,262 @@
+.page,
+.header,
+.panel,
+.list,
+.card {
+  display: grid;
+  min-width: 0;
+  gap: 20px;
+}
+
+.page {
+  width: min(100%, 1120px);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: 42px;
+  color: #386d35;
+  text-underline-offset: 4px;
+}
+
+.header h1,
+.header h2,
+.card h3 {
+  margin: 0;
+  color: #173b2d;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.header h1 {
+  font-size: clamp(28px, 3vw, 38px);
+}
+
+.header p,
+.panel p,
+.card p {
+  color: #647366;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.header p,
+.panel p,
+.card p {
+  margin: 0;
+}
+
+.eyebrow {
+  color: #62843d !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.notice,
+.scope,
+.empty {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #f7faee;
+}
+
+.panel,
+.card {
+  padding: clamp(16px, 2.5vw, 24px);
+  border: 1px solid #dce7d3;
+  border-radius: 16px;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+
+.toolbar,
+.cardHeading,
+.actions,
+.auditActions {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.toolbar,
+.cardHeading {
+  justify-content: space-between;
+}
+
+.toolbar h2 {
+  margin: 0;
+  color: #173b2d;
+  font-size: clamp(20px, 2.4vw, 28px);
+}
+
+.toolbar > div,
+.cardHeading > div {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cardHeading h3 {
+  font-size: 20px;
+}
+
+.author {
+  color: #62843d !important;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.fields,
+.details {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.details > div {
+  min-width: 0;
+}
+
+.details dt {
+  color: #647366;
+  font-size: 13px;
+}
+
+.details dd {
+  margin: 4px 0 0;
+  color: #304d37;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.primaryButton,
+.secondaryButton {
+  width: fit-content;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 9px 16px;
+  border: 1px solid #6c963f;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.primaryButton {
+  color: #fff;
+  background: #557f34;
+}
+
+.secondaryButton {
+  color: #386d35;
+  background: #f7faef;
+}
+
+.primaryButton:disabled,
+.secondaryButton:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.backLink:focus-visible,
+.primaryButton:focus-visible,
+.secondaryButton:focus-visible {
+  outline: 3px solid #82ae50;
+  outline-offset: 3px;
+}
+
+.badge {
+  padding: 5px 12px;
+  border-radius: 999px;
+  color: #386d35;
+  background: #edf4e3;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.auditTrail {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e2ead9;
+  border-radius: 12px;
+  background: #f8fbf2;
+}
+
+.auditTrail h4 {
+  margin: 0;
+  color: #304d37;
+  font-size: 16px;
+}
+
+.auditTrail ol {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.auditTrail li {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+  padding-left: 4px;
+  color: #647366;
+  line-height: 1.55;
+}
+
+.auditTrail strong {
+  color: #304d37;
+}
+
+.auditTrail time {
+  font-size: 13px;
+}
+
+.error {
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #8f302b !important;
+  background: #fff3f1;
+}
+
+.message,
+.note,
+.footnote {
+  color: #647366;
+  line-height: 1.65;
+}
+
+.footnote {
+  border-top: 1px solid #e6ecdf;
+  padding-top: 12px;
+  font-size: 13px;
+}
+
+.stateCard {
+  padding: 20px;
+  border: 1px solid #dce7d3;
+  border-radius: 16px;
+  background: #fff;
+}
+
+@media (max-width: 600px) {
+  .fields,
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .actions > button {
+    flex: 1 1 150px;
+  }
+}
