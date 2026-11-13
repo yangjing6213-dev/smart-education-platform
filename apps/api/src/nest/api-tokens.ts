@@ -80,12 +80,73 @@ export type InviteLoginResult =
       readonly reason: "AUTH_NOT_CONFIGURED" | "INVALID_CREDENTIALS";
     };
 
+export type AccountUpdateFailure =
+  | "ACCOUNT_NOT_FOUND"
+  | "CURRENT_PASSWORD_INVALID"
+  | "PROFILE_INVALID"
+  | "PASSWORD_INVALID"
+  | "USERNAME_INVALID"
+  | "USERNAME_TAKEN"
+  | "RATE_LIMITED"
+  | "PROFILE_CHANGE_PENDING"
+  | "PROFILE_CHANGE_NOT_FOUND"
+  | "PROFILE_CHANGE_CONFLICT"
+  | "FORBIDDEN_SCOPE";
+
+export type AccountUpdateResult =
+  | { readonly ok: true }
+  | { readonly ok: false; readonly reason: AccountUpdateFailure };
+
+export interface AccountCenterRecord {
+  readonly actor_id: string;
+  readonly username: string;
+  readonly display_name: string;
+  readonly account_status: "ACTIVE" | "SUSPENDED" | "REVOKED";
+}
+
+export interface ProfileChangeRecord {
+  readonly id: string;
+  readonly actor_id: string;
+  readonly display_name: string;
+  readonly tenant_id: string;
+  readonly status: "PENDING" | "APPROVED" | "REJECTED";
+  readonly version: number;
+  readonly created_at: string;
+  readonly reviewed_at?: string;
+}
+
 export interface InviteAuthOperations {
   login(username: string, password: string): Promise<InviteLoginResult>;
   getTrustedAuthResult(
     request: ApiHttpRequest,
   ): TrustedAuthResult | undefined | Promise<TrustedAuthResult | undefined>;
   logout(request: ApiHttpRequest): void | Promise<void>;
+  logoutAll(request: ApiHttpRequest): Promise<void>;
+  getAccount(actorId: string): Promise<AccountCenterRecord | undefined>;
+  updateProfile(actorId: string, displayName: string): Promise<AccountUpdateResult>;
+  changeUsername(
+    actorId: string,
+    currentPassword: string,
+    newUsername: string,
+  ): Promise<AccountUpdateResult>;
+  changePassword(
+    actorId: string,
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<AccountUpdateResult>;
+  createProfileChangeRequest(
+    actorId: string,
+    tenantId: string,
+    displayName: string,
+  ): Promise<{ readonly result: AccountUpdateResult; readonly request?: ProfileChangeRecord }>;
+  listProfileChangeRequests(tenantId: string): Promise<readonly ProfileChangeRecord[]>;
+  reviewProfileChangeRequest(input: {
+    readonly requestId: string;
+    readonly tenantId: string;
+    readonly reviewerId: string;
+    readonly expectedVersion: number;
+    readonly approved: boolean;
+  }): Promise<AccountUpdateResult>;
 }
 
 export const INVITE_AUTH_SERVICE = Symbol("INVITE_AUTH_SERVICE");

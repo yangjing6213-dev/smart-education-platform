@@ -16,7 +16,8 @@ export type VisitorSection =
   | "parent-leave"
   | "staff-care"
   | "staff-workbench"
-  | "staff-leave";
+  | "staff-leave"
+  | "account";
 
 const links: readonly {
   readonly href: string;
@@ -32,6 +33,7 @@ const links: readonly {
   { href: "/visitor#visitor-empty-states", label: "服务方向" },
   { href: "/visitor#contact-intent", label: "联系我们" },
   { href: "/web/login", label: "账号登录", section: "login" },
+  { href: "/web/account", label: "我的账号", section: "account" },
 ];
 
 export function SiteHeader({ active }: { readonly active: VisitorSection }) {

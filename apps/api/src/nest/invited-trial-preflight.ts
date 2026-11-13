@@ -65,11 +65,22 @@ export async function verifyInvitedTrialDatabase(
     `;
       assertTrialMigrationHistory(expected, rows);
       await tx.$queryRaw`SELECT token_hash, user_id, expires_at, created_at FROM public.invite_auth_sessions LIMIT 0`;
+      await tx.$queryRaw`SELECT user_id, username, normalized_username, password_hash, display_name FROM public.invite_auth_accounts LIMIT 0`;
+      await tx.$queryRaw`SELECT id, user_id, event_type, outcome, created_at FROM public.identity_security_events LIMIT 0`;
+      await tx.$queryRaw`SELECT id, user_id, tenant_id, requested_display_name, status, version FROM public.user_profile_change_requests LIMIT 0`;
       const [rights] = await tx.$queryRaw<{ ready: boolean }[]>`
       SELECT NOT pg_is_in_recovery()
          AND current_setting('default_transaction_read_only') = 'off'
          AND has_table_privilege(current_user, 'public.invite_auth_sessions', 'INSERT')
-         AND has_table_privilege(current_user, 'public.invite_auth_sessions', 'DELETE') AS ready
+         AND has_table_privilege(current_user, 'public.invite_auth_sessions', 'DELETE')
+         AND has_table_privilege(current_user, 'public.invite_auth_accounts', 'SELECT')
+         AND has_table_privilege(current_user, 'public.invite_auth_accounts', 'INSERT')
+         AND has_table_privilege(current_user, 'public.invite_auth_accounts', 'UPDATE')
+         AND has_table_privilege(current_user, 'public.identity_security_events', 'SELECT')
+         AND has_table_privilege(current_user, 'public.identity_security_events', 'INSERT')
+         AND has_table_privilege(current_user, 'public.user_profile_change_requests', 'SELECT')
+         AND has_table_privilege(current_user, 'public.user_profile_change_requests', 'INSERT')
+         AND has_table_privilege(current_user, 'public.user_profile_change_requests', 'UPDATE') AS ready
     `;
       const actorIds = accounts.map((account) => account.identity.actor_id);
       const users = await tx.user.findMany({

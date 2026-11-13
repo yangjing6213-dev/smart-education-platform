@@ -61,6 +61,15 @@ function allowed(method: string, segments: readonly string[]): boolean {
   const path = `/${segments.join("/")}`;
   if (path === "/identity/login" || path === "/identity/logout") return method === "POST";
   if (path === "/me") return method === "GET";
+  if (path === "/identity/account") return method === "GET";
+  if (path === "/identity/account/profile" || path === "/identity/account/username")
+    return method === "PATCH";
+  if (
+    path === "/identity/account/password" ||
+    path === "/identity/account/logout-all" ||
+    path === "/identity/account/profile-change-requests"
+  )
+    return method === "POST";
   if (path === "/guardian-relationships") return method === "GET";
   if (
     segments.length === 3 &&
@@ -679,6 +688,14 @@ async function handle(request: Request, context: RouteContext): Promise<Response
         data: safeData,
       };
       return json(safePayload, response.status, responseHeaders);
+    }
+    if (
+      response.ok &&
+      path[0] === "identity" &&
+      path[1] === "account" &&
+      ["username", "password", "logout-all"].includes(path[2] ?? "")
+    ) {
+      responseHeaders.set("set-cookie", cookieHeader("", 0, request));
     }
     return json(payload, response.status, responseHeaders);
   } catch {

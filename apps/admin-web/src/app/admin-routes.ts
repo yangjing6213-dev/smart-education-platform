@@ -30,4 +30,5 @@ export const ADMIN_ROUTES = [
   { href: "/admin/pickup-review", label: "接送异常处理" },
   { href: "/admin/health-incident-review", label: "健康异常审核" },
   { href: "/admin/platform-operations", label: "平台运营" },
+  { href: "/admin/account", label: "我的账号" },
 ] as const;

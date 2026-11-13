@@ -1,1655 +1,333 @@
-import { isIP } from "node:net";
-import {
-  parseChildMonthlyRecord,
-  parseChildMonthlyListing,
-} from "../../../admin/child-monthly-review/child-monthly-review-client.ts";
-import {
-  parseMonthlyRecord,
-  parseMonthlyListing,
-} from "../../../admin/monthly-feedback-review/monthly-feedback-review-client.ts";
-import {
-  parseTask,
-  parseTaskPayload,
-  validTaskInput,
-} from "../../../admin/staff-tasks/staff-tasks-client.ts";
-
-import {
-  parseTransferListing,
-  parseTransferRecord,
-  validTransferCreate,
-  validTransferReview,
-} from "../../../admin/student-transfers/student-transfers-client.ts";
-
-type RouteContext = Readonly<{
-  params: Promise<{ readonly path: readonly string[] }>;
-}>;
-
-type JsonBody =
-  | { readonly ok: true; readonly value?: unknown }
-  | { readonly ok: false; readonly response: Response };
-
-const SESSION_COOKIE = "student_care_admin_session";
-const HOME_CONTENT_KEY = "home-content-synthetic-east";
-const MAX_BODY_BYTES = 16 * 1024;
-const MAX_SESSION_SECONDS = 8 * 60 * 60;
-const TOKEN = /^[A-Za-z0-9_-]{40,160}$/u;
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
-const HEALTH_ACTIONS = ["review", "supplement", "publish", "revoke"] as const;
-const HEALTH_REVIEW_ACTIONS = ["CONFIRM", "RETURN", "ESCALATE"] as const;
-const HEALTH_DISPOSITIONS = [
-  "OBSERVATION_RECHECKED",
-  "FOLLOW_UP_SCHEDULED",
-  "GUARDIAN_SUMMARY_PREPARED",
-] as const;
-const HEALTH_SUMMARIES = [
-  "FOLLOW_UP_IN_PROGRESS",
-  "FOLLOW_UP_COMPLETED",
-  "PLEASE_CHECK_PAGE_LATER",
-] as const;
-const HEALTH_STATUSES = [
-  "SUBMITTED",
-  "EXCEPTION_PENDING",
-  "CONFIRMED",
-  "PUBLISHED",
-  "RETURNED",
-  "REVOKED",
-] as const;
-const NOTICE_ACTIONS = ["review", "publish", "revoke"] as const;
-const NOTICE_STATUSES = [
-  "DRAFT",
-  "SUBMITTED",
-  "RETURNED",
-  "APPROVED",
-  "PUBLISHED",
-  "REVOKED",
-] as const;
-const NOTICE_TEMPLATES = {
-  INSTITUTION_ANNOUNCEMENT: {
-    target: "INSTITUTION",
-    title: "æœºæ„å…¬å‘Š",
-    body: "æ ¡åŒºå‘å¸ƒäº†æ–°çš„æœåŠ¡å®‰æ’ï¼Œè¯·å®¶é•¿æŸ¥çœ‹é¡µé¢å†…æ›´æ–°ã€‚",
-  },
-  CLASS_ACTIVITY: {
-    target: "CLASS",
-    title: "ç­çº§æ´»åŠ¨",
-    body: "ç­çº§è¿‘æœŸæœ‰æ´»åŠ¨å®‰æ’ï¼Œè¯·å®¶é•¿æŸ¥çœ‹å¹¶ç•™æ„ç›¸å…³æ—¶é—´ã€‚",
-  },
-} as const;
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
-
-function json(body: unknown, status = 200, headers = new Headers()): Response {
-  headers.set("content-type", "application/json; charset=utf-8");
-  headers.set("cache-control", "no-store");
-  return new Response(JSON.stringify(body), { status, headers });
-}
-
-function error(status: number, code: string, message: string): Response {
-  return json({ error: { code, message } }, status);
-}
-
-function isLoopbackHost(hostname: string): boolean {
-  const host = hostname
-    .toLowerCase()
-    .replace(/^\[|\]$/gu, "")
-    .replace(/\.$/u, "");
-  if (host === "localhost" || host.endsWith(".localhost")) return true;
-  if (isIP(host) === 4) return host.startsWith("127.");
-  if (isIP(host) !== 6) return false;
-  if (host === "::1") return true;
-  const mapped = /^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/u.exec(host);
-  return mapped !== null && Number.parseInt(mapped[1] ?? "0", 16) >>> 8 === 127;
-}
-
-function apiOrigin(): URL | undefined {
-  const production = process.env.NODE_ENV === "production";
-  const configured = production
-    ? process.env.ADMIN_WEB_NEST_API_BASE_URL
-    : process.env.ADMIN_WEB_LOCAL_NEST_API ||
-      (process.env.NODE_ENV === "development" ? "http://127.0.0.1:4321" : undefined);
-  if (!configured) return undefined;
-
-  try {
-    const url = new URL(configured);
-    if (url.username || url.password || url.pathname !== "/" || url.search || url.hash)
-      return undefined;
-    if (production && url.protocol === "https:" && !isLoopbackHost(url.hostname)) return url;
-    if (
-      !production &&
-      process.env.NODE_ENV === "development" &&
-      url.protocol === "http:" &&
-      url.hostname === "127.0.0.1" &&
-      Boolean(url.port)
-    )
-      return url;
-    return undefined;
-  } catch {
-    return undefined;
-  }
-}
-
-function allowed(method: string, path: readonly string[]): boolean {
-  const joined = "/" + path.join("/");
-  if (
-    path.length === 4 &&
-    path[0] === "institution" &&
-    path[1] === "home" &&
-    path[2] === HOME_CONTENT_KEY
-  ) {
-    if (path[3] === "draft") return method === "GET" || method === "POST" || method === "PUT";
-    return (path[3] === "publish" || path[3] === "unpublish") && method === "POST";
-  }
-  if (joined === "/monthly-feedback" || joined === "/child-monthly-reports")
-    return method === "GET";
-  if (
-    path.length === 3 &&
-    ["monthly-feedback", "child-monthly-reports"].includes(path[0] ?? "") &&
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(
-      path[1] ?? "",
-    )
-  )
-    return method === "POST" && (path[2] === "review" || path[2] === "publish");
-  if (joined === "/fees") return method === "GET" || method === "POST";
-  if (joined === "/student-transfers") return method === "GET" || method === "POST";
-  if (
-    path.length === 3 &&
-    path[0] === "student-transfers" &&
-    UUID.test(path[1] ?? "") &&
-    path[2] === "review"
-  )
-    return method === "POST";
-  if (path.length === 3 && path[0] === "fees" && UUID.test(path[1] ?? "") && path[2] === "revoke")
-    return method === "POST";
-  if (joined === "/learning-institution-setting") return method === "GET" || method === "POST";
-  if (joined === "/tasks") return method === "GET" || method === "POST";
-  if (path.length === 3 && path[0] === "tasks" && UUID.test(path[1] ?? ""))
-    return method === "POST" && (path[2] === "check" || path[2] === "cancel");
-  if (joined === "/daily-reports") return method === "GET";
-  if (
-    path.length === 3 &&
-    path[0] === "daily-reports" &&
-    UUID.test(path[1] ?? "") &&
-    path[2] === "audit-events"
-  )
-    return method === "GET";
-  if (path.length === 3 && path[0] === "daily-reports" && UUID.test(path[1] ?? ""))
-    return method === "POST" && (path[2] === "review" || path[2] === "withdraw");
-  if (joined === "/meals") return method === "GET";
-  if (path.length === 3 && path[0] === "meals" && UUID.test(path[1] ?? "")) {
-    if (path[2] === "draft") return method === "POST" || method === "PUT";
-    return (path[2] === "publish" || path[2] === "unpublish") && method === "POST";
-  }
-  if (joined === "/identity/login" || joined === "/identity/logout") return method === "POST";
-  if (
-    joined === "/me" ||
-    joined === "/staff/guardian-binding/applications" ||
-    joined === "/staff/care-records" ||
-    joined === "/staff/leave-requests" ||
-    joined === "/staff/health-incidents"
-  )
-    return method === "GET";
-  if (joined === "/staff/notices/review") return method === "GET";
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "notices" &&
-    UUID.test(path[2] ?? "") &&
-    NOTICE_ACTIONS.includes(path[3] as (typeof NOTICE_ACTIONS)[number])
-  )
-    return method === "POST";
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "leave-requests" &&
-    UUID.test(path[2] ?? "") &&
-    path[3] === "review"
-  )
-    return method === "POST";
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "health-incidents" &&
-    UUID.test(path[2] ?? "") &&
-    HEALTH_ACTIONS.includes(path[3] as (typeof HEALTH_ACTIONS)[number])
-  )
-    return method === "POST";
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "care-records" &&
-    UUID.test(path[2] ?? "") &&
-    (path[3] === "review" || path[3] === "publish" || path[3] === "revoke-publication")
-  )
-    return method === "POST";
-  return (
-    path.length === 5 &&
-    path[0] === "staff" &&
-    path[1] === "guardian-binding" &&
-    path[2] === "applications" &&
-    UUID.test(path[3] ?? "") &&
-    path[4] === "review" &&
-    method === "POST"
-  );
-}
-
-function sameOrigin(request: Request): boolean {
-  const originHeader = request.headers.get("origin");
-  const hostHeader = request.headers.get("host");
-  if (!originHeader || !hostHeader) return false;
-  try {
-    const requestUrl = new URL(request.url);
-    if (requestUrl.protocol !== "http:" && requestUrl.protocol !== "https:") return false;
-
-    const origin = new URL(originHeader);
-    const requestHost = new URL(`${requestUrl.protocol}//${hostHeader}`);
-    if (
-      originHeader !== origin.origin ||
-      hostHeader.toLowerCase() !== requestHost.host.toLowerCase() ||
-      origin.username ||
-      origin.password ||
-      requestHost.username ||
-      requestHost.password
-    )
-      return false;
-
-    return origin.origin === requestHost.origin;
-  } catch {
-    return false;
-  }
-}
-
-function cookieToken(request: Request): string | undefined {
-  const entry = request.headers
-    .get("cookie")
-    ?.split(";")
-    .map((item) => item.trim())
-    .find((item) => item.startsWith(SESSION_COOKIE + "="));
-  const value = entry?.slice(SESSION_COOKIE.length + 1);
-  return value && TOKEN.test(value) ? value : undefined;
-}
-
-function setCookie(token: string, expiresAt: string, request: Request): string | undefined {
-  const expiry = Date.parse(expiresAt);
-  if (!Number.isFinite(expiry) || expiry <= Date.now()) return undefined;
-  const seconds = Math.min(MAX_SESSION_SECONDS, Math.floor((expiry - Date.now()) / 1000));
-  if (seconds < 1) return undefined;
-  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
-  return (
-    SESSION_COOKIE +
-    "=" +
-    token +
-    "; Path=/api/admin; HttpOnly; SameSite=Lax; Max-Age=" +
-    seconds +
-    secure
-  );
-}
-
-function clearCookie(request: Request): string {
-  const secure = new URL(request.url).protocol === "https:" ? "; Secure" : "";
-  return SESSION_COOKIE + "=; Path=/api/admin; HttpOnly; SameSite=Lax; Max-Age=0" + secure;
-}
-
-async function readJsonBody(request: Request): Promise<JsonBody> {
-  const length = Number(request.headers.get("content-length") ?? 0);
-  if (Number.isFinite(length) && length > MAX_BODY_BYTES)
-    return { ok: false, response: error(413, "BODY_TOO_LARGE", "è¯·æ±‚å†…å®¹è¿‡å¤§ã€‚") };
-  const bytes = await request.arrayBuffer();
-  if (bytes.byteLength > MAX_BODY_BYTES)
-    return { ok: false, response: error(413, "BODY_TOO_LARGE", "è¯·æ±‚å†…å®¹è¿‡å¤§ã€‚") };
-  if (bytes.byteLength === 0) return { ok: true };
-  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json"))
-    return { ok: false, response: error(415, "JSON_REQUIRED", "è¯·æ±‚æ ¼å¼ä¸æ­£ç¡®ã€‚") };
-  try {
-    return { ok: true, value: JSON.parse(new TextDecoder().decode(bytes)) as unknown };
-  } catch {
-    return { ok: false, response: error(400, "INVALID_JSON", "è¯·æ±‚æ ¼å¼ä¸æ­£ç¡®ã€‚") };
-  }
-}
-
-function validBody(path: readonly string[], value: unknown, method: string): boolean {
-  if (!isRecord(value)) return false;
-  const keys = Object.keys(value);
-  const joined = "/" + path.join("/");
-  if (
-    path.length === 4 &&
-    path[0] === "institution" &&
-    path[1] === "home" &&
-    path[2] === HOME_CONTENT_KEY
-  ) {
-    if (path[3] !== "draft")
-      return (
-        (path[3] === "publish" || path[3] === "unpublish") &&
-        keys.length === 1 &&
-        keys[0] === "expected_version" &&
-        Number.isSafeInteger(value.expected_version) &&
-        Number(value.expected_version) >= 1
-      );
-
-    const draftKeys = ["body", "title", "type", "visibility"];
-    const draft = value.payload;
-    const validDraft =
-      isRecord(draft) &&
-      Object.keys(draft).length === draftKeys.length &&
-      draftKeys.every((key) => Object.hasOwn(draft, key)) &&
-      draft.type === "HOME_BLOCK" &&
-      draft.visibility === "PUBLIC" &&
-      typeof draft.title === "string" &&
-      draft.title.trim().length > 0 &&
-      draft.title.length <= 120 &&
-      isRecord(draft.body) &&
-      Object.keys(draft.body).length === 2 &&
-      Object.hasOwn(draft.body, "summary") &&
-      Object.hasOwn(draft.body, "blocks") &&
-      typeof draft.body.summary === "string" &&
-      draft.body.summary.trim().length > 0 &&
-      draft.body.summary.length <= 500 &&
-      Array.isArray(draft.body.blocks) &&
-      draft.body.blocks.length === 1 &&
-      isRecord(draft.body.blocks[0]) &&
-      Object.keys(draft.body.blocks[0]).length === 2 &&
-      draft.body.blocks[0].kind === "TEXT" &&
-      typeof draft.body.blocks[0].text === "string" &&
-      draft.body.blocks[0].text.trim().length > 0 &&
-      draft.body.blocks[0].text.length <= 4000;
-    if (
-      !validDraft ||
-      keys.some((key) => key !== "payload" && key !== "expected_version")
-    )
-      return false;
-    return method === "PUT"
-      ? Number.isSafeInteger(value.expected_version) && Number(value.expected_version) >= 1
-      : value.expected_version === null || value.expected_version === undefined;
-  }
-  if (["monthly-feedback", "child-monthly-reports"].includes(path[0] ?? "")) {
-    if (
-      typeof value.version !== "number" ||
-      !Number.isSafeInteger(value.version) ||
-      value.version < 1
-    )
-      return false;
-    return path[2] === "publish"
-      ? keys.length === 1
-      : keys.length === 2 && (value.action === "CONFIRM" || value.action === "RETURN");
-  }
-  if (joined === "/student-transfers") return validTransferCreate(value);
-  if (path[0] === "student-transfers") return validTransferReview(value);
-  if (joined === "/fees")
-    return (
-      keys.length === 8 &&
-      [
-        "student_id",
-        "document_type",
-        "title",
-        "period",
-        "amount_minor",
-        "valid_from",
-        "valid_to",
-        "summary",
-      ].every((key) => keys.includes(key)) &&
-      typeof value.student_id === "string" &&
-      UUID.test(value.student_id) &&
-      (value.document_type === "FEE_ITEM" ||
-        value.document_type === "BILL" ||
-        value.document_type === "AGREEMENT") &&
-      typeof value.title === "string" &&
-      value.title.trim().length > 0 &&
-      value.title.length <= 120 &&
-      typeof value.period === "string" &&
-      /^\d{4}-(?:0[1-9]|1[0-2])$/u.test(value.period) &&
-      (value.document_type === "AGREEMENT"
-        ? value.amount_minor === null
-        : Number.isSafeInteger(value.amount_minor) && Number(value.amount_minor) >= 0) &&
-      typeof value.valid_from === "string" &&
-      /^\d{4}-\d{2}-\d{2}$/u.test(value.valid_from) &&
-      typeof value.valid_to === "string" &&
-      /^\d{4}-\d{2}-\d{2}$/u.test(value.valid_to) &&
-      value.valid_to >= value.valid_from &&
-      typeof value.summary === "string" &&
-      value.summary.trim().length > 0 &&
-      value.summary.length <= 500
-    );
-  if (path[0] === "fees")
-    return (
-      keys.length === 1 &&
-      keys[0] === "expected_version" &&
-      Number.isSafeInteger(value.expected_version) &&
-      Number(value.expected_version) > 0
-    );
-  if (joined === "/learning-institution-setting")
-    return (
-      keys.length === 2 &&
-      typeof value.enabled === "boolean" &&
-      Number.isInteger(value.expectedVersion) &&
-      Number(value.expectedVersion) >= 0 &&
-      Number(value.expectedVersion) < 2147483647
-    );
-  if (path[0] === "tasks") {
-    if (path.length === 1) return validTaskInput(value);
-    return (
-      Number.isSafeInteger(value.version) &&
-      Number(value.version) > 0 &&
-      (path[2] === "cancel"
-        ? keys.length === 1 && keys[0] === "version"
-        : keys.length === 2 &&
-          keys.includes("version") &&
-          keys.includes("action") &&
-          (value.action === "CONFIRM" || value.action === "RETURN"))
-    );
-  }
-  if (path[0] === "daily-reports")
-    return (
-      Number.isSafeInteger(value.version) &&
-      Number(value.version) > 0 &&
-      (path[2] === "withdraw"
-        ? keys.length === 1 && keys[0] === "version"
-        : keys.length === 2 &&
-          keys.includes("version") &&
-          keys.includes("action") &&
-          (value.action === "CONFIRM" || value.action === "RETURN"))
-    );
-  if (path[0] === "meals") {
-    if (path[2] !== "draft")
-      return (
-        keys.length === 1 &&
-        keys[0] === "expected_version" &&
-        Number.isSafeInteger(value.expected_version) &&
-        Number(value.expected_version) > 0
-      );
-    if (
-      !validMealPayload(value.payload) ||
-      keys.some((key) => key !== "payload" && key !== "expected_version")
-    )
-      return false;
-    return method === "PUT"
-      ? Number.isSafeInteger(value.expected_version) && Number(value.expected_version) > 0
-      : value.expected_version === undefined ||
-          value.expected_version === null ||
-          (Number.isSafeInteger(value.expected_version) && Number(value.expected_version) > 0);
-  }
-  if (joined === "/identity/login") {
-    return (
-      keys.length === 2 &&
-      keys.includes("username") &&
-      keys.includes("password") &&
-      typeof value.username === "string" &&
-      value.username.length >= 3 &&
-      value.username.length <= 64 &&
-      typeof value.password === "string" &&
-      value.password.length >= 1 &&
-      value.password.length <= 128
-    );
-  }
-  if (joined === "/identity/logout") return keys.length === 0;
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "notices" &&
-    UUID.test(path[2] ?? "")
-  ) {
-    if (path[3] === "review")
-      return (
-        keys.length === 2 &&
-        keys.includes("version") &&
-        keys.includes("action") &&
-        Number.isSafeInteger(value.version) &&
-        Number(value.version) >= 1 &&
-        (value.action === "APPROVE" || value.action === "RETURN")
-      );
-    return (
-      (path[3] === "publish" || path[3] === "revoke") &&
-      keys.length === 1 &&
-      keys[0] === "version" &&
-      Number.isSafeInteger(value.version) &&
-      Number(value.version) >= 1
-    );
-  }
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "leave-requests" &&
-    UUID.test(path[2] ?? "") &&
-    path[3] === "review"
-  )
-    return (
-      keys.length === 2 &&
-      keys.includes("version") &&
-      keys.includes("action") &&
-      Number.isSafeInteger(value.version) &&
-      Number(value.version) >= 1 &&
-      (value.action === "confirm" || value.action === "return")
-    );
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "health-incidents" &&
-    UUID.test(path[2] ?? "")
-  ) {
-    const action = path[3];
-    if (!Number.isSafeInteger(value.version) || Number(value.version) < 1) return false;
-    if (action === "review")
-      return (
-        keys.length === 2 &&
-        keys.includes("version") &&
-        keys.includes("action") &&
-        HEALTH_REVIEW_ACTIONS.includes(value.action as (typeof HEALTH_REVIEW_ACTIONS)[number])
-      );
-    if (action === "supplement")
-      return (
-        keys.length === 2 &&
-        keys.includes("version") &&
-        keys.includes("dispositionCode") &&
-        HEALTH_DISPOSITIONS.includes(value.dispositionCode as (typeof HEALTH_DISPOSITIONS)[number])
-      );
-    if (action === "publish")
-      return (
-        keys.length === 2 &&
-        keys.includes("version") &&
-        keys.includes("summaryCode") &&
-        HEALTH_SUMMARIES.includes(value.summaryCode as (typeof HEALTH_SUMMARIES)[number])
-      );
-    return action === "revoke" && keys.length === 1 && keys[0] === "version";
-  }
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "care-records" &&
-    UUID.test(path[2] ?? "") &&
-    path[3] === "review"
-  )
-    return (
-      keys.length === 2 &&
-      keys.includes("version") &&
-      keys.includes("action") &&
-      Number.isSafeInteger(value.version) &&
-      Number(value.version) >= 1 &&
-      (value.action === "confirm" || value.action === "return")
-    );
-  if (
-    path.length === 4 &&
-    path[0] === "staff" &&
-    path[1] === "care-records" &&
-    UUID.test(path[2] ?? "") &&
-    (path[3] === "publish" || path[3] === "revoke-publication")
-  )
-    return (
-      keys.length === 1 &&
-      keys[0] === "version" &&
-      Number.isSafeInteger(value.version) &&
-      Number(value.version) >= 1
-    );
-  return (
-    keys.length === 2 &&
-    keys.includes("version") &&
-    keys.includes("action") &&
-    Number.isSafeInteger(value.version) &&
-    Number(value.version) >= 1 &&
-    (value.action === "approve" || value.action === "reject")
-  );
-}
-
-function apiMessage(status: number, login: boolean): string {
-  if (login && status === 401) return "è´¦å·æˆ–å¯†ç ä¸æ­£ç¡®ï¼Œè¯·é‡è¯•ã€‚";
-  if (status === 401) return "ç™»å½•çŠ¶æ€å·²å¤±æ•ˆï¼Œè¯·é‡æ–°ç™»å½•ã€‚";
-  if (status === 403) return "å½“å‰è´¦å·æ²¡æœ‰æ­¤é¡¹å®¡æ ¸æƒé™ã€‚";
-  if (status === 409) return "ç”³è¯·çŠ¶æ€å·²æ›´æ–°ï¼Œè¯·åˆ·æ–°åé‡è¯•ã€‚";
-  if (status === 503) return "æœåŠ¡æš‚æ—¶æ— æ³•ä½¿ç”¨ï¼Œè¯·ç¨åé‡è¯•ã€‚";
-  return "æ“ä½œæœªå®Œæˆï¼Œè¯·ç¨åé‡è¯•ã€‚";
-}
-
-function safeSession(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const data = payload.data;
-  if (typeof data.display_name !== "string" || data.display_name.length === 0) return undefined;
-  if (!Array.isArray(data.memberships)) return undefined;
-  const memberships = data.memberships.map((membership) => {
-    if (!isRecord(membership) || typeof membership.status !== "string") return undefined;
-    if (!Array.isArray(membership.capabilities)) return undefined;
-    const capabilities = membership.capabilities.filter(
-      (capability): capability is string => typeof capability === "string",
-    );
-    return { status: membership.status, capabilities };
-  });
-  if (memberships.some((membership) => membership === undefined)) return undefined;
-  return {
-    data: {
-      display_name: data.display_name,
-      memberships,
-    },
-  };
-}
-
-function isoDate(value: unknown): value is string {
-  return (
-    typeof value === "string" &&
-    Number.isFinite(Date.parse(value)) &&
-    new Date(value).toISOString() === value
-  );
-}
-
-function calendarDate(value: unknown): value is string {
-  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/u.test(value)) return false;
-  const parsed = new Date(value + "T00:00:00.000Z");
-  return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
-}
-
-function validMealPayload(value: unknown): boolean {
-  return (
-    isRecord(value) &&
-    Object.keys(value).length === 4 &&
-    ["meal_date", "meal_type", "items", "notes"].every((key) => Object.hasOwn(value, key)) &&
-    calendarDate(value.meal_date) &&
-    typeof value.meal_type === "string" &&
-    ["BREAKFAST", "LUNCH", "SNACK", "DINNER"].includes(value.meal_type) &&
-    Array.isArray(value.items) &&
-    value.items.length >= 1 &&
-    value.items.length <= 12 &&
-    value.items.every(
-      (item) => typeof item === "string" && item.length >= 1 && item.length <= 120,
-    ) &&
-    typeof value.notes === "string" &&
-    value.notes.length <= 500
-  );
-}
-
-function safeMeal(value: unknown): Record<string, unknown> | undefined {
-  if (!isRecord(value)) return undefined;
-  const menu = {
-    meal_date: value.meal_date,
-    meal_type: value.meal_type,
-    items: value.items,
-    notes: value.notes,
-  };
-  if (
-    !validMealPayload(menu) ||
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    typeof value.status !== "string" ||
-    !["DRAFT", "PUBLISHED", "UNPUBLISHED"].includes(value.status) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    !isoDate(value.updated_at) ||
-    (value.status === "PUBLISHED" ? !isoDate(value.published_at) : value.published_at !== null) ||
-    !Array.isArray(value.actions) ||
-    new Set(value.actions).size !== value.actions.length ||
-    !value.actions.every((action) =>
-      value.status === "PUBLISHED"
-        ? action === "unpublish"
-        : action === "edit" || action === "publish",
-    )
-  )
-    return undefined;
-  return {
-    ...menu,
-    id: value.id,
-    status: value.status,
-    version: value.version,
-    published_at: value.published_at,
-    updated_at: value.updated_at,
-    actions: [...value.actions],
-  };
-}
-
-function safeMeals(payload: Record<string, unknown>, list: boolean): unknown | undefined {
-  if (!list) {
-    const data = safeMeal(payload.data);
-    return data === undefined ? undefined : { data };
-  }
-  if (!Array.isArray(payload.data) || payload.data.length > 500) return undefined;
-  const data = payload.data.map(safeMeal);
-  if (
-    data.some((row) => row === undefined) ||
-    new Set(data.map((row) => String(row?.id).toLowerCase())).size !== data.length
-  )
-    return undefined;
-  return { data };
-}
-
-function safeHomeContent(payload: unknown, contentKey: string): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const value = payload.data;
-  if (
-    typeof value.content_key !== "string" ||
-    value.content_key !== contentKey ||
-    value.type !== "HOME_BLOCK" ||
-    !["DRAFT", "PUBLISHED", "UNPUBLISHED"].includes(String(value.status)) ||
-    typeof value.title !== "string" ||
-    value.title.trim().length === 0 ||
-    value.title.length > 120 ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    value.visibility !== "PUBLIC" ||
-    value.synthetic_data !== true ||
-    !isRecord(value.body) ||
-    Object.keys(value.body).length !== 2 ||
-    !Object.hasOwn(value.body, "summary") ||
-    !Object.hasOwn(value.body, "blocks") ||
-    typeof value.body.summary !== "string" ||
-    value.body.summary.trim().length === 0 ||
-    value.body.summary.length > 500 ||
-    !Array.isArray(value.body.blocks) ||
-    value.body.blocks.length !== 1
-  )
-    return undefined;
-  const block = value.body.blocks[0];
-  if (
-    !isRecord(block) ||
-    Object.keys(block).length !== 2 ||
-    block.kind !== "TEXT" ||
-    typeof block.text !== "string" ||
-    block.text.trim().length === 0 ||
-    block.text.length > 4000
-  )
-    return undefined;
-  const publishedAt = value.published_at;
-  if (
-    value.status === "PUBLISHED"
-      ? typeof publishedAt !== "string" || !isoDate(publishedAt)
-      : publishedAt !== null
-  )
-    return undefined;
-  return {
-    data: {
-      content_key: value.content_key,
-      title: value.title,
-      type: "HOME_BLOCK",
-      status: value.status,
-      version: Number(value.version),
-      visibility: "PUBLIC",
-      body: { summary: value.body.summary, blocks: [{ kind: "TEXT", text: block.text }] },
-      synthetic_data: true,
-    },
-  };
-}
-
-function safeFeeDocument(value: unknown): Record<string, unknown> | undefined {
-  if (
-    !isRecord(value) ||
-    Object.keys(value).sort().join(",") !==
-      "amountMinor,documentType,id,period,status,studentId,studentLabel,summary,synthetic,title,validFrom,validTo,version" ||
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    !["FEE_ITEM", "BILL", "RECEIPT", "AGREEMENT"].includes(String(value.documentType)) ||
-    typeof value.title !== "string" ||
-    value.title.trim().length === 0 ||
-    value.title.length > 120 ||
-    typeof value.studentId !== "string" ||
-    !UUID.test(value.studentId) ||
-    typeof value.studentLabel !== "string" ||
-    value.studentLabel.trim().length === 0 ||
-    value.studentLabel.length > 80 ||
-    typeof value.period !== "string" ||
-    !/^\d{4}-(?:0[1-9]|1[0-2])$/u.test(value.period) ||
-    (value.amountMinor !== null &&
-      (!Number.isSafeInteger(value.amountMinor) || Number(value.amountMinor) < 0)) ||
-    (value.documentType === "AGREEMENT"
-      ? value.amountMinor !== null
-      : value.amountMinor === null) ||
-    !["AVAILABLE", "PAID", "VOIDED", "EXPIRED", "REVOKED"].includes(String(value.status)) ||
-    !calendarDate(value.validFrom) ||
-    !calendarDate(value.validTo) ||
-    value.validTo < value.validFrom ||
-    typeof value.summary !== "string" ||
-    value.summary.trim().length === 0 ||
-    value.summary.length > 500 ||
-    value.synthetic !== true
-  )
-    return undefined;
-  return {
-    id: value.id,
-    version: value.version,
-    documentType: value.documentType,
-    title: value.title,
-    studentId: value.studentId,
-    studentLabel: value.studentLabel,
-    period: value.period,
-    amountMinor: value.amountMinor,
-    status: value.status,
-    validFrom: value.validFrom,
-    validTo: value.validTo,
-    summary: value.summary,
-    synthetic: true,
-  };
-}
-
-function safeFees(payload: unknown, method: string, pathLength: number): unknown | undefined {
-  if (!isRecord(payload) || !Object.hasOwn(payload, "data")) return undefined;
-  if (pathLength > 1) {
-    const data = payload.data;
-    if (
-      !isRecord(data) ||
-      Object.keys(data).sort().join(",") !== "id,status,synthetic,version" ||
-      typeof data.id !== "string" ||
-      !UUID.test(data.id) ||
-      !Number.isSafeInteger(data.version) ||
-      Number(data.version) < 2 ||
-      data.status !== "REVOKED" ||
-      data.synthetic !== true
-    )
-      return undefined;
-    return { data: { id: data.id, version: data.version, status: "REVOKED", synthetic: true } };
-  }
-  if (method === "POST") {
-    const data = safeFeeDocument(payload.data);
-    return data === undefined ? undefined : { data };
-  }
-  const data = payload.data;
-  if (
-    !isRecord(data) ||
-    Object.keys(data).sort().join(",") !== "documents,students,synthetic" ||
-    data.synthetic !== true ||
-    !Array.isArray(data.students) ||
-    data.students.length > 200 ||
-    !Array.isArray(data.documents) ||
-    data.documents.length > 200
-  )
-    return undefined;
-  const students = data.students.map((student) => {
-    if (
-      !isRecord(student) ||
-      Object.keys(student).sort().join(",") !== "id,label" ||
-      typeof student.id !== "string" ||
-      !UUID.test(student.id) ||
-      typeof student.label !== "string" ||
-      student.label.trim().length === 0 ||
-      student.label.length > 80
-    )
-      return undefined;
-    return { id: student.id, label: student.label };
-  });
-  const documents = data.documents.map(safeFeeDocument);
-  if (
-    students.some((student) => student === undefined) ||
-    documents.some((document) => document === undefined) ||
-    new Set(students.map((student) => student?.id)).size !== students.length ||
-    new Set(documents.map((document) => String(document?.id).toLowerCase())).size !==
-      documents.length
-  )
-    return undefined;
-  return { data: { synthetic: true, students, documents } };
-}
-
-function safeQueue(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !Array.isArray(payload.data)) return undefined;
-  const records = payload.data.map((value) => {
-    if (
-      !isRecord(value) ||
-      typeof value.id !== "string" ||
-      !UUID.test(value.id) ||
-      value.relationship !== "GUARDIAN" ||
-      value.status !== "PENDING" ||
-      !Number.isSafeInteger(value.version) ||
-      Number(value.version) < 1 ||
-      typeof value.applicant_label !== "string" ||
-      value.applicant_label.trim().length === 0 ||
-      value.applicant_label.length > 80 ||
-      typeof value.student_label !== "string" ||
-      value.student_label.trim().length === 0 ||
-      value.student_label.length > 80 ||
-      !isoDate(value.submitted_at) ||
-      !(value.reviewed_at === null || isoDate(value.reviewed_at))
-    )
-      return undefined;
-    return {
-      id: value.id,
-      relationship: value.relationship,
-      status: value.status,
-      version: value.version,
-      applicant_label: value.applicant_label,
-      student_label: value.student_label,
-      submitted_at: value.submitted_at,
-      reviewed_at: value.reviewed_at,
-    };
-  });
-  if (records.some((record) => record === undefined)) return undefined;
-  return { data: records };
-}
-
-function safeReview(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const value = payload.data;
-  if (
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    value.relationship !== "GUARDIAN" ||
-    (value.status !== "APPROVED" && value.status !== "REJECTED") ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 2
-  )
-    return undefined;
-  return {
-    data: {
-      id: value.id,
-      relationship: value.relationship,
-      status: value.status,
-      version: value.version,
-      reviewed_at: isoDate(value.reviewed_at) ? value.reviewed_at : null,
-    },
-  };
-}
-
-function safeNotice(value: unknown): Record<string, unknown> | undefined {
-  if (
-    !isRecord(value) ||
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    typeof value.templateCode !== "string" ||
-    !(value.templateCode in NOTICE_TEMPLATES) ||
-    !NOTICE_STATUSES.includes(value.status as (typeof NOTICE_STATUSES)[number]) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    typeof value.published !== "boolean" ||
-    (value.status === "PUBLISHED") !== value.published ||
-    !isoDate(value.createdAt) ||
-    !isoDate(value.updatedAt) ||
-    value.synthetic !== true
-  )
-    return undefined;
-
-  const template = NOTICE_TEMPLATES[value.templateCode as keyof typeof NOTICE_TEMPLATES];
-  if (
-    value.target !== template.target ||
-    value.title !== template.title ||
-    value.body !== template.body
-  )
-    return undefined;
-
-  return {
-    id: value.id,
-    templateCode: value.templateCode,
-    target: template.target,
-    status: value.status,
-    version: value.version,
-    published: value.published,
-    createdAt: value.createdAt,
-    updatedAt: value.updatedAt,
-    title: template.title,
-    body: template.body,
-    synthetic: true,
-  };
-}
-
-function safeNotices(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !Array.isArray(payload.data) || payload.data.length > 500)
-    return undefined;
-  const data = payload.data.map(safeNotice);
-  if (data.some((notice) => notice === undefined)) return undefined;
-  if (new Set(data.map((notice) => notice?.id)).size !== data.length) return undefined;
-  return { data };
-}
-
-function safeNoticeResult(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const data = safeNotice(payload.data);
-  return data ? { data } : undefined;
-}
-
-const CARE_VALUE_OPTIONS = {
-  arrival: ["ARRIVED_AS_PLANNED", "LATE", "ABSENT"],
-  homework: ["COMPLETED", "IN_PROGRESS", "NEEDS_SUPPORT"],
-  meal: ["FINISHED", "PARTIAL", "NOT_RECORDED"],
-  rest: ["RESTED", "QUIET_ACTIVITY", "NOT_RECORDED"],
-  activity: ["PARTICIPATED", "OBSERVED", "NOT_RECORDED"],
-  wellbeing: ["ROUTINE", "CHECK_IN", "FOLLOW_UP"],
-} as const;
-const CARE_STATUSES = [
-  "DRAFT",
-  "SUBMITTED",
-  "RETURNED",
-  "CONFIRMED",
-  "CANCELLED",
-  "EXCEPTION_PENDING",
-] as const;
-const CARE_ACTIONS = [
-  "edit",
-  "submit",
-  "resubmit",
-  "review",
-  "publish",
-  "withdraw",
-  "revoke-publication",
-] as const;
-
-function isoDay(value: unknown): value is string {
-  return (
-    typeof value === "string" &&
-    /^\d{4}-\d{2}-\d{2}$/u.test(value) &&
-    Number.isFinite(Date.parse(value)) &&
-    new Date(value + "T00:00:00.000Z").toISOString().slice(0, 10) === value
-  );
-}
-
-function safeCareRecord(value: unknown): Record<string, unknown> | undefined {
-  if (
-    !isRecord(value) ||
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    typeof value.student_display_ref !== "string" ||
-    value.student_display_ref.trim().length === 0 ||
-    value.student_display_ref.length > 80 ||
-    typeof value.class_ref !== "string" ||
-    value.class_ref.trim().length === 0 ||
-    value.class_ref.length > 80 ||
-    !isoDay(value.service_date) ||
-    !CARE_STATUSES.includes(value.status as (typeof CARE_STATUSES)[number]) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    typeof value.published !== "boolean" ||
-    !Number.isSafeInteger(value.publication_version) ||
-    Number(value.publication_version) < 0 ||
-    !isoDate(value.updated_at) ||
-    !isRecord(value.values) ||
-    !Array.isArray(value.actions) ||
-    value.actions.length > CARE_ACTIONS.length
-  )
-    return undefined;
-
-  const values = value.values;
-  if (!isRecord(values)) return undefined;
-  const valueKeys = Object.keys(values);
-  const expectedValueKeys = Object.keys(CARE_VALUE_OPTIONS);
-  if (
-    valueKeys.length !== expectedValueKeys.length ||
-    !expectedValueKeys.every((key) => {
-      const item = values[key];
-      return CARE_VALUE_OPTIONS[key as keyof typeof CARE_VALUE_OPTIONS].includes(item as never);
-    }) ||
-    new Set(value.actions).size !== value.actions.length ||
-    !value.actions.every((action) => CARE_ACTIONS.includes(action as (typeof CARE_ACTIONS)[number]))
-  )
-    return undefined;
-
-  return {
-    id: value.id,
-    student_display_ref: value.student_display_ref,
-    class_ref: value.class_ref,
-    service_date: value.service_date,
-    values: Object.fromEntries(expectedValueKeys.map((key) => [key, values[key]])),
-    status: value.status,
-    version: value.version,
-    published: value.published,
-    publication_version: value.publication_version,
-    updated_at: value.updated_at,
-    actions: value.actions,
-  };
-}
-
-function safeCareRecords(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !Array.isArray(payload.data) || payload.data.length > 500)
-    return undefined;
-  const data = payload.data.map(safeCareRecord);
-  if (data.some((row) => row === undefined)) return undefined;
-  return { data };
-}
-
-function safeCareRecordResult(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const data = safeCareRecord(payload.data);
-  return data ? { data } : undefined;
-}
-
-const LEAVE_REASONS = ["FAMILY_ARRANGEMENT", "TEMPORARY_MATTER"] as const;
-
-function safeLeaveRequest(value: unknown): Record<string, unknown> | undefined {
-  if (
-    !isRecord(value) ||
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    value.status !== "SUBMITTED" ||
-    typeof value.student_display_ref !== "string" ||
-    value.student_display_ref.trim().length === 0 ||
-    value.student_display_ref.length > 80 ||
-    typeof value.class_ref !== "string" ||
-    value.class_ref.trim().length === 0 ||
-    value.class_ref.length > 80 ||
-    !calendarDate(value.start_date) ||
-    !calendarDate(value.end_date) ||
-    value.start_date > value.end_date ||
-    !LEAVE_REASONS.includes(value.reason_category as (typeof LEAVE_REASONS)[number]) ||
-    typeof value.acknowledged !== "boolean"
-  )
-    return undefined;
-  return {
-    id: value.id,
-    version: value.version,
-    status: value.status,
-    student_display_ref: value.student_display_ref,
-    class_ref: value.class_ref,
-    start_date: value.start_date,
-    end_date: value.end_date,
-    reason_category: value.reason_category,
-    acknowledged: value.acknowledged,
-  };
-}
-
-function safeLeaveQueue(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !Array.isArray(payload.data) || payload.data.length > 200)
-    return undefined;
-  const data = payload.data.map(safeLeaveRequest);
-  return data.some((row) => row === undefined) ? undefined : { data };
-}
-
-function safeLeaveReviewResult(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const value = payload.data;
-  if (
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 2 ||
-    (value.status !== "CONFIRMED" && value.status !== "RETURNED")
-  )
-    return undefined;
-  return { data: { id: value.id, version: value.version, status: value.status } };
-}
-
-function safeHealthIncident(value: unknown): Record<string, unknown> | undefined {
-  if (
-    !isRecord(value) ||
-    typeof value.id !== "string" ||
-    !UUID.test(value.id) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    !HEALTH_STATUSES.includes(value.status as (typeof HEALTH_STATUSES)[number]) ||
-    typeof value.studentLabel !== "string" ||
-    value.studentLabel.trim().length === 0 ||
-    value.studentLabel.length > 80 ||
-    typeof value.observationCode !== "string" ||
-    !["ROUTINE_OBSERVATION", "NEEDS_FOLLOW_UP", "URGENT_REVIEW"].includes(value.observationCode) ||
-    typeof value.published !== "boolean" ||
-    typeof value.createdByLabel !== "string" ||
-    value.createdByLabel.trim().length === 0 ||
-    value.createdByLabel.length > 80
-  )
-    return undefined;
-
-  const dispositionCode = value.dispositionCode;
-  if (
-    dispositionCode !== null &&
-    (typeof dispositionCode !== "string" ||
-      !HEALTH_DISPOSITIONS.includes(dispositionCode as (typeof HEALTH_DISPOSITIONS)[number]))
-  )
-    return undefined;
-  const summaryCode = value.summaryCode;
-  if (
-    summaryCode !== null &&
-    (typeof summaryCode !== "string" ||
-      !HEALTH_SUMMARIES.includes(summaryCode as (typeof HEALTH_SUMMARIES)[number]))
-  )
-    return undefined;
-
-  const observationLabels: Readonly<Record<string, string>> = {
-    ROUTINE_OBSERVATION: "æ—¥å¸¸çŠ¶æ€è§‚å¯Ÿ",
-    NEEDS_FOLLOW_UP: "éœ€è¦è·Ÿè¿›",
-    URGENT_REVIEW: "éœ€è¦å°½å¿«å¤æ ¸",
-  };
-  const dispositionLabels: Readonly<Record<string, string>> = {
-    OBSERVATION_RECHECKED: "å·²é‡æ–°æ ¸å¯¹è§‚å¯Ÿ",
-    FOLLOW_UP_SCHEDULED: "å·²å®‰æ’è·Ÿè¿›",
-    GUARDIAN_SUMMARY_PREPARED: "å·²å‡†å¤‡å®¶é•¿æ‘˜è¦",
-  };
-
-  return {
-    id: value.id,
-    version: value.version,
-    status: value.status,
-    student_label: value.studentLabel,
-    observation_code: value.observationCode,
-    observation_label: observationLabels[value.observationCode],
-    disposition_code: dispositionCode,
-    disposition_label:
-      typeof dispositionCode === "string" ? dispositionLabels[dispositionCode] : null,
-    summary_code: summaryCode,
-    published: value.published,
-    created_by_label: value.createdByLabel,
-  };
-}
-
-function safeHealthIncidents(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !Array.isArray(payload.data) || payload.data.length > 500)
-    return undefined;
-  const data = payload.data.map(safeHealthIncident);
-  if (data.some((row) => row === undefined)) return undefined;
-  return { data };
-}
-
-function safeHealthIncidentResult(payload: unknown): unknown | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const data = safeHealthIncident(payload.data);
-  return data ? { data } : undefined;
-}
-
-function safeLogin(
-  payload: unknown,
-): { readonly token: string; readonly expiresAt: string } | undefined {
-  if (!isRecord(payload) || !isRecord(payload.data)) return undefined;
-  const data = payload.data;
-  if (
-    typeof data.access_token !== "string" ||
-    !TOKEN.test(data.access_token) ||
-    data.token_type !== "Bearer" ||
-    typeof data.expires_at !== "string" ||
-    !Number.isFinite(Date.parse(data.expires_at)) ||
-    Date.parse(data.expires_at) <= Date.now()
-  )
-    return undefined;
-  return { token: data.access_token, expiresAt: data.expires_at };
-}
-
-type AdminDaily = Readonly<{
-  id: string;
-  version: number;
-  date: string;
-  authorLabel: string;
-  status: "SUBMITTED" | "CONFIRMED" | "RETURNED";
-  values: Readonly<Record<string, string>>;
-  sourceCounts: Readonly<Record<string, number>>;
-  learningSummary: null | Readonly<{
-    completedLearnerBand: "2_PLUS";
-    usedGuidance: boolean;
-    needsTeacherFollowUp: boolean;
-  }>;
-  actions: readonly ("confirm" | "return" | "withdraw")[];
-}>;
-const DAILY_UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
-const DAILY_VALUES = {
-  arrival: ["ARRIVED_AS_PLANNED", "LATE", "ABSENT"],
-  homework: ["COMPLETED", "IN_PROGRESS", "NEEDS_SUPPORT"],
-  activity: ["PARTICIPATED", "OBSERVED", "NOT_RECORDED"],
-  classroom: ["ROUTINE", "NEEDS_ATTENTION", "NEEDS_FOLLOW_UP"],
-  followUp: ["NONE", "OBSERVE_TOMORROW", "OWNER_ATTENTION"],
-} as const;
-const DAILY_SOURCES = ["TASK", "ATTENDANCE", "CARE_RECORD", "PICKUP", "PICKUP_EXCEPTION"] as const;
-function safeDailyRecord(value: unknown): AdminDaily | undefined {
-  if (
-    !isRecord(value) ||
-    typeof value.id !== "string" ||
-    !DAILY_UUID.test(value.id) ||
-    !Number.isSafeInteger(value.version) ||
-    Number(value.version) < 1 ||
-    typeof value.authorLabel !== "string" ||
-    !value.authorLabel.trim() ||
-    value.authorLabel.length > 120 ||
-    typeof value.date !== "string" ||
-    !/^\d{4}-\d{2}-\d{2}$/u.test(value.date) ||
-    !Number.isFinite(Date.parse(value.date)) ||
-    new Date(value.date + "T00:00:00Z").toISOString().slice(0, 10) !== value.date ||
-    !["SUBMITTED", "CONFIRMED", "RETURNED"].includes(String(value.status)) ||
-    !isRecord(value.values) ||
-    !isRecord(value.sourceCounts) ||
-    !Array.isArray(value.actions)
-  )
-    return undefined;
-  const values = value.values,
-    counts = value.sourceCounts;
-  if (
-    Object.keys(values).length !== 5 ||
-    !Object.entries(DAILY_VALUES).every(([key, options]) =>
-      (options as readonly unknown[]).includes(values[key]),
-    ) ||
-    !DAILY_SOURCES.every((key) => Number.isSafeInteger(counts[key]) && Number(counts[key]) >= 0)
-  )
-    return undefined;
-  const permitted =
-    value.status === "SUBMITTED"
-      ? ["confirm", "return"]
-      : value.status === "CONFIRMED"
-        ? ["return", "withdraw"]
-        : [];
-  if (
-    new Set(value.actions).size !== value.actions.length ||
-    !value.actions.every((action) => typeof action === "string" && permitted.includes(action))
-  )
-    return undefined;
-  let learningSummary: AdminDaily["learningSummary"] = null;
-  if (value.learningSummary !== null) {
-    const summary = value.learningSummary;
-    if (
-      !isRecord(summary) ||
-      summary.completedLearnerBand !== "2_PLUS" ||
-      typeof summary.usedGuidance !== "boolean" ||
-      typeof summary.needsTeacherFollowUp !== "boolean"
-    )
-      return undefined;
-    learningSummary = {
-      completedLearnerBand: "2_PLUS",
-      usedGuidance: summary.usedGuidance,
-      needsTeacherFollowUp: summary.needsTeacherFollowUp,
-    };
-  }
-  return {
-    id: value.id,
-    version: Number(value.version),
-    date: value.date,
-    authorLabel: value.authorLabel,
-    status: value.status as AdminDaily["status"],
-    values: Object.fromEntries(
-      Object.keys(DAILY_VALUES).map((key) => [key, values[key] as string]),
-    ),
-    sourceCounts: Object.fromEntries(DAILY_SOURCES.map((key) => [key, Number(counts[key])])),
-    learningSummary,
-    actions: value.actions as AdminDaily["actions"],
-  };
-}
-
-function safeDaily(payload: Record<string, unknown>, list: boolean): unknown | undefined {
-  if (!list) {
-    const row = safeDailyRecord(payload.data);
-    return row ? { data: row } : undefined;
-  }
-  if (!isRecord(payload.data) || !Array.isArray(payload.data.records)) return undefined;
-  const records = payload.data.records.map(safeDailyRecord);
-  if (records.some((row) => !row) || new Set(records.map((row) => row?.id)).size !== records.length)
-    return undefined;
-  return { data: { records } };
-}
-
-const DAILY_AUDIT_ACTIONS = [
-  "CREATED",
-  "EDITED",
-  "SUBMITTED",
-  "RESUBMITTED",
-  "REVIEW_CONFIRMED",
-  "REVIEW_RETURNED",
-  "CONFIRMATION_WITHDRAWN",
-  "SOURCES_INVALIDATED",
-] as const;
-
-function safeDailyAudit(payload: Record<string, unknown>): unknown | undefined {
-  if (!isRecord(payload.data) || !Array.isArray(payload.data.events)) return undefined;
-  const events = payload.data.events.map((event) => {
-    if (
-      !isRecord(event) ||
-      Object.keys(event).length !== 5 ||
-      !["action", "reportVersion", "actorLabel", "initiatedByLabel", "occurredAt"].every((key) =>
-        Object.hasOwn(event, key),
-      ) ||
-      !(DAILY_AUDIT_ACTIONS as readonly unknown[]).includes(event.action) ||
-      !Number.isSafeInteger(event.reportVersion) ||
-      Number(event.reportVersion) < 1 ||
-      (event.action === "SOURCES_INVALIDATED"
-        ? event.actorLabel !== null
-        : typeof event.actorLabel !== "string" ||
-          !event.actorLabel.trim() ||
-          event.actorLabel.length > 120) ||
-      typeof event.initiatedByLabel !== "string" ||
-      !event.initiatedByLabel.trim() ||
-      event.initiatedByLabel.length > 120 ||
-      typeof event.occurredAt !== "string" ||
-      !Number.isFinite(Date.parse(event.occurredAt)) ||
-      new Date(event.occurredAt).toISOString() !== event.occurredAt
-    )
-      return undefined;
-    return {
-      action: event.action,
-      reportVersion: Number(event.reportVersion),
-      actorLabel: event.actorLabel,
-      initiatedByLabel: event.initiatedByLabel,
-      occurredAt: event.occurredAt,
-    };
-  });
-  if (
-    events.some((event) => !event) ||
-    events.some(
-      (event, index) => index > 0 && event!.reportVersion <= events[index - 1]!.reportVersion,
-    )
-  )
-    return undefined;
-  return { data: { events } };
-}
-
-async function handle(request: Request, context: RouteContext): Promise<Response> {
-  const { path } = await context.params;
-  if (
-    !Array.isArray(path) ||
-    path.length === 0 ||
-    path.some((part) => !part || part.includes("/") || !/^[A-Za-z0-9_-]+$/u.test(part))
-  )
-    return error(404, "NOT_FOUND", "æœªæ‰¾åˆ°è¯¥æœåŠ¡ã€‚");
-
-  const method = request.method.toUpperCase();
-  if (!allowed(method, path)) return error(404, "NOT_FOUND", "æœªæ‰¾åˆ°è¯¥æœåŠ¡ã€‚");
-  const requestUrl = new URL(request.url);
-  if (requestUrl.search) return error(400, "QUERY_NOT_ALLOWED", "è¯·æ±‚å†…å®¹ä¸æ­£ç¡®ã€‚");
-  if (method !== "GET" && !sameOrigin(request))
-    return error(403, "ORIGIN_NOT_ALLOWED", "è¯·æ±‚æ¥æºä¸å—å…è®¸ã€‚");
-
-  const isLogin = method === "POST" && path.join("/") === "identity/login";
-  const isLogout = method === "POST" && path.join("/") === "identity/logout";
-  const token = isLogin ? undefined : cookieToken(request);
-  const responseHeaders = new Headers();
-  if (!isLogin && !token && !isLogout) return error(401, "UNAUTHENTICATED", "è¯·å…ˆç™»å½•ã€‚");
-  if (isLogout && !token) {
-    responseHeaders.append("set-cookie", clearCookie(request));
-    return json({ data: { logged_out: true } }, 200, responseHeaders);
-  }
-
-  const body = method === "GET" ? ({ ok: true } as const) : await readJsonBody(request);
-  if (!body.ok) return body.response;
-  if (method !== "GET" && (!("value" in body) || !validBody(path, body.value, method)))
-    return error(400, "VALIDATION_FAILED", "è¯·æ±‚å†…å®¹ä¸æ­£ç¡®ã€‚");
-
-  const origin = apiOrigin();
-  if (!origin) {
-    if (isLogout) responseHeaders.append("set-cookie", clearCookie(request));
-    return json(
-      { error: { code: "API_UNAVAILABLE", message: "ç®¡ç†æœåŠ¡å°šæœªé…ç½®ã€‚" } },
-      503,
-      responseHeaders,
-    );
-  }
-
-  const headers = new Headers({ accept: "application/json" });
-  if (method !== "GET") headers.set("content-type", "application/json");
-  if (token) headers.set("authorization", "Bearer " + token);
-  const target = new URL(
-    ([
-      "institution",
-      "meals",
-      "daily-reports",
-      "monthly-feedback",
-      "child-monthly-reports",
-      "tasks",
-      "learning-institution-setting",
-      "fees",
-      "student-transfers",
-    ].includes(path[0] ?? "")
-      ? "/admin/"
-      : "/") + path.join("/"),
-    origin,
-  );
-  let upstream: Response;
-  try {
-    upstream = await fetch(target, {
-      method,
-      headers,
-      cache: "no-store",
-      redirect: "error",
-      ...([
-        "institution",
-        "learning-institution-setting",
-        "monthly-feedback",
-        "child-monthly-reports",
-        "student-transfers",
-      ].includes(path[0] ?? "")
-        ? { signal: AbortSignal.timeout(8000) }
-        : {}),
-      ...(method === "GET" || !("value" in body) ? {} : { body: JSON.stringify(body.value) }),
-    });
-  } catch {
-    if (isLogout) responseHeaders.append("set-cookie", clearCookie(request));
-    return json(
-      { error: { code: "API_UNAVAILABLE", message: "ç®¡ç†æœåŠ¡æš‚æ—¶æ— æ³•è¿æ¥ã€‚" } },
-      503,
-      responseHeaders,
-    );
-  }
-
-  if (
-    !upstream.ok &&
-    (["monthly-feedback", "child-monthly-reports"].includes(path[0] ?? "") ||
-      (path.length === 1 && path[0] === "me" && upstream.status === 401))
-  ) {
-    // A cloned fetch body can keep cancellation pending after the status is already known.
-    void upstream.body?.cancel().catch(() => {});
-    if (upstream.status === 401) responseHeaders.append("set-cookie", clearCookie(request));
-    return json(
-      {
-        error: {
-          code: upstream.status === 401 ? "UNAUTHENTICATED" : "REQUEST_FAILED",
-          message: apiMessage(upstream.status, false),
-        },
-      },
-      upstream.status,
-      responseHeaders,
-    );
-  }
-  const payload: unknown = await upstream.json().catch(() => undefined);
-  if (!isRecord(payload)) {
-    if (isLogout) responseHeaders.append("set-cookie", clearCookie(request));
-    return json(
-      { error: { code: "INVALID_API_RESPONSE", message: "ç®¡ç†æœåŠ¡æš‚æ—¶æ— æ³•ä½¿ç”¨ã€‚" } },
-      502,
-      responseHeaders,
-    );
-  }
-
-  if (!upstream.ok) {
-    if (
-      isLogout ||
-      (["monthly-feedback", "child-monthly-reports"].includes(path[0] ?? "") &&
-        upstream.status === 401)
-    )
-      responseHeaders.append("set-cookie", clearCookie(request));
-    const status = upstream.status >= 400 && upstream.status <= 599 ? upstream.status : 502;
-    const code =
-      !["monthly-feedback", "child-monthly-reports"].includes(path[0] ?? "") &&
-      isRecord(payload.error) &&
-      typeof payload.error.code === "string"
-        ? payload.error.code
-        : "REQUEST_FAILED";
-    return json({ error: { code, message: apiMessage(status, isLogin) } }, status, responseHeaders);
-  }
-
-  if (isLogin) {
-    const login = safeLogin(payload);
-    const cookie = login ? setCookie(login.token, login.expiresAt, request) : undefined;
-    if (!login || !cookie) return error(502, "INVALID_API_RESPONSE", "ç™»å½•æœåŠ¡è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-    responseHeaders.append("set-cookie", cookie);
-    return json({ data: { expires_at: login.expiresAt } }, upstream.status, responseHeaders);
-  }
-
-  if (isLogout) {
-    responseHeaders.append("set-cookie", clearCookie(request));
-    return json(payload, upstream.status, responseHeaders);
-  }
-
-  if (path[0] === "learning-institution-setting") {
-    const setting = payload.data;
-    if (
-      !isRecord(setting) ||
-      typeof setting.enabled !== "boolean" ||
-      !Number.isInteger(setting.version) ||
-      Number(setting.version) < 0 ||
-      Number(setting.version) > 2147483647 ||
-      (setting.version === 0 && setting.enabled)
-    )
-      return error(502, "INVALID_API_RESPONSE", "æœºæ„è®¾ç½®è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-    return json(
-      { data: { enabled: setting.enabled, version: setting.version } },
-      upstream.status,
-      responseHeaders,
-    );
-  }
-
-  if (path[0] === "tasks") {
-    try {
-      const data = method === "GET" ? parseTaskPayload(payload.data) : parseTask(payload.data);
-      if (!data) return error(502, "INVALID_API_RESPONSE", "ä»»åŠ¡æœåŠ¡è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-      return json({ data }, upstream.status, responseHeaders);
-    } catch {
-      return error(502, "INVALID_API_RESPONSE", "ä»»åŠ¡æœåŠ¡è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-    }
-  }
-
-  if (["monthly-feedback", "child-monthly-reports"].includes(path[0] ?? "")) {
-    try {
-      const data =
-        path[0] === "child-monthly-reports"
-          ? method === "GET"
-            ? parseChildMonthlyListing(payload.data)
-            : parseChildMonthlyRecord(payload.data)
-          : method === "GET"
-            ? parseMonthlyListing(payload.data)
-            : parseMonthlyRecord(payload.data);
-      if (!data) return error(502, "INVALID_API_RESPONSE", "æœˆåº¦æ€»ç»“æœåŠ¡è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-      return json({ data }, upstream.status, responseHeaders);
-    } catch {
-      return error(502, "INVALID_API_RESPONSE", "æœˆåº¦æ€»ç»“æœåŠ¡è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-    }
-  }
-
-  if (path[0] === "student-transfers") {
-    const data =
-      method === "GET" ? parseTransferListing(payload.data) : parseTransferRecord(payload.data);
-    if (!data)
-      return error(502, "INVALID_API_RESPONSE", "è½¬ç­æœåŠ¡è¿”å›äº†ä¸å®Œæ•´çš„èµ„æ–™ï¼Œè¯·åˆ·æ–°ç¡®è®¤ã€‚");
-    return json({ data }, upstream.status, responseHeaders);
-  }
-
-  const safePayload =
-    path[0] === "institution"
-      ? safeHomeContent(payload, path[2] ?? "")
-      : path[0] === "fees"
-      ? safeFees(payload, method, path.length)
-      : path[0] === "daily-reports"
-        ? path.length === 3 && path[2] === "audit-events"
-          ? safeDailyAudit(payload)
-          : safeDaily(payload, path.length === 1)
-        : path[0] === "meals"
-          ? safeMeals(payload, path.length === 1)
-          : path.length === 1 && path[0] === "me"
-            ? safeSession(payload)
-            : path.length === 3 && path[0] === "staff" && path[1] === "notices"
-              ? safeNotices(payload)
-              : path.length === 4 && path[0] === "staff" && path[1] === "notices"
-                ? safeNoticeResult(payload)
-                : path.length === 3 && path[0] === "staff" && path[2] === "applications"
-                  ? safeQueue(payload)
-                  : path.length === 2 && path[0] === "staff" && path[1] === "health-incidents"
-                    ? safeHealthIncidents(payload)
-                    : path.length === 4 && path[0] === "staff" && path[1] === "health-incidents"
-                      ? safeHealthIncidentResult(payload)
-                      : path.length === 2 && path[0] === "staff" && path[1] === "care-records"
-                        ? safeCareRecords(payload)
-                        : path.length === 4 && path[0] === "staff" && path[1] === "care-records"
-                          ? safeCareRecordResult(payload)
-                          : path.length === 2 && path[0] === "staff" && path[1] === "leave-requests"
-                            ? safeLeaveQueue(payload)
-                            : path.length === 4 &&
-                                path[0] === "staff" &&
-                                path[1] === "leave-requests" &&
-                                path[3] === "review"
-                              ? safeLeaveReviewResult(payload)
-                              : safeReview(payload);
-  if (safePayload === undefined)
-    return error(502, "INVALID_API_RESPONSE", "ç®¡ç†æœåŠ¡è¿”å›äº†æ— æ•ˆç»“æœã€‚");
-  return json(safePayload, upstream.status, responseHeaders);
-}
-
-export function GET(request: Request, context: RouteContext): Promise<Response> {
-  return handle(request, context);
-}
-
-export function POST(request: Request, context: RouteContext): Promise<Response> {
-  return handle(request, context);
-}
-
-export function PUT(request: Request, context: RouteContext): Promise<Response> {
-  return handle(request, context);
-}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíÛmõõ:-jZ.¶›­–)Ş³V–×÷'B²—4•Òg&öÒ&æöFS¦æWB#°¦–×÷'B°¢'6T6†–ÆDÖöçF†Ç•&V6÷&BÀ¢'6T6†–ÆDÖöçF†Ç”Æ—7F–ærÀ§Òg&öÒ"ââòââòââöFÖ–âö6†–ÆBÖÖöçF†Ç’×&Wf–Wrö6†–ÆBÖÖöçF†Ç’×&Wf–WrÖ6Æ–VçBçG2#°¦–×÷'B°¢'6TÖöçF†Ç•&V6÷&BÀ¢'6TÖöçF†Ç”Æ—7F–ærÀ§Òg&öÒ"ââòââòââöFÖ–âöÖöçF†Ç’ÖfVVF&6²×&Wf–WröÖöçF†Ç’ÖfVVF&6²×&Wf–WrÖ6Æ–VçBçG2#°¦–×÷'B°¢'6UF6²À¢'6UF6µ–ÆöBÀ¢fÆ–EF6´–çWBÀ§Òg&öÒ"ââòââòââöFÖ–â÷7Ffb×F6·2÷7Ffb×F6·2Ö6Æ–VçBçG2#° ¦–×÷'B°¢'6UG&ç6fW$Æ—7F–ærÀ¢'6UG&ç6fW%&V6÷&BÀ¢fÆ–EG&ç6fW$7&VFRÀ¢fÆ–EG&ç6fW%&Wf–WrÀ§Òg&öÒ"ââòââòââöFÖ–â÷7GVFVçB×G&ç6fW'2÷7GVFVçB×G&ç6fW'2Ö6Æ–VçBçG2#° §G—R&÷WFT6öçFW‡BÒ&VFöæÇ“Ç°¢&×3¢&öÖ—6SÇ²&VFöæÇ’Fƒ¢&VFöæÇ’7G&–æuµÒÓã°§Óã° §G—R§6öä&öG’Ğ¢Â²&VFöæÇ’ö³¢G'VS²&VFöæÇ’fÇVSó¢Væ¶æ÷vâĞ¢Â²&VFöæÇ’ö³¢fÇ6S²&VFöæÇ’&W7öç6S¢&W7öç6RÓ° ¦6öç7B4U54”ôåô4ôô´”RÒ'7GVFVçEö6&UöFÖ–å÷6W76–öâ#°¦6öç7B„ôÔUô4ôåDTåEô´U’Ò&†öÖRÖ6öçFVçB×7–çF†WF–2ÖV7B#°¦6öç7BÔ…ô$ôE•ô%•DU2Òb¢#C°¦6öç7BÔ…õ4U54”ôåõ4T4ôäE2Ò‚¢c¢c°¦6öç7BDô´TâÒõå´Õ¦×£Ó•òÕ×³CÃcÒB÷S°¦6öç7BUT”BÒõå³Ó–Öe×³‡ÒÕ³Ó–Öe×³GÒÕ³Ó…Õ³Ó–Öe×³7ÒÕ³ƒ–%Õ³Ó–Öe×³7ÒÕ³Ó–Öe×³'ÒBö—S°¦6öç7B„TÅD…ô5D”ôå2Ò²'&Wf–Wr"Â'7WÆVÖVçB"Â'V&Æ—6‚"Â'&Wfö¶R%Ò26öç7C°¦6öç7B„TÅD…õ$Ud”Uuô5D”ôå2Ò²$4ôäd•$Ò"Â%$UEU$â"Â$U44ÄDR%Ò26öç7C°¦6öç7B„TÅD…ôD•5õ4•D”ôå2Ò°¢$ô%4U%dD”ôåõ$T4„T4´TB"À¢$dôÄÄõuõUõ44„TETÄTB"À¢$uT$D”åõ5TÔÔ%•õ$U$TB"À¥Ò26öç7C°¦6öç7B„TÅD…õ5TÔÔ$”U2Ò°¢$dôÄÄõuõUô”åõ$ôu$U52"À¢$dôÄÄõuõUô4ôÕÄUDTB"À¢%ÄT4Uô4„T4µõtUôÄDU""À¥Ò26öç7C°¦6öç7B„TÅD…õ5DEU4U2Ò°¢%5T$Ô•EDTB"À¢$U„4UD”ôåõTäD”är"À¢$4ôäd•$ÔTB"À¢%T$Ä•4„TB"À¢%$UEU$äTB"À¢%$Udô´TB"À¥Ò26öç7C°¦6öç7BäõD”4Uô5D”ôå2Ò²'&Wf–Wr"Â'V&Æ—6‚"Â'&Wfö¶R%Ò26öç7C°¦6öç7BäõD”4Uõ5DEU4U2Ò°¢$E$eB"À¢%5T$Ô•EDTB"À¢%$UEU$äTB"À¢$$õdTB"À¢%T$Ä•4„TB"À¢%$Udô´TB"À¥Ò26öç7C°¦6öç7BäõD”4UõDTÕÄDU2Ò°¢”å5D•EUD”ôåôääõTä4TÔTåC¢°¢F&vWC¢$”å5D•EUD”ôâ"À¢F—FÆS¢.iË®ièNXZÎY¢"À¢&öG“¢.j
+XË®Xù[ˆ>K¨niky¨NiÈŞXªZèhé.ûÈÎŠû~Zën™[şiú^yÈ¾š^™Ú.Xh^i»Nik8""À¢ÒÀ¢4Ä55ô5D•d•E“¢°¢F&vWC¢$4Ä52"À¢F—FÆS¢.xúŞ{ª~kK¾Xª‚"À¢&öG“¢.xúŞ{ª~‹ùiÉşiÈkK¾XªZèhé.ûÈÎŠû~Zën™[şiú^yÈ¾[›nyYhHşy»X[>i{n™{N8""À¢ÒÀ§Ò26öç7C° ¦gVæ7F–öâ—5&V6÷&B‡fÇVS¢Væ¶æ÷vâ“¢fÇVR—2&V6÷&CÇ7G&–ærÂVæ¶æ÷vãâ°¢&WGW&âG—VöbfÇVRÓÓÒ&ö&¦V7B"bbfÇVRÓÒçVÆÂbb'&’æ—4'&’‡fÇVR“°§Ğ ¦gVæ7F–öâ§6öâ†&öG“¢Væ¶æ÷vâÂ7FGW2Ò#Â†VFW'2ÒæWr†VFW'2‚’“¢&W7öç6R°¢†VFW'2ç6WB‚&6öçFVçB×G—R"Â&Æ–6F–öâö§6öã²6†'6WC×WFbÓ‚"“°¢†VFW'2ç6WB‚&66†RÖ6öçG&öÂ"Â&æò×7F÷&R"“°¢&WGW&âæWr&W7öç6R„¥4ôâç7G&–æv–g’†&öG’’Â²7FGW2Â†VFW'2Ò“°§Ğ ¦gVæ7F–öâW'&÷"‡7FGW3¢çVÖ&W"Â6öFS¢7G&–ærÂÖW76vS¢7G&–ær“¢&W7öç6R°¢&WGW&â§6öâ‡²W'&÷#¢²6öFRÂÖW76vRÒÒÂ7FGW2“°§Ğ ¦gVæ7F–öâ—4Æö÷&6´†÷7B††÷7FæÖS¢7G&–ær“¢&ööÆVâ°¢6öç7B†÷7BÒ†÷7FæÖP¢çFôÆ÷vW$66R‚¢ç&WÆ6R‚õåÅ·ÅÅÒBöwRÂ""¢ç&WÆ6R‚õÂâB÷RÂ""“°¢–b††÷7BÓÓÒ&Æö6Æ†÷7B"ÇÂ†÷7BæVæG5v—F‚‚"æÆö6Æ†÷7B"’’&WGW&âG'VS°¢–b†—4•††÷7B’ÓÓÒB’&WGW&â†÷7Bç7F'G5v—F‚‚##râ"“°¢–b†—4•††÷7B’ÓÒb’&WGW&âfÇ6S°¢–b††÷7BÓÓÒ#££"’&WGW&âG'VS°¢6öç7BÖVBÒõã£¦fffc¢…³Ó–Öe×³ÃGÒ“¢…³Ó–Öe×³ÃGÒ’B÷RæW†V2††÷7B“°¢&WGW&âÖVBÓÒçVÆÂbbçVÖ&W"ç'6T–çB†ÖVE³Òóò#"Âb’ããâ‚ÓÓÒ#s°§Ğ ¦gVæ7F–öâ”÷&–v–â‚“¢U$ÂÂVæFVf–æVB°¢6öç7B&öGV7F–öâÒ&ö6W72æVçbääôDUôTåbÓÓÒ'&öGV7F–öâ#°¢6öç7B6öæf–wW&VBÒ&öGV7F–öà¢ò&ö6W72æVçbäDÔ”åõtT%ôäU5Eô•ô$4UõU$À¢¢&ö6W72æVçbäDÔ”åõtT%ôÄô4ÅôäU5Eô’ÇÀ¢‡&ö6W72æVçbääôDUôTåbÓÓÒ&FWfVÆ÷ÖVçB"ò&‡GG¢òó#rããã£C3#"¢VæFVf–æVB“°¢–b‚6öæf–wW&VB’&WGW&âVæFVf–æVC° ¢G'’°¢6öç7BW&ÂÒæWrU$Â†6öæf–wW&VB“°¢–b‡W&ÂçW6W&æÖRÇÂW&Âç77v÷&BÇÂW&ÂçF†æÖRÓÒ"ò"ÇÂW&Âç6V&6‚ÇÂW&Âæ†6‚¢&WGW&âVæFVf–æVC°¢–b‡&öGV7F–öâbbW&Âç&÷Fö6öÂÓÓÒ&‡GG3¢"bb—4Æö÷&6´†÷7B‡W&Âæ†÷7FæÖR’’&WGW&âW&Ã°¢–b€¢&öGV7F–öâb`¢&ö6W72æVçbääôDUôTåbÓÓÒ&FWfVÆ÷ÖVçB"b`¢W&Âç&÷Fö6öÂÓÓÒ&‡GG¢"b`¢W&Âæ†÷7FæÖRÓÓÒ##rããã"b`¢&ööÆVâ‡W&Âç÷'B¢¢&WGW&âW&Ã°¢&WGW&âVæFVf–æVC°¢Ò6F6‚°¢&WGW&âVæFVf–æVC°¢Ğ§Ğ ¦gVæ7F–öâÆÆ÷vVB†ÖWF†öC¢7G&–ærÂFƒ¢&VFöæÇ’7G&–æuµÒ“¢&ööÆVâ°¢6öç7B¦ö–æVBÒ"ò"²F‚æ¦ö–â‚"ò"“°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ&–ç7F—GWF–öâ"b`¢F…³ÒÓÓÒ&†öÖR"b`¢F…³%ÒÓÓÒ„ôÔUô4ôåDTåEô´U¢’°¢–b‡F…³5ÒÓÓÒ&G&gB"’&WGW&âÖWF†öBÓÓÒ$tUB"ÇÂÖWF†öBÓÓÒ%õ5B"ÇÂÖWF†öBÓÓÒ%UB#°¢&WGW&â‡F…³5ÒÓÓÒ'V&Æ—6‚"ÇÂF…³5ÒÓÓÒ'VçV&Æ—6‚"’bbÖWF†öBÓÓÒ%õ5B#°¢Ğ¢–b†¦ö–æVBÓÓÒ"öÖöçF†Ç’ÖfVVF&6²"ÇÂ¦ö–æVBÓÓÒ"ö6†–ÆBÖÖöçF†Ç’×&W÷'G2"¢&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b€¢F‚æÆVæwF‚ÓÓÒ2b`¢²&ÖöçF†Ç’ÖfVVF&6²"Â&6†–ÆBÖÖöçF†Ç’×&W÷'G2%Òæ–æ6ÇVFW2‡F…³Òóò""’b`¢õå³Ó–Öe×³‡ÒÕ³Ó–Öe×³GÒÕ³ÓUÕ³Ó–Öe×³7ÒÕ³ƒ–%Õ³Ó–Öe×³7ÒÕ³Ó–Öe×³'ÒBö—RçFW7B€¢F…³Òóò""À¢¢¢&WGW&âÖWF†öBÓÓÒ%õ5B"bb‡F…³%ÒÓÓÒ'&Wf–Wr"ÇÂF…³%ÒÓÓÒ'V&Æ—6‚"“°¢–b†¦ö–æVBÓÓÒ"öfVW2"’&WGW&âÖWF†öBÓÓÒ$tUB"ÇÂÖWF†öBÓÓÒ%õ5B#°¢–b†¦ö–æVBÓÓÒ"÷7GVFVçB×G&ç6fW'2"’&WGW&âÖWF†öBÓÓÒ$tUB"ÇÂÖWF†öBÓÓÒ%õ5B#°¢–b€¢F‚æÆVæwF‚ÓÓÒ2b`¢F…³ÒÓÓÒ'7GVFVçB×G&ç6fW'2"b`¢UT”BçFW7B‡F…³Òóò""’b`¢F…³%ÒÓÓÒ'&Wf–Wr ¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b‡F‚æÆVæwF‚ÓÓÒ2bbF…³ÒÓÓÒ&fVW2"bbUT”BçFW7B‡F…³Òóò""’bbF…³%ÒÓÓÒ'&Wfö¶R"¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b†¦ö–æVBÓÓÒ"öÆV&æ–ærÖ–ç7F—GWF–öâ×6WGF–ær"’&WGW&âÖWF†öBÓÓÒ$tUB"ÇÂÖWF†öBÓÓÒ%õ5B#°¢–b†¦ö–æVBÓÓÒ"÷F6·2"’&WGW&âÖWF†öBÓÓÒ$tUB"ÇÂÖWF†öBÓÓÒ%õ5B#°¢–b‡F‚æÆVæwF‚ÓÓÒ2bbF…³ÒÓÓÒ'F6·2"bbUT”BçFW7B‡F…³Òóò""’¢&WGW&âÖWF†öBÓÓÒ%õ5B"bb‡F…³%ÒÓÓÒ&6†V6²"ÇÂF…³%ÒÓÓÒ&6æ6VÂ"“°¢–b†¦ö–æVBÓÓÒ"öF–Ç’×&W÷'G2"’&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b€¢F‚æÆVæwF‚ÓÓÒ2b`¢F…³ÒÓÓÒ&F–Ç’×&W÷'G2"b`¢UT”BçFW7B‡F…³Òóò""’b`¢F…³%ÒÓÓÒ&VF—BÖWfVçG2 ¢¢&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b‡F‚æÆVæwF‚ÓÓÒ2bbF…³ÒÓÓÒ&F–Ç’×&W÷'G2"bbUT”BçFW7B‡F…³Òóò""’¢&WGW&âÖWF†öBÓÓÒ%õ5B"bb‡F…³%ÒÓÓÒ'&Wf–Wr"ÇÂF…³%ÒÓÓÒ'v—F†G&r"“°¢–b†¦ö–æVBÓÓÒ"öÖVÇ2"’&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b‡F‚æÆVæwF‚ÓÓÒ2bbF…³ÒÓÓÒ&ÖVÇ2"bbUT”BçFW7B‡F…³Òóò""’’°¢–b‡F…³%ÒÓÓÒ&G&gB"’&WGW&âÖWF†öBÓÓÒ%õ5B"ÇÂÖWF†öBÓÓÒ%UB#°¢&WGW&â‡F…³%ÒÓÓÒ'V&Æ—6‚"ÇÂF…³%ÒÓÓÒ'VçV&Æ—6‚"’bbÖWF†öBÓÓÒ%õ5B#°¢Ğ¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’öÆöv–â"ÇÂ¦ö–æVBÓÓÒ"ö–FVçF—G’öÆöv÷WB"’&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB"’&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB÷&öf–ÆR"ÇÂ¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB÷W6W&æÖR"¢&WGW&âÖWF†öBÓÓÒ%D4‚#°¢–b€¢°¢"ö–FVçF—G’ö66÷VçB÷77v÷&B"À¢"ö–FVçF—G’ö66÷VçBöÆöv÷WBÖÆÂ"À¢"ö–FVçF—G’ö66÷VçB÷&öf–ÆRÖ6†ævR×&WVW7G2"À¢Òæ–æ6ÇVFW2†¦ö–æVB¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’÷&öf–ÆRÖ6†ævR×&WVW7G2"’&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ&–FVçF—G’"b`¢F…³ÒÓÓÒ'&öf–ÆRÖ6†ævR×&WVW7G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢‡F…³5ÒÓÓÒ&&÷fR"ÇÂF…³5ÒÓÓÒ'&V¦V7B"¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b€¢¦ö–æVBÓÓÒ"öÖR"ÇÀ¢¦ö–æVBÓÓÒ"÷7FfböwV&F–âÖ&–æF–æröÆ–6F–öç2"ÇÀ¢¦ö–æVBÓÓÒ"÷7Ffbö6&R×&V6÷&G2"ÇÀ¢¦ö–æVBÓÓÒ"÷7FfböÆVfR×&WVW7G2"ÇÀ¢¦ö–æVBÓÓÒ"÷7Ffbö†VÇF‚Ö–æ6–FVçG2 ¢¢&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b†¦ö–æVBÓÓÒ"÷7Ffböæ÷F–6W2÷&Wf–Wr"’&WGW&âÖWF†öBÓÓÒ$tUB#°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&æ÷F–6W2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢äõD”4Uô5D”ôå2æ–æ6ÇVFW2‡F…³5Ò2‡G—VöbäõD”4Uô5D”ôå2•¶çVÖ&W%Ò¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&ÆVfR×&WVW7G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢F…³5ÒÓÓÒ'&Wf–Wr ¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&†VÇF‚Ö–æ6–FVçG2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢„TÅD…ô5D”ôå2æ–æ6ÇVFW2‡F…³5Ò2‡G—Vöb„TÅD…ô5D”ôå2•¶çVÖ&W%Ò¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&6&R×&V6÷&G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢‡F…³5ÒÓÓÒ'&Wf–Wr"ÇÂF…³5ÒÓÓÒ'V&Æ—6‚"ÇÂF…³5ÒÓÓÒ'&Wfö¶R×V&Æ–6F–öâ"¢¢&WGW&âÖWF†öBÓÓÒ%õ5B#°¢&WGW&â€¢F‚æÆVæwF‚ÓÓÒRb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&wV&F–âÖ&–æF–ær"b`¢F…³%ÒÓÓÒ&Æ–6F–öç2"b`¢UT”BçFW7B‡F…³5Òóò""’b`¢F…³EÒÓÓÒ'&Wf–Wr"b`¢ÖWF†öBÓÓÒ%õ5B ¢“°§Ğ ¦gVæ7F–öâ6ÖT÷&–v–â‡&WVW7C¢&WVW7B“¢&ööÆVâ°¢6öç7B÷&–v–ä†VFW"Ò&WVW7Bæ†VFW'2ævWB‚&÷&–v–â"“°¢6öç7B†÷7D†VFW"Ò&WVW7Bæ†VFW'2ævWB‚&†÷7B"“°¢–b‚÷&–v–ä†VFW"ÇÂ†÷7D†VFW"’&WGW&âfÇ6S°¢G'’°¢6öç7B&WVW7EW&ÂÒæWrU$Â‡&WVW7BçW&Â“°¢–b‡&WVW7EW&Âç&÷Fö6öÂÓÒ&‡GG¢"bb&WVW7EW&Âç&÷Fö6öÂÓÒ&‡GG3¢"’&WGW&âfÇ6S° ¢6öç7B÷&–v–âÒæWrU$Â†÷&–v–ä†VFW"“°¢6öç7B&WVW7D†÷7BÒæWrU$Â†G·&WVW7EW&Âç&÷Fö6öÇÒòòG¶†÷7D†VFW'Ö“°¢–b€¢÷&–v–ä†VFW"ÓÒ÷&–v–âæ÷&–v–âÇÀ¢†÷7D†VFW"çFôÆ÷vW$66R‚’ÓÒ&WVW7D†÷7Bæ†÷7BçFôÆ÷vW$66R‚’ÇÀ¢÷&–v–âçW6W&æÖRÇÀ¢÷&–v–âç77v÷&BÇÀ¢&WVW7D†÷7BçW6W&æÖRÇÀ¢&WVW7D†÷7Bç77v÷&@¢¢&WGW&âfÇ6S° ¢&WGW&â÷&–v–âæ÷&–v–âÓÓÒ&WVW7D†÷7Bæ÷&–v–ã°¢Ò6F6‚°¢&WGW&âfÇ6S°¢Ğ§Ğ ¦gVæ7F–öâ6öö¶–UFö¶Vâ‡&WVW7C¢&WVW7B“¢7G&–ærÂVæFVf–æVB°¢6öç7BVçG'’Ò&WVW7Bæ†VFW'0¢ævWB‚&6öö¶–R"¢òç7Æ—B‚#²"¢æÖ‚†—FVÒ’Óâ—FVÒçG&–Ò‚’¢æf–æB‚†—FVÒ’Óâ—FVÒç7F'G5v—F‚…4U54”ôåô4ôô´”R²#Ò"’“°¢6öç7BfÇVRÒVçG'“òç6Æ–6R…4U54”ôåô4ôô´”RæÆVæwF‚²“°¢&WGW&âfÇVRbbDô´TâçFW7B‡fÇVR’òfÇVR¢VæFVf–æVC°§Ğ ¦gVæ7F–öâ6WD6öö¶–R‡Fö¶Vã¢7G&–ærÂW‡—&W4C¢7G&–ærÂ&WVW7C¢&WVW7B“¢7G&–ærÂVæFVf–æVB°¢6öç7BW‡—'’ÒFFRç'6R†W‡—&W4B“°¢–b‚çVÖ&W"æ—4f–æ—FR†W‡—'’’ÇÂW‡—'’ÃÒFFRææ÷r‚’’&WGW&âVæFVf–æVC°¢6öç7B6V6öæG2ÒÖF‚æÖ–â„Ô…õ4U54”ôåõ4T4ôäE2ÂÖF‚æfÆö÷"‚†W‡—'’ÒFFRææ÷r‚’’ò’“°¢–b‡6V6öæG2Â’&WGW&âVæFVf–æVC°¢6öç7B6V7W&RÒæWrU$Â‡&WVW7BçW&Â’ç&÷Fö6öÂÓÓÒ&‡GG3¢"ò#²6V7W&R"¢"#°¢&WGW&â€¢4U54”ôåô4ôô´”R°¢#Ò"°¢Fö¶Vâ°¢#²FƒÒö’öFÖ–ã²‡GGöæÇ“²6ÖU6—FSÔÆƒ²Ö‚ÔvSÒ"°¢6V6öæG2°¢6V7W&P¢“°§Ğ ¦gVæ7F–öâ6ÆV$6öö¶–R‡&WVW7C¢&WVW7B“¢7G&–ær°¢6öç7B6V7W&RÒæWrU$Â‡&WVW7BçW&Â’ç&÷Fö6öÂÓÓÒ&‡GG3¢"ò#²6V7W&R"¢"#°¢&WGW&â4U54”ôåô4ôô´”R²#Ó²FƒÒö’öFÖ–ã²‡GGöæÇ“²6ÖU6—FSÔÆƒ²Ö‚ÔvSÓ"²6V7W&S°§Ğ ¦7–æ2gVæ7F–öâ&VD§6öä&öG’‡&WVW7C¢&WVW7B“¢&öÖ—6SÄ§6öä&öG“â°¢6öç7BÆVæwF‚ÒçVÖ&W"‡&WVW7Bæ†VFW'2ævWB‚&6öçFVçBÖÆVæwF‚"’óò“°¢–b„çVÖ&W"æ—4f–æ—FR†ÆVæwF‚’bbÆVæwF‚âÔ…ô$ôE•ô%•DU2¢&WGW&â²ö³¢fÇ6RÂ&W7öç6S¢W'&÷"ƒC2Â$$ôE•õDôõôÄ$tR"Â.Šû~k.Xh^Zë‹ø~ZJ~8""’Ó°¢6öç7B'—FW2Òv—B&WVW7Bæ'&”'VffW"‚“°¢–b†'—FW2æ'—FTÆVæwF‚âÔ…ô$ôE•ô%•DU2¢&WGW&â²ö³¢fÇ6RÂ&W7öç6S¢W'&÷"ƒC2Â$$ôE•õDôõôÄ$tR"Â.Šû~k.Xh^Zë‹ø~ZJ~8""’Ó°¢–b†'—FW2æ'—FTÆVæwF‚ÓÓÒ’&WGW&â²ö³¢G'VRÓ°¢–b‚&WVW7Bæ†VFW'2ævWB‚&6öçFVçB×G—R"“òçFôÆ÷vW$66R‚’ç7F'G5v—F‚‚&Æ–6F–öâö§6öâ"’¢&WGW&â²ö³¢fÇ6RÂ&W7öç6S¢W'&÷"ƒCRÂ$¥4ôåõ$UT•$TB"Â.Šû~k.jÎ[ÈşKˆŞjÚ>zî8""’Ó°¢G'’°¢&WGW&â²ö³¢G'VRÂfÇVS¢¥4ôâç'6R†æWrFW‡DFV6öFW"‚’æFV6öFR†'—FW2’’2Væ¶æ÷vâÓ°¢Ò6F6‚°¢&WGW&â²ö³¢fÇ6RÂ&W7öç6S¢W'&÷"ƒCÂ$”ådÄ”Eô¥4ôâ"Â.Šû~k.jÎ[ÈşKˆŞjÚ>zî8""’Ó°¢Ğ§Ğ ¦gVæ7F–öâfÆ–D&öG’‡Fƒ¢&VFöæÇ’7G&–æuµÒÂfÇVS¢Væ¶æ÷vâÂÖWF†öC¢7G&–ær“¢&ööÆVâ°¢–b‚—5&V6÷&B‡fÇVR’’&WGW&âfÇ6S°¢6öç7B¶W—2Òö&¦V7Bæ¶W—2‡fÇVR“°¢6öç7B¦ö–æVBÒ"ò"²F‚æ¦ö–â‚"ò"“°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ&–ç7F—GWF–öâ"b`¢F…³ÒÓÓÒ&†öÖR"b`¢F…³%ÒÓÓÒ„ôÔUô4ôåDTåEô´U¢’°¢–b‡F…³5ÒÓÒ&G&gB"¢&WGW&â€¢‡F…³5ÒÓÓÒ'V&Æ—6‚"ÇÂF…³5ÒÓÓÒ'VçV&Æ—6‚"’b`¢¶W—2æÆVæwF‚ÓÓÒb`¢¶W—5³ÒÓÓÒ&W‡V7FVE÷fW'6–öâ"b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’b`¢çVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’ãÒ¢“° ¢6öç7BG&gD¶W—2Ò²&&öG’"Â'F—FÆR"Â'G—R"Â'f—6–&–Æ—G’%Ó°¢6öç7BG&gBÒfÇVRç–ÆöC°¢6öç7BfÆ–DG&gBĞ¢—5&V6÷&B†G&gB’b`¢ö&¦V7Bæ¶W—2†G&gB’æÆVæwF‚ÓÓÒG&gD¶W—2æÆVæwF‚b`¢G&gD¶W—2æWfW'’‚†¶W’’Óâö&¦V7Bæ†4÷vâ†G&gBÂ¶W’’’b`¢G&gBçG—RÓÓÒ$„ôÔUô$Äô4²"b`¢G&gBçf—6–&–Æ—G’ÓÓÒ%T$Ä”2"b`¢G—VöbG&gBçF—FÆRÓÓÒ'7G&–ær"b`¢G&gBçF—FÆRçG&–Ò‚’æÆVæwF‚âb`¢G&gBçF—FÆRæÆVæwF‚ÃÒ#b`¢—5&V6÷&B†G&gBæ&öG’’b`¢ö&¦V7Bæ¶W—2†G&gBæ&öG’’æÆVæwF‚ÓÓÒ"b`¢ö&¦V7Bæ†4÷vâ†G&gBæ&öG’Â'7VÖÖ'’"’b`¢ö&¦V7Bæ†4÷vâ†G&gBæ&öG’Â&&Æö6·2"’b`¢G—VöbG&gBæ&öG’ç7VÖÖ'’ÓÓÒ'7G&–ær"b`¢G&gBæ&öG’ç7VÖÖ'’çG&–Ò‚’æÆVæwF‚âb`¢G&gBæ&öG’ç7VÖÖ'’æÆVæwF‚ÃÒSb`¢'&’æ—4'&’†G&gBæ&öG’æ&Æö6·2’b`¢G&gBæ&öG’æ&Æö6·2æÆVæwF‚ÓÓÒb`¢—5&V6÷&B†G&gBæ&öG’æ&Æö6·5³Ò’b`¢ö&¦V7Bæ¶W—2†G&gBæ&öG’æ&Æö6·5³Ò’æÆVæwF‚ÓÓÒ"b`¢G&gBæ&öG’æ&Æö6·5³Òæ¶–æBÓÓÒ%DU…B"b`¢G—VöbG&gBæ&öG’æ&Æö6·5³ÒçFW‡BÓÓÒ'7G&–ær"b`¢G&gBæ&öG’æ&Æö6·5³ÒçFW‡BçG&–Ò‚’æÆVæwF‚âb`¢G&gBæ&öG’æ&Æö6·5³ÒçFW‡BæÆVæwF‚ÃÒC°¢–b€¢fÆ–DG&gBÇÀ¢¶W—2ç6öÖR‚†¶W’’Óâ¶W’ÓÒ'–ÆöB"bb¶W’ÓÒ&W‡V7FVE÷fW'6–öâ"¢¢&WGW&âfÇ6S°¢&WGW&âÖWF†öBÓÓÒ%UB ¢òçVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’bbçVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’ãÒ¢¢fÇVRæW‡V7FVE÷fW'6–öâÓÓÒçVÆÂÇÂfÇVRæW‡V7FVE÷fW'6–öâÓÓÒVæFVf–æVC°¢Ğ¢–b…²&ÖöçF†Ç’ÖfVVF&6²"Â&6†–ÆBÖÖöçF†Ç’×&W÷'G2%Òæ–æ6ÇVFW2‡F…³Òóò""’’°¢–b€¢G—VöbfÇVRçfW'6–öâÓÒ&çVÖ&W""ÇÀ¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’ÇÀ¢fÇVRçfW'6–öâÂ¢¢&WGW&âfÇ6S°¢&WGW&âF…³%ÒÓÓÒ'V&Æ—6‚ ¢ò¶W—2æÆVæwF‚ÓÓÒ¢¢¶W—2æÆVæwF‚ÓÓÒ"bb‡fÇVRæ7F–öâÓÓÒ$4ôäd•$Ò"ÇÂfÇVRæ7F–öâÓÓÒ%$UEU$â"“°¢Ğ¢–b†¦ö–æVBÓÓÒ"÷7GVFVçB×G&ç6fW'2"’&WGW&âfÆ–EG&ç6fW$7&VFR‡fÇVR“°¢–b‡F…³ÒÓÓÒ'7GVFVçB×G&ç6fW'2"’&WGW&âfÆ–EG&ç6fW%&Wf–Wr‡fÇVR“°¢–b†¦ö–æVBÓÓÒ"öfVW2"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ‚b`¢°¢'7GVFVçEö–B"À¢&Fö7VÖVçE÷G—R"À¢'F—FÆR"À¢'W&–öB"À¢&Ö÷VçEöÖ–æ÷""À¢'fÆ–Eög&öÒ"À¢'fÆ–E÷Fò"À¢'7VÖÖ'’"À¢ÒæWfW'’‚†¶W’’Óâ¶W—2æ–æ6ÇVFW2†¶W’’’b`¢G—VöbfÇVRç7GVFVçEö–BÓÓÒ'7G&–ær"b`¢UT”BçFW7B‡fÇVRç7GVFVçEö–B’b`¢‡fÇVRæFö7VÖVçE÷G—RÓÓÒ$dTUô•DTÒ"ÇÀ¢fÇVRæFö7VÖVçE÷G—RÓÓÒ$$”ÄÂ"ÇÀ¢fÇVRæFö7VÖVçE÷G—RÓÓÒ$u$TTÔTåB"’b`¢G—VöbfÇVRçF—FÆRÓÓÒ'7G&–ær"b`¢fÇVRçF—FÆRçG&–Ò‚’æÆVæwF‚âb`¢fÇVRçF—FÆRæÆVæwF‚ÃÒ#b`¢G—VöbfÇVRçW&–öBÓÓÒ'7G&–ær"b`¢õåÆG³GÒÒƒó£³Ó•×Ã³Ó%Ò’B÷RçFW7B‡fÇVRçW&–öB’b`¢‡fÇVRæFö7VÖVçE÷G—RÓÓÒ$u$TTÔTåB ¢òfÇVRæÖ÷VçEöÖ–æ÷"ÓÓÒçVÆÀ¢¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRæÖ÷VçEöÖ–æ÷"’bbçVÖ&W"‡fÇVRæÖ÷VçEöÖ–æ÷"’ãÒ’b`¢G—VöbfÇVRçfÆ–Eög&öÒÓÓÒ'7G&–ær"b`¢õåÆG³GÒÕÆG³'ÒÕÆG³'ÒB÷RçFW7B‡fÇVRçfÆ–Eög&öÒ’b`¢G—VöbfÇVRçfÆ–E÷FòÓÓÒ'7G&–ær"b`¢õåÆG³GÒÕÆG³'ÒÕÆG³'ÒB÷RçFW7B‡fÇVRçfÆ–E÷Fò’b`¢fÇVRçfÆ–E÷FòãÒfÇVRçfÆ–Eög&öÒb`¢G—VöbfÇVRç7VÖÖ'’ÓÓÒ'7G&–ær"b`¢fÇVRç7VÖÖ'’çG&–Ò‚’æÆVæwF‚âb`¢fÇVRç7VÖÖ'’æÆVæwF‚ÃÒS ¢“°¢–b‡F…³ÒÓÓÒ&fVW2"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒb`¢¶W—5³ÒÓÓÒ&W‡V7FVE÷fW'6–öâ"b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’b`¢çVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’â ¢“°¢–b†¦ö–æVBÓÓÒ"öÆV&æ–ærÖ–ç7F—GWF–öâ×6WGF–ær"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢G—VöbfÇVRæVæ&ÆVBÓÓÒ&&ööÆVâ"b`¢çVÖ&W"æ—4–çFVvW"‡fÇVRæW‡V7FVEfW'6–öâ’b`¢çVÖ&W"‡fÇVRæW‡V7FVEfW'6–öâ’ãÒb`¢çVÖ&W"‡fÇVRæW‡V7FVEfW'6–öâ’Â#CsCƒ3cCp¢“°¢–b‡F…³ÒÓÓÒ'F6·2"’°¢–b‡F‚æÆVæwF‚ÓÓÒ’&WGW&âfÆ–EF6´–çWB‡fÇVR“°¢&WGW&â€¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’âb`¢‡F…³%ÒÓÓÒ&6æ6VÂ ¢ò¶W—2æÆVæwF‚ÓÓÒbb¶W—5³ÒÓÓÒ'fW'6–öâ ¢¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢‡fÇVRæ7F–öâÓÓÒ$4ôäd•$Ò"ÇÂfÇVRæ7F–öâÓÓÒ%$UEU$â"’¢“°¢Ğ¢–b‡F…³ÒÓÓÒ&F–Ç’×&W÷'G2"¢&WGW&â€¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’âb`¢‡F…³%ÒÓÓÒ'v—F†G&r ¢ò¶W—2æÆVæwF‚ÓÓÒbb¶W—5³ÒÓÓÒ'fW'6–öâ ¢¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢‡fÇVRæ7F–öâÓÓÒ$4ôäd•$Ò"ÇÂfÇVRæ7F–öâÓÓÒ%$UEU$â"’¢“°¢–b‡F…³ÒÓÓÒ&ÖVÇ2"’°¢–b‡F…³%ÒÓÒ&G&gB"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒb`¢¶W—5³ÒÓÓÒ&W‡V7FVE÷fW'6–öâ"b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’b`¢çVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’â ¢“°¢–b€¢fÆ–DÖVÅ–ÆöB‡fÇVRç–ÆöB’ÇÀ¢¶W—2ç6öÖR‚†¶W’’Óâ¶W’ÓÒ'–ÆöB"bb¶W’ÓÒ&W‡V7FVE÷fW'6–öâ"¢¢&WGW&âfÇ6S°¢&WGW&âÖWF†öBÓÓÒ%UB ¢òçVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’bbçVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’â ¢¢fÇVRæW‡V7FVE÷fW'6–öâÓÓÒVæFVf–æVBÇÀ¢fÇVRæW‡V7FVE÷fW'6–öâÓÓÒçVÆÂÇÀ¢„çVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’bbçVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’â“°¢Ğ¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’öÆöv–â"’°¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'W6W&æÖR"’b`¢¶W—2æ–æ6ÇVFW2‚'77v÷&B"’b`¢G—VöbfÇVRçW6W&æÖRÓÓÒ'7G&–ær"b`¢fÇVRçW6W&æÖRæÆVæwF‚ãÒ2b`¢fÇVRçW6W&æÖRæÆVæwF‚ÃÒcBb`¢G—VöbfÇVRç77v÷&BÓÓÒ'7G&–ær"b`¢fÇVRç77v÷&BæÆVæwF‚ãÒb`¢fÇVRç77v÷&BæÆVæwF‚ÃÒ#€¢“°¢Ğ¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’öÆöv÷WB"’&WGW&â¶W—2æÆVæwF‚ÓÓÒ°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB÷&öf–ÆR"¢&WGW&â¶W—2æÆVæwF‚ÓÓÒbbG—VöbfÇVRæF—7Æ•öæÖRÓÓÒ'7G&–ær"bbfÇVRæF—7Æ•öæÖRæÆVæwF‚ÃÒƒ°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB÷W6W&æÖR"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢G—VöbfÇVRæ7W'&VçE÷77v÷&BÓÓÒ'7G&–ær"b`¢fÇVRæ7W'&VçE÷77v÷&BæÆVæwF‚âb`¢fÇVRæ7W'&VçE÷77v÷&BæÆVæwF‚ÃÒ#‚b`¢G—VöbfÇVRææWu÷W6W&æÖRÓÓÒ'7G&–ær"b`¢fÇVRææWu÷W6W&æÖRæÆVæwF‚ÃÒc@¢“°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB÷77v÷&B"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢G—VöbfÇVRæ7W'&VçE÷77v÷&BÓÓÒ'7G&–ær"b`¢fÇVRæ7W'&VçE÷77v÷&BæÆVæwF‚âb`¢fÇVRæ7W'&VçE÷77v÷&BæÆVæwF‚ÃÒ#‚b`¢G—VöbfÇVRææWu÷77v÷&BÓÓÒ'7G&–ær"b`¢fÇVRææWu÷77v÷&BæÆVæwF‚ãÒ"b`¢fÇVRææWu÷77v÷&BæÆVæwF‚ÃÒ#€¢“°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçBöÆöv÷WBÖÆÂ"’&WGW&â¶W—2æÆVæwF‚ÓÓÒ°¢–b†¦ö–æVBÓÓÒ"ö–FVçF—G’ö66÷VçB÷&öf–ÆRÖ6†ævR×&WVW7G2"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢G—VöbfÇVRçFVæçEö–BÓÓÒ'7G&–ær"b`¢UT”BçFW7B‡fÇVRçFVæçEö–B’b`¢G—VöbfÇVRæF—7Æ•öæÖRÓÓÒ'7G&–ær"b`¢fÇVRæF—7Æ•öæÖRæÆVæwF‚ÃÒƒ ¢“°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ&–FVçF—G’"b`¢F…³ÒÓÓÒ'&öf–ÆRÖ6†ævR×&WVW7G2"b`¢UT”BçFW7B‡F…³%Òóò""¢¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒb`¢¶W—5³ÒÓÓÒ&W‡V7FVE÷fW'6–öâ"b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRæW‡V7FVE÷fW'6–öâ’b`¢çVÖ&W"‡fÇVRæW‡V7FVE÷fW'6–öâ’ãÒ¢“°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&æ÷F–6W2"b`¢UT”BçFW7B‡F…³%Òóò""¢’°¢–b‡F…³5ÒÓÓÒ'&Wf–Wr"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’ãÒb`¢‡fÇVRæ7F–öâÓÓÒ$$õdR"ÇÂfÇVRæ7F–öâÓÓÒ%$UEU$â"¢“°¢&WGW&â€¢‡F…³5ÒÓÓÒ'V&Æ—6‚"ÇÂF…³5ÒÓÓÒ'&Wfö¶R"’b`¢¶W—2æÆVæwF‚ÓÓÒb`¢¶W—5³ÒÓÓÒ'fW'6–öâ"b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’ãÒ¢“°¢Ğ¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&ÆVfR×&WVW7G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢F…³5ÒÓÓÒ'&Wf–Wr ¢¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’ãÒb`¢‡fÇVRæ7F–öâÓÓÒ&6öæf—&Ò"ÇÂfÇVRæ7F–öâÓÓÒ'&WGW&â"¢“°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&†VÇF‚Ö–æ6–FVçG2"b`¢UT”BçFW7B‡F…³%Òóò""¢’°¢6öç7B7F–öâÒF…³5Ó°¢–b‚çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’ÇÂçVÖ&W"‡fÇVRçfW'6–öâ’Â’&WGW&âfÇ6S°¢–b†7F–öâÓÓÒ'&Wf–Wr"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢„TÅD…õ$Ud”Uuô5D”ôå2æ–æ6ÇVFW2‡fÇVRæ7F–öâ2‡G—Vöb„TÅD…õ$Ud”Uuô5D”ôå2•¶çVÖ&W%Ò¢“°¢–b†7F–öâÓÓÒ'7WÆVÖVçB"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&F—7÷6—F–öä6öFR"’b`¢„TÅD…ôD•5õ4•D”ôå2æ–æ6ÇVFW2‡fÇVRæF—7÷6—F–öä6öFR2‡G—Vöb„TÅD…ôD•5õ4•D”ôå2•¶çVÖ&W%Ò¢“°¢–b†7F–öâÓÓÒ'V&Æ—6‚"¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚'7VÖÖ'”6öFR"’b`¢„TÅD…õ5TÔÔ$”U2æ–æ6ÇVFW2‡fÇVRç7VÖÖ'”6öFR2‡G—Vöb„TÅD…õ5TÔÔ$”U2•¶çVÖ&W%Ò¢“°¢&WGW&â7F–öâÓÓÒ'&Wfö¶R"bb¶W—2æÆVæwF‚ÓÓÒbb¶W—5³ÒÓÓÒ'fW'6–öâ#°¢Ğ¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&6&R×&V6÷&G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢F…³5ÒÓÓÒ'&Wf–Wr ¢¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’ãÒb`¢‡fÇVRæ7F–öâÓÓÒ&6öæf—&Ò"ÇÂfÇVRæ7F–öâÓÓÒ'&WGW&â"¢“°¢–b€¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ'7Ffb"b`¢F…³ÒÓÓÒ&6&R×&V6÷&G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢‡F…³5ÒÓÓÒ'V&Æ—6‚"ÇÂF…³5ÒÓÓÒ'&Wfö¶R×V&Æ–6F–öâ"¢¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒb`¢¶W—5³ÒÓÓÒ'fW'6–öâ"b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’ãÒ¢“°¢&WGW&â€¢¶W—2æÆVæwF‚ÓÓÒ"b`¢¶W—2æ–æ6ÇVFW2‚'fW'6–öâ"’b`¢¶W—2æ–æ6ÇVFW2‚&7F–öâ"’b`¢çVÖ&W"æ—56fT–çFVvW"‡fÇVRçfW'6–öâ’b`¢çVÖ&W"‡fÇVRçfW'6–öâ’ãÒb`¢‡fÇVRæ7F–öâÓÓÒ&&÷fR"ÇÂfÇVRæ7F–öâÓÓÒ'&V¦V7B"¢“°§Ğ ¦gVæ7F–öâfÆ–D–FVçF—G•VW'’€¢Fƒ¢&VFöæÇ’7G&–æuµÒÀ¢ÖWF†öC¢7G&–ærÀ¢6V&6…&×3¢U$Å6V&6…&×2À¢“¢&ööÆVâ°¢–b…²ââç6V&6…&×5ÒæÆVæwF‚ÓÓÒ’&WGW&âG'VS°¢6öç7BVçG&–W2Ò²ââç6V&6…&×2æVçG&–W2‚•Ó°¢6öç7B66÷VE&VBĞ¢ÖWF†öBÓÓÒ$tUB"bbF‚æÆVæwF‚ÓÓÒ"bbF…³ÒÓÓÒ&–FVçF—G’"bbF…³ÒÓÓÒ'&öf–ÆRÖ6†ævR×&WVW7G2#°¢6öç7B66÷VE&Wf–WrĞ¢ÖWF†öBÓÓÒ%õ5B"b`¢F‚æÆVæwF‚ÓÓÒBb`¢F…³ÒÓÓÒ&–FVçF—G’"b`¢F…³ÒÓÓÒ'&öf–ÆRÖ6†ævR×&WVW7G2"b`¢UT”BçFW7B‡F…³%Òóò""’b`¢‡F…³5ÒÓÓÒ&&÷fR"ÇÂF…³5ÒÓÓÒ'&V¦V7B"“°¢&WGW&â€¢‡66÷VE&VBÇÂ66÷VE&Wf–Wr’b`¢VçG&–W2æÆVæwF‚ÓÓÒb`¢VçG&–W5³Óòå³ÒÓÓÒ'FVæçEö–B"b`¢UT”BçFW7B†VçG&–W5³Óòå³Òóò""¢“°§Ğ ¦gVæ7F–öâ”ÖW76vR‡7FGW3¢çVÖ&W"ÂÆöv–ã¢&ööÆVâ“¢7G&–ær°¢–b†Æöv–âbb7FGW2ÓÓÒC’&WGW&â.‹JnXû~h‰nZønzKˆŞjÚ>zîûÈÎŠû~˜xŞŠù^8"#°¢–b‡7FGW2ÓÓÒC’&WGW&â.y›¾[Ù^x«nh[{.ZKiXûÈÎŠû~˜xŞiky›¾[Ù^8"#°¢–b‡7FGW2ÓÓÒC2’&WGW&â.[Ù>X˜Ş‹JnXû~k*iÈjÚNšZêjiØ>™™8"#°¢–b‡7FGW2ÓÓÒC’’&WGW&â.yK>Šû~x«nh[{.i»NikûÈÎŠû~X‹~ikYî˜xŞŠù^8"#°¢–b‡7FGW2ÓÓÒS2’&WGW&â.iÈŞXªi¨.i{nizk9^KÛşyJûÈÎŠû~zˆŞYî˜xŞŠù^8"#°¢&WGW&â.i8ŞKÙÎiÊ®ZèÎh‰ûÈÎŠû~zˆŞYî˜xŞŠù^8"#°§Ğ ¦gVæ7F–öâ6fU6W76–öâ‡–ÆöC¢Væ¶æ÷vâ“¢Væ¶æ÷vâÂVæFVf–æVB°¢–b‚—5&V6÷&B‡–ÆöB’ÇÂ—5&V6÷&B‡–ÆöBæFF’’&WGW&âVæFVf–æVC°¢6öç7BFFÒ–ÆöBæFF°¢–b‡G—VöbFFæF—7Æ•öæÖRÓÒ'7G&–ær"ÇÂFFæF—7Æ•öæÖRæÆVæwF‚ÓÓÒ’&WGW&âVæFVf–æVC°®·×Ûh‘éì¶»§q«^wH˜›ÛÛX[ˆˆˆS[X™\‹š\ÔØY™R[YÙ\Š˜[YKœX›XØ][Û—İ™\œÚ[ÛŠHˆ[X™\Š˜[YKœX›XØ][Û—İ™\œÚ[ÛŠHˆZ\ÛÑ]J˜[YK\]YØ]
+HˆZ\Ô™XÛÜ™
+˜[YK˜[Y\ÊHˆP\œ˜^Kš\Ğ\œ˜^J˜[YK˜Xİ[ÛœÊHˆ˜[YK˜Xİ[ÛœË›[™İˆĞT‘WĞPÕSÓ”Ë›[™İˆ
+Bˆ™]\›ˆ[™Yš[™YÂ‚ˆÛÛœİ˜[Y\ÈH˜[YK˜[Y\ÎÂˆYˆ
+Z\Ô™XÛÜ™
+˜[Y\ÊJH™]\›ˆ[™Yš[™YÂˆÛÛœİ˜[YRÙ^\ÈHØš™XİšÙ^\Ê˜[Y\ÊNÂˆÛÛœİ^XİY˜[YRÙ^\ÈHØš™XİšÙ^\ÊĞT‘WÕSQWÓÔSÓ”ÊNÂˆYˆ
+ˆ˜[YRÙ^\Ë›[™İOOH^XİY˜[YRÙ^\Ë›[™İˆY^XİY˜[YRÙ^\Ë™]™\J
+Ù^JHOˆÂˆÛÛœİ][HH˜[Y\ÖÚÙ^WNÂˆ™]\›ˆĞT‘WÕSQWÓÔSÓ”ÖÚÙ^H\ÈÙ^[Ùˆ\[ÙˆĞT‘WÕSQWÓÔSÓ”×Kš[˜ÛY\Ê][H\È™]™\ŠNÂˆJHˆ™]ÈÙ]
+˜[YK˜Xİ[ÛœÊKœÚ^™HOOH˜[YK˜Xİ[ÛœË›[™İˆ]˜[YK˜Xİ[ÛœË™]™\J
+Xİ[ÛŠHOˆĞT‘WĞPÕSÓ”Ëš[˜ÛY\ÊXİ[Ûˆ\È
+\[ÙˆĞT‘WĞPÕSÓ”ÊVÛ[X™\—JJBˆ
+Bˆ™]\›ˆ[™Yš[™YÂ‚ˆ™]\›ˆÂˆYˆ˜[YKšYˆİY[Ù\Ü^WÜ™Yˆ˜[YKœİY[Ù\Ü^WÜ™Y‹ˆÛ\Ü×Ü™Yˆ˜[YK˜Û\Ü×Ü™Y‹ˆÙ\šXÙWÙ]Nˆ˜[YKœÙ\šXÙWÙ]Kˆ˜[Y\ÎˆØš™Xİ™œ›ÛQ[šY\Ê^XİY˜[YRÙ^\Ë›X\
+
+Ù^JHOˆÚÙ^K˜[Y\ÖÚÙ^WWJJKˆİ]\Îˆ˜[YKœİ]\Ëˆ™\œÚ[Ûˆ˜[YK™\œÚ[Û‹ˆX›\ÚYˆ˜[YKœX›\ÚYˆX›XØ][Û—İ™\œÚ[Ûˆ˜[YKœX›XØ][Û—İ™\œÚ[Û‹ˆ\]YØ]ˆ˜[YK\]YØ]ˆXİ[ÛœÎˆ˜[YK˜Xİ[ÛœËˆNÂŸB‚™[˜İ[ÛˆØY™PØ\™T™XÛÜ™Ê^[ØYˆ[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HP\œ˜^Kš\Ğ\œ˜^J^[ØY™]JH^[ØY™]K›[™İˆL
+Bˆ™]\›ˆ[™Yš[™YÂˆÛÛœİ]HH^[ØY™]K›X\
+ØY™PØ\™T™XÛÜ™
+NÂˆYˆ
+]KœÛÛYJ
+›İÊHOˆ›İÈOOH[™Yš[™Y
+JH™]\›ˆ[™Yš[™YÂˆ™]\›ˆÈ]HNÂŸB‚™[˜İ[ÛˆØY™PØ\™T™XÛÜ™™\İ[
+^[ØYˆ[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HZ\Ô™XÛÜ™
+^[ØY™]JJH™]\›ˆ[™Yš[™YÂˆÛÛœİ]HHØY™PØ\™T™XÛÜ™
+^[ØY™]JNÂˆ™]\›ˆ]HÈÈ]HHˆ[™Yš[™YÂŸB‚˜ÛÛœİPU‘WÔ‘PTÓÓ”ÈHÈ‘SRSWĞT”S‘ÑSQS•‹•STÔT–WÓPUTˆ—H\ÈÛÛœİÂ‚™[˜İ[ÛˆØY™SX]™T™\]Y\İ
+˜[YNˆ[šÛ›İÛŠNˆ™XÛÜ™İš[™Ë[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+ˆZ\Ô™XÛÜ™
+˜[YJHˆ\[Ùˆ˜[YKšYOOHœİš[™ÈˆˆUURQ\İ
+˜[YKšY
+HˆS[X™\‹š\ÔØY™R[YÙ\Š˜[YK™\œÚ[ÛŠHˆ[X™\Š˜[YK™\œÚ[ÛŠHHˆ˜[YKœİ]\ÈOOH”ÕP“RUQˆˆ\[Ùˆ˜[YKœİY[Ù\Ü^WÜ™YˆOOHœİš[™Èˆˆ˜[YKœİY[Ù\Ü^WÜ™Y‹š[J
+K›[™İOOHˆ˜[YKœİY[Ù\Ü^WÜ™Y‹›[™İˆˆ\[Ùˆ˜[YK˜Û\Ü×Ü™YˆOOHœİš[™Èˆˆ˜[YK˜Û\Ü×Ü™Y‹š[J
+K›[™İOOHˆ˜[YK˜Û\Ü×Ü™Y‹›[™İˆˆXØ[[™\‘]J˜[YKœİ\Ù]JHˆXØ[[™\‘]J˜[YK™[™Ù]JHˆ˜[YKœİ\Ù]Hˆ˜[YK™[™Ù]HˆSPU‘WÔ‘PTÓÓ”Ëš[˜ÛY\Ê˜[YKœ™X\ÛÛ—ØØ]YÛÜH\È
+\[ÙˆPU‘WÔ‘PTÓÓ”ÊVÛ[X™\—JHˆ\[Ùˆ˜[YK˜XÚÛ›İÛYÙYOOH˜›ÛÛX[ˆ‚ˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆ™]\›ˆÂˆYˆ˜[YKšYˆ™\œÚ[Ûˆ˜[YK™\œÚ[Û‹ˆİ]\Îˆ˜[YKœİ]\ËˆİY[Ù\Ü^WÜ™Yˆ˜[YKœİY[Ù\Ü^WÜ™Y‹ˆÛ\Ü×Ü™Yˆ˜[YK˜Û\Ü×Ü™Y‹ˆİ\Ù]Nˆ˜[YKœİ\Ù]Kˆ[™Ù]Nˆ˜[YK™[™Ù]Kˆ™X\ÛÛ—ØØ]YÛÜNˆ˜[YKœ™X\ÛÛ—ØØ]YÛÜKˆXÚÛ›İÛYÙYˆ˜[YK˜XÚÛ›İÛYÙYˆNÂŸB‚™[˜İ[ÛˆØY™SX]™T]Y]YJ^[ØYˆ[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HP\œ˜^Kš\Ğ\œ˜^J^[ØY™]JH^[ØY™]K›[™İˆŒ
+Bˆ™]\›ˆ[™Yš[™YÂˆÛÛœİ]HH^[ØY™]K›X\
+ØY™SX]™T™\]Y\İ
+NÂˆ™]\›ˆ]KœÛÛYJ
+›İÊHOˆ›İÈOOH[™Yš[™Y
+HÈ[™Yš[™YˆÈ]HNÂŸB‚™[˜İ[ÛˆØY™SX]™T™]šY]Ô™\İ[
+^[ØYˆ[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HZ\Ô™XÛÜ™
+^[ØY™]JJH™]\›ˆ[™Yš[™YÂˆÛÛœİ˜[YHH^[ØY™]NÂˆYˆ
+ˆ\[Ùˆ˜[YKšYOOHœİš[™ÈˆˆUURQ\İ
+˜[YKšY
+HˆS[X™\‹š\ÔØY™R[YÙ\Š˜[YK™\œÚ[ÛŠHˆ[X™\Š˜[YK™\œÚ[ÛŠHˆˆ
+˜[YKœİ]\ÈOOHÓÓ‘’T“QQˆ	‰ˆ˜[YKœİ]\ÈOOH”‘UT“‘QŠBˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆ™]\›ˆÈ]NˆÈYˆ˜[YKšY™\œÚ[Ûˆ˜[YK™\œÚ[Û‹İ]\Îˆ˜[YKœİ]\ÈHNÂŸB‚™[˜İ[ÛˆØY™RX[[˜ÚY[
+˜[YNˆ[šÛ›İÛŠNˆ™XÛÜ™İš[™Ë[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+ˆZ\Ô™XÛÜ™
+˜[YJHˆ\[Ùˆ˜[YKšYOOHœİš[™ÈˆˆUURQ\İ
+˜[YKšY
+HˆS[X™\‹š\ÔØY™R[YÙ\Š˜[YK™\œÚ[ÛŠHˆ[X™\Š˜[YK™\œÚ[ÛŠHHˆRPSÔÕUTÑTËš[˜ÛY\Ê˜[YKœİ]\È\È
+\[ÙˆPSÔÕUTÑTÊVÛ[X™\—JHˆ\[Ùˆ˜[YKœİY[X™[OOHœİš[™Èˆˆ˜[YKœİY[X™[š[J
+K›[™İOOHˆ˜[YKœİY[X™[›[™İˆˆ\[Ùˆ˜[YK›ØœÙ\˜][ÛÛÙHOOHœİš[™ÈˆˆVÈ”“ÕUS‘WÓĞ”ÑT•USÓˆ‹“‘QQ×Ñ“ÓÕ×ÕT‹•T‘ÑS•Ô‘U’QUÈ—Kš[˜ÛY\Ê˜[YK›ØœÙ\˜][ÛÛÙJHˆ\[Ùˆ˜[YKœX›\ÚYOOH˜›ÛÛX[ˆˆˆ\[Ùˆ˜[YK˜Ü™X]YSX™[OOHœİš[™Èˆˆ˜[YK˜Ü™X]YSX™[š[J
+K›[™İOOHˆ˜[YK˜Ü™X]YSX™[›[™İˆˆ
+Bˆ™]\›ˆ[™Yš[™YÂ‚ˆÛÛœİ\ÜÜÚ][ÛÛÙHH˜[YK™\ÜÜÚ][ÛÛÙNÂˆYˆ
+ˆ\ÜÜÚ][ÛÛÙHOOH[	‰‚ˆ
+\[Ùˆ\ÜÜÚ][ÛÛÙHOOHœİš[™ÈˆˆRPSÑTÔÔÒUSÓ”Ëš[˜ÛY\Ê\ÜÜÚ][ÛÛÙH\È
+\[ÙˆPSÑTÔÔÒUSÓ”ÊVÛ[X™\—JJBˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆÛÛœİİ[[X\PÛÙHH˜[YKœİ[[X\PÛÙNÂˆYˆ
+ˆİ[[X\PÛÙHOOH[	‰‚ˆ
+\[Ùˆİ[[X\PÛÙHOOHœİš[™ÈˆˆRPSÔÕSSPT’QTËš[˜ÛY\Êİ[[X\PÛÙH\È
+\[ÙˆPSÔÕSSPT’QTÊVÛ[X™\—JJBˆ
+Bˆ™]\›ˆ[™Yš[™YÂ‚ˆÛÛœİØœÙ\˜][Û“X™[Îˆ™XYÛ›O™XÛÜ™İš[™Ëİš[™ÏˆHÂˆ“ÕUS‘WÓĞ”ÑT•USÓˆ¹¥éyn.9â­¹  z)à¹kçÈ‹ˆ‘QQ×Ñ“ÓÕ×ÕTˆºg :) z-çú/æÈ‹ˆT‘ÑS•Ô‘U’QUÎˆºg :) yl/yoêùi#y¨.‹ˆNÂˆÛÛœİ\ÜÜÚ][Û“X™[Îˆ™XYÛ›O™XÛÜ™İš[™Ëİš[™ÏˆHÂˆĞ”ÑT•USÓ—Ô‘PÒPÒÑQˆ¹mìºaãy¥¬9¨.9kîz)à¹kçÈ‹ˆ“ÓÕ×ÕTÔĞÒQSQˆ¹mì¹k¢y£¤º-çú/æÈ‹ˆÕPT‘PS—ÔÕSSPT–WÔ‘TT‘Qˆ¹mì¹aá¹i!ùk­ºeoù¤f:) H‹ˆNÂ‚ˆ™]\›ˆÂˆYˆ˜[YKšYˆ™\œÚ[Ûˆ˜[YK™\œÚ[Û‹ˆİ]\Îˆ˜[YKœİ]\ËˆİY[ÛX™[ˆ˜[YKœİY[X™[ˆØœÙ\˜][Û—ØÛÙNˆ˜[YK›ØœÙ\˜][ÛÛÙKˆØœÙ\˜][Û—ÛX™[ˆØœÙ\˜][Û“X™[Öİ˜[YK›ØœÙ\˜][ÛÛÙWKˆ\ÜÜÚ][Û—ØÛÙNˆ\ÜÜÚ][ÛÛÙKˆ\ÜÜÚ][Û—ÛX™[‚ˆ\[Ùˆ\ÜÜÚ][ÛÛÙHOOHœİš[™ÈˆÈ\ÜÜÚ][Û“X™[ÖÙ\ÜÜÚ][ÛÛÙWHˆ[ˆİ[[X\WØÛÙNˆİ[[X\PÛÙKˆX›\ÚYˆ˜[YKœX›\ÚYˆÜ™X]YØWÛX™[ˆ˜[YK˜Ü™X]YSX™[ˆNÂŸB‚™[˜İ[ÛˆØY™RX[[˜ÚY[Ê^[ØYˆ[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HP\œ˜^Kš\Ğ\œ˜^J^[ØY™]JH^[ØY™]K›[™İˆL
+Bˆ™]\›ˆ[™Yš[™YÂˆÛÛœİ]HH^[ØY™]K›X\
+ØY™RX[[˜ÚY[
+NÂˆYˆ
+]KœÛÛYJ
+›İÊHOˆ›İÈOOH[™Yš[™Y
+JH™]\›ˆ[™Yš[™YÂˆ™]\›ˆÈ]HNÂŸB‚™[˜İ[ÛˆØY™RX[[˜ÚY[™\İ[
+^[ØYˆ[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HZ\Ô™XÛÜ™
+^[ØY™]JJH™]\›ˆ[™Yš[™YÂˆÛÛœİ]HHØY™RX[[˜ÚY[
+^[ØY™]JNÂˆ™]\›ˆ]HÈÈ]HHˆ[™Yš[™YÂŸB‚™[˜İ[ÛˆØY™SÙÚ[Šˆ^[ØYˆ[šÛ›İÛ‹ŠNˆÈ™XYÛ›HÚÙ[ˆİš[™ÎÈ™XYÛ›H^\™\Ğ]ˆİš[™ÈH[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+HZ\Ô™XÛÜ™
+^[ØY™]JJH™]\›ˆ[™Yš[™YÂˆÛÛœİ]HH^[ØY™]NÂˆYˆ
+ˆ\[Ùˆ]K˜XØÙ\Ü×İÚÙ[ˆOOHœİš[™ÈˆˆUÒÑS‹\İ
+]K˜XØÙ\Ü×İÚÙ[ŠHˆ]KÚÙ[—İ\HOOH™X\™\ˆˆˆ\[Ùˆ]K™^\™\×Ø]OOHœİš[™ÈˆˆS[X™\‹š\Ñš[š]J]Kœ\œÙJ]K™^\™\×Ø]
+JHˆ]Kœ\œÙJ]K™^\™\×Ø]
+HH]K››İÊ
+Bˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆ™]\›ˆÈÚÙ[ˆ]K˜XØÙ\Ü×İÚÙ[‹^\™\Ğ]ˆ]K™^\™\×Ø]NÂŸB‚\HYZ[‘Z[HH™XYÛ›OÂˆYˆİš[™ÎÂˆ™\œÚ[Ûˆ[X™\Âˆ]Nˆİš[™ÎÂˆ]]Ü“X™[ˆİš[™ÎÂˆİ]\Îˆ”ÕP“RUQˆÓÓ‘’T“QQˆ”‘UT“‘QÂˆ˜[Y\Îˆ™XYÛ›O™XÛÜ™İš[™Ëİš[™ÏÂˆÛİ\˜ÙPÛİ[Îˆ™XYÛ›O™XÛÜ™İš[™Ë[X™\ÂˆX\›š[™Ôİ[[X\Nˆ[™XYÛ›OÂˆÛÛ\]YX\›™\˜[™ˆŒ—ÔTÈÂˆ\ÙYİZY[˜ÙNˆ›ÛÛX[Âˆ™YYÕXXÚ\‘›ÛİÕ\ˆ›ÛÛX[ÂˆOÂˆXİ[ÛœÎˆ™XYÛ›H
+˜ÛÛ™š\›Hˆœ™]\›ˆˆÚ]˜]ÈŠV×NÂŸOÂ˜ÛÛœİRSWÕURQH×–ÌNXKY—^ÎKVÌNXKY—^ÍKVÌKNVÌNXKY—^ÌßKVÎXX—VÌNXKY—^ÌßKVÌNXKY—^ÌLŸIÚ]NÂ˜ÛÛœİRSWÕSQTÈHÂˆ\œš]˜[ˆÈT”’U‘QĞT×ÔS“‘Q‹“UH‹P”ÑS•—KˆÛY]ÛÜšÎˆÈÓÓTUQ‹’S—Ô“ÑÔ‘TÔÈ‹“‘QQ×ÔÕTÔ•—KˆXİ]š]NˆÈ”T•PÒTUQ‹“Ğ”ÑT•‘Q‹““ÕÔ‘PÓÔ‘Q—KˆÛ\ÜÜ›ÛÛNˆÈ”“ÕUS‘H‹“‘QQ×ĞUS•SÓˆ‹“‘QQ×Ñ“ÓÕ×ÕT—Kˆ›ÛİÕ\ˆÈ““Ó‘H‹“Ğ”ÑT•‘WÕÓSÔ”“ÕÈ‹“ÕÓ‘T—ĞUS•SÓˆ—KŸH\ÈÛÛœİÂ˜ÛÛœİRSWÔÓÕTÑTÈHÈ•TÒÈ‹US‘SÑH‹ĞT‘WÔ‘PÓÔ‘‹”PÒÕT‹”PÒÕTÑVÑTSÓˆ—H\ÈÛÛœİÂ™[˜İ[ÛˆØY™QZ[T™XÛÜ™
+˜[YNˆ[šÛ›İÛŠNˆYZ[‘Z[H[™Yš[™YÂˆYˆ
+ˆZ\Ô™XÛÜ™
+˜[YJHˆ\[Ùˆ˜[YKšYOOHœİš[™ÈˆˆQRSWÕURQ\İ
+˜[YKšY
+HˆS[X™\‹š\ÔØY™R[YÙ\Š˜[YK™\œÚ[ÛŠHˆ[X™\Š˜[YK™\œÚ[ÛŠHHˆ\[Ùˆ˜[YK˜]]Ü“X™[OOHœİš[™Èˆˆ]˜[YK˜]]Ü“X™[š[J
+Hˆ˜[YK˜]]Ü“X™[›[™İˆLŒˆ\[Ùˆ˜[YK™]HOOHœİš[™ÈˆˆK×—ÍKWÌŸKWÌŸIİK\İ
+˜[YK™]JHˆS[X™\‹š\Ñš[š]J]Kœ\œÙJ˜[YK™]JJHˆ™]È]J˜[YK™]H
+È•ŒŒˆŠKÒTÓÔİš[™Ê
+KœÛXÙJL
+HOOH˜[YK™]HˆVÈ”ÕP“RUQ‹ÓÓ‘’T“QQ‹”‘UT“‘Q—Kš[˜ÛY\Êİš[™Ê˜[YKœİ]\ÊJHˆZ\Ô™XÛÜ™
+˜[YK˜[Y\ÊHˆZ\Ô™XÛÜ™
+˜[YKœÛİ\˜ÙPÛİ[ÊHˆP\œ˜^Kš\Ğ\œ˜^J˜[YK˜Xİ[ÛœÊBˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆÛÛœİ˜[Y\ÈH˜[YK˜[Y\ËˆÛİ[ÈH˜[YKœÛİ\˜ÙPÛİ[ÎÂˆYˆ
+ˆØš™XİšÙ^\Ê˜[Y\ÊK›[™İOOHHˆSØš™Xİ™[šY\ÊRSWÕSQTÊK™]™\J
+ÚÙ^KÜ[Ûœ×JHO‚ˆ
+Ü[ÛœÈ\È™XYÛ›H[šÛ›İÛ–×JKš[˜ÛY\Ê˜[Y\ÖÚÙ^WJKˆ
+HˆQRSWÔÓÕTÑTË™]™\J
+Ù^JHOˆ[X™\‹š\ÔØY™R[YÙ\ŠÛİ[ÖÚÙ^WJH	‰ˆ[X™\ŠÛİ[ÖÚÙ^WJHH
+Bˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆÛÛœİ\›Z]YBˆ˜[YKœİ]\ÈOOH”ÕP“RUQ‚ˆÈÈ˜ÛÛ™š\›H‹œ™]\›ˆ—Bˆˆ˜[YKœİ]\ÈOOHÓÓ‘’T“QQ‚ˆÈÈœ™]\›ˆ‹Ú]˜]È—Bˆˆ×NÂˆYˆ
+ˆ™]ÈÙ]
+˜[YK˜Xİ[ÛœÊKœÚ^™HOOH˜[YK˜Xİ[ÛœË›[™İˆ]˜[YK˜Xİ[ÛœË™]™\J
+Xİ[ÛŠHOˆ\[ÙˆXİ[ÛˆOOHœİš[™Èˆ	‰ˆ\›Z]Yš[˜ÛY\ÊXİ[ÛŠJBˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆ]X\›š[™Ôİ[[X\NˆYZ[‘Z[VÈ›X\›š[™Ôİ[[X\H—HH[ÂˆYˆ
+˜[YK›X\›š[™Ôİ[[X\HOOH[
+HÂˆÛÛœİİ[[X\HH˜[YK›X\›š[™Ôİ[[X\NÂˆYˆ
+ˆZ\Ô™XÛÜ™
+İ[[X\JHˆİ[[X\K˜ÛÛ\]YX\›™\˜[™OOHŒ—ÔTÈˆˆ\[Ùˆİ[[X\K\ÙYİZY[˜ÙHOOH˜›ÛÛX[ˆˆˆ\[Ùˆİ[[X\K›™YYÕXXÚ\‘›ÛİÕ\OOH˜›ÛÛX[ˆ‚ˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆX\›š[™Ôİ[[X\HHÂˆÛÛ\]YX\›™\˜[™ˆŒ—ÔTÈ‹ˆ\ÙYİZY[˜ÙNˆİ[[X\K\ÙYİZY[˜ÙKˆ™YYÕXXÚ\‘›ÛİÕ\ˆİ[[X\K›™YYÕXXÚ\‘›ÛİÕ\ˆNÂˆBˆ™]\›ˆÂˆYˆ˜[YKšYˆ™\œÚ[Ûˆ[X™\Š˜[YK™\œÚ[ÛŠKˆ]Nˆ˜[YK™]Kˆ]]Ü“X™[ˆ˜[YK˜]]Ü“X™[ˆİ]\Îˆ˜[YKœİ]\È\ÈYZ[‘Z[VÈœİ]\È—Kˆ˜[Y\ÎˆØš™Xİ™œ›ÛQ[šY\ÊˆØš™XİšÙ^\ÊRSWÕSQTÊK›X\
+
+Ù^JHOˆÚÙ^K˜[Y\ÖÚÙ^WH\Èİš[™×JKˆ
+KˆÛİ\˜ÙPÛİ[ÎˆØš™Xİ™œ›ÛQ[šY\ÊRSWÔÓÕTÑTË›X\
+
+Ù^JHOˆÚÙ^K[X™\ŠÛİ[ÖÚÙ^WJWJJKˆX\›š[™Ôİ[[X\KˆXİ[ÛœÎˆ˜[YK˜Xİ[ÛœÈ\ÈYZ[‘Z[VÈ˜Xİ[ÛœÈ—KˆNÂŸB‚™[˜İ[ÛˆØY™QZ[J^[ØYˆ™XÛÜ™İš[™Ë[šÛ›İÛ‹\İˆ›ÛÛX[ŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+[\İ
+HÂˆÛÛœİ›İÈHØY™QZ[T™XÛÜ™
+^[ØY™]JNÂˆ™]\›ˆ›İÈÈÈ]Nˆ›İÈHˆ[™Yš[™YÂˆBˆYˆ
+Z\Ô™XÛÜ™
+^[ØY™]JHP\œ˜^Kš\Ğ\œ˜^J^[ØY™]Kœ™XÛÜ™ÊJH™]\›ˆ[™Yš[™YÂˆÛÛœİ™XÛÜ™ÈH^[ØY™]Kœ™XÛÜ™Ë›X\
+ØY™QZ[T™XÛÜ™
+NÂˆYˆ
+™XÛÜ™ËœÛÛYJ
+›İÊHOˆ\›İÊH™]ÈÙ]
+™XÛÜ™Ë›X\
+
+›İÊHOˆ›İÏËšY
+JKœÚ^™HOOH™XÛÜ™Ë›[™İ
+Bˆ™]\›ˆ[™Yš[™YÂˆ™]\›ˆÈ]NˆÈ™XÛÜ™ÈHNÂŸB‚˜ÛÛœİRSWĞUQUĞPÕSÓ”ÈHÂˆÔ‘PUQ‹ˆ‘QUQ‹ˆ”ÕP“RUQ‹ˆ”‘TÕP“RUQ‹ˆ”‘U’QU×ĞÓÓ‘’T“QQ‹ˆ”‘U’QU×Ô‘UT“‘Q‹ˆÓÓ‘’T“PUSÓ—ÕÒUUÓˆ‹ˆ”ÓÕTÑT×ÒS•SQUQ‹—H\ÈÛÛœİÂ‚™[˜İ[ÛˆØY™QZ[P]Y]
+^[ØYˆ™XÛÜ™İš[™Ë[šÛ›İÛŠNˆ[šÛ›İÛˆ[™Yš[™YÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY™]JHP\œ˜^Kš\Ğ\œ˜^J^[ØY™]K™]™[ÊJH™]\›ˆ[™Yš[™YÂˆÛÛœİ]™[ÈH^[ØY™]K™]™[Ë›X\
+
+]™[
+HOˆÂˆYˆ
+ˆZ\Ô™XÛÜ™
+]™[
+HˆØš™XİšÙ^\Ê]™[
+K›[™İOOHHˆVÈ˜Xİ[Ûˆ‹œ™\Ü™\œÚ[Ûˆ‹˜XİÜ“X™[‹š[š]X]YSX™[‹›ØØİ\œ™Y]—K™]™\J
+Ù^JHO‚ˆØš™Xİš\ÓİÛŠ]™[Ù^JKˆ
+HˆJRSWĞUQUĞPÕSÓ”È\È™XYÛ›H[šÛ›İÛ–×JKš[˜ÛY\Ê]™[˜Xİ[ÛŠHˆS[X™\‹š\ÔØY™R[YÙ\Š]™[œ™\Ü™\œÚ[ÛŠHˆ[X™\Š]™[œ™\Ü™\œÚ[ÛŠHHˆ
+]™[˜Xİ[ÛˆOOH”ÓÕTÑT×ÒS•SQUQ‚ˆÈ]™[˜XİÜ“X™[OOH[ˆˆ\[Ùˆ]™[˜XİÜ“X™[OOHœİš[™ÈˆˆY]™[˜XİÜ“X™[š[J
+Hˆ]™[˜XİÜ“X™[›[™İˆLŒ
+Hˆ\[Ùˆ]™[š[š]X]YSX™[OOHœİš[™ÈˆˆY]™[š[š]X]YSX™[š[J
+Hˆ]™[š[š]X]YSX™[›[™İˆLŒˆ\[Ùˆ]™[›ØØİ\œ™Y]OOHœİš[™ÈˆˆS[X™\‹š\Ñš[š]J]Kœ\œÙJ]™[›ØØİ\œ™Y]
+JHˆ™]È]J]™[›ØØİ\œ™Y]
+KÒTÓÔİš[™Ê
+HOOH]™[›ØØİ\œ™Y]ˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆ™]\›ˆÂˆXİ[Ûˆ]™[˜Xİ[Û‹ˆ™\Ü™\œÚ[Ûˆ[X™\Š]™[œ™\Ü™\œÚ[ÛŠKˆXİÜ“X™[ˆ]™[˜XİÜ“X™[ˆ[š]X]YSX™[ˆ]™[š[š]X]YSX™[ˆØØİ\œ™Y]ˆ]™[›ØØİ\œ™Y]ˆNÂˆJNÂˆYˆ
+ˆ]™[ËœÛÛYJ
+]™[
+HOˆY]™[
+Hˆ]™[ËœÛÛYJˆ
+]™[[™^
+HOˆ[™^ˆ	‰ˆ]™[Kœ™\Ü™\œÚ[ÛˆH]™[ÖÚ[™^HWHKœ™\Ü™\œÚ[Û‹ˆ
+Bˆ
+Bˆ™]\›ˆ[™Yš[™YÂˆ™]\›ˆÈ]NˆÈ]™[ÈHNÂŸB‚˜\Ş[˜È[˜İ[Ûˆ[™J™\]Y\İˆ™\]Y\İÛÛ^ˆ›İ]PÛÛ^
+Nˆ›ÛZ\ÙO™\ÜÛœÙOˆÂˆÛÛœİÈ]HH]ØZ]ÛÛ^œ\˜[\ÎÂˆYˆ
+ˆP\œ˜^Kš\Ğ\œ˜^J]
+Hˆ]›[™İOOHˆ]œÛÛYJ
+\
+HOˆ\\\š[˜ÛY\Ê‹ÈŠHK×–ĞKV˜K^ŒNWËWJÉİK\İ
+\
+JBˆ
+Bˆ™]\›ˆ\œ›ÜŠ““ÕÑ“ÕS‘‹¹§*¹¢o¹b,:+éy§#yb¨xà ˆŠNÂ‚ˆÛÛœİY]ÙH™\]Y\İ›Y]ÙÕ\\Ø\ÙJ
+NÂˆYˆ
+X[İÙY
+Y]Ù]
+JH™]\›ˆ\œ›ÜŠ““ÕÑ“ÕS‘‹¹§*¹¢o¹b,:+éy§#yb¨xà ˆŠNÂˆÛÛœİ™\]Y\İ\›H™]ÈT“
+™\]Y\İ\›
+NÂˆYˆ
+™\]Y\İ\›š\Ú]˜[YY[]T]Y\J]Y]Ù™\]Y\İ\›œÙX\˜Ú\˜[\ÊJBˆ™]\›ˆ\œ›ÜŠ”UQT–WÓ“ÕĞSÕÑQ‹º+íù¬`¹a¡yk®y.#y«hùèk¸à ˆŠNÂˆYˆ
+Y]ÙOOH‘ÑUˆ	‰ˆ\Ø[YSÜšYÚ[Š™\]Y\İ
+JBˆ™]\›ˆ\œ›ÜŠË“Ô’QÒS—Ó“ÕĞSÕÑQ‹º+íù¬`¹§iy®¤9.#ycåùa`z+®8à ˆŠNÂ‚ˆÛÛœİ\ÓÙÚ[ˆHY]ÙOOH”ÔÕˆ	‰ˆ]š›Ú[Š‹ÈŠHOOHšY[]KÛÙÚ[ˆÂˆÛÛœİ\ÓÙÛİ]HY]ÙOOH”ÔÕˆ	‰ˆ]š›Ú[Š‹ÈŠHOOHšY[]KÛÙÛİ]ÂˆÛÛœİÚÙ[ˆH\ÓÙÚ[ˆÈ[™Yš[™YˆÛÛÚÚYUÚÙ[Š™\]Y\İ
+NÂˆÛÛœİ™\ÜÛœÙRXY\œÈH™]ÈXY\œÊ
+NÂˆYˆ
+Z\ÓÙÚ[ˆ	‰ˆ]ÚÙ[ˆ	‰ˆZ\ÓÙÛİ]
+H™]\›ˆ\œ›ÜŠK•SUUS•PĞUQ‹º+íùab9ænùoexà ˆŠNÂˆYˆ
+\ÓÙÛİ]	‰ˆ]ÚÙ[ŠHÂˆ™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠÈ]NˆÈÙÙÙYÛİ]ˆYHHKŒ™\ÜÛœÙRXY\œÊNÂˆB‚ˆÛÛœİ›ÙHHY]ÙOOH‘ÑUˆÈ
+ÈÚÎˆYHH\ÈÛÛœİ
+Hˆ]ØZ]™XYœÛÛ›ÙJ™\]Y\İ
+NÂˆYˆ
+X›ÙK›ÚÊH™]\›ˆ›ÙKœ™\ÜÛœÙNÂˆYˆ
+Y]ÙOOH‘ÑUˆ	‰ˆ
+J˜[YHˆ[ˆ›ÙJH]˜[Y›ÙJ]›ÙK˜[YKY]Ù
+JJBˆ™]\›ˆ\œ›ÜŠ•SQUSÓ—ÑRSQ‹º+íù¬`¹a¡yk®y.#y«hùèk¸à ˆŠNÂ‚ˆÛÛœİÜšYÚ[ˆH\SÜšYÚ[Š
+NÂˆYˆ
+[ÜšYÚ[ŠHÂˆYˆ
+\ÓÙÛİ]
+H™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠˆÈ\œ›ÜˆÈÛÙNˆTWÕSURSP“H‹Y\ÜØYÙNˆ¹ë¨yä!¹§#yb¨yl&¹§*ºacyïk¸à ˆˆHKˆLËˆ™\ÜÛœÙRXY\œËˆ
+NÂˆB‚ˆÛÛœİXY\œÈH™]ÈXY\œÊÈXØÙ\ˆ˜\XØ][Û‹ÚœÛÛˆˆJNÂˆYˆ
+Y]ÙOOH‘ÑUŠHXY\œËœÙ]
+˜ÛÛ[]\H‹˜\XØ][Û‹ÚœÛÛˆŠNÂˆYˆ
+ÚÙ[ŠHXY\œËœÙ]
+˜]]Üš^˜][Ûˆ‹™X\™\ˆˆ
+ÈÚÙ[ŠNÂˆÛÛœİ\™Ù]H™]ÈT“
+ˆ
+Âˆš[œİ]][Ûˆ‹ˆ›YX[È‹ˆ™Z[K\™\ÜÈ‹ˆ›[ÛKY™YY˜XÚÈ‹ˆ˜Ú[[[ÛK\™\ÜÈ‹ˆ\ÚÜÈ‹ˆ›X\›š[™ËZ[œİ]][Û‹\Ù][™È‹ˆ™™Y\È‹ˆœİY[]˜[œÙ™\œÈ‹ˆKš[˜ÛY\Ê]ÌHÏÈˆŠBˆÈ‹ØYZ[‹È‚ˆˆ‹ÈŠH
+È]š›Ú[Š‹ÈŠKˆÜšYÚ[‹ˆ
+NÂˆ\™Ù]œÙX\˜ÚH™\]Y\İ\›œÙX\˜ÚÂˆ]\İ™X[Nˆ™\ÜÛœÙNÂˆHÂˆ\İ™X[HH]ØZ]™]Ú
+\™Ù]ÂˆY]ÙˆXY\œËˆØXÚNˆ››Ë\İÜ™H‹ˆ™Y\™Xİˆ™\œ›Üˆ‹ˆ‹‹ŠÂˆš[œİ]][Ûˆ‹ˆ›X\›š[™ËZ[œİ]][Û‹\Ù][™È‹ˆ›[ÛKY™YY˜XÚÈ‹ˆ˜Ú[[[ÛK\™\ÜÈ‹ˆœİY[]˜[œÙ™\œÈ‹ˆKš[˜ÛY\Ê]ÌHÏÈˆŠBˆÈÈÚYÛ˜[ˆX›ÜÚYÛ˜[[Y[İ]
+
+HBˆˆßJKˆ‹‹ŠY]ÙOOH‘ÑUˆJ˜[YHˆ[ˆ›ÙJHÈßHˆÈ›ÙNˆ”ÓÓ‹œİš[™ÚYJ›ÙK˜[YJHJKˆJNÂˆHØ]ÚÂˆYˆ
+\ÓÙÛİ]
+H™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠˆÈ\œ›ÜˆÈÛÙNˆTWÕSURSP“H‹Y\ÜØYÙNˆ¹ë¨yä!¹§#yb¨y¦ ¹¥í¹¥è9¬åz/ç¹£©xà ˆˆHKˆLËˆ™\ÜÛœÙRXY\œËˆ
+NÂˆB‚ˆYˆ
+ˆ]\İ™X[K›ÚÈ	‰‚ˆ
+È›[ÛKY™YY˜XÚÈ‹˜Ú[[[ÛK\™\ÜÈ—Kš[˜ÛY\Ê]ÌHÏÈˆŠHˆ
+]›[™İOOHH	‰ˆ]ÌHOOH›YHˆ	‰ˆ\İ™X[Kœİ]\ÈOOHJJBˆ
+HÂˆËÈHÛÛ™Y™]Ú›ÙHØ[ˆÙY\Ø[˜Ù[][Ûˆ[™[™ÈY\ˆHİ]\È\È[™XYHÛ›İÛ‹‚ˆ›ÚY\İ™X[K˜›ÙOË˜Ø[˜Ù[
+
+K˜Ø]Ú
+
+
+HOˆßJNÂˆYˆ
+\İ™X[Kœİ]\ÈOOHH	‰ˆZ\ÓÙÚ[ˆ	‰ˆÚÙ[ŠBˆ™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠˆÂˆ\œ›ÜˆÂˆÛÙNˆ\İ™X[Kœİ]\ÈOOHHÈ•SUUS•PĞUQˆˆ”‘TUQTÕÑRSQ‹ˆY\ÜØYÙNˆ\SY\ÜØYÙJ\İ™X[Kœİ]\Ë˜[ÙJKˆKˆKˆ\İ™X[Kœİ]\Ëˆ™\ÜÛœÙRXY\œËˆ
+NÂˆBˆÛÛœİ^[ØYˆ[šÛ›İÛˆH]ØZ]\İ™X[KšœÛÛŠ
+K˜Ø]Ú
+
+
+HOˆ[™Yš[™Y
+NÂˆYˆ
+Z\Ô™XÛÜ™
+^[ØY
+JHÂˆYˆ
+\ÓÙÛİ]
+H™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠˆÈ\œ›ÜˆÈÛÙNˆ’S•SQĞTWÔ‘TÔÓ”ÑH‹Y\ÜØYÙNˆ¹ë¨yä!¹§#yb¨y¦ ¹¥í¹¥è9¬åy/oùå*8à ˆˆHKˆL‹ˆ™\ÜÛœÙRXY\œËˆ
+NÂˆB‚ˆYˆ
+]\İ™X[K›ÚÊHÂˆYˆ
+ˆ\ÓÙÛİ]ˆ
+\İ™X[Kœİ]\ÈOOHH	‰ˆZ\ÓÙÚ[ˆ	‰ˆÚÙ[ŠHˆ
+È›[ÛKY™YY˜XÚÈ‹˜Ú[[[ÛK\™\ÜÈ—Kš[˜ÛY\Ê]ÌHÏÈˆŠH	‰‚ˆ\İ™X[Kœİ]\ÈOOHJBˆ
+Bˆ™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆÛÛœİİ]\ÈH\İ™X[Kœİ]\ÈH	‰ˆ\İ™X[Kœİ]\ÈHNNHÈ\İ™X[Kœİ]\ÈˆLÂˆÛÛœİÛÙHBˆVÈ›[ÛKY™YY˜XÚÈ‹˜Ú[[[ÛK\™\ÜÈ—Kš[˜ÛY\Ê]ÌHÏÈˆŠH	‰‚ˆ\Ô™XÛÜ™
+^[ØY™\œ›ÜŠH	‰‚ˆ\[Ùˆ^[ØY™\œ›Ü‹˜ÛÙHOOHœİš[™È‚ˆÈ^[ØY™\œ›Ü‹˜ÛÙBˆˆ”‘TUQTÕÑRSQÂˆ™]\›ˆœÛÛŠÈ\œ›ÜˆÈÛÙKY\ÜØYÙNˆ\SY\ÜØYÙJİ]\Ë\ÓÙÚ[ŠHHKİ]\Ë™\ÜÛœÙRXY\œÊNÂˆB‚ˆYˆ
+\ÓÙÚ[ŠHÂˆÛÛœİÙÚ[ˆHØY™SÙÚ[Š^[ØY
+NÂˆÛÛœİÛÛÚÚYHHÙÚ[ˆÈÙ]ÛÛÚÚYJÙÚ[‹ÚÙ[‹ÙÚ[‹™^\™\Ğ]™\]Y\İ
+Hˆ[™Yš[™YÂˆYˆ
+[ÙÚ[ˆXÛÛÚÚYJH™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹ænùoey§#yb¨z/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆ™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛÛÚÚYJNÂˆ™]\›ˆœÛÛŠÈ]NˆÈ^\™\×Ø]ˆÙÚ[‹™^\™\Ğ]HK\İ™X[Kœİ]\Ë™\ÜÛœÙRXY\œÊNÂˆB‚ˆYˆ
+\ÓÙÛİ]
+HÂˆ™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠ^[ØY\İ™X[Kœİ]\Ë™\ÜÛœÙRXY\œÊNÂˆB‚ˆYˆ
+]ÌHOOH›X\›š[™ËZ[œİ]][Û‹\Ù][™ÈŠHÂˆÛÛœİÙ][™ÈH^[ØY™]NÂˆYˆ
+ˆZ\Ô™XÛÜ™
+Ù][™ÊHˆ\[ÙˆÙ][™Ë™[˜X›YOOH˜›ÛÛX[ˆˆˆS[X™\‹š\Ò[YÙ\ŠÙ][™Ë™\œÚ[ÛŠHˆ[X™\ŠÙ][™Ë™\œÚ[ÛŠHˆ[X™\ŠÙ][™Ë™\œÚ[ÛŠHˆŒMÍÍÈˆ
+Ù][™Ë™\œÚ[ÛˆOOH	‰ˆÙ][™Ë™[˜X›Y
+Bˆ
+Bˆ™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹§.¹§¡:+¯¹ïkº/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆ™]\›ˆœÛÛŠˆÈ]NˆÈ[˜X›YˆÙ][™Ë™[˜X›Y™\œÚ[ÛˆÙ][™Ë™\œÚ[ÛˆHKˆ\İ™X[Kœİ]\Ëˆ™\ÜÛœÙRXY\œËˆ
+NÂˆB‚ˆYˆ
+]ÌHOOH\ÚÜÈŠHÂˆHÂˆÛÛœİ]HHY]ÙOOH‘ÑUˆÈ\œÙU\ÚÔ^[ØY
+^[ØY™]JHˆ\œÙU\ÚÊ^[ØY™]JNÂˆYˆ
+Y]JH™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹.îùb¨y§#yb¨z/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆ™]\›ˆœÛÛŠÈ]HK\İ™X[Kœİ]\Ë™\ÜÛœÙRXY\œÊNÂˆHØ]ÚÂˆ™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹.îùb¨y§#yb¨z/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆBˆB‚ˆYˆ
+È›[ÛKY™YY˜XÚÈ‹˜Ú[[[ÛK\™\ÜÈ—Kš[˜ÛY\Ê]ÌHÏÈˆŠJHÂˆHÂˆÛÛœİ]HBˆ]ÌHOOH˜Ú[[[ÛK\™\ÜÈ‚ˆÈY]ÙOOH‘ÑU‚ˆÈ\œÙPÚ[[ÛS\İ[™Ê^[ØY™]JBˆˆ\œÙPÚ[[ÛT™XÛÜ™
+^[ØY™]JBˆˆY]ÙOOH‘ÑU‚ˆÈ\œÙS[ÛS\İ[™Ê^[ØY™]JBˆˆ\œÙS[ÛT™XÛÜ™
+^[ØY™]JNÂˆYˆ
+Y]JH™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹§"9n©¹ .ùîäù§#yb¨z/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆ™]\›ˆœÛÛŠÈ]HK\İ™X[Kœİ]\Ë™\ÜÛœÙRXY\œÊNÂˆHØ]ÚÂˆ™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹§"9n©¹ .ùîäù§#yb¨z/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆBˆB‚ˆYˆ
+]ÌHOOHœİY[]˜[œÙ™\œÈŠHÂˆÛÛœİ]HBˆY]ÙOOH‘ÑUˆÈ\œÙU˜[œÙ™\“\İ[™Ê^[ØY™]JHˆ\œÙU˜[œÙ™\”™XÛÜ™
+^[ØY™]JNÂˆYˆ
+Y]JBˆ™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹º/k9ãëy§#yb¨z/å9fç¹.¡¹.#yk£9¥m9æ¡:-a9¥¦{ï#:+íùb-ù¥¬9èkº+©8à ˆŠNÂˆ™]\›ˆœÛÛŠÈ]HK\İ™X[Kœİ]\Ë™\ÜÛœÙRXY\œÊNÂˆB‚ˆÛÛœİØY™T^[ØYBˆ]ÌHOOHšY[]Hˆ	‰ˆ]ÌWHOOH˜XØÛİ[ˆ	‰ˆ]›[™İHÂˆÈ]›[™İOOHˆ]Ì—HOOHœ›Ùš[H‚ˆÈØY™PXØÛİ[
+^[ØY
+Bˆˆ]Ì—HOOHœ›Ùš[KXÚ[™ÙK\™\]Y\İÈ‚ˆÈØY™T›Ùš[PÚ[™ÙT™\ÜÛœÙJ^[ØY
+BˆˆØY™PXØÛİ[Xİ[ÛŠ^[ØY]Ì—HÏÈˆŠBˆˆ]ÌHOOHšY[]Hˆ	‰ˆ]ÌWHOOHœ›Ùš[KXÚ[™ÙK\™\]Y\İÈ‚ˆÈ]›[™İOOH‚ˆÈØY™T›Ùš[PÚ[™ÙS\İ
+^[ØY
+BˆˆØY™T›Ùš[T™]šY]Ê^[ØY]Ì×HÏÈˆŠBˆˆ]ÌHOOHš[œİ]][Ûˆ‚ˆÈØY™RÛYPÛÛ[
+^[ØY]Ì—HÏÈˆŠBˆˆ]ÌHOOH™™Y\È‚ˆÈØY™Q™Y\Ê^[ØYY]Ù]›[™İ
+Bˆˆ]ÌHOOH™Z[K\™\ÜÈ‚ˆÈ]›[™İOOHÈ	‰ˆ]Ì—HOOH˜]Y]Y]™[È‚ˆÈØY™QZ[P]Y]
+^[ØY
+BˆˆØY™QZ[J^[ØY]›[™İOOHJBˆˆ]ÌHOOH›YX[È‚ˆÈØY™SYX[Ê^[ØY]›[™İOOHJBˆˆ]›[™İOOHH	‰ˆ]ÌHOOH›YH‚ˆÈØY™TÙ\ÜÚ[ÛŠ^[ØY
+Bˆˆ]›[™İOOHÈ	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOH››İXÙ\È‚ˆÈØY™S›İXÙ\Ê^[ØY
+Bˆˆ]›[™İOOH	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOH››İXÙ\È‚ˆÈØY™S›İXÙT™\İ[
+^[ØY
+Bˆˆ]›[™İOOHÈ	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]Ì—HOOH˜\XØ][ÛœÈ‚ˆÈØY™T]Y]YJ^[ØY
+Bˆˆ]›[™İOOHˆ	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOHšX[Z[˜ÚY[È‚ˆÈØY™RX[[˜ÚY[Ê^[ØY
+Bˆˆ]›[™İOOH	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOHšX[Z[˜ÚY[È‚ˆÈØY™RX[[˜ÚY[™\İ[
+^[ØY
+Bˆˆ]›[™İOOHˆ	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOH˜Ø\™K\™XÛÜ™È‚ˆÈØY™PØ\™T™XÛÜ™Ê^[ØY
+Bˆˆ]›[™İOOH	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOH˜Ø\™K\™XÛÜ™È‚ˆÈØY™PØ\™T™XÛÜ™™\İ[
+^[ØY
+Bˆˆ]›[™İOOHˆ	‰ˆ]ÌHOOHœİY™ˆˆ	‰ˆ]ÌWHOOH›X]™K\™\]Y\İÈ‚ˆÈØY™SX]™T]Y]YJ^[ØY
+Bˆˆ]›[™İOOH	‰‚ˆ]ÌHOOHœİY™ˆˆ	‰‚ˆ]ÌWHOOH›X]™K\™\]Y\İÈˆ	‰‚ˆ]Ì×HOOHœ™]šY]È‚ˆÈØY™SX]™T™]šY]Ô™\İ[
+^[ØY
+BˆˆØY™T™]šY]Ê^[ØY
+NÂˆYˆ
+ØY™T^[ØYOOH[™Yš[™Y
+Bˆ™]\›ˆ\œ›ÜŠL‹’S•SQĞTWÔ‘TÔÓ”ÑH‹¹ë¨yä!¹§#yb¨z/å9fç¹.¡¹¥è9¥b9îäù§§8à ˆŠNÂˆYˆ
+ˆ\İ™X[K›ÚÈ	‰‚ˆ]ÌHOOHšY[]Hˆ	‰‚ˆ]ÌWHOOH˜XØÛİ[ˆ	‰‚ˆÈ\Ù\›˜[YH‹œ\ÜİÛÜ™‹›ÙÛİ]X[—Kš[˜ÛY\Ê]Ì—HÏÈˆŠBˆ
+Bˆ™\ÜÛœÙRXY\œË˜\[™
+œÙ]XÛÛÚÚYH‹ÛX\ÛÛÚÚYJ™\]Y\İ
+JNÂˆ™]\›ˆœÛÛŠØY™T^[ØY\İ™X[Kœİ]\Ë™\ÜÛœÙRXY\œÊNÂŸB‚™^Ü[˜İ[ÛˆÑU
+™\]Y\İˆ™\]Y\İÛÛ^ˆ›İ]PÛÛ^
+Nˆ›ÛZ\ÙO™\ÜÛœÙOˆÂˆ™]\›ˆ[™J™\]Y\İÛÛ^
+NÂŸB‚™^Ü[˜İ[ÛˆÔÕ
+™\]Y\İˆ™\]Y\İÛÛ^ˆ›İ]PÛÛ^
+Nˆ›ÛZ\ÙO™\ÜÛœÙOˆÂˆ™]\›ˆ[™J™\]Y\İÛÛ^
+NÂŸB‚™^Ü[˜İ[ÛˆU
+™\]Y\İˆ™\]Y\İÛÛ^ˆ›İ]PÛÛ^
+Nˆ›ÛZ\ÙO™\ÜÛœÙOˆÂˆ™]\›ˆ[™J™\]Y\İÛÛ^
+NÂŸB‚™^Ü[˜İ[ÛˆUÒ
+™\]Y\İˆ™\]Y\İÛÛ^ˆ›İ]PÛÛ^
+Nˆ›ÛZ\ÙO™\ÜÛœÙOˆÂˆ™]\›ˆ[™J™\]Y\İÛÛ^
+NÂŸB

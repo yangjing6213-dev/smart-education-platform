@@ -18,6 +18,7 @@ import { PrismaMealPublicationAuditService } from "../modules/audit/prisma-meal-
 import { PrismaInstitutionService } from "../modules/institution/prisma-institution.service.js";
 import type { ApiAppOptions } from "./api-tokens.js";
 import { PrismaInviteSessionStore } from "./prisma-invite-session.store.js";
+import { PrismaInviteAccountStore } from "./prisma-invite-account.store.js";
 import { resolvePublicCampusScope } from "./public-campus-scope.js";
 import { PrismaFeesService } from "../modules/fees/prisma-fees.service.js";
 import { PrismaStudentTransferService } from "../modules/student-transfers/prisma-student-transfer.service.js";
@@ -34,6 +35,7 @@ export function createProductionApiOptions(
       inviteAccounts,
       undefined,
       new PrismaInviteSessionStore(prisma),
+      new PrismaInviteAccountStore(prisma),
     ),
     guardianBindingOperations: new PrismaGuardianBindingService(
       prisma,

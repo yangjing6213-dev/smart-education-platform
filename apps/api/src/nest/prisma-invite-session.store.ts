@@ -32,6 +32,10 @@ export class PrismaInviteSessionStore implements InviteSessionStore {
     await this.prisma.inviteAuthSession.deleteMany({ where: { tokenHash } });
   }
 
+  public async deleteByActor(actorId: string): Promise<void> {
+    await this.prisma.inviteAuthSession.deleteMany({ where: { userId: actorId } });
+  }
+
   public async deleteExpired(expiresAtOrBefore: Date): Promise<void> {
     await this.prisma.inviteAuthSession.deleteMany({
       where: { expiresAt: { lte: expiresAtOrBefore } },

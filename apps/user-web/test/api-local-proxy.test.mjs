@@ -364,6 +364,63 @@ test("parent binding routes are authenticated and the proxy forwards only the co
   }
 });
 
+test("account routes are restricted to the intended methods and forward only the session cookie", async (t) => {
+  const old = process.env.USER_WEB_NEST_API_BASE_URL;
+  const token = "c".repeat(43);
+  const calls = [];
+  process.env.USER_WEB_NEST_API_BASE_URL = "https://api.example.test";
+  t.mock.method(globalThis, "fetch", async (url, init) => {
+    calls.push({ url: String(url), init });
+    return Response.json({ data: { actor_id: "00000000-0000-4000-8000-000000000001" } });
+  });
+  const ctx = (path) => ({ params: Promise.resolve({ path }) });
+  const request = (method, path, body) => new Request("https://site.example.test/api-local/" + path.join("/"), {
+    method,
+    headers: {
+      host: "site.example.test",
+      origin: "https://site.example.test",
+      cookie: `student_care_local_session=${token}`,
+      ...(body === undefined ? {} : { "content-type": "application/json" }),
+      authorization: "Bearer forged",
+      "x-tenant-id": "forged",
+    },
+    ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+  });
+  try {
+    for (const [method, path, body, call] of [
+      ["GET", ["identity", "account"], undefined, GET],
+      ["PATCH", ["identity", "account", "profile"], { display_name: "合成家长乙" }, PATCH],
+      ["PATCH", ["identity", "account", "username"], { current_password: "synthetic-password", new_username: "parent.beta" }, PATCH],
+      ["POST", ["identity", "account", "password"], { current_password: "synthetic-password", new_password: "Synthetic-New-Password-2026!" }, POST],
+      ["POST", ["identity", "account", "logout-all"], {}, POST],
+    ]) {
+      const response = await call(request(method, path, body), ctx(path));
+      assert.equal(response.status, 200);
+      if (["username", "password", "logout-all"].includes(path.at(-1)))
+        assert.match(response.headers.get("set-cookie") ?? "", /Max-Age=0/u);
+      const upstream = calls.at(-1);
+      assert.equal(new URL(upstream.url).pathname, "/" + path.join("/"));
+      const headers = new Headers(upstream.init.headers);
+      assert.equal(headers.get("authorization"), `Bearer ${token}`);
+      assert.equal(headers.has("x-tenant-id"), false);
+      assert.equal(headers.has("cookie"), false);
+      assert.equal(upstream.init.cache, "no-store");
+    }
+    for (const [method, path, call] of [
+      ["POST", ["identity", "account", "profile"], POST],
+      ["GET", ["identity", "account", "password"], GET],
+      ["DELETE", ["identity", "account"], GET],
+    ]) {
+      const response = await call(request(method, path), ctx(path));
+      assert.equal(response.status, 404);
+    }
+    assert.equal(calls.length, 5);
+  } finally {
+    if (old === undefined) delete process.env.USER_WEB_NEST_API_BASE_URL;
+    else process.env.USER_WEB_NEST_API_BASE_URL = old;
+  }
+});
+
 test("staff task and relationship review proxy allowlist accepts exact cookie-authenticated routes only", async () => {
   const previousApi = process.env.USER_WEB_NEST_API_BASE_URL;
   const previousPreview = process.env.USER_WEB_LOCAL_PREVIEW;

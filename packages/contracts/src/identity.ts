@@ -71,4 +71,21 @@ export interface MeResponseDto extends MeDto {
   readonly memberships: readonly MembershipDto[];
 }
 
+export interface AccountCenterDto extends MeDto {
+  readonly username: string;
+  readonly account_status: "ACTIVE" | "SUSPENDED" | "REVOKED";
+  readonly memberships: readonly MembershipDto[];
+}
+
+export interface ProfileChangeRequestDto {
+  readonly id: string;
+  readonly actor_id: string;
+  readonly display_name: string;
+  readonly tenant_id: string;
+  readonly status: "PENDING" | "APPROVED" | "REJECTED";
+  readonly version: number;
+  readonly created_at: string;
+  readonly reviewed_at?: string;
+}
+
 export type MembershipsResponseDto = readonly MembershipDto[];

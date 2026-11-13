@@ -1,1 +1,1 @@
-export { GET, POST, PUT } from "./handler.ts";
+export { GET, PATCH, POST, PUT } from "./handler.ts";

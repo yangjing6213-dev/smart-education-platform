@@ -6,7 +6,15 @@ import {
   type TrustedAuthResult,
   type TrustedMembership,
 } from "@student-care/auth";
-import type { ApiHttpRequest, InviteAuthOperations, InviteLoginResult } from "./api-tokens.js";
+import type {
+  AccountCenterRecord,
+  AccountUpdateResult,
+  ApiHttpRequest,
+  InviteAuthOperations,
+  InviteLoginResult,
+  ProfileChangeRecord,
+} from "./api-tokens.js";
+import { InMemoryInviteAccountStore, type InviteAccountStore } from "./invite-account.store.js";
 import { InMemoryInviteSessionStore, type InviteSessionStore } from "./invite-session-store.js";
 
 const PASSWORD_HASH_ALGORITHM = "scrypt";
@@ -76,6 +84,18 @@ function parsePasswordHash(value: string): PasswordHashParts | undefined {
 function normalizedUsername(value: string): string | undefined {
   const normalized = value.trim().toLowerCase();
   return USERNAME_PATTERN.test(normalized) ? normalized : undefined;
+}
+
+async function passwordMatches(password: string, passwordHash: string): Promise<boolean> {
+  const parts = parsePasswordHash(passwordHash);
+  if (parts === undefined) return false;
+  const candidate = await derivePasswordKey(password, parts.salt);
+  return timingSafeEqual(candidate, parts.derivedKey);
+}
+
+function cleanDisplayName(value: string): string | undefined {
+  const cleaned = value.trim();
+  return cleaned.length > 0 && cleaned.length <= 80 ? cleaned : undefined;
 }
 
 function hasOnlyKeys(value: Record<string, unknown>, keys: readonly string[]): boolean {
@@ -183,35 +203,40 @@ export async function createInvitePasswordHash(password: string): Promise<string
 }
 
 export class InviteAuthService implements InviteAuthOperations {
-  private readonly accounts: ReadonlyMap<string, InviteAccountConfiguration>;
   private readonly accountsByActorId: ReadonlyMap<string, InviteAccountConfiguration>;
+  private readonly accountStore: InviteAccountStore;
+  private initialization: Promise<void> | undefined;
 
   public constructor(
     accounts: readonly InviteAccountConfiguration[],
     private readonly now: () => Date = () => new Date(),
     private readonly sessions: InviteSessionStore = new InMemoryInviteSessionStore(),
+    accountStore?: InviteAccountStore,
   ) {
     const validated = validatedAccounts(accounts);
-    this.accounts = new Map(validated.map((account) => [account.username, account]));
     this.accountsByActorId = new Map(
       validated.map((account) => [account.identity.actor_id, account]),
     );
+    this.accountStore = accountStore ?? new InMemoryInviteAccountStore(this.sessions);
   }
 
   public async login(username: string, password: string): Promise<InviteLoginResult> {
-    if (this.accounts.size === 0) return { ok: false, reason: "AUTH_NOT_CONFIGURED" };
+    if (this.accountsByActorId.size === 0) return { ok: false, reason: "AUTH_NOT_CONFIGURED" };
+    await this.ensureInitialized();
 
     const normalized = normalizedUsername(username);
-    const account = normalized === undefined ? undefined : this.accounts.get(normalized);
-    if (account === undefined) {
+    const stored = normalized === undefined ? undefined : await this.accountStore.findByUsername(normalized);
+    const configured = stored ? this.accountsByActorId.get(stored.actor_id) : undefined;
+    if (
+      stored === undefined ||
+      configured === undefined ||
+      stored.account_status !== "ACTIVE"
+    ) {
       await derivePasswordKey(password, DUMMY_SALT);
       return { ok: false, reason: "INVALID_CREDENTIALS" };
     }
 
-    const parts = parsePasswordHash(account.password_hash);
-    if (parts === undefined) return { ok: false, reason: "INVALID_CREDENTIALS" };
-    const candidate = await derivePasswordKey(password, parts.salt);
-    if (!timingSafeEqual(candidate, parts.derivedKey)) {
+    if (!(await passwordMatches(password, stored.password_hash))) {
       return { ok: false, reason: "INVALID_CREDENTIALS" };
     }
 
@@ -221,7 +246,7 @@ export class InviteAuthService implements InviteAuthOperations {
     const accessToken = randomBytes(32).toString("base64url");
     const created = await this.sessions.create({
       tokenHash: this.hashToken(accessToken),
-      actorId: account.identity.actor_id,
+      actorId: stored.actor_id,
       expiresAt: new Date(expiresAt),
     });
     if (!created) return { ok: false, reason: "INVALID_CREDENTIALS" };
@@ -235,6 +260,7 @@ export class InviteAuthService implements InviteAuthOperations {
   public async getTrustedAuthResult(
     request: ApiHttpRequest,
   ): Promise<TrustedAuthResult | undefined> {
+    await this.ensureInitialized();
     const token = this.readBearerToken(request);
     if (token === undefined) return undefined;
     const tokenHash = this.hashToken(token);
@@ -247,7 +273,8 @@ export class InviteAuthService implements InviteAuthOperations {
       return undefined;
     }
     const account = this.accountsByActorId.get(session.actorId);
-    if (account === undefined) {
+    const stored = account === undefined ? undefined : await this.accountStore.findByActorId(session.actorId);
+    if (account === undefined || stored === undefined || stored.account_status !== "ACTIVE") {
       await this.sessions.delete(tokenHash);
       return undefined;
     }
@@ -259,7 +286,7 @@ export class InviteAuthService implements InviteAuthOperations {
         actor_id: account.identity.actor_id,
         expires_at: session.expiresAt.toISOString(),
       },
-      identity: account.identity,
+      identity: { actor_id: account.identity.actor_id, display_name: stored.display_name },
       memberships: account.memberships,
     };
   }
@@ -267,6 +294,122 @@ export class InviteAuthService implements InviteAuthOperations {
   public async logout(request: ApiHttpRequest): Promise<void> {
     const token = this.readBearerToken(request);
     if (token !== undefined) await this.sessions.delete(this.hashToken(token));
+  }
+
+  public async logoutAll(request: ApiHttpRequest): Promise<void> {
+    await this.ensureInitialized();
+    const token = this.readBearerToken(request);
+    if (token === undefined) return;
+    const session = await this.sessions.find(this.hashToken(token));
+    if (session === undefined || session.expiresAt <= this.now()) return;
+    await this.accountStore.logoutAll(session.actorId, this.now());
+  }
+
+  public async getAccount(actorId: string): Promise<AccountCenterRecord | undefined> {
+    await this.ensureInitialized();
+    if (!this.accountsByActorId.has(actorId)) return undefined;
+    const account = await this.accountStore.findByActorId(actorId);
+    if (account === undefined) return undefined;
+    return {
+      actor_id: account.actor_id,
+      username: account.username,
+      display_name: account.display_name,
+      account_status: account.account_status,
+    };
+  }
+
+  public async updateProfile(actorId: string, displayName: string): Promise<AccountUpdateResult> {
+    await this.ensureInitialized();
+    const cleaned = cleanDisplayName(displayName);
+    if (cleaned === undefined) return { ok: false, reason: "PROFILE_INVALID" };
+    if (!this.accountsByActorId.has(actorId)) return { ok: false, reason: "ACCOUNT_NOT_FOUND" };
+    return this.accountStore.updateProfile(actorId, cleaned);
+  }
+
+  public async changeUsername(
+    actorId: string,
+    currentPassword: string,
+    newUsername: string,
+  ): Promise<AccountUpdateResult> {
+    await this.ensureInitialized();
+    const normalized = normalizedUsername(newUsername);
+    if (normalized === undefined) return { ok: false, reason: "USERNAME_INVALID" };
+    if (!this.accountsByActorId.has(actorId)) return { ok: false, reason: "ACCOUNT_NOT_FOUND" };
+    const verified = await this.verifyCurrentPassword(actorId, currentPassword);
+    if (!verified.ok) return verified;
+    return this.accountStore.updateUsername(actorId, normalized, normalized, this.now());
+  }
+
+  public async changePassword(
+    actorId: string,
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<AccountUpdateResult> {
+    await this.ensureInitialized();
+    if (newPassword.length < 12 || newPassword.length > 128) {
+      return { ok: false, reason: "PASSWORD_INVALID" };
+    }
+    if (!this.accountsByActorId.has(actorId)) return { ok: false, reason: "ACCOUNT_NOT_FOUND" };
+    const verified = await this.verifyCurrentPassword(actorId, currentPassword);
+    if (!verified.ok) return verified;
+    const passwordHash = await createInvitePasswordHash(newPassword);
+    return this.accountStore.updatePassword(actorId, passwordHash, this.now());
+  }
+
+  public async createProfileChangeRequest(
+    actorId: string,
+    tenantId: string,
+    displayName: string,
+  ): Promise<{ readonly result: AccountUpdateResult; readonly request?: ProfileChangeRecord }> {
+    await this.ensureInitialized();
+    const cleaned = cleanDisplayName(displayName);
+    if (cleaned === undefined) return { result: { ok: false, reason: "PROFILE_INVALID" } };
+    return this.accountStore.createProfileChangeRequest(actorId, tenantId, cleaned, this.now());
+  }
+
+  public async listProfileChangeRequests(tenantId: string): Promise<readonly ProfileChangeRecord[]> {
+    await this.ensureInitialized();
+    return this.accountStore.listProfileChangeRequests(tenantId);
+  }
+
+  public async reviewProfileChangeRequest(input: {
+    readonly requestId: string;
+    readonly tenantId: string;
+    readonly reviewerId: string;
+    readonly expectedVersion: number;
+    readonly approved: boolean;
+  }): Promise<AccountUpdateResult> {
+    await this.ensureInitialized();
+    return this.accountStore.reviewProfileChangeRequest({ ...input, now: this.now() });
+  }
+
+  private async verifyCurrentPassword(
+    actorId: string,
+    currentPassword: string,
+  ): Promise<AccountUpdateResult> {
+    const now = this.now();
+    if ((await this.accountStore.countRecentReauthFailures(actorId, new Date(now.getTime() - 15 * 60_000))) >= 5) {
+      return { ok: false, reason: "RATE_LIMITED" };
+    }
+    const account = await this.accountStore.findByActorId(actorId);
+    if (account === undefined || account.account_status !== "ACTIVE") {
+      return { ok: false, reason: "ACCOUNT_NOT_FOUND" };
+    }
+    if (!(await passwordMatches(currentPassword, account.password_hash))) {
+      await this.accountStore.recordFailedReauth(actorId, now);
+      return { ok: false, reason: "CURRENT_PASSWORD_INVALID" };
+    }
+    return { ok: true };
+  }
+
+  private async ensureInitialized(): Promise<void> {
+    if (!this.initialization) {
+      this.initialization = this.accountStore.initialize([...this.accountsByActorId.values()]).catch((error: unknown) => {
+        this.initialization = undefined;
+        throw error;
+      });
+    }
+    await this.initialization;
   }
 
   private readBearerToken(request: ApiHttpRequest): string | undefined {
