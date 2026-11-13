@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { ParentInviteConsentClient } from "./parent-consent.js";
 
 const account = {
   actor_id: "00000000-0000-4000-8000-000000000001",
@@ -16,6 +17,138 @@ const applicationId = "00000000-0000-4000-8000-000000000101";
 const relationshipId = "00000000-0000-4000-8000-000000000111";
 const consentId = "00000000-0000-4000-8000-000000000102";
 const privacyId = "00000000-0000-4000-8000-000000000103";
+
+function invitedFixture(
+  options: { count?: number; policyStatus?: number; foreignRelationship?: boolean } = {},
+) {
+  const secondId = "00000000-0000-4000-8000-0000000000c9";
+  const students = [studentId, secondId]
+    .slice(0, options.count ?? 1)
+    .map((id, index) => ({ id, alias: id, label: `合成学生 ${index + 1}` }));
+  let application: Record<string, unknown> | undefined;
+  let approved = false;
+  const calls: string[] = [];
+  const client = new ParentInviteConsentClient({
+    baseUrl: "https://care.example.invalid",
+    fetcher: async (input, init) => {
+      const path = new URL(String(input)).pathname;
+      calls.push(`${init?.method ?? "GET"} ${path}`);
+      const reply = (data: unknown) => Response.json({ data });
+      if (path === "/api-local/me") return reply(account);
+      if (path === "/api-local/parent/student-options") return reply(students);
+      if (path === "/api-local/consent-policies")
+        return Response.json(
+          { error: { code: "NOT_FOUND" } },
+          { status: options.policyStatus ?? 404 },
+        );
+      if (path === "/api-local/guardian-binding/applications") {
+        if (init?.method === "POST") {
+          const body = JSON.parse(String(init.body)) as { student_candidate_ref: string };
+          assert.ok(students.some((student) => student.id === body.student_candidate_ref));
+          application = {
+            id: applicationId,
+            student_candidate_ref: body.student_candidate_ref,
+            relationship: "GUARDIAN",
+            status: "PENDING",
+            version: 1,
+            submitted_at: "2026-11-13T00:00:00.000Z",
+            reviewed_at: null,
+          };
+          return Response.json({ data: application, request_id: consentId }, { status: 201 });
+        }
+        return reply(
+          application ? [{ ...application, status: approved ? "APPROVED" : "PENDING" }] : [],
+        );
+      }
+      if (path === "/api-local/guardian-relationships")
+        return reply(
+          approved && application
+            ? [
+                {
+                  id: relationshipId,
+                  student_id: options.foreignRelationship
+                    ? secondId
+                    : application.student_candidate_ref,
+                  relationship: "GUARDIAN",
+                  status: "ACTIVE",
+                  source_application_id: applicationId,
+                  version: 1,
+                  approved_at: "2026-11-13T00:01:00.000Z",
+                },
+              ]
+            : [],
+        );
+      assert.fail(`Unexpected endpoint ${path}`);
+    },
+  });
+  return {
+    client,
+    calls,
+    students,
+    approve: () => {
+      approved = true;
+    },
+  };
+}
+
+test("UUID student options remain usable when the separate consent module is not installed", async () => {
+  const { client, calls, approve } = invitedFixture();
+  await client.connect();
+  assert.equal(client.snapshot.status, "READY");
+  await client.applyBinding();
+  assert.equal(client.snapshot.bindingStatus, "PENDING");
+  approve();
+  await client.refresh();
+  assert.equal(client.snapshot.bindingStatus, "APPROVED");
+  assert.equal(client.snapshot.relationship?.studentId, studentId);
+  await client.submitPrivacyRequest("ACCESS");
+  assert.ok(
+    calls.every((call) => !call.includes("/privacy-requests") && !call.endsWith("/consents")),
+  );
+});
+
+test("multiple invited students require selection and keep independent binding state", async () => {
+  const { client, calls, students, approve } = invitedFixture({ count: 2 });
+  await client.connect();
+  assert.equal(client.snapshot.status, "READY");
+  await client.applyBinding();
+  assert.equal(calls.filter((call) => call.startsWith("POST")).length, 0);
+  const selectable = client as unknown as { selectStudent(id: string): Promise<void> };
+  await selectable.selectStudent(students[0]!.id);
+  await client.applyBinding();
+  assert.equal(client.snapshot.bindingStatus, "PENDING");
+  approve();
+  await client.refresh();
+  assert.equal(client.snapshot.bindingStatus, "APPROVED");
+  await selectable.selectStudent(students[1]!.id);
+  assert.equal(client.snapshot.bindingStatus, "NONE");
+  assert.equal(client.snapshot.relationship, null);
+  await selectable.selectStudent("00000000-0000-4000-8000-000000000099");
+  await client.applyBinding();
+  assert.equal(
+    calls.filter((call) => call.startsWith("POST")).length,
+    1,
+    "an invalid selection must not submit the previously selected child",
+  );
+});
+
+for (const policyStatus of [401, 403, 500])
+  test(`optional governance HTTP ${policyStatus} is not silently ignored`, async () => {
+    const { client, calls } = invitedFixture({ policyStatus });
+    await client.connect();
+    assert.equal(client.snapshot.status, "ERROR");
+    await client.applyBinding();
+    assert.ok(calls.every((call) => !call.startsWith("POST")));
+  });
+
+test("a relationship belonging to another student is rejected", async () => {
+  const { client, approve } = invitedFixture({ foreignRelationship: true });
+  await client.connect();
+  await client.applyBinding();
+  approve();
+  await client.refresh();
+  assert.equal(client.snapshot.status, "ERROR");
+});
 
 test("invited parent uses the same-origin cookie client for binding, consent and privacy", async () => {
   const module = (await import("./parent-consent.js")) as unknown as Record<string, unknown>;

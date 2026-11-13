@@ -50,6 +50,12 @@ export interface ParentRelationshipView {
   readonly approvedAt: string;
 }
 
+export interface ParentStudentCandidateView {
+  readonly id: string;
+  readonly alias: string;
+  readonly label: string;
+}
+
 export interface ParentConsentSnapshot {
   readonly status: "IDLE" | "CONNECTING" | "READY" | "BUSY" | "ERROR";
   readonly bindingStatus: ParentBindingStatus;
@@ -57,6 +63,9 @@ export interface ParentConsentSnapshot {
   readonly consents: readonly ParentConsentView[];
   readonly privacyRequests: readonly ParentPrivacyRequestView[];
   readonly relationship?: ParentRelationshipView | null;
+  readonly students?: readonly ParentStudentCandidateView[];
+  readonly selectedStudentId?: string | null;
+  readonly governanceAvailable?: boolean;
   readonly message: string;
 }
 
@@ -98,7 +107,10 @@ const isRetentionStatus = (value: unknown): value is ParentRetentionStatus =>
   value === "SIMULATED_EXPIRED";
 
 class LocalApiError extends Error {
-  constructor(readonly code: string) {
+  constructor(
+    readonly code: string,
+    readonly httpStatus?: number,
+  ) {
     super(code);
   }
 }
@@ -153,7 +165,11 @@ function projectPolicies(value: unknown): ConsentPolicyView[] {
   return rows as ConsentPolicyView[];
 }
 
-function projectBindings(value: unknown): {
+function projectBindings(
+  value: unknown,
+  selectedAlias = PARENT_STUDENT_ALIAS,
+  allowedAliases: readonly string[] = SYNTHETIC_STUDENT_ALIASES,
+): {
   status: ParentBindingStatus;
   id: string | null;
 } {
@@ -165,14 +181,12 @@ function projectBindings(value: unknown): {
       UUID.test(row.id) &&
       row.relationship === "GUARDIAN" &&
       typeof row.studentAlias === "string" &&
-      SYNTHETIC_STUDENT_ALIASES.includes(
-        row.studentAlias as (typeof SYNTHETIC_STUDENT_ALIASES)[number],
-      ) &&
+      allowedAliases.includes(row.studentAlias) &&
       ["PENDING", "APPROVED", "REJECTED", "WITHDRAWN", "RELEASED"].includes(String(row.status)),
   );
   if (!validRows) throw new LocalApiError("INVALID_BINDINGS");
   const rows = (value as Record<string, unknown>[]).filter(
-    (row) => row.studentAlias === PARENT_STUDENT_ALIAS,
+    (row) => row.studentAlias === selectedAlias,
   );
   const latest = rows.reduce<Record<string, unknown> | undefined>((selected, row) => {
     if (!selected) return row;
@@ -248,6 +262,43 @@ function projectStudentCandidates(value: unknown): { id: string; alias: string }
   });
   if (rows.some((row) => row === null)) throw new LocalApiError("INVALID_STUDENT_OPTIONS");
   return rows as { id: string; alias: string }[];
+}
+
+function projectInviteStudentCandidates(value: unknown): ParentStudentCandidateView[] {
+  if (!Array.isArray(value) || value.length > 100)
+    throw new LocalApiError("INVALID_STUDENT_OPTIONS");
+  const rows = value.map((row): ParentStudentCandidateView => {
+    if (
+      !object(row) ||
+      typeof row.id !== "string" ||
+      !UUID.test(row.id) ||
+      typeof row.alias !== "string" ||
+      (row.alias !== row.id &&
+        !SYNTHETIC_STUDENT_ALIASES.includes(
+          row.alias as (typeof SYNTHETIC_STUDENT_ALIASES)[number],
+        )) ||
+      (row.label !== undefined &&
+        (typeof row.label !== "string" || !row.label.trim() || row.label.length > 80)) ||
+      (row.alias === row.id && row.label === undefined)
+    )
+      throw new LocalApiError("INVALID_STUDENT_OPTIONS");
+    return {
+      id: row.id,
+      alias: row.alias,
+      label:
+        typeof row.label === "string"
+          ? row.label
+          : row.alias === "student-alpha"
+            ? "示例学生甲"
+            : "示例学生乙",
+    };
+  });
+  if (
+    new Set(rows.map((row) => row.id)).size !== rows.length ||
+    new Set(rows.map((row) => row.alias)).size !== rows.length
+  )
+    throw new LocalApiError("INVALID_STUDENT_OPTIONS");
+  return rows;
 }
 
 function projectBindingApplicationReceipt(
@@ -768,6 +819,8 @@ export class ParentInviteConsentClient {
   disconnect(): void {
     this.generation += 1;
     this.bindingId = null;
+    this.candidates = [];
+    this.selectedStudentId = null;
     this.value = {
       status: "IDLE",
       bindingStatus: "NONE",
@@ -818,9 +871,9 @@ export class ParentInviteConsentClient {
       !["NONE", "REJECTED", "ENDED"].includes(this.value.bindingStatus)
     )
       return;
-    const candidate = this.candidates.find((row) => row.alias === PARENT_STUDENT_ALIAS);
+    const candidate = this.candidates.find((row) => row.id === this.selectedStudentId);
     if (!candidate) {
-      this.value = { ...this.value, message: "当前账号没有可申请的合成学生资料。" };
+      this.value = { ...this.value, message: "请先选择当前账号可申请的学生。" };
       return;
     }
     const generation = this.generation;
@@ -836,7 +889,7 @@ export class ParentInviteConsentClient {
         }),
       });
       submittedId = projectBindingApplicationReceipt(receipt, candidate.id);
-      await this.load(generation, "关系申请已提交；审核结果来自当前受邀账号的本机合成流程。");
+      await this.load(generation, "关系申请已提交，请等待员工审核。");
       if (this.bindingId !== submittedId || this.value.bindingStatus !== "PENDING")
         throw new LocalApiError("BINDING_NOT_READ_BACK");
     } catch (error) {
@@ -928,6 +981,7 @@ export class ParentInviteConsentClient {
       this.value.status !== "READY" ||
       this.value.bindingStatus !== "APPROVED" ||
       !this.bindingId ||
+      !this.value.governanceAvailable ||
       !PRIVACY_REQUEST_TYPES.includes(type) ||
       this.value.privacyRequests.some(
         (row) =>
@@ -955,7 +1009,23 @@ export class ParentInviteConsentClient {
     );
   }
 
-  private candidates: { id: string; alias: string }[] = [];
+  private candidates: ParentStudentCandidateView[] = [];
+  private selectedStudentId: string | null = null;
+
+  async selectStudent(id: string): Promise<void> {
+    if (this.value.status !== "READY") return;
+    this.selectedStudentId = this.candidates.some((row) => row.id === id) ? id : null;
+    this.bindingId = null;
+    this.value = {
+      ...this.value,
+      selectedStudentId: this.selectedStudentId,
+      bindingStatus: "NONE",
+      relationship: null,
+      consents: [],
+      privacyRequests: [],
+    };
+    await this.refresh();
+  }
 
   private hasParentAccess(value: unknown): boolean {
     if (!object(value) || !Array.isArray(value.memberships)) return false;
@@ -981,10 +1051,19 @@ export class ParentInviteConsentClient {
     const [bindingValue, studentValue, policyValue, relationshipValue] = await Promise.all([
       this.request("/api-local/guardian-binding/applications"),
       this.request("/api-local/parent/student-options"),
-      this.request("/api-local/consent-policies"),
+      this.request("/api-local/consent-policies").catch((error: unknown) => {
+        if (error instanceof LocalApiError && error.httpStatus === 404) return null;
+        throw error;
+      }),
       this.request("/api-local/guardian-relationships"),
     ]);
-    const candidates = projectStudentCandidates(this.dataOf(studentValue));
+    const candidates = projectInviteStudentCandidates(this.dataOf(studentValue));
+    const selectedStudentId = candidates.some((row) => row.id === this.selectedStudentId)
+      ? this.selectedStudentId
+      : candidates.length === 1
+        ? candidates[0]!.id
+        : null;
+    const parentCandidate = candidates.find((row) => row.id === selectedStudentId);
     const rows = this.dataOf(bindingValue);
     const normalizedBindings = Array.isArray(rows)
       ? rows.map((row) => {
@@ -993,9 +1072,12 @@ export class ParentInviteConsentClient {
           return { ...row, studentAlias: candidate?.alias ?? "" };
         })
       : rows;
-    const application = projectBindings(normalizedBindings);
+    const application = projectBindings(
+      normalizedBindings,
+      parentCandidate?.alias ?? "",
+      candidates.map((row) => row.alias),
+    );
     const relationships = projectRelationships(this.dataOf(relationshipValue));
-    const parentCandidate = candidates.find((row) => row.alias === PARENT_STUDENT_ALIAS);
     const matchingRelationships = relationships.filter(
       (row) => row.sourceApplicationId === application.id,
     );
@@ -1007,9 +1089,10 @@ export class ParentInviteConsentClient {
       throw new LocalApiError("RELATIONSHIP_NOT_READ_BACK");
     const bindingStatus = relationship?.status === "RELEASED" ? "ENDED" : application.status;
     const activeBindingId = bindingStatus === "APPROVED" ? application.id : null;
-    const policies = projectPolicies(this.dataOf(policyValue));
+    const governanceAvailable = policyValue !== null;
+    const policies = governanceAvailable ? projectPolicies(this.dataOf(policyValue)) : [];
     const [consentValue, privacyRequestValue] =
-      bindingStatus === "APPROVED"
+      bindingStatus === "APPROVED" && governanceAvailable
         ? await Promise.all([
             this.request("/api-local/consents"),
             this.request("/api-local/privacy-requests"),
@@ -1021,11 +1104,15 @@ export class ParentInviteConsentClient {
     const privacyRequests = projectPrivacyRequests(this.dataOf(privacyRequestValue));
     if (generation !== this.generation) return;
     this.candidates = candidates;
+    this.selectedStudentId = selectedStudentId;
     this.bindingId = application.id;
     this.value = {
       status: "READY",
       bindingStatus,
       policies,
+      students: candidates,
+      selectedStudentId,
+      governanceAvailable,
       consents,
       privacyRequests,
       relationship,
@@ -1084,7 +1171,7 @@ export class ParentInviteConsentClient {
     } catch {
       throw new LocalApiError("INVALID_RESPONSE");
     }
-    if (!response.ok) throw new LocalApiError(parseApiError(value));
+    if (!response.ok) throw new LocalApiError(parseApiError(value), response.status);
     return value;
   }
 
