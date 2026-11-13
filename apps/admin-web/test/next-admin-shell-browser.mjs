@@ -1,9 +1,2598 @@
-Y™Áäx-ÆÈ‹j◊ù¢Îi∫⁄+äßj[hëÈ‹¢ÈÌ„Ω7Ÿ:-jZ.∂õ≠ñ)ﬁ≥RÚ¢v∆ˆ&¬&˜'E6ñvÊ¬¬6ˆÁ6ˆ∆R¬Fˆ7V÷VÁB¬fWF6Ç¬vWD6ˆ◊WFVE7Gñ∆R¬ÖD‘ƒV∆V÷VÁB¬&ˆ6W72¬U$¬¬vñÊF˜r¢†¶ñ◊˜'B76W'Bg&ˆ“&ÊˆFS¶76W'B˜7G&ñ7B#∞¶ñ◊˜'B≤WÜó7G57ñÊ2“g&ˆ“&ÊˆFS¶g2#∞¶ñ◊˜'B≤66W72¬÷∂Fó"¬&VDfñ∆R¬w&óFTfñ∆R“g&ˆ“&ÊˆFS¶g2˜&ˆ÷ó6W2#∞¶ñ◊˜'B≤7v‚“g&ˆ“&ÊˆFS¶6Üñ∆E˜&ˆ6W72#∞¶ñ◊˜'B≤7&VFU6W'fW"“g&ˆ“&ÊˆFS¶ÊWB#∞¶ñ◊˜'B≤&W6ˆ«fR“g&ˆ“&ÊˆFSßFÇ#∞¶ñ◊˜'B≤fñ∆UU$≈FıFÇ“g&ˆ“&ÊˆFSßW&¬#∞¶ñ◊˜'B≤6WEFñ÷V˜WB2FV∆í“g&ˆ“&ÊˆFSßFñ÷W'2˜&ˆ÷ó6W2#∞¶ñ◊˜'BFW7Bg&ˆ“&ÊˆFSßFW7B#∞¶ñ◊˜'B≤6á&ˆ÷óV““g&ˆ“'∆ów&ñváB#∞†¶6ˆÁ7B6∂vU&ˆ˜B“&W6ˆ«fRÜfñ∆UU$≈FıFÇÜÊWrU$¬Ç"‚‚"¬ñ◊˜'BÊ÷WFÁW&¬ííì∞¶6ˆÁ7B&˜WFW5FÇ“&W6ˆ«fRá6∂vU&ˆ˜B¬'7&2ˆˆF÷ñ‚◊&˜WFW2ÁG2"ì∞¶6ˆÁ7B6F6Ñ∆≈vUFÇ“&W6ˆ«fRá6∂vU&ˆ˜B¬'7&2ˆˆF÷ñ‚ıµ≤‚‚Á6Vv÷VÁG5’“˜vRÁvRÁG7Ç"ì∞¶6ˆÁ7BWáV7FVE&˜WFW2“∞¢≤"ˆF÷ñ‚ˆñÁ7FóGWFñˆ‚"¬.iÀÆiËNjh.äxÇ%“¿¢≤"ˆF÷ñ‚ˆÜˆ÷R÷6ˆÁFVÁB"¬.öinö^Xh^ZÎí"¬.öinö^Xh^ZÎûzÍyb%“¿¢≤"ˆF÷ñ‚˜V&∆ñ2◊FV6ÜW'2"¬.iYû[àéK∏æ{∏“"¬.iYû[àéK∏æ{∏ﬁzÍyb%“¿¢≤"ˆF÷ñ‚ˆ÷V«2"¬.öIö9Ú"¬.öIö9˛Xh^ZÎûzÍyb%“¿¢≤"ˆF÷ñ‚ˆfVW2"¬.ãKûyJézÍyb%“¿¢≤"ˆF÷ñ‚˜7GVFVÁB◊G&Á6fW'2"¬.Z⁄nyI˛ã⁄Œx˙ﬁZÍjÇ%“¿¢≤"ˆF÷ñ‚ˆ7FófóFñW2"¬.kKæX™Ç%“¿¢≤"ˆF÷ñ‚ˆwVñFW2"¬.Xh^ò:éh»~XŸr%“¿¢≤"ˆF÷ñ‚˜&W6˜W&6W2"¬.ãXNk©"¬.ãXNk©zÍyb%“¿¢≤"ˆF÷ñ‚˜7FFó7Fñ72"¬.ã˘â
-^{π˛äÍ%“¿¢≤"ˆF÷ñ‚ˆ∆V&ÊñÊr◊6fWGí"¬.Z⁄nKöZËûXZék~h≤%“¿¢≤"ˆF÷ñ‚˜7Ffb"¬.Yé[z^ãJnX˚r%“¿¢≤"ˆF÷ñ‚˜7Ffb÷7&VFVÁFñ«2"¬.Yé[z^ãXNjŒä¯xZr%“¿¢≤"ˆF÷ñ‚˜7Ffb÷˜W&FñˆÁ2"¬.Yé[z^iJ˛h»KàÓhπæàÇ%“¿¢≤"ˆF÷ñ‚˜7Ffb◊F6∑2"¬.KªæX™XànkKÓKàÓj8i˙R%“¿¢≤"ˆF÷ñ‚˜7Ffb÷Fñ«í◊&WfñWr"¬.Yé[z^[z^KŸŒiz^h™R%“¿¢≤"ˆF÷ñ‚ˆ÷ˆÁFÜ«í÷fVVF&6≤◊&WfñWr"¬.x˙ﬁ{™~i»é[™nhæ{π>ZÍjÇ%“¿¢≤"ˆF÷ñ‚ˆ6Üñ∆B÷÷ˆÁFÜ«í◊&WfñWr"¬.Z⁄ûZŸi»éh™^ZÍjÇ%“¿¢≤"ˆF÷ñ‚ˆfñ∆W2"¬.ih~Kªb"¬.ih~KªnKàÓ[…^yJézÍyb%“¿¢≤"ˆF÷ñ‚˜V&∆ó6ÜñÊr"¬.X˘[à>KàÓKàæiÎb"¬.X˘[à>KàÓKàæiÎnzÍyb%“¿¢≤"ˆF÷ñ‚ˆVFóB÷∆ˆw2"¬.ZÍäÍiz^[˘r%“¿¢≤"ˆF÷ñ‚˜&óf7í◊&WVW7G2"¬.ô©zxyK>ä˚~ZÍjÇ%“¿¢≤"ˆF÷ñ‚ˆ&ñÊFñÊr◊&WfñWr"¬.ZÎnô[˛X[>{;æZÍjÇ%“¿¢≤"ˆF÷ñ‚ˆ6ˆÁ6VÁB◊&WfñWr"¬.i[h⁄ÓhËéiÿ>ZHﬁjÇ"¬.i[h⁄ÓhËéiÿ>KàÓi…˛ôôZHﬁjÇ%“¿¢≤"ˆF÷ñ‚ˆ∆VfR◊&WfñWr"¬.ä˚~X~ZÍjÇ%“¿¢≤"ˆF÷ñ‚ˆ6&R◊&V6˜&B◊&WfñWr"¬.hâô[˛iz^h™^ZÍjÇ"¬.hâô[˛äÎ[Ÿ^ZÍjéKàÓX˘[à2%“¿¢≤"ˆF÷ñ‚ˆÊ˜Fñ6R◊&WfñWr"¬.ò	Æy˙^ZÍjÇ"¬.ò	Æy˙^ZÍjéKàÓX˘[à2%“¿¢≤"ˆF÷ñ‚˜7W«í◊&WVW7B◊&WfñWr"¬.xöûãXNyK>ä˚~ZÍjÇ%“¿¢≤"ˆF÷ñ‚˜ñ6∑W◊&WfñWr"¬.hÍ^ò[».[ãéZHNyb%“¿¢≤"ˆF÷ñ‚ˆÜV«FÇ÷ñÊ6ñFVÁB◊&WfñWr"¬.X^[´~[».[ãéZÍjÇ"¬.X^[´~[».[ãéZÍjéKàÓX˘[à2%“¿¢≤"ˆF÷ñ‚˜∆Ff˜&“÷˜W&FñˆÁ2"¬.[õ>X˚ã˘â
-R%“¿¢≤"ˆF÷ñ‚ˆ66˜VÁB"¬.hây®NãJnX˚r%“¿•”∞¶6ˆÁ7B'&˜w6W%&˜WFT˜&FW"“∞¢WáV7FVE&˜WFW2ÊfñÊBÇÖ∂á&Ve“í”‚á&Vb””“"ˆF÷ñ‚ˆ÷ˆÁFÜ«í÷fVVF&6≤◊&WfñWr"í¿¢‚‚ÊWáV7FVE&˜WFW2Êfñ«FW"ÇÖ∂á&Ve“í”‚á&Vb”“"ˆF÷ñ‚ˆ÷ˆÁFÜ«í÷fVVF&6≤◊&WfñWr"í¿•”∞†ßFW7BÇ$ÊWáBF÷ñ‚ÊfñvFñˆ‚&W6W'fW2WÜó7FñÊrFW7FñÊFñˆÁ2ÊBFG2÷ñw&FVB7Ffbv˜&∂f∆˜w2"¬7ñÊ2Çí”‚∞¢76W'BÊˆ≤ÜWÜó7G57ñÊ2á&˜WFW5FÇí¬$ÊWáBF÷ñ‚&˜WFR&Vvó7G'í◊W7B&R&W6VÁB‚"ì∞¢6ˆÁ7B6˜W&6R“vóB&VDfñ∆Rá&˜WFW5FÇ¬'WFcÇ"ì∞¢6ˆÁ7B7GV≈&˜WFW2“∞¢‚‚Á6˜W&6RÊ÷F6Ñ∆¬Çı«µ«2¶á&Vc•«2¢"Öµ‚%“≤í%«2¢≈«2¶∆&V√•«2¢"Öµ‚%“≤í%«2•«“ˆwRí¿¢“Ê÷ÇÖ≤¬á&Vb¬∆&V≈“í”‚∂á&Vb¬∆&V≈“ì∞†¢76W'BÊFVWWV¬Ä¢7GV≈&˜WFW2¿¢WáV7FVE&˜WFW2Ê÷ÇÖ∂á&Vb¬∆&V≈“í”‚∂á&Vb¬∆&V≈“í¿¢ì∞ß“ì∞†¶7ñÊ2gVÊ7Fñˆ‚&W6W'fU˜'BÇí∞¢6ˆÁ7B6W'fW"“7&VFU6W'fW"Çì∞¢vóBÊWr&ˆ÷ó6RÇá&W6ˆ«fU&ˆ÷ó6R¬&V¶V7E&ˆ÷ó6Rí”‚∞¢6W'fW"ÊˆÊ6RÇ&W'&˜""¬&V¶V7E&ˆ÷ó6Rì∞¢6W'fW"Ê∆ó7FV‚É¬##r„„„"¬&W6ˆ«fU&ˆ÷ó6Rì∞¢“ì∞¢6ˆÁ7BFG&W72“6W'fW"ÊFG&W72Çì∞¢76W'BÊˆ≤ÜFG&W72bbGóVˆbFG&W72”“'7G&ñÊr"ì∞¢6ˆÁ7B˜'B“FG&W72Á˜'C∞¢vóBÊWr&ˆ÷ó6RÇá&W6ˆ«fU&ˆ÷ó6R¬&V¶V7E&ˆ÷ó6Rí”‚∞¢6W'fW"Ê6∆˜6RÇÜW'&˜"í”‚ÜW'&˜"Ú&V¶V7E&ˆ÷ó6RÜW'&˜"í¢&W6ˆ«fU&ˆ÷ó6RÇííì∞¢“ì∞¢&WGW&‚˜'C∞ß–†¶7ñÊ2gVÊ7Fñˆ‚vóDf˜$áGGáW&¬¬6Üñ∆B¬&VD˜WGWBí∞¢f˜"Ü∆WBGFV◊B“≤GFV◊B¬#≤GFV◊B≥“í∞¢ñbÜ6Üñ∆BÊWÜóD6ˆFR”“ÁV∆¬íFá&˜rÊWrW'&˜"Ç$ÊWáBzÍynz∫˛h˘XòﬁòX{Æ˚…•∆‚"≤&VD˜WGWBÇíì∞¢G'í∞¢&WGW&‚vóBfWF6ÇáW&¬¬≤6ñvÊ√¢&˜'E6ñvÊ¬ÁFñ÷V˜WBÉ#Sí“ì∞¢“6F6Ç∞¢vóBFV∆íÉ#ì∞¢–¢–¢Fá&˜rÊWrW'&˜"Ç$ÊWáBzÍynz∫˛i Æà;ﬁY
-˛X™é˚…•∆‚"≤&VD˜WGWBÇíì∞ß–†¶7ñÊ2gVÊ7Fñˆ‚7F˜6Üñ∆BÜ6Üñ∆Bí∞¢ñbÇ6Üñ∆B«¬6Üñ∆BÊWÜóD6ˆFR”“ÁV∆¬í&WGW&„∞¢6Üñ∆BÊ∂ñ∆¬Çì∞¢vóB&ˆ÷ó6RÁ&6RÖ∞¢ÊWr&ˆ÷ó6RÇá&W6ˆ«fU&ˆ÷ó6Rí”‚6Üñ∆BÊˆÊ6RÇ&WÜóB"¬&W6ˆ«fU&ˆ÷ó6Ríí¿¢FV∆íÉCí¿¢“ì∞¢ñbÜ6Üñ∆BÊWÜóD6ˆFR””“ÁV∆¬í∞¢6Üñ∆BÊ∂ñ∆¬Ç%4ît¥îƒ¬"ì∞¢vóB&ˆ÷ó6RÁ&6RÖ∞¢ÊWr&ˆ÷ó6RÇá&W6ˆ«fU&ˆ÷ó6Rí”‚6Üñ∆BÊˆÊ6RÇ&WÜóB"¬&W6ˆ«fU&ˆ÷ó6Ríí¿¢FV∆íÉ#í¿¢“ì∞¢–ß–†¶7ñÊ2gVÊ7Fñˆ‚∆VÊ6ÑF÷ñ‰'&˜w6W"áBí∞¢∆WBÊWáE&ˆ6W73∞¢∆WB'&˜w6W#∞¢∆WBÊWáD˜WGWB“"#∞¢BÊgFW"Ü7ñÊ2Çí”‚∞¢vóB'&˜w6W#ÚÊ6∆˜6RÇì∞¢vóB7F˜6Üñ∆BÜÊWáE&ˆ6W72ì∞¢“ì∞†¢6ˆÁ7BÊWáD6∆í“&W6ˆ«fRá6∂vU&ˆ˜B¬&ÊˆFUˆ÷ˆGV∆W2ˆÊWáBˆFó7Bˆ&ñ‚ˆÊWáB"ì∞¢vóB66W72ÜÊWáD6∆íì∞¢6ˆÁ7B˜'B“vóB&W6W'fU˜'BÇì∞¢6ˆÁ7B&6UW&¬“áGG¢ÚÛ#r„„„¢G∑˜'G÷∞¢6ˆÁ7BÊWáD÷ˆFR“&ˆ6W72ÊVÁbÂD4≥#ÙD‘îÂÙ‰UÖEÙ‘ÙDR””“'&ˆGV7Fñˆ‚"Ú'7F'B"¢&FWb#∞¢ñbÜÊWáD÷ˆFR””“'7F'B"í∞¢76W'BÊˆ≤Ä¢&ˆ6W72ÊVÁbÂD4≥#ÙD‘îÂÙ‰UÖEÙDï5EÙDï"¿¢.yI˛K™~jä[»˛[¯^öæiãÓ[»˛h»~ZÈ¢D4≥#ÙD‘îÂÙ‰UÖEÙDï5EÙDï.8""¿¢ì∞¢–¢6ˆÁ7BÊWáD&wV÷VÁG2“∞¢ÊWáD6∆í¿¢ÊWáD÷ˆFR¿¢‚‚‚ÜÊWáD÷ˆFR””“&FWb"Ú≤"“◊vV'6≤%“¢µ“í¿¢"“÷Ü˜7FÊ÷R"¿¢##r„„„"¿¢"“◊˜'B"¿¢7G&ñÊrá˜'Bí¿¢”∞¢ÊWáE&ˆ6W72“7v‚á&ˆ6W72ÊWÜV5FÇ¬ÊWáD&wV÷VÁG2¬∞¢7vC¢6∂vU&ˆ˜B¿¢VÁc¢∞¢‚‚Á&ˆ6W72ÊVÁb¿¢‰UÖEıDTƒT‘UE%ïÙDï4$ƒTC¢#"¿¢D4≥#Ù‰UÖEÙD‘îÂı4U%dî4Uıı%C¢#C3í"¿¢4ì¢#"¿¢‚‚‚ÜÊWáD÷ˆFR””“'7F'B ¢Ú≤D4≥#Ù‰UÖEÙDï5EÙDï#¢&ˆ6W72ÊVÁbÂD4≥#ÙD‘îÂÙ‰UÖEÙDï5EÙDï"–¢¢∑“í¿¢“¿¢7FFñÛ¢≤&ñvÊ˜&R"¬'óR"¬'óR%“¿¢“ì∞¢ÊWáE&ˆ6W72Á7FF˜WBÊˆ‚Ç&FF"¬Ü6áVÊ≤í”‚ÜÊWáD˜WGWB≥“6áVÊ≤ÁFı7G&ñÊrÇ'WFcÇ"ííì∞¢ÊWáE&ˆ6W72Á7FFW'"Êˆ‚Ç&FF"¬Ü6áVÊ≤í”‚ÜÊWáD˜WGWB≥“6áVÊ≤ÁFı7G&ñÊrÇ'WFcÇ"ííì∞¢6ˆÁ7Bfó'7E&W7ˆÁ6R“vóBvóDf˜$áGGÄ¢G∂&6UW&«“ˆF÷ñ‚ˆñÁ7FóGWFñˆÊ¿¢ÊWáE&ˆ6W72¿¢Çí”‚ÊWáD˜WGWB¿¢ì∞¢76W'BÊWV¬Üfó'7E&W7ˆÁ6RÁ7FGW2¬#¬.zÍynz∫˛öinö^[¯^öæã˘NYπ‚#8%∆‚"≤ÊWáD˜WGWBì∞†¢'&˜w6W"“vóB6á&ˆ÷óV“Ê∆VÊ6Çá∞¢ÜVF∆W73¢G'VR¿¢‚‚‚á&ˆ6W72ÊVÁb‰D‘îÂıtT%Ù%$ıu4U"Ú≤WÜV7WF&∆UFÉ¢&ˆ6W72ÊVÁb‰D‘îÂıtT%Ù%$ıu4U"“¢∑“í¿¢“ì∞¢&WGW&‚≤'&˜w6W"¬&6UW&¬¬ÊWáD÷ˆFR”∞ß–†ßFW7BÇ&ñÁfóFVB∆ˆvñ‚&WGW&Á2&WfñWvW'2FÚFÜR˜&ñvñÊ¬vRÊB&V¶V7G2VÁ6fRFW7FñÊFñˆÁ2"¬7ñÊ2áBí”‚∞¢6ˆÁ7B≤'&˜w6W"¬&6UW&¬““vóB∆VÊ6ÑF÷ñ‰'&˜w6W"áBì∞¢6ˆÁ7Bf∆∆&6≤“"ˆF÷ñ‚ˆ&ñÊFñÊr◊&WfñWr#∞¢6ˆÁ7BÊ˜Fñ6R“"ˆF÷ñ‚ˆÊ˜Fñ6R◊&WfñWr#∞¢6ˆÁ7BG&Á6fW"“"ˆF÷ñ‚˜7GVFVÁB◊G&Á6fW'2#∞¢6ˆÁ7BÜˆ÷T6ˆÁFVÁB“"ˆF÷ñ‚ˆÜˆ÷R÷6ˆÁFVÁB#∞¢f˜"Ü6ˆÁ7B∑&WVW7FVB¬WáV7FVE“ˆb∞¢∂Ê˜Fñ6R¬Ê˜Fñ6U“¿¢∑G&Á6fW"¬G&Á6fW%“¿¢∂Üˆ÷T6ˆÁFVÁB¬Üˆ÷T6ˆÁFVÁE“¿¢≤"ˆF÷ñ‚˜VÊ∂Ê˜v‚"¬f∆∆&6µ“¿¢≤"ÚˆWáFW&Ê¬ÊñÁf∆ñB"¬f∆∆&6µ“¿¢“í∞¢vóBBÁFW7Bá&WVW7FVB¬7ñÊ2Çí”‚∞¢6ˆÁ7BvR“vóB'&˜w6W"ÊÊWuvRÇì∞¢∆WB∆ˆvñÁ2“∞¢6ˆÁ7BWáFW&Ê≈&WVW7G2“µ”∞¢G'í∞¢vóBvRÁ&˜WFRÇ"¢¢Ú¢"¬á&˜WFRí”‚∞¢6ˆÁ7BW&¬“ÊWrU$¬á&˜WFRÁ&WVW7BÇíÁW&¬Çíì∞¢ñbáW&¬Ê˜&ñvñ‚”“&6UW&¬í∞¢WáFW&Ê≈&WVW7G2ÁW6ÇáW&¬Ê˜&ñvñ‚ì∞¢&WGW&‚&˜WFRÊ&˜'BÇì∞¢–¢ñbÇW&¬ÁFÜÊ÷RÁ7F'G5vóFÇÇ"ˆíˆF÷ñ‚Ú"íí&WGW&‚&˜WFRÊ6ˆÁFñÁVRÇì∞¢ñbáW&¬ÁFÜÊ÷R””“"ˆíˆF÷ñ‚ˆñFVÁFóGíˆ∆ˆvñ‚"bb&˜WFRÁ&WVW7BÇíÊ÷WFÜˆBÇí””“%ı5B"í∞¢∆ˆvñÁ2≥“∞¢&WGW&‚&˜WFRÊgV∆fñ∆¬á≤ß6ˆ„¢≤FF¢∑“““ì∞¢–¢ñbÇ∆ˆvñÁ2«¬WáV7FVB””“f∆∆&6≤í&WGW&‚&˜WFRÊgV∆fñ∆¬á≤7FGW3¢C¬ß6ˆ„¢∑““ì∞¢ñbáW&¬ÁFÜÊ÷R””“"ˆíˆF÷ñ‚˜7GVFVÁB◊G&Á6fW'2"ê¢&WGW&‚&˜WFRÊgV∆fñ∆¬á∞¢ß6ˆ„¢∞¢FF¢∞¢6Â&WVW7C¢f«6R¿¢6Â&WfñWs¢G'VR¿¢7GVFVÁG3¢µ“¿¢FW7FñÊFñˆ‰6∆76W3¢µ“¿¢&WVW7G3¢µ“¿¢“¿¢“¿¢“ì∞¢ñbáW&¬ÁFÜÊ÷R””“"ˆíˆF÷ñ‚ˆ÷R"ê¢&WGW&‚&˜WFRÊgV∆fñ∆¬á∞¢ß6ˆ„¢∞¢FF¢∞¢Fó7∆ïˆÊ÷S¢.YéhâZÍjéYÇ"¿¢÷V÷&W'6Üó3¢∑≤7FGW3¢$5DïdR"¬6&ñ∆óFñW3¢≤&Ê˜Fñ6Sß&WfñWr%“’“¿¢“¿¢“¿¢“ì∞¢ñbáW&¬ÁFÜÊ÷R””“"ˆíˆF÷ñ‚˜7FfbˆÊ˜Fñ6W2˜&WfñWr"ê¢&WGW&‚&˜WFRÊgV∆fñ∆¬á≤ß6ˆ„¢≤FF¢µ“““ì∞¢&WGW&‚&˜WFRÊgV∆fñ∆¬á≤7FGW3¢CB¬ß6ˆ„¢∑““ì∞¢“ì∞¢ñbÜWáV7FVB””“f∆∆&6≤í∞¢vóBvRÊv˜FÚÜ&6UW&¬≤"ˆF÷ñ‚ˆ∆ˆvñ„ˆÊWáC“"≤VÊ6ˆFUU$î6ˆ◊ˆÊVÁBá&WVW7FVBíì∞¢“V«6R∞¢vóBvRÊv˜FÚÜ&6UW&¬≤&WVW7FVBì∞¢vóBvP¢ÊvWD'ï&ˆ∆RÇ&∆ñÊ≤"¬∞¢Ê÷S¢&WVW7FVB””“Ê˜Fñ6R«¬&WVW7FVB””“Üˆ÷T6ˆÁFVÁBÚ.Xòﬁ[ËzÍynz∫˛yõæ[ŸR"¢.òxﬁikyõæ[ŸR"¿¢WÜ7C¢G'VR¿¢“ê¢Ê6∆ñ6≤Çì∞¢vóBvRÁvóDf˜%U$¬ÇáW&¬í”‚W&¬ÁFÜÊ÷R””“"ˆF÷ñ‚ˆ∆ˆvñ‚"ì∞¢76W'BÊWV¬ÜÊWrU$¬ávRÁW&¬ÇííÁ6V&6Ö&◊2ÊvWBÇ&ÊWáB"í¬&WVW7FVBì∞¢–¢vóBvRÊ∆ˆ6F˜"Ç"6F÷ñ‚÷∆ˆvñ‚◊W6W&Ê÷R"íÊfñ∆¬Ç'&WfñWvW"÷FV÷Ú"ì∞¢vóBvRÊ∆ˆ6F˜"Ç"6F÷ñ‚÷∆ˆvñ‚◊77v˜&B"íÊfñ∆¬Ç'7ñÁFÜWFñ2÷ñÁWB÷ˆÊ«í"ì∞¢vóBvRÊvWD'ï&ˆ∆RÇ&'WGFˆ‚"¬≤Ê÷S¢.yõæ[ŸR"¬WÜ7C¢G'VR“íÊ6∆ñ6≤Çì∞¢vóBvRÁvóDf˜%U$¬ÇáW&¬í”‚W&¬ÁFÜÊ÷R”“"ˆF÷ñ‚ˆ∆ˆvñ‚"ì∞¢76W'BÊWV¬ávRÁW&¬Çí¬&6UW&¬≤WáV7FVBì∞¢ñbÜWáV7FVB”“f∆∆&6≤í∞¢ñbÜWáV7FVB””“Üˆ÷T6ˆÁFVÁBí∞¢vóBvRÊvWD'ï&ˆ∆RÇ&ÜVFñÊr"¬≤Ê÷S¢.öinö^Xh^ZÎûzÍyb"¬WÜ7C¢G'VR“íÁvóDf˜"Çì∞¢“V«6R∞¢6ˆÁ7B7FFR–¢WáV7FVB””“Ê˜Fñ6RÚ&FF÷Ê˜Fñ6R◊&WfñWr◊7FFR"¢&FF◊7GVFVÁB◊G&Á6fW'2◊7FFR#∞¢vóBvRÊ∆ˆ6F˜"Ç%≤"≤7FFR≤s“%$TEí%“ríÁvóDf˜"Çì∞¢–¢–¢76W'BÊWV¬Ü∆ˆvñÁ2¬ì∞¢76W'BÊFVWWV¬ÜWáFW&Ê≈&WVW7G2¬µ“ì∞¢“fñÊ∆«í∞¢vóBvRÊ6∆˜6RÇì∞¢–¢“ì∞¢–ß“ì∞†ßFW7BÇ&fVW2&V6˜fW"FÜRñÁfóFVB6W76ñˆ‚ÊB∂VW&Wfˆ∂VB&V6˜&G2ÜñFFV‚gFW"∆FR&VG2"¬7ñÊ2áBí”‚∞¢6ˆÁ7B≤'&˜w6W"¬&6UW&¬““vóB∆VÊ6ÑF÷ñ‰'&˜w6W"áBì∞¢6ˆÁ7BvR“vóB'&˜w6W"ÊÊWuvRÇì∞¢vRÁ6WDFVfV«EFñ÷V˜WBÉcì∞¢6ˆÁ7BfVW5FÇ“"ˆíˆF÷ñ‚ˆfVW2#∞¢6ˆÁ7B7GVFVÁB“≤ñC¢#””C”É”S"¬∆&V√¢.YéhâiKnãKûZ⁄nyIÚ"”∞¢6ˆÁ7BFˆ7V÷VÁB“∞¢ñC¢#””C”É”S""¿¢fW'6ñˆ„¢¿¢Fˆ7V÷VÁEGóS¢$$îƒ¬"¿¢FóF∆S¢.Yéhâx˙ﬁ{™~ãKûyJÇ"¿¢7GVFVÁDñC¢7GVFVÁBÊñB¿¢7GVFVÁD∆&V√¢7GVFVÁBÊ∆&V¬¿¢W&ñˆC¢###b”"¿¢÷˜VÁD÷ñÊ˜#¢#3CR¿¢7FGW3¢$dîƒ$ƒR"¿¢f∆ñDg&ˆ”¢###b””"¿¢f∆ñEFÛ¢###b””3"¿¢7V÷÷'ì¢.YéhâãKûyJéä˚Nià‚"¿¢7ñÁFÜWFñ3¢G'VR¿¢”∞¢6ˆÁ7B6Ê6Ü˜B“≤FF¢≤7GVFVÁG3¢∑7GVFVÁE“¬Fˆ7V÷VÁG3¢∂Fˆ7V÷VÁE“¬7ñÁFÜWFñ3¢G'VR“”∞¢∆WB&VE7FGW2“C¿¢w&óFU7FGW2“C2¿¢w&óFW2“¿¢Üˆ∆E&VB“f«6S∞¢∆WBVÊFñÊu&VC∞¢6ˆÁ7BWáFW&Ê¬“µ”∞¢vóBvRÁ&˜WFRÇ"¢¢Ú¢"¬á&˜WFRí”‚∞¢6ˆÁ7BW&¬“ÊWrU$¬á&˜WFRÁ&WVW7BÇíÁW&¬Çíì∞¢ñbáW&¬Ê˜&ñvñ‚”“&6UW&¬í∞¢WáFW&Ê¬ÁW6ÇáW&¬Ê˜&ñvñ‚ì∞¢&WGW&‚&˜WFRÊ&˜'BÇì∞¢–¢ñbáW&¬ÁFÜÊ÷R””“"ˆíˆF÷ñ‚ˆñFVÁFóGíˆ∆ˆvñ‚"bb&˜WFRÁ&WVW7BÇíÊ÷WFÜˆBÇí””“%ı5B"í∞¢&VE7FGW2“#∞¢&WGW&‚&˜WFRÊgV∆fñ∆¬á≤ß6ˆ„¢≤FF¢∑“““ì∞¢–¢ñbáW&¬ÁFÜÊ÷R”“fVW5FÇbbW&¬ÁFÜÊ÷R”“fVW5FÇ≤"Ú"≤Fˆ7V÷VÁBÊñB≤"˜&Wfˆ∂R"ê¢&WGW&‚&˜WFRÊ6ˆÁFñÁVRÇì∞¢ñbá&˜WFRÁ&WVW7BÇíÊ÷WFÜˆBÇí””“%ı5B"í∞¢w&óFW2≥“∞¢&WGW&‚&˜WFRÊgV∆fñ∆¬á≤7FGW3¢w&óFU7FGW2¬6ˆÁFVÁEGóS¢'FWáB˜∆ñ‚"¬&ˆGì¢""“ì∞¢–¢ñbÜÜˆ∆E&VBí∞¢Üˆ∆E&VB“f«6S∞¢VÊFñÊu&VBÁ&W6ˆ«fRá&˜WFRì∞¢&WGW&„∞¢–¢&WGW&‚&VE7FGW2””“# ¢Ú&˜WFRÊgV∆fñ∆¬á≤ß6ˆ„¢6Ê6Ü˜B“ê¢¢&˜WFRÊgV∆fñ∆¬á≤7FGW3¢&VE7FGW2¬6ˆÁFVÁEGóS¢'FWáB˜∆ñ‚"¬&ˆGì¢""“ì∞¢“ì∞¢6ˆÁ7BÊV¬“vRÊ∆ˆ6F˜"Ç%∂FF÷fVW2◊7FFU“"ì∞¢6ˆÁ7B∆ˆvñ‚“vRÊ∆ˆ6F˜"Çv∂á&Vc“"ˆF÷ñ‚ˆ∆ˆvñ„ˆÊWáC“S$fF÷ñ‚S$ffVW2%“rì∞¢6ˆÁ7B&Vg&W6Ç“vRÊvWD'ï&ˆ∆RÇ&'WGFˆ‚"¬≤Ê÷S¢.Xã~ikXâ~äÇ"“ì∞¢6ˆÁ7B&VGí“vRÊ∆ˆ6F˜"Çu∂FF÷fVW2◊7FFS“%$TEí%“rì∞¢6ˆÁ7BWáV7DÜñFFV‚“7ñÊ2á7FGW2í”‚∞¢vóBvP¢Ê∆ˆ6F˜"Çu∂FF÷fVW2◊7FFS“"r≤á7FGW2””“CÚ$UDÇ"¢$DT‰îTB"í≤r%“rê¢ÁvóDf˜"Çì∞¢76W'BÊWV¬ÜvóB∆ˆvñ‚Ê6˜VÁBÇí¬7FGW2””“CÚ¢ì∞¢76W'BÊWV¬Ä¢vóBÊV¬Ê∆ˆ6F˜"Ç&f˜&“¬∂FF÷fVR÷Fˆ7V÷VÁE“¬6V∆V7B¬ñÁWB¬FWáF&V"íÊ6˜VÁBÇí¿¢¿¢ì∞¢f˜"Ü6ˆÁ7BFWáBˆb∑7GVFVÁBÊ∆&V¬¬Fˆ7V÷VÁBÁFóF∆R¬##2„CR%“ê¢76W'BÊˆ≤ÇÜvóBÊV¬ÊñÊÊW%FWáBÇííÊñÊ6«VFW2áFWáBíì∞¢”∞¢G'í∞¢vóBvRÊv˜FÚÜ&6UW&¬≤"ˆF÷ñ‚ˆfVW2"ì∞¢vóBWáV7DÜñFFV‚ÉCì∞¢vóB∆ˆvñ‚Ê6∆ñ6≤Çì∞¢vóBvRÊ∆ˆ6F˜"Ç"6F÷ñ‚÷∆ˆvñ‚◊W6W&Ê÷R"íÊfñ∆¬Ç&fVW2÷FV÷Ú"ì∞¢vóBvRÊ∆ˆ6F˜"Ç"6F÷ñ‚÷∆ˆvñ‚◊77v˜&B"íÊfñ∆¬Ç'7ñÁFÜWFñ2÷ñÁWB÷ˆÊ«í"ì∞¢vóBvRÊvWD'ï&ˆ∆RÇ&'WGFˆ‚"¬≤Ê÷S¢.yõæ[ŸR"¬WÜ7C¢G'VR“íÊ6∆ñ6≤Çì∞¢vóBvRÁvóDf˜%U$¬Ü&6UW&¬≤"ˆF÷ñ‚ˆfVW2"ì∞¢vóB&VGíÁvóDf˜"Çì∞¢f˜"Ü6ˆÁ7B7FGW2ˆb≥C2¬S5“í∞¢&VE7FGW2“7FGW3∞¢vóB&Vg&W6ÇÊ6∆ñ6≤Çì∞¢ñbá7FGW2””“C2ívóBWáV7DÜñFFV‚á7FGW2ì∞¢V«6RvóBvRÊ∆ˆ6F˜"Çu∂FF÷fVW2◊7FFS“$U%$ı"%“ríÁvóDf˜"Çì∞¢&VE7FGW2“#∞¢vóB&Vg&W6ÇÊ6∆ñ6≤Çì∞¢vóB&VGíÁvóDf˜"Çì∞¢–¢f˜"Ü6ˆÁ7B˜W&Fñˆ‚ˆb≤&7&VFR"¬'&Wfˆ∂R%“í∞¢f˜"Ü6ˆÁ7B7FGW2ˆb≥C¬C5“í∞¢ñbÜ˜W&Fñˆ‚””“&7&VFR"í∞¢vóBÊV¬Ê∆ˆ6F˜"Çw6V∆V7E∂Ê÷S“'7GVFVÁEˆñB%“ríÁ6V∆V7D˜Fñˆ‚á7GVFVÁBÊñBì∞¢f˜"Ü6ˆÁ7B∂fñV∆B¬f«VU“ˆbˆ&¶V7BÊVÁG&ñW2á∞¢FóF∆S¢.[Ë^K˘ﬁZŸéãKûyJÇ"¿¢W&ñˆC¢###b”"¿¢÷˜VÁC¢#„#2"¿¢f∆ñEˆg&ˆ”¢###b””"¿¢f∆ñE˜FÛ¢###b””3"¿¢7V÷÷'ì¢.Yéhâä˚Nià‚"¿¢“íê¢vóBÊV¬Ê∆ˆ6F˜"Çu∂Ê÷S“"r≤fñV∆B≤r%“ríÊfñ∆¬áf«VRì∞¢–¢w&óFU7FGW2“7FGW3∞¢VÊFñÊu&VB“&ˆ÷ó6RÁvóFÖ&W6ˆ«fW'2Çì∞¢Üˆ∆E&VB“G'VS∞¢vóB&Vg&W6ÇÊ6∆ñ6≤Çì∞¢6ˆÁ7B&VB“vóBVÊFñÊu&VBÁ&ˆ÷ó6S∞¢6ˆÁ7B&Wfñ˜W5w&óFW2“w&óFW3∞¢6ˆÁ7B'WGFˆ‚“ÊV¬ÊvWD'ï&ˆ∆RÇ&'WGFˆ‚"¬∞¢Ê÷S¢˜W&Fñˆ‚””“&7&VFR"Ú.K˘ﬁZŸé[õnKÈæZÎnô[˛i˙^y»≤"¢.i*NYπ‚"¿¢WÜ7C¢G'VR¿¢“ì∞¢vóB'WGFˆ‚ÊWf«VFRÇÜV∆V÷VÁBí”‚∞¢V∆V÷VÁBÊ6∆ñ6≤Çì∞¢V∆V÷VÁBÊ6∆ñ6≤Çì∞¢“ì∞¢vóBWáV7DÜñFFV‚á7FGW2ì∞¢6ˆÁ7B&W7ˆÁ6R“vRÁvóDf˜%&W7ˆÁ6RÄ¢á"í”‚"ÁW&¬Çí””“&6UW&¬≤fVW5FÇbb"Á&WVW7BÇíÊ÷WFÜˆBÇí””“$tUB"¿¢ì∞¢vóB&VBÊgV∆fñ∆¬á≤ß6ˆ„¢6Ê6Ü˜B“ì∞¢vóBÜvóB&W7ˆÁ6RíÊfñÊó6ÜVBÇì∞¢vóBvRÊWf«VFRÄ¢Çí”‡¢ÊWr&ˆ÷ó6RÇÜFˆÊRí”‡¢vñÊF˜rÁ&WVW7DÊñ÷Fñˆ‰g&÷RÇÇí”‚vñÊF˜rÁ&WVW7DÊñ÷Fñˆ‰g&÷RÜFˆÊRíí¿¢í¿¢ì∞¢vóBWáV7DÜñFFV‚á7FGW2ì∞¢76W'BÊWV¬áw&óFW2¬&Wfñ˜W5w&óFW2≤ì∞¢vóB&Vg&W6ÇÊ6∆ñ6≤Çì∞¢vóB&VGíÁvóDf˜"Çì∞¢–¢–¢76W'BÊFVWWV¬ÜWáFW&Ê¬¬µ“ì∞¢“fñÊ∆«í∞¢vóBvRÊ6∆˜6RÇì∞¢–ß“ì∞†ßFW7BÇ$ÊWáBF÷ñ‚6W'fW2FÜR∆VgBÊfñvFñˆ‚¬&ñváB6ˆÁFVÁB¬ÊB÷ˆ&ñ∆RG&vW""¬7ñÊ2áBí”‚∞¢76W'BÊˆ≤ÜWÜó7G57ñÊ2Ü6F6Ñ∆≈vUFÇí¬$ÊWáBF÷ñ‚&˜WFRvR◊W7B&R&W6VÁB‚"ì∞¢6ˆÁ7B'&˜w6W$W'&˜'2“µ”∞¢6ˆÁ7BÊ˜Df˜VÊE&W7ˆÁ6W2“µ”∞¢∆WBWáV7FVDF÷ñÂVÊWFÜ˜&ó¶VE&W7ˆÁ6W2“∞¢∆WBWáV7FVDÜˆ÷TG&gDÊ˜Df˜VÊE&W7ˆÁ6W2“∞¢6ˆÁ7Bfñ∆VE&WVW7G2“µ”∞¢6ˆÁ7BF÷ñ‰÷U&W7ˆÁ6TWfVÁG2“µ”∞¢6ˆÁ7BF÷ñ‰÷TfñÊó6ÜVDWfVÁG2“µ”∞¢6ˆÁ7BF÷ñ‰÷U&WVW7E7F'G2“ÊWrvV¥÷Çì∞¢6ˆÁ7BF÷ñ‰÷U&W7ˆÁ6U7FGW6W2“ÊWrvV¥÷Çì∞¢6ˆÁ7BF÷ñ‰÷TÜVFW%&VG2“µ”∞¢6ˆÁ7B÷ñ‰g&÷TÊfñvFñˆÁ2“µ”∞¢∆WBFñvÊ˜7Fñ56WVVÊ6R“∞¢6ˆÁ7BWáFW&Ê≈&WVW7G2“µ”∞¢∆WBWáV7FVD÷V÷&W'6ÜóS46ˆÁ6ˆ∆TW'&˜"“f«6S∞¢∆WBWáV7FVD÷V÷&W'6ÜóS5&W7ˆÁ6W2“∞¢∆WBWáV7FVD÷ˆÁFÜ«îfVVF&6≥S46ˆÁ6ˆ∆TW'&˜"“f«6S∞¢∆WBWáV7FVD÷ˆÁFÜ«îfVVF&6≥S5&W7ˆÁ6W2“∞¢∆WBWáV7FVD÷ˆÁFÜ«îfVVF&6≥Cî6ˆÁ6ˆ∆TW'&˜"“f«6S∞¢∆WBWáV7FVE7Ffd7&VFVÁFñ«3S46ˆÁ6ˆ∆TW'&˜"“f«6S∞¢∆WBWáV7FVE7Ffd7&VFVÁFñ«3S5&W7ˆÁ6W2“∞¢6ˆÁ7B∆ˆ6ƒî˜&ñvñ‚“&áGG¢ÚÛ#r„„„£C3í#∞¢6ˆÁ7B&WfñWvW$ñB“#33333332”3332”C332”É332”333333333332#∞¢6ˆÁ7BÜÊF∆W2“ÊWr÷Çì∞¢∆WB∆V&ÊñÊtñÁ7FóGWFñˆÂ6WGFñÊr“≤VÊ&∆VC¢f«6R¬fW'6ñˆ„¢”∞¢6ˆÁ7BfVU7GVFVÁB“≤ñC¢#””C”É”S"¬∆&V√¢.zKÆKËæZ⁄nyI˛yK""”∞¢6ˆÁ7BfVTFˆ7V÷VÁG2“µ”∞¢6ˆÁ7BfVU&WVW7G2“µ”∞¢6ˆÁ7BG&Á6fW%7GVFVÁB“≤‚‚ÊfVU7GVFVÁB¬6∆75&Vc¢.YéhâyK.x˙“"”∞¢6ˆÁ7BG&Á6fW%&˜w2“µ”∞¢6ˆÁ7BG&Á6fW%&WVW7G2“µ”∞¢∆WBG&Á6fW%&WfñWvW"“f«6S∞¢6ˆÁ7BG&Á6fW%&ˆ¶V7Fñˆ‚“á&˜rí”‚á∞¢‚‚Á&˜r¿¢ó4˜vÂ&WVW7C¢G&Á6fW%&WfñWvW"¿¢6Â&WfñWs¢G&Á6fW%&WfñWvW"bb&˜rÁ7FGW2””“%T‰Dî‰r"¿¢6‰&˜fS¢G&Á6fW%&WfñWvW"bb&˜rÁ7FGW2””“%T‰Dî‰r"¿¢“ì∞¢6ˆÁ7B&óf7ï&˜w2“ÊWr÷Ö∞¢∞¢&˜vÊW"÷V7B"¿¢∞¢∞¢ñC¢#sssssssr”sssr”Cssr”Éssr”sssssssssssr"¿¢fW'6ñˆ„¢¿¢GóS¢$44U52"¿¢7FGW3¢%5T$‘ïEDTB"¿¢7&VFVDC¢###b””ECÉ££„¢"¿¢WFFVDC¢###b””ECÉ££„¢"¿¢FF6ÜÊvVC¢f«6R¿¢“¿¢“¿¢“¿¢≤&˜vÊW"◊vW7B"¬µ’“¿¢“ì∞¢6ˆÁ7BV7E&˜w2“∞¢∞¢ñC¢#””C”É”"¿¢fW'6ñˆ„¢¿¢7FGW3¢%T‰Dî‰r"¿¢&V∆FñˆÁ6Üó¢$uT$Dî‚"¿¢7GVFVÁDñC¢########"”###"”C##"”É##"”###########""¿¢7GVFVÁD∆ñ3¢'7GVFVÁB÷«Ü"¿¢7GVFVÁD∆&V√¢.zKÆKËæZ⁄nyI˛yK""¿¢6◊W4∆&V√¢.zKÆKËæKâŒj
-XÀ¢"¿¢6∆74∆&V√¢.zKÆKËæKàû[õN{™~yK.x˙“"¿¢wV&Fñ‰∆&V√¢.jähπ˛ZÎnô[˛yK""¿¢“¿¢∞¢ñC¢#CCCCCCCB”CCCB”CCCB”ÉCCB”CCCCCCCCCCCB"¿¢fW'6ñˆ„¢¿¢7FGW3¢%T‰Dî‰r"¿¢&V∆FñˆÁ6Üó¢$uT$Dî‚"¿¢7GVFVÁDñC¢#SSSSSSSR”SSSR”CSSR”ÉSSR”SSSSSSSSSSSR"¿¢7GVFVÁD∆ñ3¢'7GVFVÁB÷&WF"¿¢7GVFVÁD∆&V√¢.zKÆKËæZ⁄nyI˛Kôí"¿¢6◊W4∆&V√¢.zKÆKËæKâŒj
-XÀ¢"¿¢6∆74∆&V√¢.zKÆKËæKàû[õN{™~Kôûx˙“"¿¢wV&Fñ‰∆&V√¢.jähπ˛ZÎnô[˛Kôí"¿¢“¿¢”∞¢6ˆÁ7B÷V÷&W'6Üó&˜w2“∞¢&˜vÊW"÷V7B#¢∞¢∞¢7F˜$ñC¢#cccccccb”cccb”Cccb”Éccb”cccccccccccb"¿¢fW'6ñˆ„¢¿¢&ˆfñ∆S¢'FV6ÜW"÷V7B"¿¢∆&V√¢.jähπ˛iYû[àéyK""¿¢&ˆ∆S¢.iYû[àÇ"¿¢FVÊÁDñC¢#””C”É”"¿¢6◊W4ñC¢#””C”É”"¿¢6∆74ñG3¢≤#””C”É”2%“¿¢7FGW3¢$5DïdR"¿¢6&ñ∆óFñW3¢≤&6&R◊&V6˜&G3ßw&óFR%“¿¢“¿¢“¿¢&˜vÊW"◊vW7B#¢∞¢∞¢7F˜$ñC¢#sssssssr”sssr”Cssr”Éssr”sssssssssssÇ"¿¢fW'6ñˆ„¢¿¢&ˆfñ∆S¢'FV6ÜW"◊vW7B"¿¢∆&V√¢.jähπ˛iYû[àéKôí"¿¢&ˆ∆S¢.iYû[àÇ"¿¢FVÊÁDñC¢#””C”É”"¿¢6◊W4ñC¢#””C”É”""¿¢6∆74ñG3¢≤#””C”É”B%“¿¢7FGW3¢$5DïdR"¿¢6&ñ∆óFñW3¢≤&6&R◊&V6˜&G3ßw&óFR%“¿¢“¿¢“¿¢&˜vÊW"÷˜FÜW"◊FVÊÁB#¢µ“¿¢”∞¢6ˆÁ7B÷V÷&W'6ÜóWfVÁG2“µ”∞¢∆WBfñƒÊWáD÷V÷&W'6Üó&VB“f«6S∞¢6ˆÁ7B7Ffd7&VFVÁFñ≈&˜w2“∞¢&˜vÊW"÷V7B#¢∞¢∞¢ñC¢#ÉÉÉÉÉÉÉÇ”ÉÉÉÇ”CÉÉÇ”ÉÉÉÇ”ÉÉÉÉÉÉÉÉÉÉÉ""¿¢fW'6ñˆ„¢¿¢7FfdñC¢#cccccccb”cccb”Cccb”Éccb”cccccccccccb"¿¢7Ffd∆&V√¢.jähπ˛iYû[àéyK""¿¢7Ffe&ˆ∆S¢.iYû[àÇ"¿¢6FVv˜'ì¢%DT4Ñî‰uıTƒîdî4DîÙ‚"¿¢ó77VTFFS¢###R””"¿¢Wáó'îFFS¢###b””3"¿¢Wáó'ï7FGW3¢$UÖï$î‰uı4ÙÙ‚"¿¢&W7ˆÁ6ñ&∆U&ˆ∆S¢$4’U5Ùıt‰U""¿¢WFFVDC¢###b””eCÉ££„¢"¿¢Üó7F˜'ì¢µ“¿¢“¿¢“¿¢&˜vÊW"◊vW7B#¢µ“¿¢&˜vÊW"÷˜FÜW"◊FVÊÁB#¢µ“¿¢”∞¢∆WBÊWáD7&VFVÁFñƒñB“∞¢∆WBfñƒÊWáE7Ffd7&VFVÁFñ≈&VB“f«6S∞¢6ˆÁ7B÷∂T÷ˆÁFÜ«îfVVF&6µ&˜r“ÜñB¬÷ˆÁFÇí”‚á∞¢ñB¿¢fW'6ñˆ„¢¿¢6˜W&6UfW'6ñˆ„¢¿¢7FGW3¢%5T$‘ïEDTB"¿¢÷ˆÁFÇ¿¢6∆75&Vc¢.Yéhâx˙ﬁ{™~yK""¿¢VFñVÊ6S¢%5DdeÙîÂDU$‰¬"¿¢6˜W&6T6˜VÁG3¢≤u$ıuDÖı$T4ı$C¢¬EDT‰D‰4UÙıdU%dîUs¢¬5DdeÙDî≈ì¢“¿¢7W∆V÷VÁG3¢∞¢∆V&ÊñÊu'Fñ6óFñˆ„¢%$Ùu$U54î‰r"¿¢Fñ«îÜ&óG3¢$¥TUıtD4Ñî‰r"¿¢7FófóGï'Fñ6óFñˆ„¢%$Ùu$U54î‰r"¿¢f÷ñ«ï66Üˆˆƒ6ˆ∆∆&˜&Fñˆ„¢$dÙƒƒıuıU"¿¢“¿¢7FñˆÁ3¢≤&6ˆÊfó&“"¬'&WGW&‚%“¿¢“ì∞¢6ˆÁ7B÷ˆÁFÜ«îfVVF&6µ&˜w2“∞¢÷∂T÷ˆÁFÜ«îfVVF&6µ&˜rÇ#ÉÉÉÉÉÉÉÇ”ÉÉÉÇ”CÉÉÇ”ÉÉÉÇ”ÉÉÉÉÉÉÉÉÉÉÉ"¬###b”"í¿¢÷∂T÷ˆÁFÜ«îfVVF&6µ&˜rÇ#ìììììììí”ìììí”Cììí”Éììí”ììììììììììì"¬###b”í"í¿¢”∞¢∆WBfñƒÊWáD÷ˆÁFÜ«îfVVF&6µ&VB“f«6S∞¢∆WBñÁf∆ñFFTÊWáD÷ˆÁFÜ«îfVVF&6µ&VB“f«6S∞¢∆WB6ˆÊf∆ñ7DÊWáD÷ˆÁFÜ«îfVVF&6µw&óFR“f«6S∞¢∆WB÷ˆÁFÜ«ï6ñvÊVDñ‚“f«6S∞¢6ˆÁ7B÷ˆÁFÜ«ï6W76ñˆÂFˆ∂V‚“&“"Á&WVBÉC2ì∞¢6ˆÁ7B÷ˆÁFÜ«îï&WVW7G2“µ”∞¢6ˆÁ7B÷ˆÁFÜ«î∆Vv7ï&WVW7G2“µ”∞¢6ˆÁ7B∆ˆ6ƒî6∆«2“µ”∞¢6ˆÁ7B÷VFñ76WG2“∞¢∞¢ñC¢#””C”É”s"¿¢∆ñ3¢'FV6ÜW"◊&ˆfñ∆R◊∆6VÜˆ∆FW""¿¢FóF∆S¢.iYû[àéK∏æ{∏ﬁX⁄KÿﬁYª‚"¿¢fW'6ñˆ„¢¿¢GóS¢$î‘tR"¿¢7FGW3¢%$TdU$T‰4TB"¿¢Wáó&W4ˆ„¢###b”"”3"¿¢&VfW&VÊ6W3¢∞¢∞¢ñC¢#””C”É”É"¿¢∆&V√¢.iYû[àéK∏æ{∏“"¿¢∂ñÊC¢%DT4ÑU%ÙîÂE$Ú"¿¢“¿¢“¿¢“¿¢∞¢ñC¢#””C”É”s2"¿¢∆ñ3¢&7FófóGí÷6˜fW"◊∆6VÜˆ∆FW""¿¢FóF∆S¢.kKæX™é[ô⁄.X⁄KÿﬁYª‚"¿¢fW'6ñˆ„¢¿¢GóS¢$î‘tR"¿¢7FGW3¢$dîƒ$ƒR"¿¢Wáó&W4ˆ„¢###b”"”3"¿¢&VfW&VÊ6W3¢µ“¿¢“¿¢”∞¢6ˆÁ7BgV∆fñ∆ƒß6ˆ‚“á&˜WFR¬&ˆGí¬7FGW2“#í”‡¢&˜WFRÊgV∆fñ∆¬á∞¢7FGW2¿¢6ˆÁFVÁEGóS¢&∆ñ6Fñˆ‚ˆß6ˆ‚"¿¢&ˆGì¢•4Ù‚Á7G&ñÊvñgíÜ&ˆGíí¿¢“ì∞¢6ˆÁ7B≤'&˜w6W"¬&6UW&¬¬ÊWáD÷ˆFR““vóB∆VÊ6ÑF÷ñ‰'&˜w6W"áBì∞¢6ˆÁ7BvR“vóB'&˜w6W"ÊÊWuvRá∞¢fñWw˜'C¢≤vñGFÉ¢3cR¬ÜVñváC¢ì“¿¢“ì∞¢vRÊˆ‚Ç'&W7ˆÁ6R"¬á&W7ˆÁ6Rí”‚∞¢6ˆÁ7BW&¬“ÊWrU$¬á&W7ˆÁ6RÁW&¬Çíì∞¢ñbáW&¬Ê˜&ñvñ‚””“&6UW&¬bb&W7ˆÁ6RÁ7FGW2Çí””“CBê¢Ê˜Df˜VÊE&W7ˆÁ6W2ÁW6Çá≤÷WFÜˆC¢&W7ˆÁ6RÁ&WVW7BÇíÊ÷WFÜˆBÇí¬FÉ¢W&¬ÁFÜÊ÷R“ì∞¢ñbáW&¬Ê˜&ñvñ‚””“&6UW&¬bbW&¬ÁFÜÊ÷R””“"ˆíˆF÷ñ‚ˆ÷R"í∞¢F÷ñ‰÷U&W7ˆÁ6U7FGW6W2Á6WBá&W7ˆÁ6RÁ&WVW7BÇí¬&W7ˆÁ6RÁ7FGW2Çíì∞¢F÷ñ‰÷U&W7ˆÁ6TWfVÁG2ÁW6Çá∞¢6WVVÊ6S¢≤∂FñvÊ˜7Fñ56WVVÊ6R¿¢C¢FFRÊÊ˜rÇí¿¢7FGW3¢&W7ˆÁ6RÁ7FGW2Çí¿¢vUW&√¢vRÁW&¬Çí¿¢&WVW7E7F'C¢F÷ñ‰÷U&WVW7E7F'G2ÊvWBá&W7ˆÁ6RÁ&WVW7BÇííÛÚÁV∆¬¿¢“ì∞¢–¢ñbÄ¢W&¬Ê˜&ñvñ‚””“&6UW&¬b`¢W&¬ÁFÜÊ÷RÁ7F'G5vóFÇÇ"ˆíˆF÷ñ‚Ú"íb`¢&W7ˆÁ6RÁ7FGW2Çí””“C¢ê¢WáV7FVDF÷ñÂVÊWFÜ˜&ó¶VE&W7ˆÁ6W2≥“∞¢“ì∞¢vRÊˆ‚Ç'&WVW7FfñÊó6ÜVB"¬á&WVW7Bí”‚∞¢6ˆÁ7BW&¬“ÊWrU$¬á&WVW7BÁW&¬Çíì∞¢ñbáW&¬Ê˜&ñvñ‚”“&6UW&¬«¬W&¬ÁFÜÊ÷R”“"ˆíˆF÷ñ‚ˆ÷R"í&WGW&„∞¢F÷ñ‰÷TfñÊó6ÜVDWfVÁG2ÁW6Çá∞¢6WVVÊ6S¢≤∂FñvÊ˜7Fñ56WVVÊ6R¿¢fñÊó6ÜVDC¢FFRÊÊ˜rÇí¿¢7FGW3¢F÷ñ‰÷U&W7ˆÁ6U7FGW6W2ÊvWBá&WVW7BíÛÚÁV∆¬¿¢vUW&√¢vRÁW&¬Çí¿¢&WVW7E7F'C¢F÷ñ‰÷U&WVW7E7F'G2ÊvWBá&WVW7BíÛÚÁV∆¬¿¢“ì∞¢“ì∞¢vRÊˆ‚Ç'vVW'&˜""¬ÜW'&˜"í”‚'&˜w6W$W'&˜'2ÁW6ÇÜW'&˜"Ê÷W76vRíì∞¢vRÊˆ‚Ç&6ˆÁ6ˆ∆R"¬Ü÷W76vRí”‚∞¢ñbÜ÷W76vRÁGóRÇí”“&W'&˜""í&WGW&„∞¢6ˆÁ7BFWáB“÷W76vRÁFWáBÇì∞¢ñbÜWáV7FVD÷V÷&W'6ÜóS46ˆÁ6ˆ∆TW'&˜"bbFWáBÊñÊ6«VFW2Ç#S2Ö6W'fñ6RVÊfñ∆&∆Rí"íí∞¢WáV7FVD÷V÷&W'6ÜóS46ˆÁ6ˆ∆TW'&˜"“f«6S∞¢&WGW&„∞¢–¢ñbÜWáV7FVD÷ˆÁFÜ«îfVVF&6≥S46ˆÁ6ˆ∆TW'&˜"bbFWáBÊñÊ6«VFW2Ç#S2Ö6W'fñ6RVÊfñ∆&∆Rí"íí∞¢WáV7FVD÷ˆÁFÜ«îfVVF&6≥S46ˆÁ6ˆ∆TW'&˜"“f«6S∞¢&WGW&„∞¢–¢ñbÜWáV7FVD÷ˆÁFÜ«îfVVF&6≥Cî6ˆÁ6ˆ∆TW'&˜"bbFWáBÊñÊ6«VFW2Ç#CíÑ6ˆÊf∆ñ7Bí"íí∞¢WáV7FVD÷ˆÁFÜ«îfVVF&6≥Cî6ˆÁ6ˆ∆TW'&˜"“f«6S∞¢&WGW&„∞¢–¢ñbÜWáV7FVE7Ffd7&VFVÁFñ«3S46ˆÁ6ˆ∆TW'&˜"bbFWáBÊñÊ6«VFW2Ç#S2Ö6W'fñ6RVÊfñ∆&∆Rí"íí∞¢WáV7FVE7Ffd7&VFVÁFñ«3S46ˆÁ6ˆ∆TW'&˜"“f«6S∞¢&WGW&„∞¢–¢'&˜w6W$W'&˜'2Ìı”}≠¢Gß≤⁄Óù∆≠y÷ulfill({
+/* global AbortSignal, console, document, fetch, getComputedStyle, HTMLElement, process, URL, window */
+
+import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
+import { createServer } from "node:net";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { setTimeout as delay } from "node:timers/promises";
+import test from "node:test";
+import { chromium } from "playwright";
+
+const packageRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
+const routesPath = resolve(packageRoot, "src/app/admin-routes.ts");
+const catchAllPagePath = resolve(packageRoot, "src/app/admin/[[...segments]]/page.page.tsx");
+const expectedRoutes = [
+  ["/admin/institution", "Êú∫ÊûÑÊ¶ÇËßà"],
+  ["/admin/home-content", "È¶ñÈ°µÂÜÖÂÆπ", "È¶ñÈ°µÂÜÖÂÆπÁÆ°ÁêÜ"],
+  ["/admin/public-teachers", "ÊïôÂ∏à‰ªãÁªç", "ÊïôÂ∏à‰ªãÁªçÁÆ°ÁêÜ"],
+  ["/admin/meals", "È§êÈ£ü", "È§êÈ£üÂÜÖÂÆπÁÆ°ÁêÜ"],
+  ["/admin/fees", "Ë¥πÁî®ÁÆ°ÁêÜ"],
+  ["/admin/student-transfers", "Â≠¶ÁîüËΩ¨Áè≠ÂÆ°Ê†∏"],
+  ["/admin/activities", "Ê¥ªÂä®"],
+  ["/admin/guides", "ÂÜÖÈÉ®ÊåáÂçó"],
+  ["/admin/resources", "ËµÑÊ∫ê", "ËµÑÊ∫êÁÆ°ÁêÜ"],
+  ["/admin/statistics", "ËøêËê•ÁªüËÆ°"],
+  ["/admin/learning-safety", "Â≠¶‰π†ÂÆâÂÖ®Ê±áÊÄª"],
+  ["/admin/staff", "ÂëòÂ∑•Ë¥¶Âè∑"],
+  ["/admin/staff-credentials", "ÂëòÂ∑•ËµÑÊ†ºËØÅÁÖß"],
+  ["/admin/staff-operations", "ÂëòÂ∑•ÊîØÊåÅ‰∏éÊãõËÅò"],
+  ["/admin/staff-tasks", "‰ªªÂä°ÂàÜÊ¥æ‰∏éÊ£ÄÊü•"],
+  ["/admin/staff-daily-review", "ÂëòÂ∑•Â∑•‰ΩúÊó•Êä•"],
+  ["/admin/monthly-feedback-review", "Áè≠Á∫ßÊúàÂ∫¶ÊÄªÁªìÂÆ°Ê†∏"],
+  ["/admin/child-monthly-review", "Â≠©Â≠êÊúàÊä•ÂÆ°Ê†∏"],
+  ["/admin/files", "Êñá‰ª∂", "Êñá‰ª∂‰∏éÂºïÁî®ÁÆ°ÁêÜ"],
+  ["/admin/publishing", "ÂèëÂ∏É‰∏é‰∏ãÊû∂", "ÂèëÂ∏É‰∏é‰∏ãÊû∂ÁÆ°ÁêÜ"],
+  ["/admin/audit-logs", "ÂÆ°ËÆ°Êó•Âøó"],
+  ["/admin/privacy-requests", "ÈöêÁßÅÁî≥ËØ∑ÂÆ°Ê†∏"],
+  ["/admin/binding-review", "ÂÆ∂ÈïøÂÖ≥Á≥ªÂÆ°Ê†∏"],
+  ["/admin/consent-review", "Êï∞ÊçÆÊéàÊùÉÂ§çÊ†∏", "Êï∞ÊçÆÊéàÊùÉ‰∏éÊúüÈôêÂ§çÊ†∏"],
+  ["/admin/leave-review", "ËØ∑ÂÅáÂÆ°Ê†∏"],
+  ["/admin/care-record-review", "ÊàêÈïøÊó•Êä•ÂÆ°Ê†∏", "ÊàêÈïøËÆ∞ÂΩïÂÆ°Ê†∏‰∏éÂèëÂ∏É"],
+  ["/admin/notice-review", "ÈÄöÁü•ÂÆ°Ê†∏", "ÈÄöÁü•ÂÆ°Ê†∏‰∏éÂèëÂ∏É"],
+  ["/admin/supply-request-review", "Áâ©ËµÑÁî≥ËØ∑ÂÆ°Ê†∏"],
+  ["/admin/pickup-review", "Êé•ÈÄÅÂºÇÂ∏∏Â§ÑÁêÜ"],
+  ["/admin/health-incident-review", "ÂÅ•Â∫∑ÂºÇÂ∏∏ÂÆ°Ê†∏", "ÂÅ•Â∫∑ÂºÇÂ∏∏ÂÆ°Ê†∏‰∏éÂèëÂ∏É"],
+  ["/admin/platform-operations", "Âπ≥Âè∞ËøêËê•"],
+  ["/admin/account", "ÊàëÁöÑË¥¶Âè∑"],
+];
+const browserRouteOrder = [
+  expectedRoutes.find(([href]) => href === "/admin/monthly-feedback-review"),
+  ...expectedRoutes.filter(([href]) => href !== "/admin/monthly-feedback-review"),
+];
+
+test("Next admin navigation preserves existing destinations and adds migrated staff workflows", async () => {
+  assert.ok(existsSync(routesPath), "Next admin route registry must be present.");
+  const source = await readFile(routesPath, "utf8");
+  const actualRoutes = [
+    ...source.matchAll(/\{\s*href:\s*"([^"]+)"\s*,\s*label:\s*"([^"]+)"\s*\}/gu),
+  ].map(([, href, label]) => [href, label]);
+
+  assert.deepEqual(
+    actualRoutes,
+    expectedRoutes.map(([href, label]) => [href, label]),
+  );
+});
+
+async function reservePort() {
+  const server = createServer();
+  await new Promise((resolvePromise, rejectPromise) => {
+    server.once("error", rejectPromise);
+    server.listen(0, "127.0.0.1", resolvePromise);
+  });
+  const address = server.address();
+  assert.ok(address && typeof address !== "string");
+  const port = address.port;
+  await new Promise((resolvePromise, rejectPromise) => {
+    server.close((error) => (error ? rejectPromise(error) : resolvePromise()));
+  });
+  return port;
+}
+
+async function waitForHttp(url, child, readOutput) {
+  for (let attempt = 0; attempt < 120; attempt += 1) {
+    if (child.exitCode !== null) throw new Error("Next ÁÆ°ÁêÜÁ´ØÊèêÂâçÈÄÄÂá∫Ôºö\n" + readOutput());
+    try {
+      return await fetch(url, { signal: AbortSignal.timeout(2500) });
+    } catch {
+      await delay(200);
+    }
+  }
+  throw new Error("Next ÁÆ°ÁêÜÁ´ØÊú™ËÉΩÂêØÂä®Ôºö\n" + readOutput());
+}
+
+async function stopChild(child) {
+  if (!child || child.exitCode !== null) return;
+  child.kill();
+  await Promise.race([
+    new Promise((resolvePromise) => child.once("exit", resolvePromise)),
+    delay(4000),
+  ]);
+  if (child.exitCode === null) {
+    child.kill("SIGKILL");
+    await Promise.race([
+      new Promise((resolvePromise) => child.once("exit", resolvePromise)),
+      delay(2000),
+    ]);
+  }
+}
+
+async function launchAdminBrowser(t) {
+  let nextProcess;
+  let browser;
+  let nextOutput = "";
+  t.after(async () => {
+    await browser?.close();
+    await stopChild(nextProcess);
+  });
+
+  const nextCli = resolve(packageRoot, "node_modules/next/dist/bin/next");
+  await access(nextCli);
+  const port = await reservePort();
+  const baseUrl = `http://127.0.0.1:${port}`;
+  const nextMode = process.env.TASK20_ADMIN_NEXT_MODE === "production" ? "start" : "dev";
+  if (nextMode === "start") {
+    assert.ok(
+      process.env.TASK20_ADMIN_NEXT_DIST_DIR,
+      "Áîü‰∫ßÊ®°ÂºèÂøÖÈ°ªÊòæÂºèÊåáÂÆö TASK20_ADMIN_NEXT_DIST_DIR„ÄÇ",
+    );
+  }
+  const nextArguments = [
+    nextCli,
+    nextMode,
+    ...(nextMode === "dev" ? ["--webpack"] : []),
+    "--hostname",
+    "127.0.0.1",
+    "--port",
+    String(port),
+  ];
+  nextProcess = spawn(process.execPath, nextArguments, {
+    cwd: packageRoot,
+    env: {
+      ...process.env,
+      NEXT_TELEMETRY_DISABLED: "1",
+      TASK20_NEXT_ADMIN_SERVICE_PORT: "4319",
+      CI: "1",
+      ...(nextMode === "start"
+        ? { TASK20_NEXT_DIST_DIR: process.env.TASK20_ADMIN_NEXT_DIST_DIR }
+        : {}),
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  nextProcess.stdout.on("data", (chunk) => (nextOutput += chunk.toString("utf8")));
+  nextProcess.stderr.on("data", (chunk) => (nextOutput += chunk.toString("utf8")));
+  const firstResponse = await waitForHttp(
+    `${baseUrl}/admin/institution`,
+    nextProcess,
+    () => nextOutput,
+  );
+  assert.equal(firstResponse.status, 200, "ÁÆ°ÁêÜÁ´ØÈ¶ñÈ°µÂøÖÈ°ªËøîÂõû 200„ÄÇ\n" + nextOutput);
+
+  browser = await chromium.launch({
+    headless: true,
+    ...(process.env.ADMIN_WEB_BROWSER ? { executablePath: process.env.ADMIN_WEB_BROWSER } : {}),
+  });
+  return { browser, baseUrl, nextMode };
+}
+
+test("invited login returns reviewers to the original page and rejects unsafe destinations", async (t) => {
+  const { browser, baseUrl } = await launchAdminBrowser(t);
+  const fallback = "/admin/binding-review";
+  const notice = "/admin/notice-review";
+  const transfer = "/admin/student-transfers";
+  const homeContent = "/admin/home-content";
+  for (const [requested, expected] of [
+    [notice, notice],
+    [transfer, transfer],
+    [homeContent, homeContent],
+    ["/admin/unknown", fallback],
+    ["//external.invalid", fallback],
+  ]) {
+    await t.test(requested, async () => {
+      const page = await browser.newPage();
+      let logins = 0;
+      const externalRequests = [];
+      try {
+        await page.route("**/*", (route) => {
+          const url = new URL(route.request().url());
+          if (url.origin !== baseUrl) {
+            externalRequests.push(url.origin);
+            return route.abort();
+          }
+          if (!url.pathname.startsWith("/api/admin/")) return route.continue();
+          if (url.pathname === "/api/admin/identity/login" && route.request().method() === "POST") {
+            logins += 1;
+            return route.fulfill({ json: { data: {} } });
+          }
+          if (!logins || expected === fallback) return route.fulfill({ status: 401, json: {} });
+          if (url.pathname === "/api/admin/student-transfers")
+            return route.fulfill({
+              json: {
+                data: {
+                  canRequest: false,
+                  canReview: true,
+                  students: [],
+                  destinationClasses: [],
+                  requests: [],
+                },
+              },
+            });
+          if (url.pathname === "/api/admin/me")
+            return route.fulfill({
+              json: {
+                data: {
+                  display_name: "ÂêàÊàêÂÆ°Ê†∏Âëò",
+                  memberships: [{ status: "ACTIVE", capabilities: ["notice:review"] }],
+                },
+              },
+            });
+          if (url.pathname === "/api/admin/staff/notices/review")
+            return route.fulfill({ json: { data: [] } });
+          return route.fulfill({ status: 404, json: {} });
+        });
+        if (expected === fallback) {
+          await page.goto(baseUrl + "/admin/login?next=" + encodeURIComponent(requested));
+        } else {
+          await page.goto(baseUrl + requested);
+          await page
+            .getByRole("link", {
+              name: requested === notice || requested === homeContent ? "ÂâçÂæÄÁÆ°ÁêÜÁ´ØÁôªÂΩï" : "ÈáçÊñ∞ÁôªÂΩï",
+              exact: true,
+            })
+            .click();
+          await page.waitForURL((url) => url.pathname === "/admin/login");
+          assert.equal(new URL(page.url()).searchParams.get("next"), requested);
+        }
+        await page.locator("#admin-login-username").fill("reviewer-demo");
+        await page.locator("#admin-login-password").fill("synthetic-input-only");
+        await page.getByRole("button", { name: "ÁôªÂΩï", exact: true }).click();
+        await page.waitForURL((url) => url.pathname !== "/admin/login");
+        assert.equal(page.url(), baseUrl + expected);
+        if (expected !== fallback) {
+          if (expected === homeContent) {
+            await page.getByRole("heading", { name: "È¶ñÈ°µÂÜÖÂÆπÁÆ°ÁêÜ", exact: true }).waitFor();
+          } else {
+            const state =
+              expected === notice ? "data-notice-review-state" : "data-student-transfers-state";
+            await page.locator("[" + state + '="READY"]').waitFor();
+          }
+        }
+        assert.equal(logins, 1);
+        assert.deepEqual(externalRequests, []);
+      } finally {
+        await page.close();
+      }
+    });
+  }
+});
+
+test("fees recover the invited session and keep revoked records hidden after late reads", async (t) => {
+  const { browser, baseUrl } = await launchAdminBrowser(t);
+  const page = await browser.newPage();
+  page.setDefaultTimeout(6000);
+  const feesPath = "/api/admin/fees";
+  const student = { id: "00000000-0000-4000-8000-000000000501", label: "ÂêàÊàêÊî∂Ë¥πÂ≠¶Áîü" };
+  const document = {
+    id: "00000000-0000-4000-8000-000000000502",
+    version: 1,
+    documentType: "BILL",
+    title: "ÂêàÊàêÁè≠Á∫ßË¥πÁî®",
+    studentId: student.id,
+    studentLabel: student.label,
+    period: "2026-10",
+    amountMinor: 12345,
+    status: "AVAILABLE",
+    validFrom: "2026-10-01",
+    validTo: "2026-10-31",
+    summary: "ÂêàÊàêË¥πÁî®ËØ¥Êòé",
+    synthetic: true,
+  };
+  const snapshot = { data: { students: [student], documents: [document], synthetic: true } };
+  let readStatus = 401,
+    writeStatus = 403,
+    writes = 0,
+    holdRead = false;
+  let pendingRead;
+  const external = [];
+  await page.route("**/*", (route) => {
+    const url = new URL(route.request().url());
+    if (url.origin !== baseUrl) {
+      external.push(url.origin);
+      return route.abort();
+    }
+    if (url.pathname === "/api/admin/identity/login" && route.request().method() === "POST") {
+      readStatus = 200;
+      return route.fulfill({ json: { data: {} } });
+    }
+    if (url.pathname !== feesPath && url.pathname !== feesPath + "/" + document.id + "/revoke")
+      return route.continue();
+    if (route.request().method() === "POST") {
+      writes += 1;
+      return route.fulfill({ status: writeStatus, contentType: "text/plain", body: "" });
+    }
+    if (holdRead) {
+      holdRead = false;
+      pendingRead.resolve(route);
+      return;
+    }
+    return readStatus === 200
+      ? route.fulfill({ json: snapshot })
+      : route.fulfill({ status: readStatus, contentType: "text/plain", body: "" });
+  });
+  const panel = page.locator("[data-fees-state]");
+  const login = page.locator('a[href="/admin/login?next=%2Fadmin%2Ffees"]');
+  const refresh = page.getByRole("button", { name: "Âà∑Êñ∞ÂàóË°®" });
+  const ready = page.locator('[data-fees-state="READY"]');
+  const expectHidden = async (status) => {
+    await page
+      .locator('[data-fees-state="' + (status === 401 ? "AUTH" : "DENIED") + '"]')
+      .waitFor();
+    assert.equal(await login.count(), status === 401 ? 1 : 0);
+    assert.equal(
+      await panel.locator("form, [data-fee-document], select, input, textarea").count(),
+      0,
+    );
+    for (const text of [student.label, document.title, "123.45"])
+      assert.ok(!(await panel.innerText()).includes(text));
+  };
+  try {
+    await page.goto(baseUrl + "/admin/fees");
+    await expectHidden(401);
+    await login.click();
+    await page.locator("#admin-login-username").fill("fees-demo");
+    await page.locator("#admin-login-password").fill("synthetic-input-only");
+    await page.getByRole("button", { name: "ÁôªÂΩï", exact: true }).click();
+    await page.waitForURL(baseUrl + "/admin/fees");
+    await ready.waitFor();
+    for (const status of [403, 503]) {
+      readStatus = status;
+      await refresh.click();
+      if (status === 403) await expectHidden(status);
+      else await page.locator('[data-fees-state="ERROR"]').waitFor();
+      readStatus = 200;
+      await refresh.click();
+      await ready.waitFor();
+    }
+    for (const operation of ["create", "revoke"]) {
+      for (const status of [401, 403]) {
+        if (operation === "create") {
+          await panel.locator('select[name="student_id"]').selectOption(student.id);
+          for (const [field, value] of Object.entries({
+            title: "ÂæÖ‰øùÂ≠òË¥πÁî®",
+            period: "2026-10",
+            amount: "1.23",
+            valid_from: "2026-10-01",
+            valid_to: "2026-10-31",
+            summary: "ÂêàÊàêËØ¥Êòé",
+          }))
+            await panel.locator('[name="' + field + '"]').fill(value);
+        }
+        writeStatus = status;
+        pendingRead = Promise.withResolvers();
+        holdRead = true;
+        await refresh.click();
+        const read = await pendingRead.promise;
+        const previousWrites = writes;
+        const button = panel.getByRole("button", {
+          name: operation === "create" ? "‰øùÂ≠òÂπ∂‰æõÂÆ∂ÈïøÊü•Áúã" : "Êí§Âõû",
+          exact: true,
+        });
+        await button.evaluate((element) => {
+          element.click();
+          element.click();
+        });
+        await expectHidden(status);
+        const response = page.waitForResponse(
+          (r) => r.url() === baseUrl + feesPath && r.request().method() === "GET",
+        );
+        await read.fulfill({ json: snapshot });
+        await (await response).finished();
+        await page.evaluate(
+          () =>
+            new Promise((done) =>
+              window.requestAnimationFrame(() => window.requestAnimationFrame(done)),
+            ),
+        );
+        await expectHidden(status);
+        assert.equal(writes, previousWrites + 1);
+        await refresh.click();
+        await ready.waitFor();
+      }
+    }
+    assert.deepEqual(external, []);
+  } finally {
+    await page.close();
+  }
+});
+
+test("Next admin serves the left navigation, right content, and mobile drawer", async (t) => {
+  assert.ok(existsSync(catchAllPagePath), "Next admin route page must be present.");
+  const browserErrors = [];
+  const notFoundResponses = [];
+  let expectedAdminUnauthorizedResponses = 0;
+  let expectedHomeDraftNotFoundResponses = 0;
+  const failedRequests = [];
+  const adminMeResponseEvents = [];
+  const adminMeFinishedEvents = [];
+  const adminMeRequestStarts = new WeakMap();
+  const adminMeResponseStatuses = new WeakMap();
+  const adminMeHeaderReads = [];
+  const mainFrameNavigations = [];
+  let diagnosticSequence = 0;
+  const externalRequests = [];
+  let expectedMembership503ConsoleError = false;
+  let expectedMembership503Responses = 0;
+  let expectedMonthlyFeedback503ConsoleError = false;
+  let expectedMonthlyFeedback503Responses = 0;
+  let expectedMonthlyFeedback409ConsoleError = false;
+  let expectedStaffCredentials503ConsoleError = false;
+  let expectedStaffCredentials503Responses = 0;
+  const localApiOrigin = "http://127.0.0.1:4319";
+  const reviewerId = "33333333-3333-4333-8333-333333333333";
+  const handles = new Map();
+  let learningInstitutionSetting = { enabled: false, version: 0 };
+  const feeStudent = { id: "00000000-0000-4000-8000-000000000501", label: "Á§∫‰æãÂ≠¶ÁîüÁî≤" };
+  const feeDocuments = [];
+  const feeRequests = [];
+  const transferStudent = { ...feeStudent, classRef: "ÂêàÊàêÁî≤Áè≠" };
+  const transferRows = [];
+  const transferRequests = [];
+  let transferReviewer = false;
+  const transferProjection = (row) => ({
+    ...row,
+    isOwnRequest: !transferReviewer,
+    canReview: transferReviewer && row.status === "PENDING",
+    canApprove: transferReviewer && row.status === "PENDING",
+  });
+  const privacyRows = new Map([
+    [
+      "owner-east",
+      [
+        {
+          id: "77777777-7777-4777-8777-777777777777",
+          version: 1,
+          type: "ACCESS",
+          status: "SUBMITTED",
+          createdAt: "2026-10-14T08:00:00.000Z",
+          updatedAt: "2026-10-14T08:00:00.000Z",
+          dataChanged: false,
+        },
+      ],
+    ],
+    ["owner-west", []],
+  ]);
+  const eastRows = [
+    {
+      id: "11111111-1111-4111-8111-111111111111",
+      version: 1,
+      status: "PENDING",
+      relationship: "GUARDIAN",
+      studentId: "22222222-2222-4222-8222-222222222222",
+      studentAlias: "student-alpha",
+      studentLabel: "Á§∫‰æãÂ≠¶ÁîüÁî≤",
+      campusLabel: "Á§∫‰æã‰∏úÊ†°Âå∫",
+      classLabel: "Á§∫‰æã‰∏âÂπ¥Á∫ßÁî≤Áè≠",
+      guardianLabel: "Ê®°ÊãüÂÆ∂ÈïøÁî≤",
+    },
+    {
+      id: "44444444-4444-4444-8444-444444444444",
+      version: 1,
+      status: "PENDING",
+      relationship: "GUARDIAN",
+      studentId: "55555555-5555-4555-8555-555555555555",
+      studentAlias: "student-beta",
+      studentLabel: "Á§∫‰æãÂ≠¶Áîü‰πô",
+      campusLabel: "Á§∫‰æã‰∏úÊ†°Âå∫",
+      classLabel: "Á§∫‰æã‰∏âÂπ¥Á∫ß‰πôÁè≠",
+      guardianLabel: "Ê®°ÊãüÂÆ∂Èïø‰πô",
+    },
+  ];
+  const membershipRows = {
+    "owner-east": [
+      {
+        actorId: "66666666-6666-4666-8666-666666666666",
+        version: 1,
+        profile: "teacher-east",
+        label: "Ê®°ÊãüÊïôÂ∏àÁî≤",
+        role: "ÊïôÂ∏à",
+        tenantId: "00000000-0000-4000-8000-000000000100",
+        campusId: "00000000-0000-4000-8000-000000000101",
+        classIds: ["00000000-0000-4000-8000-000000000103"],
+        status: "ACTIVE",
+        capabilities: ["care-records:write"],
+      },
+    ],
+    "owner-west": [
+      {
+        actorId: "77777777-7777-4777-8777-777777777778",
+        version: 1,
+        profile: "teacher-west",
+        label: "Ê®°ÊãüÊïôÂ∏à‰πô",
+        role: "ÊïôÂ∏à",
+        tenantId: "00000000-0000-4000-8000-000000000100",
+        campusId: "00000000-0000-4000-8000-000000000102",
+        classIds: ["00000000-0000-4000-8000-000000000104"],
+        status: "ACTIVE",
+        capabilities: ["care-records:write"],
+      },
+    ],
+    "owner-other-tenant": [],
+  };
+  const membershipEvents = [];
+  let failNextMembershipRead = false;
+  const staffCredentialRows = {
+    "owner-east": [
+      {
+        id: "88888888-8888-4888-8888-888888888882",
+        version: 1,
+        staffId: "66666666-6666-4666-8666-666666666666",
+        staffLabel: "Ê®°ÊãüÊïôÂ∏àÁî≤",
+        staffRole: "ÊïôÂ∏à",
+        category: "TEACHING_QUALIFICATION",
+        issueDate: "2025-01-01",
+        expiryDate: "2026-10-30",
+        expiryStatus: "EXPIRING_SOON",
+        responsibleRole: "CAMPUS_OWNER",
+        updatedAt: "2026-10-16T08:00:00.000Z",
+        history: [],
+      },
+    ],
+    "owner-west": [],
+    "owner-other-tenant": [],
+  };
+  let nextCredentialId = 1;
+  let failNextStaffCredentialRead = false;
+  const makeMonthlyFeedbackRow = (id, month) => ({
+    id,
+    version: 1,
+    sourceVersion: 1,
+    status: "SUBMITTED",
+    month,
+    classRef: "ÂêàÊàêÁè≠Á∫ßÁî≤",
+    audience: "STAFF_INTERNAL",
+    sourceCounts: { GROWTH_RECORD: 1, ATTENDANCE_OVERVIEW: 0, STAFF_DAILY: 1 },
+    supplements: {
+      learningParticipation: "PROGRESSING",
+      dailyHabits: "KEEP_WATCHING",
+      activityParticipation: "PROGRESSING",
+      familySchoolCollaboration: "FOLLOW_UP",
+    },
+    actions: ["confirm", "return"],
+  });
+  const monthlyFeedbackRows = [
+    makeMonthlyFeedbackRow("88888888-8888-4888-8888-888888888881", "2026-10"),
+    makeMonthlyFeedbackRow("99999999-9999-4999-8999-999999999991", "2026-09"),
+  ];
+  let failNextMonthlyFeedbackRead = false;
+  let invalidateNextMonthlyFeedbackRead = false;
+  let conflictNextMonthlyFeedbackWrite = false;
+  let monthlySignedIn = false;
+  const monthlySessionToken = "m".repeat(43);
+  const monthlyApiRequests = [];
+  const monthlyLegacyRequests = [];
+  const localApiCalls = [];
+  const mediaAssets = [
+    {
+      id: "00000000-0000-4000-8000-000000000701",
+      alias: "teacher-profile-placeholder",
+      title: "ÊïôÂ∏à‰ªãÁªçÂç†‰ΩçÂõæ",
+      version: 1,
+      type: "IMAGE",
+      status: "REFERENCED",
+      expiresOn: "2026-12-31",
+      references: [
+        {
+          id: "00000000-0000-4000-8000-000000000801",
+          label: "ÊïôÂ∏à‰ªãÁªç",
+          kind: "TEACHER_INTRO",
+        },
+      ],
+    },
+    {
+      id: "00000000-0000-4000-8000-000000000703",
+      alias: "activity-cover-placeholder",
+      title: "Ê¥ªÂä®Â∞ÅÈù¢Âç†‰ΩçÂõæ",
+      version: 1,
+      type: "IMAGE",
+      status: "AVAILABLE",
+      expiresOn: "2026-12-31",
+      references: [],
+    },
+  ];
+  const fulfillJson = (route, body, status = 200) =>
+    route.fulfill({
+      status,
+      contentType: "application/json",
+      body: JSON.stringify(body),
+    });
+  const { browser, baseUrl, nextMode } = await launchAdminBrowser(t);
+  const page = await browser.newPage({
+    viewport: { width: 1365, height: 900 },
+  });
+  page.on("response", (response) => {
+    const url = new URL(response.url());
+    if (url.origin === baseUrl && response.status() === 404)
+      notFoundResponses.push({ method: response.request().method(), path: url.pathname });
+    if (url.origin === baseUrl && url.pathname === "/api/admin/me") {
+      adminMeResponseStatuses.set(response.request(), response.status());
+      adminMeResponseEvents.push({
+        sequence: ++diagnosticSequence,
+        at: Date.now(),
+        status: response.status(),
+        pageUrl: page.url(),
+        requestStart: adminMeRequestStarts.get(response.request()) ?? null,
+      });
+    }
+    if (
+      url.origin === baseUrl &&
+      url.pathname.startsWith("/api/admin/") &&
+      response.status() === 401
+    )
+      expectedAdminUnauthorizedResponses += 1;
+  });
+  page.on("requestfinished", (request) => {
+    const url = new URL(request.url());
+    if (url.origin !== baseUrl || url.pathname !== "/api/admin/me") return;
+    adminMeFinishedEvents.push({
+      sequence: ++diagnosticSequence,
+      finishedAt: Date.now(),
+      status: adminMeResponseStatuses.get(request) ?? null,
+      pageUrl: page.url(),
+      requestStart: adminMeRequestStarts.get(request) ?? null,
+    });
+  });
+  page.on("pageerror", (error) => browserErrors.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() !== "error") return;
+    const text = message.text();
+    if (expectedMembership503ConsoleError && text.includes("503 (Service Unavailable)")) {
+      expectedMembership503ConsoleError = false;
+      return;
+    }
+    if (expectedMonthlyFeedback503ConsoleError && text.includes("503 (Service Unavailable)")) {
+      expectedMonthlyFeedback503ConsoleError = false;
+      return;
+    }
+    if (expectedMonthlyFeedback409ConsoleError && text.includes("409 (Conflict)")) {
+      expectedMonthlyFeedback409ConsoleError = false;
+      return;
+    }
+    if (expectedStaffCredentials503ConsoleError && text.includes("503 (Service Unavailable)")) {
+      expectedStaffCredentials503ConsoleError = false;
+      return;
+    }
+    browserErrors.push(text);
+  });
+  page.on("request", (request) => {
+    const requestUrl = new URL(request.url());
+    if (
+      requestUrl.pathname.startsWith("/local/") &&
+      (requestUrl.pathname.includes("monthly-feedback") ||
+        new URL(page.url()).pathname === "/admin/monthly-feedback-review")
+    )
+      monthlyLegacyRequests.push({ method: request.method(), path: requestUrl.pathname });
+    if (new URL(request.url()).pathname !== "/api/admin/me") return;
+    let frameUrl = "unavailable";
+    try {
+      frameUrl = request.frame().url();
+    } catch {
+      // Keep the diagnostic record if the request frame is already detached.
+    }
+    const requestStart = {
+      sequence: ++diagnosticSequence,
+      startedAt: Date.now(),
+      method: request.method(),
+      pageUrl: page.url(),
+      frameUrl,
+      hasSessionCookie: null,
+    };
+    adminMeRequestStarts.set(request, requestStart);
+    adminMeHeaderReads.push(
+      request
+        .allHeaders()
+        .then((headers) => {
+          requestStart.hasSessionCookie = (headers.cookie ?? "")
+            .split(";")
+            .some((part) => part.trim().startsWith("student_care_admin_session="));
+        })
+        .catch(() => undefined),
+    );
+  });
+  page.on("framenavigated", (frame) => {
+    if (frame !== page.mainFrame()) return;
+    mainFrameNavigations.push({
+      sequence: ++diagnosticSequence,
+      at: Date.now(),
+      url: frame.url(),
+    });
+  });
+  page.on("requestfailed", (request) => {
+    failedRequests.push({
+      url: request.url(),
+      error: request.failure()?.errorText ?? "unknown",
+      resourceType: request.resourceType(),
+      isNavigationRequest: request.isNavigationRequest(),
+      pageUrl: page.url(),
+      requestStart: adminMeRequestStarts.get(request) ?? null,
+      failureSequence: ++diagnosticSequence,
+      failedAt: Date.now(),
+    });
+  });
+  await page.route("**/*", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname === "/favicon.ico") return route.fulfill({ status: 204, body: "" });
+    if (url.origin === baseUrl && url.pathname === "/api/admin/student-transfers") {
+      if (route.request().method() === "GET")
+        return fulfillJson(route, {
+          data: {
+            canRequest: !transferReviewer,
+            canReview: transferReviewer,
+            students: transferReviewer ? [] : [transferStudent],
+            destinationClasses: transferReviewer ? [] : ["ÂêàÊàêÁî≤Áè≠", "ÂêàÊàê‰πôÁè≠"],
+            requests: transferRows.map(transferProjection),
+          },
+        });
+      const body = route.request().postDataJSON();
+      transferRequests.push(body);
+      const row = {
+        id: "00000000-0000-4000-8000-000000000603",
+        studentId: transferStudent.id,
+        studentLabel: transferStudent.label,
+        sourceClassRef: "ÂêàÊàêÁî≤Áè≠",
+        destinationClassRef: body.destination_class_ref,
+        status: "PENDING",
+        version: 1,
+        requestedAt: "2026-10-30T08:00:00.000Z",
+        reviewedAt: null,
+        events: [
+          {
+            action: "CREATED",
+            actorId: "11111111-1111-4111-8111-111111111111",
+            version: 1,
+            occurredAt: "2026-10-30T08:00:00.000Z",
+          },
+        ],
+      };
+      transferRows.push(row);
+      return fulfillJson(route, { data: transferProjection(row) });
+    }
+    if (
+      url.origin === baseUrl &&
+      /^\/api\/admin\/student-transfers\/[^/]+\/review$/u.test(url.pathname)
+    ) {
+      const body = route.request().postDataJSON();
+      transferRequests.push(body);
+      const row = transferRows.find((entry) => entry.id === url.pathname.split("/")[4]);
+      assert.ok(row);
+      assert.equal(transferReviewer, true);
+      assert.equal(body.expected_version, row.version);
+      row.status = body.decision === "APPROVE" ? "APPROVED" : "REJECTED";
+      row.version = 2;
+      row.reviewedAt = "2026-10-30T08:01:00.000Z";
+      row.events.push({
+        action: row.status,
+        actorId: reviewerId,
+        version: 2,
+        occurredAt: row.reviewedAt,
+      });
+      return fulfillJson(route, { data: transferProjection(row) });
+    }
+    if (url.origin === baseUrl && url.pathname === "/api/admin/fees") {
+      if (route.request().method() === "GET")
+        return fulfillJson(route, {
+          data: { synthetic: true, students: [feeStudent], documents: feeDocuments },
+        });
+      const body = route.request().postDataJSON();
+      feeRequests.push({ method: "POST", path: url.pathname, body });
+      assert.deepEqual(Object.keys(body).sort(), [
+        "amount_minor",
+        "document_type",
+        "period",
+        "student_id",
+        "summary",
+        "title",
+        "valid_from",
+        "valid_to",
+      ]);
+      const document = {
+        id: "00000000-0000-4000-8000-000000000502",
+        version: 1,
+        documentType: body.document_type,
+        title: body.title,
+        studentId: body.student_id,
+        studentLabel: feeStudent.label,
+        period: body.period,
+        amountMinor: body.amount_minor,
+        status: "AVAILABLE",
+        validFrom: body.valid_from,
+        validTo: body.valid_to,
+        summary: body.summary,
+        synthetic: true,
+      };
+      feeDocuments.unshift(document);
+      return fulfillJson(route, { data: document }, 201);
+    }
+    if (url.origin === baseUrl && /^\/api\/admin\/fees\/[0-9a-f-]+\/revoke$/iu.test(url.pathname)) {
+      const body = route.request().postDataJSON();
+      feeRequests.push({ method: "POST", path: url.pathname, body });
+      const document = feeDocuments.find((row) => row.id === url.pathname.split("/")[4]);
+      assert.ok(document);
+      assert.equal(body.expected_version, document.version);
+      document.version += 1;
+      document.status = "REVOKED";
+      return fulfillJson(route, {
+        data: {
+          id: document.id,
+          version: document.version,
+          status: document.status,
+          synthetic: true,
+        },
+      });
+    }
+    if (url.origin === baseUrl && url.pathname === "/api/admin/learning-institution-setting") {
+      const request = route.request();
+      if (request.method() === "GET")
+        return fulfillJson(route, { data: learningInstitutionSetting });
+      if (request.method() === "POST") {
+        const body = JSON.parse(request.postData() ?? "{}");
+        assert.deepEqual(Object.keys(body).sort(), ["enabled", "expectedVersion"]);
+        if (body.expectedVersion !== learningInstitutionSetting.version)
+          return fulfillJson(route, { error: { code: "CONFLICT_STATE" } }, 409);
+        learningInstitutionSetting = {
+          enabled: body.enabled,
+          version: learningInstitutionSetting.version + 1,
+        };
+        return fulfillJson(route, { data: learningInstitutionSetting });
+      }
+      return fulfillJson(route, { error: { code: "NOT_FOUND" } }, 404);
+    }
+    if (url.origin === localApiOrigin && url.pathname.startsWith("/local/")) {
+      const request = route.request();
+      const method = request.method();
+      localApiCalls.push({ method, path: url.pathname });
+      if (url.pathname === "/local/sessions" && method === "POST") {
+        const profile = JSON.parse(request.postData() ?? "{}").profile;
+        if (
+          !Object.hasOwn(membershipRows, profile) &&
+          profile !== "owner-east" &&
+          profile !== "owner-west" &&
+          profile !== "platform-admin"
+        )
+          return fulfillJson(route, { error: { code: "UNAVAILABLE" } }, 403);
+        const handle =
+          profile === "owner-east"
+            ? "e".repeat(43)
+            : profile === "owner-west"
+              ? "w".repeat(43)
+              : profile === "platform-admin"
+                ? "p".repeat(43)
+                : "o".repeat(43);
+        handles.set(handle, profile);
+        return fulfillJson(route, { handle }, 201);
+      }
+      const authorization = request.headers().authorization ?? "";
+      const profile = handles.get(authorization.replace(/^Bearer /u, ""));
+      if (!profile) return fulfillJson(route, { error: { code: "UNAUTHORIZED" } }, 401);
+      if (url.pathname === "/local/session" && method === "GET")
+        return fulfillJson(route, {
+          mode: "local-synthetic",
+          profile,
+          actorId: reviewerId,
+          label:
+            profile === "owner-east"
+              ? "Á§∫‰æã‰∏úÊ†°Âå∫Ë¥üË¥£‰∫∫"
+              : profile === "owner-west"
+                ? "Á§∫‰æãË•øÊ†°Âå∫Ë¥üË¥£‰∫∫"
+                : "Á§∫‰æãÂè¶‰∏ÄÊú∫ÊûÑË¥üË¥£‰∫∫",
+          tenantId:
+            profile === "platform-admin"
+              ? null
+              : request.headers().referer?.includes("/admin/leave-review")
+                ? "00000000-0000-4000-8000-000000000064"
+                : profile === "owner-other-tenant"
+                  ? "00000000-0000-4000-8000-000000000200"
+                  : "00000000-0000-4000-8000-000000000100",
+          campusId:
+            profile === "platform-admin"
+              ? null
+              : request.headers().referer?.includes("/admin/leave-review")
+                ? "00000000-0000-4000-8000-000000000065"
+                : profile === "owner-east"
+                  ? "00000000-0000-4000-8000-000000000101"
+                  : profile === "owner-west"
+                    ? "00000000-0000-4000-8000-000000000102"
+                    : "00000000-0000-4000-8000-000000000201",
+          classIds: profile === "platform-admin" ? [] : ["00000000-0000-4000-8000-000000000103"],
+          actions: [
+            "binding:review",
+            "audit:read",
+            "learning:safety-summary",
+            "supply:review",
+            "supply:claim",
+            "health:review",
+            "health:supplement",
+            "health:publish",
+            "health:revoke",
+            "leave:review",
+            "privacy:review",
+            "task:read",
+            "task:assign",
+            "task:check",
+            "task:cancel",
+            "membership:manage",
+            "feedback:read",
+            "feedback:review",
+            "feedback:publish",
+            ...(profile === "platform-admin" ? ["media:summary"] : []),
+            ...(profile === "owner-east" || profile === "owner-west"
+              ? ["media:read", "media:manage", "learning:institution-setting"]
+              : []),
+          ],
+        });
+      if (url.pathname === "/local/media-assets" && method === "GET")
+        return fulfillJson(route, {
+          assets: profile === "owner-east" ? mediaAssets : [],
+        });
+      if (url.pathname === "/local/media-asset-events" && method === "GET")
+        return fulfillJson(route, []);
+      if (url.pathname === "/local/media-asset-summary" && method === "GET")
+        return fulfillJson(route, {
+          total: 10,
+          available: 5,
+          referenced: 2,
+          expired: 1,
+          archived: 1,
+          revoked: 1,
+          deleted: 0,
+        });
+      if (url.pathname === "/local/memberships" && method === "GET" && failNextMembershipRead) {
+        failNextMembershipRead = false;
+        expectedMembership503ConsoleError = true;
+        expectedMembership503Responses += 1;
+        return fulfillJson(route, { error: { code: "UNAVAILABLE" } }, 503);
+      }
+      if (url.pathname === "/local/memberships" && method === "GET")
+        return fulfillJson(route, membershipRows[profile] ?? []);
+      if (url.pathname === "/local/membership-events" && method === "GET")
+        return fulfillJson(route, profile === "owner-east" ? membershipEvents : []);
+      if (url.pathname === "/local/fee-summary" && method === "GET")
+        return fulfillJson(route, {
+          scope: "platform",
+          synthetic: true,
+          totalDocuments: 9,
+          activeDocuments: 5,
+          paidDocuments: 2,
+          unavailableDocuments: 4,
+          documentTypes: ["AGREEMENT", "BILL", "FEE_ITEM", "RECEIPT"],
+        });
+      if (url.pathname === "/local/fee-ledger-summary" && method === "GET")
+        return fulfillJson(route, {
+          scope: "platform",
+          synthetic: true,
+          entryCount: 4,
+          countsByType: { CHARGE: 2, PAYMENT: 1, REFUND: 1 },
+        });
+      if (url.pathname === "/local/learning-safety-summary" && method === "GET")
+        return fulfillJson(route, {
+          metricVersion: "LEARNING_SAFETY_V2",
+          totalSessions: 8,
+          activeSessions: 1,
+          completedSessions: 4,
+          closedSessions: 2,
+          expiredSessions: 1,
+          hintRequests: 12,
+          teacherFollowUps: 2,
+          refusedActions: 1,
+          teacherHandoffs: 1,
+          fixedGuidanceSessions: 8,
+          firstAttemptSuccesses: 2,
+          hintAssistedSuccesses: 4,
+          mainAnswerAttempts: 12,
+          consolidationAnswered: 8,
+          consolidationCorrect: 6,
+          postHintAnswerRate: { numerator: 4, denominator: 6, percent: 66.7 },
+          consolidationCompletionRate: {
+            numerator: 6,
+            denominator: 8,
+            percent: 75,
+          },
+          teacherInterventionRate: {
+            numerator: 2,
+            denominator: 8,
+            percent: 25,
+          },
+          answerErrorRate: { numerator: 2, denominator: 12, percent: 16.7 },
+          severeSafetyEvents: 0,
+        });
+      const membershipMatch = url.pathname.match(/^\/local\/memberships\/([^/]+)$/u);
+      if (membershipMatch && method === "PATCH") {
+        const row = membershipRows[profile]?.find(({ actorId }) => actorId === membershipMatch[1]);
+        const submitted = JSON.parse(request.postData() ?? "{}");
+        if (!row || submitted.version !== row.version || profile === "owner-other-tenant")
+          return fulfillJson(route, { error: { code: "STATE_CONFLICT" } }, 409);
+        if (!["ACTIVE", "SUSPENDED", "REVOKED"].includes(submitted.status))
+          return fulfillJson(route, { error: { code: "INVALID_INPUT" } }, 400);
+        const fromStatus = row.status;
+        row.status = submitted.status;
+        row.version += 1;
+        membershipEvents.push({
+          actorId: reviewerId,
+          targetActorId: row.actorId,
+          fromStatus,
+          toStatus: row.status,
+          occurredAt: "2026-10-16T08:00:00.000Z",
+        });
+        return fulfillJson(route, row);
+      }
+      if (url.pathname === "/local/staff-credentials" && method === "GET") {
+        if (failNextStaffCredentialRead) {
+          failNextStaffCredentialRead = false;
+          expectedStaffCredentials503ConsoleError = true;
+          expectedStaffCredentials503Responses += 1;
+          return fulfillJson(route, { error: { code: "UNAVAILABLE" } }, 503);
+        }
+        return fulfillJson(route, staffCredentialRows[profile] ?? []);
+      }
+      if (url.pathname === "/local/staff-credentials" && method === "POST") {
+        const submitted = JSON.parse(request.postData() ?? "{}");
+        const staff = membershipRows[profile]?.find(
+          ({ actorId, status }) => actorId === submitted.staffId && status === "ACTIVE",
+        );
+        if (!staff || profile !== "owner-east")
+          return fulfillJson(route, { error: { code: "FORBIDDEN" } }, 403);
+        const row = {
+          id: `aaaaaaaa-aaaa-4aaa-8aaa-${String(nextCredentialId++).padStart(12, "0")}`,
+          version: 1,
+          staffId: staff.actorId,
+          staffLabel: staff.label,
+          staffRole: staff.role,
+          category: submitted.category,
+          issueDate: submitted.issueDate,
+          expiryDate: submitted.expiryDate,
+          expiryStatus:
+            submitted.expiryDate < "2026-10-16"
+              ? "EXPIRED"
+              : submitted.expiryDate <= "2026-11-15"
+                ? "EXPIRING_SOON"
+                : "VALID",
+          responsibleRole: submitted.responsibleRole,
+          updatedAt: "2026-10-16T08:20:00.000Z",
+          history: [],
+        };
+        staffCredentialRows[profile].push(row);
+        return fulfillJson(route, row, 201);
+      }
+      const credentialMatch = url.pathname.match(/^\/local\/staff-credentials\/([^/]+)$/u);
+      if (credentialMatch && method === "PATCH") {
+        const row = staffCredentialRows[profile]?.find(({ id }) => id === credentialMatch[1]);
+        const submitted = JSON.parse(request.postData() ?? "{}");
+        if (!row || row.version !== submitted.version)
+          return fulfillJson(route, { error: { code: "STATE_CONFLICT" } }, 409);
+        row.history.push({
+          version: row.version,
+          issueDate: row.issueDate,
+          expiryDate: row.expiryDate,
+          responsibleRole: row.responsibleRole,
+          updatedAt: row.updatedAt,
+        });
+        Object.assign(row, submitted, {
+          version: row.version + 1,
+          expiryStatus:
+            submitted.expiryDate < "2026-10-16"
+              ? "EXPIRED"
+              : submitted.expiryDate <= "2026-11-15"
+                ? "EXPIRING_SOON"
+                : "VALID",
+          updatedAt: "2026-10-16T08:30:00.000Z",
+        });
+        return fulfillJson(route, row);
+      }
+      if (url.pathname === "/local/meals" && method === "GET") return fulfillJson(route, []);
+      if (
+        method === "GET" &&
+        [
+          "/local/staff-tasks",
+          "/local/staff-task-review",
+          "/local/staff-task-assignees",
+          "/local/student-options",
+        ].includes(url.pathname)
+      )
+        return fulfillJson(route, []);
+      if (url.pathname === "/local/binding-applications" && method === "GET")
+        return fulfillJson(route, profile === "owner-east" ? eastRows : []);
+      if (url.pathname === "/local/supply-requests-review" && method === "GET")
+        return fulfillJson(route, []);
+      if (url.pathname === "/local/supply-requests" && method === "GET")
+        return fulfillJson(route, []);
+      if (url.pathname === "/local/supply-summary" && method === "GET")
+        return fulfillJson(route, {
+          synthetic: true,
+          counts: {
+            DRAFT: 0,
+            SUBMITTED: 0,
+            CONFIRMED: 0,
+            RETURNED: 0,
+            READY: 0,
+            OUT_OF_STOCK: 0,
+            CANCELLED: 0,
+            CLAIMED: 0,
+          },
+        });
+      if (url.pathname === "/local/health-incident-review" && method === "GET")
+        return fulfillJson(route, []);
+      if (url.pathname === "/local/leave-requests" && method === "GET")
+        return fulfillJson(route, []);
+      if (url.pathname === "/local/privacy-requests" && method === "GET")
+        return fulfillJson(route, privacyRows.get(profile) ?? []);
+      if (url.pathname === "/local/audit" && method === "GET") return fulfillJson(route, []);
+      const reviewMatch = url.pathname.match(/^\/local\/binding-applications\/([^/]+)\/review$/u);
+      if (reviewMatch && method === "POST") {
+        if (profile !== "owner-east")
+          return fulfillJson(route, { error: { code: "FORBIDDEN" } }, 403);
+        const row = eastRows.find((candidate) => candidate.id === reviewMatch[1]);
+        const submitted = JSON.parse(request.postData() ?? "{}");
+        if (!row || row.status !== "PENDING" || submitted.version !== row.version)
+          return fulfillJson(route, { error: { code: "STATE_CONFLICT" } }, 409);
+        row.status = submitted.action === "approve" ? "APPROVED" : "REJECTED";
+        row.version += 1;
+        return fulfillJson(route, row);
+      }
+      const privacyReviewMatch = url.pathname.match(
+        /^\/local\/privacy-requests\/([^/]+)\/review$/u,
+      );
+      if (privacyReviewMatch && method === "POST") {
+        if (profile !== "owner-east")
+          return fulfillJson(route, { error: { code: "UNAVAILABLE" } }, 403);
+        const row = privacyRows.get(profile)?.find(({ id }) => id === privacyReviewMatch[1]);
+        const submitted = JSON.parse(request.postData() ?? "{}");
+        const expectedStatus = submitted.action === "START" ? "SUBMITTED" : "IN_REVIEW";
+        if (!row || row.status !== expectedStatus || submitted.version !== row.version)
+          return fulfillJson(route, { error: { code: "STATE_CONFLICT" } }, 409);
+        row.status = submitted.action === "START" ? "IN_REVIEW" : "SIMULATED_COMPLETE";
+        row.version += 1;
+        row.updatedAt = "2026-10-14T08:10:00.000Z";
+        return fulfillJson(route, row);
+      }
+      return fulfillJson(route, { error: { code: "UNAVAILABLE" } }, 403);
+    }
+    if (
+      url.origin === baseUrl &&
+      url.pathname === "/api/admin/me" &&
+      route.request().method() === "GET"
+    )
+      return fulfillJson(route, { error: { code: "UNAUTHENTICATED" } }, 401);
+    if (url.origin !== baseUrl) {
+      externalRequests.push(url.origin);
+      return route.abort();
+    }
+    return route.continue();
+  });
+
+  const monthlyApiFixture = async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    if (
+      url.origin !== baseUrl ||
+      !(
+        ["/api/admin/identity/login", "/api/admin/me", "/api/admin/monthly-feedback"].includes(
+          url.pathname,
+        ) || url.pathname.startsWith("/api/admin/monthly-feedback/")
+      )
+    )
+      return route.fallback();
+    const method = request.method();
+    const headers = await request.allHeaders();
+    const authenticated =
+      monthlySignedIn &&
+      (headers.cookie ?? "")
+        .split(";")
+        .some((part) => part.trim() === "student_care_admin_session=" + monthlySessionToken);
+    const submitted = request.postData() ? request.postDataJSON() : undefined;
+    monthlyApiRequests.push({
+      method,
+      path: url.pathname,
+      authenticated,
+      ...(url.pathname.startsWith("/api/admin/monthly-feedback") ? { body: submitted } : {}),
+    });
+    assert.equal(url.search, "", "Monthly requests must not supply client scope or query fields.");
+    if (url.pathname === "/api/admin/identity/login" && method === "POST") {
+      assert.deepEqual(submitted, {
+        username: "monthly-reviewer-demo",
+        password: "synthetic-only-password",
+      });
+      monthlySignedIn = true;
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: {
+          "set-cookie":
+            "student_care_admin_session=" +
+            monthlySessionToken +
+            "; Path=/api/admin; HttpOnly; SameSite=Lax",
+        },
+        body: JSON.stringify({ data: { expires_at: "2099-01-01T00:00:00.000Z" } }),
+      });
+    }
+    if (!authenticated) return fulfillJson(route, { error: { code: "UNAUTHENTICATED" } }, 401);
+    if (url.pathname === "/api/admin/me" && method === "GET")
+      return fulfillJson(route, {
+        data: {
+          display_name: "ÂêàÊàêÊúàÂ∫¶ÂÆ°Ê†∏Âëò",
+          memberships: [
+            {
+              status: "ACTIVE",
+              capabilities: [
+                "identity:read",
+                "feedback:read",
+                "feedback:review",
+                "feedback:publish",
+              ],
+            },
+          ],
+        },
+      });
+    const envelope = (data) => ({
+      data,
+      request_id: "00000000-0000-4000-8000-000000000345",
+    });
+    if (url.pathname === "/api/admin/monthly-feedback" && method === "GET") {
+      if (failNextMonthlyFeedbackRead) {
+        failNextMonthlyFeedbackRead = false;
+        expectedMonthlyFeedback503ConsoleError = true;
+        expectedMonthlyFeedback503Responses += 1;
+        return fulfillJson(route, { error: { code: "UNAVAILABLE" } }, 503);
+      }
+      if (invalidateNextMonthlyFeedbackRead) {
+        invalidateNextMonthlyFeedbackRead = false;
+        const row = monthlyFeedbackRows[0];
+        row.status = "REVIEW_REQUIRED";
+        row.version += 1;
+        row.sourceVersion += 1;
+        row.sourceCounts.GROWTH_RECORD += 1;
+        row.actions = [];
+      }
+      return fulfillJson(route, envelope({ records: monthlyFeedbackRows, canCreate: false }));
+    }
+    const match = url.pathname.match(
+      /^\/api\/admin\/monthly-feedback\/([0-9a-f-]{36})\/(review|publish)$/iu,
+    );
+    if (!match || method !== "POST")
+      return fulfillJson(route, { error: { code: "NOT_FOUND_SCOPED" } }, 404);
+    assert.deepEqual(
+      Object.keys(submitted).sort(),
+      match[2] === "review" ? ["action", "version"] : ["version"],
+    );
+    assert.equal(Number.isSafeInteger(submitted.version) && submitted.version > 0, true);
+    const row = monthlyFeedbackRows.find(({ id }) => id === match[1]);
+    assert.ok(row, "The page must act on an actual row returned by its list.");
+    assert.equal(submitted.version, row.version, "The page must send the last confirmed version.");
+    if (conflictNextMonthlyFeedbackWrite) {
+      conflictNextMonthlyFeedbackWrite = false;
+      row.version += 1;
+      row.sourceVersion += 1;
+      row.status = "REVIEW_REQUIRED";
+      row.actions = [];
+      expectedMonthlyFeedback409ConsoleError = true;
+      return fulfillJson(route, { error: { code: "CONFLICT_STATE" } }, 409);
+    }
+    if (match[2] === "review") {
+      assert.ok(["CONFIRM", "RETURN"].includes(submitted.action));
+      assert.ok(row.actions.includes(submitted.action === "CONFIRM" ? "confirm" : "return"));
+      row.status = submitted.action === "CONFIRM" ? "CONFIRMED" : "RETURNED";
+      row.actions = row.status === "CONFIRMED" ? ["return", "publish"] : [];
+    } else {
+      assert.equal(row.status, "CONFIRMED");
+      assert.ok(row.actions.includes("publish"));
+      row.status = "PUBLISHED";
+      row.actions = [];
+    }
+    row.version += 1;
+    return fulfillJson(route, envelope(row));
+  };
+  await page.goto(`${baseUrl}/admin/institution`, { waitUntil: "networkidle" });
+  assert.equal(await page.locator("h1").innerText(), "Êú∫ÊûÑÊ¶ÇËßà");
+  assert.equal(await page.locator("#admin-navigation a").count(), 32);
+  const institutionSettingPanel = page.locator("[data-learning-institution-setting]");
+  await institutionSettingPanel.waitFor();
+  await page.getByText("Â∑≤ÂÖ≥Èó≠", { exact: true }).waitFor();
+  await institutionSettingPanel.getByRole("button", { name: "ÂºÄÂêØÂ≠¶‰π†ËæÖÂä©" }).click();
+  await page.getByText("Êú¨Ê†°Âå∫Â∑≤‰øùÂ≠òÂºÄÂêØËÆæÁΩÆ„ÄÇ", { exact: true }).waitFor();
+  await institutionSettingPanel.getByRole("button", { name: "ÂÖ≥Èó≠Â≠¶‰π†ËæÖÂä©" }).click();
+  await page.getByText("Êú¨Ê†°Âå∫Â∑≤‰øùÂ≠òÂÖ≥Èó≠ËÆæÁΩÆ„ÄÇ", { exact: true }).waitFor();
+  for (const [href, label, pageTitle = label] of browserRouteOrder) {
+    const link = page.locator(`#admin-navigation a[href="${href}"]`);
+    assert.equal(await link.innerText(), label);
+    if (href === "/admin/staff-credentials") {
+      // Reset this shared fixture before page load so the client reads the active membership.
+      membershipRows["owner-east"][0].status = "ACTIVE";
+    }
+    const anonymousDailyResponse =
+      href === "/admin/staff-daily-review"
+        ? page.waitForResponse(
+            (response) =>
+              response.url() === `${baseUrl}/api/admin/me` &&
+              response.request().method() === "GET" &&
+              response.status() === 401,
+          )
+        : null;
+    await link.click();
+    await page.waitForURL(`**${href}`);
+    await page.waitForLoadState("networkidle");
+    assert.equal(await page.locator("h1").innerText(), pageTitle);
+    await page.waitForFunction(
+      (expectedTitle) => document.title === expectedTitle,
+      `${pageTitle} | ÂêåËäØÂ≠¶Âõ≠ÁÆ°ÁêÜÁ´Ø`,
+    );
+    assert.equal(await page.title(), `${pageTitle} | ÂêåËäØÂ≠¶Âõ≠ÁÆ°ÁêÜÁ´Ø`);
+    if (href === "/admin/institution") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      const overview = page.locator(".institution-overview-panel");
+      assert.equal(await overview.count(), 1);
+      assert.match(await overview.innerText(), /Ê®°ÊãüÊú∫ÊûÑ/u);
+      assert.match(await overview.innerText(), /Ê®°Êãü‰∏úÊ†°Âå∫/u);
+      for (const destination of [
+        "/admin/binding-review",
+        "/admin/care-record-review",
+        "/admin/home-content",
+        "/admin/public-teachers",
+      ]) {
+        await overview.locator(`a[href="${destination}"]`).waitFor();
+      }
+      if (process.env.ADMIN_INSTITUTION_OVERVIEW_EVIDENCE_DIR) {
+        const evidenceDir = resolve(process.env.ADMIN_INSTITUTION_OVERVIEW_EVIDENCE_DIR);
+        await mkdir(evidenceDir, { recursive: true });
+        await page.screenshot({
+          path: resolve(evidenceDir, "desktop.png"),
+          fullPage: true,
+        });
+      }
+    } else if (href === "/admin/staff") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      const panel = page.locator("[data-staff-members-panel]");
+      await page.locator("[data-staff-members-state='READY']").waitFor();
+      assert.equal(await panel.count(), 1);
+      assert.equal(await page.locator("[data-staff-member-row]").count(), 1);
+      assert.equal(await panel.getByText("Ê®°ÊãüÊïôÂ∏àÁî≤", { exact: true }).count(), 1);
+      assert.equal(
+        await page
+          .locator("body")
+          .evaluate((body) => /66666666|00000000-0000-4000/u.test(body.innerText)),
+        false,
+      );
+      const desktopLayout = await page.evaluate(() => {
+        const sidebar = document.querySelector(".admin-sidebar").getBoundingClientRect();
+        const content = document.querySelector(".admin-main").getBoundingClientRect();
+        return {
+          sidebarLeft: sidebar.left,
+          sidebarWidth: sidebar.width,
+          contentLeft: content.left,
+        };
+      });
+      assert.equal(desktopLayout.sidebarLeft, 0);
+      assert.ok(
+        desktopLayout.contentLeft >= desktopLayout.sidebarWidth,
+        JSON.stringify(desktopLayout),
+      );
+      if (process.env.ADMIN_STAFF_MEMBERS_EVIDENCE_DIR) {
+        const evidenceDir = resolve(process.env.ADMIN_STAFF_MEMBERS_EVIDENCE_DIR);
+        await mkdir(evidenceDir, { recursive: true });
+        await page.screenshot({
+          path: resolve(evidenceDir, "desktop.png"),
+          fullPage: true,
+        });
+        await page.setViewportSize({ width: 390, height: 844 });
+        await page.waitForFunction(
+          () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+        );
+        assert.equal(await page.locator(".nav-toggle").getAttribute("aria-expanded"), "false");
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390);
+        const refreshButtonBox = await page.getByRole("button", { name: "Âà∑Êñ∞ÂêçÂçï" }).boundingBox();
+        assert.ok(
+          refreshButtonBox && refreshButtonBox.height <= 52,
+          JSON.stringify(refreshButtonBox),
+        );
+        await page.screenshot({
+          path: resolve(evidenceDir, "mobile.png"),
+          fullPage: true,
+        });
+        await page.setViewportSize({ width: 320, height: 568 });
+        await page.waitForFunction(
+          () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+        );
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 320);
+        await page.setViewportSize({ width: 1365, height: 900 });
+      }
+      failNextMembershipRead = true;
+      await page.getByRole("button", { name: "Âà∑Êñ∞ÂêçÂçï" }).click();
+      await page.locator("[data-staff-members-state='DENIED']").waitFor();
+      await page.waitForTimeout(100);
+      assert.equal(expectedMembership503Responses, 1);
+      assert.equal(expectedMembership503ConsoleError, false);
+      assert.equal(await page.locator("[data-staff-member-row]").count(), 0);
+      assert.equal(await page.getByRole("button", { name: "ÈáçÊñ∞ËøûÊé•" }).count(), 1);
+      await page.getByRole("button", { name: "ÈáçÊñ∞ËøûÊé•" }).click();
+      await page.locator("[data-staff-members-state='READY']").waitFor();
+      assert.equal(await page.locator("[data-staff-member-row]").count(), 1);
+      const member = page.locator("[data-staff-member-row='0']");
+      await member.getByRole("button", { name: "ÂÅúÁî®" }).click();
+      await member.locator('[data-staff-member-status="SUSPENDED"]').waitFor();
+      await member.getByRole("button", { name: "ÊÅ¢Â§ç" }).click();
+      await member.locator('[data-staff-member-status="ACTIVE"]').waitFor();
+      page.once("dialog", (dialog) => dialog.accept());
+      await member.getByRole("button", { name: "Êí§ÈîÄË¥¶Âè∑" }).click();
+      await member.locator('[data-staff-member-status="REVOKED"]').waitFor();
+      assert.equal(await member.getByRole("button").count(), 0);
+      await page.locator("#staff-members-profile").selectOption("owner-west");
+      await page.getByText("Ê®°ÊãüÊïôÂ∏à‰πô", { exact: true }).waitFor();
+      assert.equal(await page.getByText("Ê®°ÊãüÊïôÂ∏àÁî≤", { exact: true }).count(), 0);
+      await page.locator("#staff-members-profile").selectOption("owner-other-tenant");
+      await page.getByText("ÂΩìÂâçÊéàÊùÉÊ†°Âå∫ÊöÇÊó†ÂèØÁÆ°ÁêÜÂëòÂ∑•„ÄÇ", { exact: true }).waitFor();
+      await page.locator("#staff-members-profile").selectOption("owner-east");
+      await page.locator('[data-staff-member-status="REVOKED"]').waitFor();
+      assert.equal(
+        localApiCalls.filter(
+          ({ path, method }) => method === "PATCH" && path.startsWith("/local/memberships/"),
+        ).length,
+        3,
+      );
+      assert.equal(
+        localApiCalls.filter(
+          ({ path }) => path === "/local/memberships" || path === "/local/membership-events",
+        ).length > 0,
+        true,
+      );
+    } else if (href === "/admin/staff-tasks") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      await page.locator("[data-admin-task-state='UNAUTHENTICATED']").waitFor();
+      assert.equal(await page.locator("[data-admin-task-form]").count(), 0);
+      assert.equal(await page.locator("[data-admin-task-card]").count(), 0);
+      const taskLogin = page.getByRole("link", { name: "ÁôªÂΩïÁÆ°ÁêÜÂ∑•‰ΩúÂè∞", exact: true });
+      assert.equal(
+        await taskLogin.getAttribute("href"),
+        "/admin/login?next=%2Fadmin%2Fstaff-tasks",
+      );
+      const taskSessionToken = "t".repeat(43);
+      let taskSignedIn = false;
+      const taskApiRequests = [];
+      const taskApiFixture = async (route) => {
+        const request = route.request();
+        const url = new URL(request.url());
+        if (
+          url.origin !== baseUrl ||
+          !["/api/admin/identity/login", "/api/admin/me", "/api/admin/tasks"].includes(url.pathname)
+        )
+          return route.fallback();
+        const method = request.method();
+        const headers = await request.allHeaders();
+        const authenticated =
+          taskSignedIn &&
+          (headers.cookie ?? "")
+            .split(";")
+            .some((part) => part.trim() === "student_care_admin_session=" + taskSessionToken);
+        taskApiRequests.push({ method, path: url.pathname, authenticated });
+        if (url.pathname === "/api/admin/identity/login" && method === "POST") {
+          assert.deepEqual(JSON.parse(request.postData() ?? "{}"), {
+            username: "task-reviewer-demo",
+            password: "synthetic-only-password",
+          });
+          taskSignedIn = true;
+          return route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            headers: {
+              "set-cookie":
+                "student_care_admin_session=" +
+                taskSessionToken +
+                "; Path=/api/admin; HttpOnly; SameSite=Lax",
+            },
+            body: JSON.stringify({ data: { expires_at: "2099-01-01T00:00:00.000Z" } }),
+          });
+        }
+        if (!authenticated) return fulfillJson(route, { error: { code: "UNAUTHENTICATED" } }, 401);
+        if (url.pathname === "/api/admin/me" && method === "GET")
+          return fulfillJson(route, {
+            data: {
+              display_name: "Ê®°Êãü‰ªªÂä°ÂÆ°Ê†∏Âëò",
+              memberships: [
+                { status: "ACTIVE", capabilities: ["identity:read", "task:read", "task:check"] },
+              ],
+            },
+          });
+        if (url.pathname === "/api/admin/tasks" && method === "GET")
+          return fulfillJson(route, { data: { tasks: [], choices: [], canAssign: false } });
+        return fulfillJson(route, { error: { code: "NOT_FOUND" } }, 404);
+      };
+      await page.route("**/api/admin/**", taskApiFixture);
+      try {
+        await taskLogin.click();
+        await page.waitForURL("**/admin/login?next=%2Fadmin%2Fstaff-tasks");
+        await page.locator("#admin-login-username").fill("task-reviewer-demo");
+        await page.locator("#admin-login-password").fill("synthetic-only-password");
+        await page.getByRole("button", { name: "ÁôªÂΩï", exact: true }).click();
+        await page.waitForURL("**/admin/staff-tasks");
+        const tasks = page.locator("[data-admin-task-state='READY']");
+        await tasks.waitFor();
+        assert.equal(await page.locator("[data-admin-task-card]").count(), 0);
+        assert.match(await tasks.innerText(), /ÂΩìÂâçÊ†°Âå∫ËøòÊ≤°Êúâ‰ªªÂä°/u);
+        assert.equal(
+          taskApiRequests.filter(
+            ({ method, path }) => method === "POST" && path === "/api/admin/identity/login",
+          ).length,
+          1,
+        );
+        for (const path of ["/api/admin/me", "/api/admin/tasks"]) {
+          const reads = taskApiRequests.filter((request) => request.path === path);
+          assert.ok(reads.length > 0);
+          assert.ok(reads.every((request) => request.method === "GET" && request.authenticated));
+        }
+      } finally {
+        await page.unroute("**/api/admin/**", taskApiFixture);
+        await page.context().clearCookies({ name: "student_care_admin_session" });
+      }
+    } else if (href === "/admin/staff-daily-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator("[data-staff-daily-review-panel]").count(), 1);
+      await page.getByRole("heading", { name: "ÂæÖÂÆ°Ê†∏Êó•Êä•" }).waitFor();
+      await page.locator("[data-staff-daily-review-state='UNAUTHENTICATED']").waitFor();
+      assert.equal(await (await anonymousDailyResponse).finished(), null);
+      const reportId = "11111111-1111-4111-8111-111111111111";
+      const auditToken = "a".repeat(43);
+      const dailyRow = {
+        id: reportId,
+        version: 2,
+        date: "2026-10-29",
+        authorLabel: "ÂêàÊàêÊïôÂ∏àÁî≤",
+        status: "SUBMITTED",
+        values: {
+          arrival: "ARRIVED_AS_PLANNED",
+          homework: "COMPLETED",
+          activity: "PARTICIPATED",
+          classroom: "ROUTINE",
+          followUp: "NONE",
+        },
+        sourceCounts: { TASK: 0, ATTENDANCE: 0, CARE_RECORD: 0, PICKUP: 0, PICKUP_EXCEPTION: 0 },
+        learningSummary: null,
+        actions: ["confirm", "return"],
+      };
+      const auditEvents = [
+        {
+          action: "CREATED",
+          reportVersion: 1,
+          actorLabel: "ÂêàÊàêÊïôÂ∏àÁî≤",
+          initiatedByLabel: "ÂêàÊàêÊïôÂ∏àÁî≤",
+          occurredAt: "2026-10-29T08:00:00.000Z",
+        },
+        {
+          action: "SUBMITTED",
+          reportVersion: 2,
+          actorLabel: "ÂêàÊàêÊïôÂ∏àÁî≤",
+          initiatedByLabel: "ÂêàÊàêÊïôÂ∏àÁî≤",
+          occurredAt: "2026-10-29T08:10:00.000Z",
+        },
+      ];
+      const auditRequests = [];
+      const dailyAuditFixture = async (route) => {
+        const request = route.request();
+        const url = new URL(request.url());
+        auditRequests.push({ path: url.pathname, method: request.method() });
+        if (url.pathname === "/api/admin/me")
+          return route.fulfill({
+            json: {
+              data: {
+                display_name: "ÂêàÊàêÂÆ°Ê†∏‰∫∫",
+                memberships: [{ status: "ACTIVE", capabilities: ["daily:review"] }],
+              },
+            },
+          });
+        if (url.pathname === "/api/admin/daily-reports" && request.method() === "GET")
+          return route.fulfill({ json: { data: { records: [dailyRow] } } });
+        if (
+          url.pathname === `/api/admin/daily-reports/${reportId}/audit-events` &&
+          request.method() === "GET"
+        )
+          return route.fulfill({ json: { data: { events: auditEvents } } });
+        return route.fulfill({ status: 404, json: { error: { message: "not found" } } });
+      };
+      await page.route("**/api/admin/**", dailyAuditFixture);
+      try {
+        await page.context().addCookies([
+          {
+            name: "student_care_admin_session",
+            value: auditToken,
+            url: baseUrl,
+            httpOnly: true,
+            sameSite: "Lax",
+          },
+        ]);
+        await page.reload();
+        await page.locator("[data-staff-daily-review-state='READY']").waitFor();
+        const toggle = page.locator(`[data-staff-daily-audit-toggle="${reportId}"]`);
+        await toggle.click();
+        const timeline = page.locator(`[data-staff-daily-audit-events="${reportId}"]`);
+        await timeline.getByText("Êèê‰∫§ÂÆ°Ê†∏ ¬∑ Á¨¨ 2 Áâà", { exact: true }).waitFor();
+        assert.equal(await timeline.locator("ol li").count(), 2);
+        assert.match(await timeline.innerText(), /ÂêàÊàêÊïôÂ∏àÁî≤/u);
+        assert.doesNotMatch(await timeline.innerText(), /11111111-1111/u);
+        assert.ok(
+          auditRequests.some(
+            ({ path, method }) =>
+              path === `/api/admin/daily-reports/${reportId}/audit-events` && method === "GET",
+          ),
+        );
+      } finally {
+        await page.unroute("**/api/admin/**", dailyAuditFixture);
+        await page.context().clearCookies({ name: "student_care_admin_session" });
+      }
+    } else if (href === "/admin/staff-credentials") {
+      const panel = page.locator("[data-staff-credentials-state]");
+      await panel.waitFor();
+      await page.locator("[data-staff-credentials-state='READY']").waitFor();
+      assert.equal(await page.locator("[data-staff-credential-row]").count(), 1);
+      assert.equal(await page.getByText("Ê®°ÊãüÊïôÂ∏àÁî≤", { exact: true }).count(), 1);
+      const bodyText = await page.locator("body").innerText();
+      assert.doesNotMatch(bodyText, /00000000-0000-4000|66666666|88888888/u);
+      const bodyHtml = await page.locator("body").evaluate((body) => body.innerHTML);
+      assert.doesNotMatch(bodyHtml, /00000000-0000-4000|66666666|88888888/u);
+
+      const desktopLayout = await page.evaluate(() => {
+        const sidebar = document.querySelector(".admin-sidebar").getBoundingClientRect();
+        const content = document.querySelector(".admin-main").getBoundingClientRect();
+        return {
+          sidebarLeft: sidebar.left,
+          sidebarWidth: sidebar.width,
+          contentLeft: content.left,
+        };
+      });
+      assert.equal(desktopLayout.sidebarLeft, 0);
+      assert.ok(desktopLayout.contentLeft >= desktopLayout.sidebarWidth);
+      if (process.env.ADMIN_STAFF_CREDENTIALS_EVIDENCE_DIR) {
+        const evidenceDir = resolve(process.env.ADMIN_STAFF_CREDENTIALS_EVIDENCE_DIR);
+        await mkdir(evidenceDir, { recursive: true });
+        await page.screenshot({
+          path: resolve(evidenceDir, "desktop.png"),
+          fullPage: true,
+        });
+        for (const width of [390, 320]) {
+          await page.setViewportSize({
+            width,
+            height: width === 390 ? 844 : 568,
+          });
+          await page.waitForFunction(
+            () =>
+              getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+          );
+          assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), width);
+          await page.screenshot({
+            path: resolve(evidenceDir, width === 390 ? "mobile-390.png" : "mobile-320.png"),
+            fullPage: true,
+          });
+        }
+        await page.setViewportSize({ width: 1365, height: 900 });
+      }
+
+      const createForm = page.locator("[data-credential-create]");
+      await createForm.locator("[data-credential-issue-date]").fill("2026-01-01");
+      await createForm.locator("[data-credential-expiry-date]").fill("2027-01-01");
+      await createForm.getByRole("button", { name: "Êñ∞Â¢ûËµÑÊ†ºÊùêÊñô" }).click();
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-staff-credential-row]").length === 2,
+      );
+      const firstCredential = page.locator("[data-staff-credential-row='0']");
+      const editDetails = firstCredential.locator("[data-credential-edit]");
+      await editDetails.locator("summary").click();
+      await editDetails.locator('input[name="expiryDate"]').fill("2026-10-15");
+      await editDetails.getByRole("button", { name: "‰øùÂ≠òÂèòÊõ¥" }).click();
+      await firstCredential.locator('[data-credential-status="EXPIRED"]').waitFor();
+      assert.equal(await firstCredential.locator("[data-credential-history] li").count(), 1);
+
+      await page.locator("#staff-credentials-profile").selectOption("owner-west");
+      await page.locator("[data-staff-credentials-profile='owner-west']").waitFor();
+      await page.getByText("ÂΩìÂâçÊ†°Âå∫ÊöÇÊó†ËµÑÊ†ºÊùêÊñô„ÄÇ", { exact: true }).waitFor();
+      assert.equal(await page.locator("[data-staff-credential-row]").count(), 0);
+      await page.locator("#staff-credentials-profile").selectOption("owner-other-tenant");
+      await page.locator("[data-staff-credentials-profile='owner-other-tenant']").waitFor();
+      await page.getByText("ÂΩìÂâçÊéàÊùÉÊ†°Âå∫ÊöÇÊó†ÂèØÁÆ°ÁêÜÁöÑÂëòÂ∑•ËµÑÊñô„ÄÇ", { exact: true }).waitFor();
+      await page.locator("#staff-credentials-profile").selectOption("owner-east");
+      await page.locator("[data-staff-credentials-profile='owner-east']").waitFor();
+      assert.equal(await page.locator("[data-staff-credential-row]").count(), 2);
+
+      failNextStaffCredentialRead = true;
+      await page.getByRole("button", { name: "Âà∑Êñ∞ËµÑÊñô" }).click();
+      await page.locator("[data-staff-credentials-state='DENIED']").waitFor();
+      assert.equal(await page.locator("[data-staff-credential-row]").count(), 0);
+      await page.getByRole("button", { name: "ÈáçÊñ∞ËøûÊé•" }).click();
+      await page.locator("[data-staff-credentials-state='READY']").waitFor();
+      assert.equal(await page.locator("[data-staff-credential-row]").count(), 2);
+      assert.equal(expectedStaffCredentials503Responses, 1);
+      assert.equal(expectedStaffCredentials503ConsoleError, false);
+      assert.equal(
+        localApiCalls.filter(
+          ({ method, path }) => method === "POST" && path === "/local/staff-credentials",
+        ).length,
+        1,
+      );
+      assert.equal(
+        localApiCalls.filter(
+          ({ method, path }) =>
+            method === "PATCH" && /^\/local\/staff-credentials\/[0-9a-f-]{36}$/iu.test(path),
+        ).length,
+        1,
+      );
+    } else if (href === "/admin/staff-operations") {
+      const panel = page.locator("[data-staff-operations]");
+      assert.equal(await panel.count(), 1);
+      assert.match(
+        await page.locator("#main-content").innerText(),
+        /ÂΩìÂâçÈ°µÈù¢ÂÜÖÂ≠ò‰∏≠ÔºåÁ¶ªÂºÄÊàñÂà∑Êñ∞ÂêéÈáçÁΩÆ/u,
+      );
+      assert.equal(await page.locator("[data-work-material-row]").count(), 1);
+      assert.equal(await page.locator("[data-performance-review-row]").count(), 1);
+      assert.equal(await page.locator("[data-recruitment-row]").count(), 1);
+
+      const layout = await page.evaluate(() => {
+        const sidebar = document.querySelector(".admin-sidebar").getBoundingClientRect();
+        const content = document.querySelector(".admin-main").getBoundingClientRect();
+        return {
+          sidebarLeft: sidebar.left,
+          sidebarWidth: sidebar.width,
+          contentLeft: content.left,
+        };
+      });
+      assert.equal(layout.sidebarLeft, 0);
+      assert.ok(layout.contentLeft >= layout.sidebarWidth);
+      if (process.env.ADMIN_STAFF_OPERATIONS_EVIDENCE_DIR) {
+        const evidenceDir = resolve(process.env.ADMIN_STAFF_OPERATIONS_EVIDENCE_DIR);
+        await mkdir(evidenceDir, { recursive: true });
+        await page.screenshot({
+          path: resolve(evidenceDir, "desktop.png"),
+          fullPage: true,
+        });
+        for (const width of [390, 320]) {
+          await page.setViewportSize({
+            width,
+            height: width === 390 ? 844 : 568,
+          });
+          await page.waitForFunction(
+            () =>
+              getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+          );
+          assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), width);
+          await page.screenshot({
+            path: resolve(evidenceDir, width === 390 ? "mobile-390.png" : "mobile-320.png"),
+            fullPage: true,
+          });
+        }
+        await page.setViewportSize({ width: 1365, height: 900 });
+      }
+
+      const beforeCalls = localApiCalls.length;
+      const firstMaterial = page.locator("[data-work-material-row='0']");
+      await firstMaterial.getByRole("button", { name: "Ê†áËÆ∞ÈúÄË∑üËøõ" }).click();
+      await firstMaterial.locator("[data-material-status='NEEDS_FOLLOW_UP']").waitFor();
+
+      const materialForm = page.locator("[data-work-material-form]");
+      await materialForm.locator("select[name='staffId']").selectOption("synthetic-staff-east-002");
+      await materialForm.locator("input[name='period']").fill("2026-10");
+      await materialForm.getByRole("button", { name: "Êñ∞Â¢ûÂ∑•‰ΩúÊùêÊñô" }).click();
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-work-material-row]").length === 2,
+      );
+      const secondMaterial = page.locator("[data-work-material-row='1']");
+      await secondMaterial.getByRole("button", { name: "Á°ÆËÆ§Â∑≤Ê†∏ÂØπ" }).click();
+      await secondMaterial.locator("[data-material-status='REVIEWED']").waitFor();
+
+      const firstReview = page.locator("[data-performance-review-row='0']");
+      await firstReview.getByRole("button", { name: "Á°ÆËÆ§ËÆ∞ÂΩï" }).click();
+      await firstReview.locator("[data-performance-status='CONFIRMED']").waitFor();
+      const reviewForm = page.locator("[data-performance-review-form]");
+      await reviewForm.locator("select[name='area']").selectOption("FAMILY_COMMUNICATION");
+      await reviewForm.getByRole("button", { name: "Êñ∞Â¢ûÂ∑•‰ΩúÂõûÈ°æ" }).click();
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-performance-review-row]").length === 2,
+      );
+      const secondReview = page.locator("[data-performance-review-row='1']");
+      await secondReview.getByRole("button", { name: "Ê†áËÆ∞ÈúÄÊåÅÁª≠Ë∑üËøõ" }).click();
+      await secondReview.locator("[data-performance-status='FOLLOW_UP']").waitFor();
+
+      const recruitment = page.locator("[data-recruitment-row='0']");
+      await recruitment.locator("select[name='stage']").selectOption("INTERVIEW_SCHEDULED");
+      await recruitment.locator("input[name='nextFollowUpDate']").fill("2026-10-25");
+      await recruitment.getByRole("button", { name: "‰øùÂ≠òË∑üËøõ" }).click();
+      const recruitmentSummary = recruitment.locator(
+        "span[data-recruitment-stage='INTERVIEW_SCHEDULED']",
+      );
+      await recruitmentSummary.waitFor();
+      assert.match(await recruitmentSummary.innerText(), /2026-10-25/u);
+      const recruitmentForm = page.locator("[data-recruitment-form]");
+      await recruitmentForm.getByRole("button", { name: "Êñ∞Â¢ûË∑üËøõÂØπË±°" }).click();
+      await page.waitForFunction(
+        () => document.querySelectorAll("[data-recruitment-row]").length === 2,
+      );
+      assert.equal(await page.getByText("Ê®°ÊãüÂÄôÈÄâ‰∫∫02", { exact: true }).count(), 1);
+
+      const renderedText = await page.locator("body").innerText();
+      const renderedHtml = await page.locator("body").evaluate((body) => body.innerHTML);
+      assert.doesNotMatch(renderedText, /00000000-0000-4000|66666666|88888888/u);
+      assert.doesNotMatch(
+        renderedHtml,
+        /work-material-synthetic|performance-review-synthetic|recruitment-lead-synthetic|00000000-0000-4000/u,
+      );
+      assert.equal(localApiCalls.length, beforeCalls);
+    } else if (href === "/admin/child-monthly-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      await page.locator("[data-child-monthly-review-state='UNAUTHENTICATED']").waitFor();
+      await page.waitForLoadState("networkidle");
+      let expired = false;
+      const childApiFixture = async (route) => {
+        const request = route.request();
+        const url = new URL(request.url());
+        if (url.origin !== baseUrl || url.pathname !== "/api/admin/child-monthly-reports")
+          return monthlyApiFixture(route);
+        assert.equal(request.method(), "GET");
+        assert.equal(url.search, "");
+        const headers = await request.allHeaders();
+        assert.ok(monthlySignedIn);
+        assert.ok(
+          (headers.cookie ?? "").includes("student_care_admin_session=" + monthlySessionToken),
+        );
+        if (expired)
+          return route.fulfill({
+            status: 401,
+            contentType: "application/json",
+            headers: {
+              "set-cookie":
+                "student_care_admin_session=; Path=/api/admin; Max-Age=0; HttpOnly; SameSite=Lax",
+            },
+            body: JSON.stringify({ error: { code: "UNAUTHENTICATED" } }),
+          });
+        return fulfillJson(route, { data: { records: [], students: [] } });
+      };
+      await page.route("**/api/admin/**", childApiFixture);
+      try {
+        const login = page.getByRole("link", { name: "ÁôªÂΩïÂÆ°Ê†∏Ë¥¶Âè∑", exact: true });
+        assert.equal(
+          new URL(await login.getAttribute("href"), baseUrl).searchParams.get("next"),
+          href,
+        );
+        await login.click();
+        await page.waitForURL((url) => url.pathname === "/admin/login");
+        await page.locator("#admin-login-username").fill("monthly-reviewer-demo");
+        await page.locator("#admin-login-password").fill("synthetic-only-password");
+        await page.getByRole("button", { name: "ÁôªÂΩï", exact: true }).click();
+        await page.waitForURL("**/admin/child-monthly-review");
+        await page.locator("[data-child-monthly-review-state='READY']").waitFor();
+        assert.equal(await page.locator("[data-child-monthly-review-row]").count(), 0);
+        await page.getByText("ÂΩìÂâçÊéàÊùÉËåÉÂõ¥ÊöÇÊó†Â≠©Â≠ê‰∏™‰∫∫ÊúàÊä•„ÄÇ", { exact: true }).waitFor();
+        expired = true;
+        await page.locator("[data-child-monthly-review-refresh]").click();
+        await page.locator("[data-child-monthly-review-state='UNAUTHENTICATED']").waitFor();
+        assert.equal(await page.locator("[data-child-monthly-review-row]").count(), 0);
+        assert.equal(await page.getByText("ÂΩìÂâçÂÆ°Ê†∏‰∫∫Ôºö", { exact: false }).count(), 0);
+        await page.getByRole("link", { name: "ÁôªÂΩïÂÆ°Ê†∏Ë¥¶Âè∑", exact: true }).waitFor();
+        await page.waitForLoadState("networkidle");
+      } finally {
+        monthlySignedIn = false;
+        await page.unroute("**/api/admin/**", childApiFixture);
+        await page.context().clearCookies({ name: "student_care_admin_session" });
+      }
+    } else if (href === "/admin/monthly-feedback-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      await page.locator("[data-monthly-feedback-state='UNAUTHENTICATED']").waitFor();
+      await page.route("**/api/admin/**", monthlyApiFixture);
+      try {
+        assert.equal(await page.locator("[data-monthly-feedback-row]").count(), 0);
+        const login = page.getByRole("link", { name: "ÁôªÂΩïÂÆ°Ê†∏Ë¥¶Âè∑", exact: true });
+        const loginUrl = new URL(await login.getAttribute("href"), baseUrl);
+        assert.equal(loginUrl.pathname, "/admin/login");
+        assert.equal(loginUrl.searchParams.get("next"), "/admin/monthly-feedback-review");
+        await login.click();
+        await page.waitForURL((url) => url.pathname === "/admin/login");
+        await page.locator("#admin-login-username").fill("monthly-reviewer-demo");
+        await page.locator("#admin-login-password").fill("synthetic-only-password");
+        await page.getByRole("button", { name: "ÁôªÂΩï", exact: true }).click();
+        await page.waitForURL("**/admin/monthly-feedback-review");
+        await page.locator("[data-monthly-feedback-state='READY']").waitFor();
+        const panel = page.locator("[data-monthly-feedback-state]");
+        assert.equal(await page.locator("[data-monthly-feedback-row]").count(), 2);
+        assert.match(await panel.innerText(), /ÂêàÊàêÁè≠Á∫ßÁî≤/u);
+        assert.match(await panel.innerText(), /2026-10/u);
+        assert.match(await panel.innerText(), /2026-09/u);
+        assert.match(await panel.innerText(), /ÊàêÈïøËÆ∞ÂΩï/u);
+        assert.doesNotMatch(
+          await page.locator("body").innerText(),
+          /88888888|99999999|00000000-0000-4000|Ê®°ÊãüÊïôÂ∏à|ÂèëÂ∏ÉÂÆ∂ÈïøÊëòË¶Å/u,
+        );
+        assert.equal(await panel.getByRole("combobox").count(), 0);
+        assert.equal(await panel.getByRole("button", { name: "Ê£ÄÊü•Êù•Ê∫êÂèòÂåñ" }).count(), 0);
+        const desktopLayout = await page.evaluate(() => {
+          const sidebar = document.querySelector(".admin-sidebar").getBoundingClientRect();
+          const content = document.querySelector(".admin-main").getBoundingClientRect();
+          return {
+            sidebarLeft: sidebar.left,
+            sidebarWidth: sidebar.width,
+            contentLeft: content.left,
+          };
+        });
+        assert.equal(desktopLayout.sidebarLeft, 0);
+        assert.ok(desktopLayout.contentLeft >= desktopLayout.sidebarWidth);
+        if (process.env.ADMIN_MONTHLY_FEEDBACK_EVIDENCE_DIR) {
+          const evidenceDir = resolve(process.env.ADMIN_MONTHLY_FEEDBACK_EVIDENCE_DIR);
+          await mkdir(evidenceDir, { recursive: true });
+          await page.screenshot({ path: resolve(evidenceDir, "desktop.png"), fullPage: true });
+        }
+
+        const first = page.locator("[data-monthly-feedback-row]").nth(0);
+        const second = page.locator("[data-monthly-feedback-row]").nth(1);
+        const growthSource = first.getByRole("listitem").filter({ hasText: "Â∑≤ÂèëÂ∏ÉÊàêÈïøËÆ∞ÂΩï" });
+        assert.match(await growthSource.innerText(), /1 Êù°/u);
+        await first.getByRole("button", { name: "Á°ÆËÆ§ÊÄªÁªì", exact: true }).click();
+        await first.and(page.locator("[data-monthly-feedback-status='CONFIRMED']")).waitFor();
+        await first.getByRole("button", { name: "ÂÜÖÈÉ®ÂèëÂ∏É", exact: true }).click();
+        await first.and(page.locator("[data-monthly-feedback-status='PUBLISHED']")).waitFor();
+        assert.match(await first.innerText(), /ÂÜÖÈÉ®/u);
+        assert.equal(await first.getByRole("button").count(), 0);
+
+        invalidateNextMonthlyFeedbackRead = true;
+        await page.getByRole("button", { name: "Âà∑Êñ∞ÈòüÂàó", exact: true }).click();
+        await first.and(page.locator("[data-monthly-feedback-status='REVIEW_REQUIRED']")).waitFor();
+        assert.match(await growthSource.innerText(), /2 Êù°/u);
+        assert.equal(await first.getByRole("button").count(), 0);
+
+        await second.getByRole("button", { name: "ÈÄÄÂõû‰øÆÊîπ", exact: true }).click();
+        await second.and(page.locator("[data-monthly-feedback-status='RETURNED']")).waitFor();
+        assert.equal(await second.getByRole("button").count(), 0);
+        failNextMonthlyFeedbackRead = true;
+        await page.getByRole("button", { name: "Âà∑Êñ∞ÈòüÂàó", exact: true }).click();
+        await page.locator("[data-monthly-feedback-state='ERROR']").waitFor();
+        assert.equal(await page.locator("[data-monthly-feedback-row]").count(), 0);
+        await page.getByRole("button", { name: "ÈáçÊñ∞ËøûÊé•", exact: true }).click();
+        await page.locator("[data-monthly-feedback-state='READY']").waitFor();
+        assert.equal(await page.locator("[data-monthly-feedback-row]").count(), 2);
+        assert.equal(expectedMonthlyFeedback503Responses, 1);
+
+        // A separate staff session edited and resubmitted the returned report.
+        monthlyFeedbackRows[1].status = "SUBMITTED";
+        monthlyFeedbackRows[1].version = 4;
+        monthlyFeedbackRows[1].actions = ["confirm", "return"];
+        await page.getByRole("button", { name: "Âà∑Êñ∞ÈòüÂàó", exact: true }).click();
+        await second.and(page.locator("[data-monthly-feedback-status='SUBMITTED']")).waitFor();
+        const requestsBeforeConflict = monthlyApiRequests.length;
+        conflictNextMonthlyFeedbackWrite = true;
+        await second.getByRole("button", { name: "Á°ÆËÆ§ÊÄªÁªì", exact: true }).click();
+        await page.locator("[data-monthly-feedback-state='READY']").waitFor();
+        await second
+          .and(page.locator("[data-monthly-feedback-status='REVIEW_REQUIRED']"))
+          .waitFor();
+        assert.match(await panel.innerText(), /Êú¨Ê¨°Êìç‰ΩúÊú™‰øùÂ≠ò/u);
+        assert.equal(await second.getByRole("button").count(), 0);
+        const conflictRequests = monthlyApiRequests.slice(requestsBeforeConflict);
+        assert.equal(conflictRequests.filter(({ method }) => method === "POST").length, 1);
+        assert.ok(
+          conflictRequests.some(
+            ({ method, path }) => method === "GET" && path === "/api/admin/monthly-feedback",
+          ),
+          "A 409 must refresh the list without replaying the write.",
+        );
+        const writes = monthlyApiRequests.filter(
+          ({ method, path }) =>
+            method === "POST" && path.startsWith("/api/admin/monthly-feedback/"),
+        );
+        assert.deepEqual(
+          writes.map(({ path, body }) => ({ path, body })),
+          [
+            {
+              path: "/api/admin/monthly-feedback/88888888-8888-4888-8888-888888888881/review",
+              body: { version: 1, action: "CONFIRM" },
+            },
+            {
+              path: "/api/admin/monthly-feedback/88888888-8888-4888-8888-888888888881/publish",
+              body: { version: 2 },
+            },
+            {
+              path: "/api/admin/monthly-feedback/99999999-9999-4999-8999-999999999991/review",
+              body: { version: 1, action: "RETURN" },
+            },
+            {
+              path: "/api/admin/monthly-feedback/99999999-9999-4999-8999-999999999991/review",
+              body: { version: 4, action: "CONFIRM" },
+            },
+          ],
+        );
+        assert.ok(writes.every(({ authenticated }) => authenticated));
+        for (const path of ["/api/admin/me", "/api/admin/monthly-feedback"]) {
+          const reads = monthlyApiRequests.filter((request) => request.path === path);
+          assert.ok(reads.length > 0);
+          assert.ok(reads.every(({ method, authenticated }) => method === "GET" && authenticated));
+        }
+        assert.equal(
+          monthlyApiRequests.filter(({ path }) => path === "/api/admin/identity/login").length,
+          1,
+        );
+        assert.deepEqual(monthlyLegacyRequests, []);
+      } finally {
+        monthlySignedIn = false;
+        await page.unroute("**/api/admin/**", monthlyApiFixture);
+        await page.context().clearCookies({ name: "student_care_admin_session" });
+      }
+    } else if (href === "/admin/binding-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".binding-review-panel").count(), 1);
+    } else if (href === "/admin/care-record-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".care-record-review").count(), 1);
+    } else if (href === "/admin/supply-request-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".supply-review").count(), 1);
+    } else if (href === "/admin/pickup-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".pickup-review").count(), 1);
+    } else if (href === "/admin/notice-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".notice-review").count(), 1);
+    } else if (href === "/admin/health-incident-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".health-incident-review").count(), 1);
+      await page.getByRole("link", { name: "ÂâçÂæÄË¥¶Âè∑ÁôªÂΩï" }).waitFor();
+    } else if (href === "/admin/leave-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".leave-review").count(), 1);
+      await page.getByRole("link", { name: "ÂâçÂæÄË¥¶Âè∑ÁôªÂΩï" }).waitFor();
+    } else if (href === "/admin/consent-review") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".consent-review").count(), 1);
+      await page.getByRole("button", { name: "ËøûÊé•Âπ∂Âà∑Êñ∞" }).waitFor();
+    } else if (href === "/admin/privacy-requests") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".privacy-review").count(), 1);
+      await page.getByRole("button", { name: "ËøûÊé•Âπ∂Âà∑Êñ∞" }).waitFor();
+    } else if (href === "/admin/audit-logs") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".audit-logs").count(), 1);
+      await page.getByRole("heading", { name: "ÂÆ°ËÆ°Êó•Âøó" }).waitFor();
+      assert.equal(await page.locator(".audit-log-row").count(), 6);
+    } else if (href === "/admin/public-teachers") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".public-teachers-panel").count(), 1);
+    } else if (href === "/admin/activities") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      const activities = page.locator(".activities-panel");
+      assert.equal(await activities.count(), 1);
+      assert.match(await activities.innerText(), /ÁßëÂ≠¶Â∞èÂÆûÈ™å/u);
+      assert.match(await activities.innerText(), /ÈòÖËØªÂàÜ‰∫´/u);
+      assert.match(await activities.innerText(), /v2.*Â∑≤ÂèëÂ∏É/u);
+      assert.match(await activities.innerText(), /v1.*ËçâÁ®ø/u);
+      assert.match(await activities.innerText(), /‰∏çËøûÊé•Êä•ÂêçÊàñÂ§ñÈÉ®ÊúçÂä°/u);
+    } else if (href === "/admin/home-content" || href === "/admin/publishing") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".home-content-panel").count(), 1);
+    } else if (href === "/admin/meals") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator("#meals-title").count(), 1);
+      await page
+        .getByText("ËØ∑ÂÖà‰ΩøÁî®Êú∫ÊûÑÈÇÄËØ∑Ë¥¶Âè∑ÁôªÂΩïÔºåÂÜçÁÆ°ÁêÜÂΩìÂâçÊ†°Âå∫ÁöÑÈ§êÈ£ü„ÄÇ", { exact: false })
+        .waitFor();
+      await page.locator('a[href="/admin/login?next=%2Fadmin%2Fmeals"]').waitFor();
+      assert.equal(
+        await page.getByRole("button", { name: "Êñ∞Âª∫È§êÈ£ü", exact: true }).isDisabled(),
+        true,
+      );
+      assert.equal(await page.getByRole("textbox", { name: "ËèúÂìÅ" }).isDisabled(), true);
+    } else if (href === "/admin/fees") {
+      const panel = page.locator("[data-fees-state='READY']");
+      await panel.waitFor();
+      await panel.getByLabel("Â≠¶Áîü").selectOption(feeStudent.id);
+      await panel.getByLabel("ËµÑÊñôÁ±ªÂûã").selectOption("BILL");
+      await panel.getByLabel("Ê†áÈ¢ò").fill("ÂçÅÊúàÊâòÁÆ°ÊúçÂä°Ë¥π");
+      await panel.getByLabel("ÊâÄÂ±ûÊúà‰ªΩ").fill("2026-10");
+      await panel.getByLabel("ÈáëÈ¢ùÔºàÂÖÉÔºâ").fill("680");
+      await panel.getByLabel("ÂºÄÂßãÊó•Êúü").fill("2026-10-01");
+      await panel.getByLabel("ÁªìÊùüÊó•Êúü").fill("2026-10-31");
+      await panel.getByLabel("ÁªôÂÆ∂ÈïøÁúãÁöÑËØ¥Êòé").fill("‰ªÖ‰æõÊú¨Êú∫ÊµèËßàÂô®È™åËØÅÁöÑÂêàÊàêË¥¶Âçï„ÄÇ");
+      await panel.getByRole("button", { name: "‰øùÂ≠òÂπ∂‰æõÂÆ∂ÈïøÊü•Áúã" }).click();
+      await page.getByRole("heading", { name: "ÂçÅÊúàÊâòÁÆ°ÊúçÂä°Ë¥π" }).waitFor();
+      assert.equal(feeRequests[0]?.body.amount_minor, 68000);
+      assert.equal(Object.hasOwn(feeRequests[0]?.body ?? {}, "campus_id"), false);
+      await page.locator("[data-fee-document]").getByRole("button", { name: "Êí§Âõû" }).click();
+      await panel.locator("[data-fee-document]").getByText("Â∑≤Êí§Âõû", { exact: false }).waitFor();
+      assert.deepEqual(feeRequests[1]?.body, { expected_version: 1 });
+    } else if (href === "/admin/student-transfers") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      const panel = page.locator('[data-student-transfers-state="READY"]');
+      await panel.waitFor();
+      await panel
+        .getByRole("combobox", { name: "Â≠¶Áîü", exact: true })
+        .selectOption(transferStudent.id);
+      await panel.getByRole("combobox", { name: "ÁõÆÊ†áÁè≠Á∫ß", exact: true }).selectOption("ÂêàÊàê‰πôÁè≠");
+      await panel.getByRole("button", { name: "Êèê‰∫§ËΩ¨Áè≠Áî≥ËØ∑", exact: true }).click();
+      await panel.getByText("ËΩ¨Áè≠Áî≥ËØ∑Â∑≤Êèê‰∫§ÔºåÁ≠âÂæÖÂè¶‰∏ÄÂêçÂÆ°Ê†∏‰∫∫ÂëòÂ§ÑÁêÜ„ÄÇ", { exact: true }).waitFor();
+      assert.deepEqual(transferRequests[0], {
+        student_id: transferStudent.id,
+        destination_class_ref: "ÂêàÊàê‰πôÁè≠",
+      });
+      assert.equal(await panel.getByRole("button", { name: "ÊâπÂáÜËΩ¨Áè≠" }).count(), 0);
+      transferReviewer = true;
+      await panel.getByRole("button", { name: "Âà∑Êñ∞ÂàóË°®" }).click();
+      await page.getByRole("button", { name: "ÊâπÂáÜËΩ¨Áè≠", exact: true }).waitFor();
+      await page.getByRole("button", { name: "ÊâπÂáÜËΩ¨Áè≠", exact: true }).click();
+      await panel.getByText("ÂÆ°Ê†∏Â∑≤ÈÄöËøáÔºåÂ≠¶ÁîüÂ∑≤ËΩ¨ÂÖ•Êñ∞Áè≠Á∫ß„ÄÇ", { exact: true }).waitFor();
+      assert.deepEqual(transferRequests[1], { decision: "APPROVE", expected_version: 1 });
+      const history = panel.getByRole("region", { name: "ËΩ¨Áè≠ÂéÜÂè≤" });
+      await history.getByText("Â∑≤ÊâπÂáÜ", { exact: true }).waitFor();
+      await history.locator("summary").click();
+      assert.match(await history.innerText(), /ÊâπÂáÜÂπ∂ÂÆåÊàêËΩ¨Áè≠/u);
+      assert.equal(await panel.getByRole("button", { name: "ÊâπÂáÜËΩ¨Áè≠" }).count(), 0);
+    } else if (href === "/admin/resources") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator("[data-resource-management]").count(), 1);
+    } else if (href === "/admin/statistics") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator(".statistics-panel").count(), 1);
+    } else if (href === "/admin/learning-safety") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      const panel = page.locator("[data-learning-safety]");
+      await page.locator('[data-learning-safety-state="READY"]').waitFor();
+      assert.equal(await panel.locator("[data-learning-safety-metric]").count(), 20);
+      assert.match(await panel.innerText(), /ÊåáÊ†áÂè£ÂæÑÔºöV2ÔºàÊú¨Êú∫ÂêàÊàêÊï∞ÊçÆÔºâ/u);
+      assert.match(await panel.innerText(), /ÊòéÁ°ÆËÆ∞ÂΩïÁöÑ‰∏•ÈáçÂÆâÂÖ®‰∫ã‰ª∂/u);
+    } else if (href === "/admin/guides") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      const guides = page.locator(".guides-panel");
+      assert.equal(await guides.count(), 1);
+      const search = page.getByRole("searchbox", { name: "ÊêúÁ¥¢ÊåáÂçó" });
+      assert.equal(await guides.locator("[data-guide-id]").count(), 2);
+      await guides.locator('[data-guide-id="guide-routine"]').click();
+      assert.match(await guides.locator(".guide-detail").innerText(), /ÂÄºÁè≠ÊµÅÁ®ã/u);
+      await search.fill("Êä•Âà∞");
+      assert.equal(await guides.locator("[data-guide-id]").count(), 1);
+      assert.match(await guides.locator(".guide-detail").innerText(), /Êñ∞ÊàêÂëòÊåáÂçó/u);
+      await search.fill("Ê≤°ÊúâËøôÊù°ÊåáÂçó");
+      await guides
+        .getByRole("region", { name: "ÊåáÂçóÂàóË°®" })
+        .getByText("Ê≤°ÊúâÂåπÈÖçÁöÑÊåáÂçó„ÄÇ", { exact: true })
+        .waitFor();
+      assert.equal(await guides.locator("[data-guide-id]").count(), 0);
+      await search.fill("");
+      assert.equal(await guides.locator("[data-guide-id]").count(), 2);
+      assert.match(await guides.innerText(), /‰ªÖÊòæÁ§∫ÂΩìÂâçÊ†°Âå∫ÁöÑËôöÊûÑÂÜÖÈÉ®ÊåáÂçó/u);
+      assert.match(await guides.innerText(), /‰∏çÊèê‰æõÁúüÂÆûÊñá‰ª∂‰∏ãËΩΩ/u);
+      if (process.env.ADMIN_GUIDES_EVIDENCE_DIR) {
+        const evidenceDir = resolve(process.env.ADMIN_GUIDES_EVIDENCE_DIR);
+        await mkdir(evidenceDir, { recursive: true });
+        await page.setViewportSize({ width: 1365, height: 900 });
+        await page.evaluate(() =>
+          document.activeElement instanceof HTMLElement ? document.activeElement.blur() : undefined,
+        );
+        await page.screenshot({
+          path: resolve(evidenceDir, "desktop.png"),
+          fullPage: true,
+        });
+        await page.setViewportSize({ width: 390, height: 844 });
+        const menuToggle = page.locator(".nav-toggle");
+        if ((await menuToggle.getAttribute("aria-expanded")) === "true") await menuToggle.click();
+        await page.waitForFunction(
+          () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+        );
+        assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390);
+        await page.evaluate(() =>
+          document.activeElement instanceof HTMLElement ? document.activeElement.blur() : undefined,
+        );
+        await page.screenshot({
+          path: resolve(evidenceDir, "mobile.png"),
+          fullPage: true,
+        });
+        await page.setViewportSize({ width: 1365, height: 900 });
+      }
+    } else if (href === "/admin/files") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      await page.locator('[data-media-assets-state="READY"]').waitFor();
+      assert.equal(await page.locator("[data-media-asset-title]").count(), 2);
+      assert.match(await page.locator("[data-media-assets]").innerText(), /ÊïôÂ∏à‰ªãÁªçÂç†‰ΩçÂõæ/u);
+      assert.doesNotMatch(
+        await page.locator("[data-media-assets]").innerHTML(),
+        /00000000-0000-4000/u,
+      );
+    } else if (href === "/admin/platform-operations") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.locator("[data-platform-operations]").count(), 1);
+      await page.locator('[data-platform-fee-status="READY"]').waitFor();
+      assert.match(await page.locator("body").innerText(), /Ë¥πÁî®ËµÑÊñôÔºö9 È°π/u);
+      assert.match(await page.locator("body").innerText(), /Ë¥πÁî®ÊµÅÊ∞¥Ôºö4 Á¨î/u);
+    } else if (href === "/admin/account") {
+      assert.equal(await page.locator(".migration-notice").count(), 0);
+      assert.equal(await page.getByRole("heading", { name: "ÊàëÁöÑË¥¶Âè∑" }).count(), 1);
+      assert.equal(await page.getByRole("link", { name: "ÂâçÂæÄÁôªÂΩï" }).count(), 1);
+      await page
+        .getByRole("status")
+        .filter({ hasText: "ÁôªÂΩïÁä∂ÊÄÅÂ∑≤Â§±ÊïàÔºåËØ∑ÈáçÊñ∞ÁôªÂΩï„ÄÇ" })
+        .waitFor();
+      await page.waitForLoadState("networkidle");
+      assert.equal(await page.locator(".admin-sidebar [aria-current=page]").getAttribute("href"), href);
+    } else {
+      assert.equal(await page.locator(".migration-notice").count(), 1);
+    }
+  }
+
+  await page.goto(`${baseUrl}/admin/activities`, { waitUntil: "networkidle" });
+  const activitiesPanel = page.locator(".activities-panel");
+  assert.equal(await activitiesPanel.count(), 1);
+  assert.match(await activitiesPanel.innerText(), /‰ªÖÂ±ïÁ§∫Âõ∫ÂÆöÂêàÊàêÊ¥ªÂä®/u);
+  if (process.env.ADMIN_ACTIVITIES_EVIDENCE_DIR) {
+    const evidenceDir = resolve(process.env.ADMIN_ACTIVITIES_EVIDENCE_DIR);
+    await mkdir(evidenceDir, { recursive: true });
+    await page.screenshot({
+      path: resolve(evidenceDir, "desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    const mobileToggle = page.locator(".nav-toggle");
+    if ((await mobileToggle.getAttribute("aria-expanded")) === "true") {
+      await mobileToggle.click();
+    }
+    await page.waitForFunction(
+      () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+    );
+    assert.equal(await mobileToggle.getAttribute("aria-expanded"), "false");
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      true,
+      "Activity page must fit a 390px mobile viewport.",
+    );
+    await page.screenshot({
+      path: resolve(evidenceDir, "mobile-390.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 1365, height: 900 });
+  }
+
+  await page.goto(`${baseUrl}/admin/public-teachers`, {
+    waitUntil: "networkidle",
+  });
+  const publicTeachersPanel = page.locator(".public-teachers-panel");
+  await page.getByRole("heading", { name: "ÊïôÂ∏à‰ªãÁªçÁÆ°ÁêÜ" }).waitFor();
+  assert.match(await publicTeachersPanel.innerText(), /‰ªÖÂ±ïÁ§∫ËôöÊûÑÊïôÂ∏à‰ªãÁªç/u);
+  assert.equal(await page.getByLabel("ÊïôÂ∏àÂßìÂêç").inputValue(), "Ê®°ÊãüÊïôÂ∏àÁî≤");
+  if (process.env.ADMIN_PUBLIC_TEACHERS_EVIDENCE_DIR) {
+    const evidenceDir = resolve(process.env.ADMIN_PUBLIC_TEACHERS_EVIDENCE_DIR);
+    await mkdir(evidenceDir, { recursive: true });
+    await page.screenshot({
+      path: resolve(evidenceDir, "desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForFunction(
+      () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+    );
+    assert.equal(await page.locator(".nav-toggle").getAttribute("aria-expanded"), "false");
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390);
+    await page.screenshot({
+      path: resolve(evidenceDir, "mobile.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 1365, height: 900 });
+  }
+  await page.getByLabel("ÊïôÂ∏àÁÆÄ‰ªã").fill("‰ªÖÁî®‰∫éÊú¨Êú∫È™åËØÅÁöÑËôöÊûÑÊïôÂ∏à‰ªãÁªç„ÄÇ");
+  await publicTeachersPanel.getByRole("button", { name: "‰øùÂ≠òËçâÁ®ø" }).click();
+  await page.getByRole("status").getByText("ËçâÁ®øÂ∑≤‰øùÂ≠òÔºàÊú¨Êú∫ÊºîÁ§∫Áä∂ÊÄÅÔºâ", { exact: true }).waitFor();
+  await publicTeachersPanel
+    .locator("[data-public-teacher-version]")
+    .getByText("v2", { exact: true })
+    .waitFor();
+  await publicTeachersPanel.getByRole("button", { name: "ÂèëÂ∏É" }).click();
+  await page.getByRole("status").getByText("‰ªãÁªçÂ∑≤ÂèëÂ∏ÉÔºàÊú¨Êú∫ÊºîÁ§∫Áä∂ÊÄÅÔºâ", { exact: true }).waitFor();
+  await publicTeachersPanel
+    .locator(".public-teacher-status")
+    .getByText("Â∑≤ÂèëÂ∏É", { exact: true })
+    .waitFor();
+  await publicTeachersPanel
+    .locator("[data-public-teacher-version]")
+    .getByText("v3", { exact: true })
+    .waitFor();
+  await publicTeachersPanel.getByRole("button", { name: "‰∏ãÊû∂" }).click();
+  await page.getByRole("status").getByText("‰ªãÁªçÂ∑≤‰∏ãÊû∂ÔºàÊú¨Êú∫ÊºîÁ§∫Áä∂ÊÄÅÔºâ", { exact: true }).waitFor();
+  await publicTeachersPanel
+    .locator(".public-teacher-status")
+    .getByText("Â∑≤‰∏ãÊû∂", { exact: true })
+    .waitFor();
+  await publicTeachersPanel
+    .locator("[data-public-teacher-version]")
+    .getByText("v4", { exact: true })
+    .waitFor();
+  await page.reload({ waitUntil: "networkidle" });
+  assert.equal(await page.getByLabel("ÊïôÂ∏àÂßìÂêç").inputValue(), "Ê®°ÊãüÊïôÂ∏àÁî≤");
+  await page.locator(".public-teacher-status").getByText("ËçâÁ®ø", { exact: true }).waitFor();
+  await publicTeachersPanel
+    .locator("[data-public-teacher-version]")
+    .getByText("v1", { exact: true })
+    .waitFor();
+
+  const homeContentKey = "home-content-synthetic-east";
+  const homeDraftPath = `/api/admin/institution/home/${homeContentKey}/draft`;
+  const homeContentCalls = [];
+  let persistedHomeContent = null;
+  await page.route("**/api/admin/**", async (route) => {
+    const url = new URL(route.request().url());
+    const method = route.request().method();
+    if (url.pathname === "/api/admin/me" && method === "GET")
+      return fulfillJson(route, {
+        data: {
+          display_name: "ÂêàÊàêÈ¶ñÈ°µÁºñËæëÂëò",
+          memberships: [{ status: "ACTIVE", capabilities: ["content:write", "content:publish"] }],
+        },
+      });
+    if (url.pathname !== homeDraftPath &&
+      !url.pathname.startsWith(`/api/admin/institution/home/${homeContentKey}/`))
+      return route.fallback();
+
+    homeContentCalls.push({ method, path: url.pathname });
+    if (url.pathname === homeDraftPath && method === "GET") {
+      if (persistedHomeContent) return fulfillJson(route, { data: persistedHomeContent });
+      expectedHomeDraftNotFoundResponses += 1;
+      return fulfillJson(route, { error: { code: "NOT_FOUND_SCOPED" } }, 404);
+    }
+    if (url.pathname === homeDraftPath && (method === "POST" || method === "PUT")) {
+      const body = route.request().postDataJSON();
+      const expectedVersion = persistedHomeContent?.version ?? null;
+      assert.equal(body.expected_version, expectedVersion);
+      persistedHomeContent = {
+        content_key: homeContentKey,
+        title: body.payload.title,
+        type: "HOME_BLOCK",
+        status: "DRAFT",
+        version: (expectedVersion ?? 0) + 1,
+        visibility: "PUBLIC",
+        body: body.payload.body,
+        synthetic_data: true,
+      };
+      return fulfillJson(route, { data: persistedHomeContent }, method === "POST" ? 201 : 200);
+    }
+    if (method === "POST" && /\/(publish|unpublish)$/u.test(url.pathname)) {
+      const body = route.request().postDataJSON();
+      assert.ok(persistedHomeContent);
+      assert.equal(body.expected_version, persistedHomeContent.version);
+      persistedHomeContent = {
+        ...persistedHomeContent,
+        status: url.pathname.endsWith("/publish") ? "PUBLISHED" : "UNPUBLISHED",
+        version: persistedHomeContent.version + 1,
+      };
+      return fulfillJson(route, { data: persistedHomeContent });
+    }
+    return fulfillJson(route, { error: { code: "NOT_FOUND" } }, 404);
+  });
+
+  await page.goto(`${baseUrl}/admin/home-content`, {
+    waitUntil: "networkidle",
+  });
+  const homeContentPanel = page.locator(".home-content-panel");
+  await page.getByRole("heading", { name: "È¶ñÈ°µÂÜÖÂÆπÁÆ°ÁêÜ" }).waitFor();
+  assert.match(await homeContentPanel.innerText(), /‰ªÖ‰ΩøÁî®ÂêàÊàêÁ§∫‰æãËµÑÊñô/u);
+  assert.match(await homeContentPanel.innerText(), /Êú™‰øùÂ≠ò/u);
+  assert.equal(homeContentCalls.filter((call) => call.method !== "GET").length, 0);
+  if (process.env.ADMIN_HOME_CONTENT_EVIDENCE_DIR) {
+    const evidenceDir = resolve(process.env.ADMIN_HOME_CONTENT_EVIDENCE_DIR);
+    await mkdir(evidenceDir, { recursive: true });
+    await page.screenshot({
+      path: resolve(evidenceDir, "desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForFunction(
+      () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+    );
+    assert.equal(await page.locator(".nav-toggle").getAttribute("aria-expanded"), "false");
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390);
+    await page.screenshot({
+      path: resolve(evidenceDir, "mobile.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 1365, height: 900 });
+  }
+  await page.getByLabel("È¶ñÈ°µÊ†áÈ¢ò").fill("ÂêåËäØÂ≠¶Âõ≠Ê†°Âå∫ÊúçÂä°‰ªãÁªç");
+  await page.getByLabel("È¶ñÈ°µÊëòË¶Å").fill("Ê¨¢ËøéÊü•ÁúãÊú¨ÊâπÂêàÊàêÊ†°Âå∫ÊúçÂä°ÂÜÖÂÆπ„ÄÇ");
+  await page.getByLabel("È¶ñÈ°µÊ≠£Êñá").fill("ËøôÊòØ‰∏ÄÊù°ËôöÊûÑÁöÑÈ¶ñÈ°µÂÜÖÂÆπÔºå‰øùÂ≠òÂêéÊâç‰ºöÂàõÂª∫„ÄÇ");
+  await homeContentPanel.getByRole("button", { name: "‰øùÂ≠òËçâÁ®ø" }).click();
+  await homeContentPanel.getByRole("status").getByText("ËçâÁ®øÂ∑≤‰øùÂ≠ò„ÄÇÂÜÖÂÆπÂ∞öÊú™ÂÖ¨ÂºÄ„ÄÇ", { exact: true }).waitFor();
+  await homeContentPanel.getByText("v1", { exact: true }).waitFor();
+  assert.deepEqual(
+    homeContentCalls.filter(({ method }) => method !== "GET").map(({ method }) => method),
+    ["POST"],
+  );
+  await homeContentPanel.getByRole("button", { name: "ÂèëÂ∏É" }).click();
+  await homeContentPanel.getByRole("status").getByText("È¶ñÈ°µÂÜÖÂÆπÂ∑≤ÂèëÂ∏ÉÔºåÂèØÁî±ËÆøÂÆ¢Êü•Áúã„ÄÇ", { exact: true }).waitFor();
+  await homeContentPanel.getByText("Â∑≤ÂèëÂ∏É", { exact: true }).waitFor();
+  await homeContentPanel.getByText("v2", { exact: true }).waitFor();
+  await page.reload({ waitUntil: "networkidle" });
+  await page.getByLabel("È¶ñÈ°µÊ†áÈ¢ò").waitFor();
+  assert.equal(await page.getByLabel("È¶ñÈ°µÊ†áÈ¢ò").inputValue(), "ÂêåËäØÂ≠¶Âõ≠Ê†°Âå∫ÊúçÂä°‰ªãÁªç");
+  await page.locator(".home-content-controls").getByText("Â∑≤ÂèëÂ∏É", { exact: true }).waitFor();
+  await page.locator(".home-content-controls").getByText("v2", { exact: true }).waitFor();
+  const reloadedHomeContentPanel = page.locator(".home-content-panel");
+  await reloadedHomeContentPanel.getByRole("button", { name: "‰∏ãÊû∂" }).click();
+  await reloadedHomeContentPanel.getByRole("status").getByText("È¶ñÈ°µÂÜÖÂÆπÂ∑≤‰∏ãÊû∂ÔºåËÆøÂÆ¢È°µ‰∏çÂÜçÂ±ïÁ§∫„ÄÇ", { exact: true }).waitFor();
+  await reloadedHomeContentPanel.locator(".home-content-controls").getByText("Â∑≤‰∏ãÊû∂", { exact: true }).waitFor();
+  await reloadedHomeContentPanel.locator(".home-content-controls").getByText("v3", { exact: true }).waitFor();
+  assert.doesNotMatch(await page.locator("body").innerText(), /home-content-synthetic-east/u);
+
+  await page.goto(`${baseUrl}/admin/audit-logs`, { waitUntil: "networkidle" });
+  const auditRows = page.locator(".audit-log-row");
+  await auditRows.first().waitFor();
+  assert.equal(await auditRows.count(), 6);
+  const firstAuditRow = auditRows.first();
+  assert.match(await firstAuditRow.innerText(), /ÂèëÂ∏ÉÂÜÖÂÆπ/u);
+  assert.match(await firstAuditRow.innerText(), /È¶ñÈ°µÂÜÖÂÆπ/u);
+  assert.match(await firstAuditRow.innerText(), /Â∑≤ÂÆåÊàê/u);
+  assert.doesNotMatch(
+    await page.locator("body").innerText(),
+    /CONTENT_PUBLISHED|HOME_CONTENT|00000000-0000-4000-8000-000000000003|synthetic-home-announcement|correlation-synthetic-audit-001|trace-synthetic-audit-001|synthetic-reference/u,
+  );
+  assert.match(await page.locator("body").innerText(), /Êú¨Êú∫ÂêàÊàê/u);
+  if (process.env.ADMIN_AUDIT_EVIDENCE_DIR) {
+    const evidenceDir = resolve(process.env.ADMIN_AUDIT_EVIDENCE_DIR);
+    await mkdir(evidenceDir, { recursive: true });
+    await page.screenshot({
+      path: resolve(evidenceDir, "desktop.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.waitForFunction(
+      () => getComputedStyle(document.querySelector(".admin-sidebar")).visibility === "hidden",
+    );
+    assert.equal(await page.locator(".nav-toggle").getAttribute("aria-expanded"), "false");
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390);
+    await page.screenshot({
+      path: resolve(evidenceDir, "mobile.png"),
+      fullPage: true,
+    });
+    await page.setViewportSize({ width: 1365, height: 900 });
+  }
+  if (nextMode !== "start") {
+    await page.goto(`${baseUrl}/admin/privacy-requests`, {
+      waitUntil: "networkidle",
+    });
+    await page.getByRole("button", { name: "ËøûÊé•Âπ∂Âà∑Êñ∞" }).click();
+    const privacyRow = page.locator(".privacy-review-row");
+    await privacyRow.waitFor();
+    assert.equal(await privacyRow.count(), 1);
+    await privacyRow.getByRole("button", { name: "ÂºÄÂßãÂ§ÑÁêÜ" }).click();
+    await privacyRow.getByText("Â§ÑÁêÜ‰∏≠", { exact: true }).waitFor();
+    await privacyRow.getByRole("button", { name: "ÂÆåÊàêÊú¨Êú∫Â§ÑÁêÜÊºîÁ§∫" }).click();
+    await privacyRow.getByText("Êú¨Êú∫Â§ÑÁêÜÊºîÁ§∫ÂÆåÊàê", { exact: true }).waitFor();
+    assert.equal(privacyRows.get("owner-east")?.[0]?.dataChanged, false);
+    assert.doesNotMatch(await page.locator("body").innerText(), /77777777-7777-4777-8777/u);
+    assert.match(await page.locator("body").innerText(), /dataChanged=false/u);
+    if (process.env.ADMIN_PRIVACY_EVIDENCE_DIR) {
+      const evidenceDir = resolve(process.env.ADMIN_PRIVACY_EVIDENCE_DIR);
+      await mkdir(evidenceDir, { recursive: true });
+      await page.screenshot({
+        path: resolve(evidenceDir, "desktop.png"),
+        fullPage: true,
+      });
+      await page.setViewportSize({ width: 390, height: 844 });
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390);
+      await page.screenshot({
+        path: resolve(evidenceDir, "mobile.png"),
+        fullPage: true,
+      });
+      await page.setViewportSize({ width: 1365, height: 900 });
+    }
+    await page.locator("#privacy-review-profile").selectOption("owner-west");
+    await page.getByRole("button", { name: "ËøûÊé•Âπ∂Âà∑Êñ∞" }).click();
+    await page.locator(".privacy-review-empty").waitFor();
+    assert.equal(await page.locator(".privacy-review-row").count(), 0);
+  }
+
+  let bindingIdentity = null;
+  let parentQueueAttempts = 0;
+  const bindingToken = "s".repeat(43);
+  const bindingRows = [
+    {
+      id: "00000000-0000-4000-8000-000000000111",
+      student_candidate_ref: "00000000-0000-4000-8000-000000000211",
+      applicant_label: "Ê®°ÊãüÂÆ∂ÈïøÁî≤",
+      student_label: "Á§∫‰æãÂ≠¶ÁîüÁî≤",
+      relationship: "GUARDIAN",
+      status: "PENDING",
+      version: 1,
+      submitted_at: "2026-10-18T08:00:00.000Z",
+      reviewed_at: null,
+    },
+    {
+      id: "00000000-0000-4000-8000-000000000112",
+      student_candidate_ref: "00000000-0000-4000-8000-000000000212",
+      applicant_label: "Ê®°ÊãüÂÆ∂Èïø‰πô",
+      student_label: "Á§∫‰æãÂ≠¶Áîü‰πô",
+      relationship: "GUARDIAN",
+      status: "PENDING",
+      version: 1,
+      submitted_at: "2026-10-18T08:05:00.000Z",
+      reviewed_at: null,
+    },
+  ];
+  const bindingApiRequests = [];
+  await page.route("**/api/admin/**", async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    const path = url.pathname.replace("/api/admin", "");
+    if (
+      url.origin !== baseUrl ||
+      (!["/identity/login", "/identity/logout", "/me"].includes(path) &&
+        !path.startsWith("/staff/guardian-binding/"))
+    )
+      return route.fallback();
+    const method = request.method();
+    bindingApiRequests.push({ method, path });
+    if (path === "/identity/login" && method === "POST") {
+      const credentials = JSON.parse(request.postData() ?? "{}");
+      const accepted =
+        (credentials.username === "reviewer-demo" || credentials.username === "parent-demo") &&
+        credentials.password === "synthetic-only-password";
+      if (!accepted)
+        return route.fulfill({
+          status: 401,
+          contentType: "application/json",
+          body: JSON.stringify({ error: { code: "UNAUTHENTICATED", message: "ÁôªÂΩïÂ§±Ë¥•„ÄÇ" } }),
+        });
+      bindingIdentity = credentials.username === "reviewer-demo" ? "reviewer" : "parent";
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: {
+          "set-cookie":
+            "student_care_admin_session=" +
+            bindingToken +
+            "; Path=/api/admin; HttpOnly; SameSite=Lax",
+        },
+        body: JSON.stringify({ data: { expires_at: "2099-01-01T00:00:00.000Z" } }),
+      });
+    }
+    if (path === "/me" && method === "GET") {
+      if (!bindingIdentity)
+        return route.fulfill({
+          status: 401,
+          contentType: "application/json",
+          body: JSON.stringify({ error: { code: "UNAUTHENTICATED", message: "Êú™ÁôªÂΩï„ÄÇ" } }),
+        });
+      const reviewer = bindingIdentity === "reviewer";
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          data: {
+            actor_id: reviewer ? "synthetic-reviewer" : "synthetic-parent",
+            display_name: reviewer ? "Ê®°ÊãüÂÆ°Ê†∏Âëò" : "Ê®°ÊãüÂÆ∂Èïø",
+            memberships: [
+              {
+                tenant_id: "synthetic-tenant",
+                campus_ids: ["synthetic-campus"],
+                status: "ACTIVE",
+                capabilities: reviewer
+                  ? ["identity:read", "binding:review"]
+                  : ["identity:read", "binding:apply"],
+              },
+            ],
+          },
+        }),
+      });
+    }
+    if (path === "/staff/guardian-binding/applications" && method === "GET") {
+      if (bindingIdentity !== "reviewer") {
+        if (bindingIdentity === "parent") parentQueueAttempts += 1;
+        return route.fulfill({
+          status: 403,
+          contentType: "application/json",
+          body: JSON.stringify({ error: { code: "FORBIDDEN_SCOPE", message: "Êó†ÂÆ°Ê†∏ÊùÉÈôê„ÄÇ" } }),
+        });
+      }
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ data: bindingRows.filter((row) => row.status === "PENDING") }),
+      });
+    }
+    const reviewMatch = path.match(
+      /^\/staff\/guardian-binding\/applications\/([0-9a-f-]{36})\/review$/iu,
+    );
+    if (reviewMatch && method === "POST" && bindingIdentity === "reviewer") {
+      const submitted = JSON.parse(request.postData() ?? "{}");
+      const row = bindingRows.find((candidate) => candidate.id === reviewMatch[1]);
+      if (
+        !row ||
+        row.status !== "PENDING" ||
+        submitted.version !== row.version ||
+        !["approve", "reject"].includes(submitted.action)
+      )
+        return route.fulfill({
           status: 409,
           contentType: "application/json",
           body: JSON.stringify({
