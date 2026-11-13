@@ -1,5 +1,5 @@
 import { Button, Checkbox, CheckboxGroup, Picker, Text, View } from "@tarojs/components";
-import Taro from "@tarojs/taro";
+import Taro, { useDidShow } from "@tarojs/taro";
 import { useEffect, useRef, useState } from "react";
 import { inviteSession } from "../../../auth/runtime-session";
 import { hasRoleAccess } from "../../../auth/role-gate";
@@ -42,23 +42,36 @@ export default function ParentBindingPage() {
   const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
   const mounted = useRef(false);
+  const hasShown = useRef(false);
+  const initialLoadDone = useRef(false);
+  const operationInFlight = useRef(false);
 
   useEffect(() => {
     mounted.current = true;
     void loadOptions();
     return () => {
       mounted.current = false;
+      initialLoadDone.current = false;
     };
   }, []);
 
+  useDidShow(() => {
+    if (hasShown.current && initialLoadDone.current) void loadOptions();
+    hasShown.current = true;
+  });
+
   async function loadOptions() {
-    const session = await inviteSession.restore();
-    if (!mounted.current) return;
-    if (!hasRoleAccess(session, "PARENT")) {
-      void Taro.redirectTo({ url: "/pages/auth/login/index" });
-      return;
-    }
+    if (operationInFlight.current) return;
+    operationInFlight.current = true;
+    setBusy(true);
+    setStatus("LOADING");
     try {
+      const session = await inviteSession.restore();
+      if (!mounted.current) return;
+      if (!hasRoleAccess(session, "PARENT")) {
+        void Taro.redirectTo({ url: "/pages/auth/login/index" });
+        return;
+      }
       const get = (path: string) => inviteSession.getAuthenticated(path);
       const [next, existing, existingRelationships] = await Promise.all([
         loadParentBindingOptions(get),
@@ -69,6 +82,7 @@ export default function ParentBindingPage() {
       setOptions(next);
       setApplications(existing);
       setRelationships(existingRelationships);
+      setReceipt(null);
       setSelectedId(
         (current) =>
           current ||
@@ -87,15 +101,22 @@ export default function ParentBindingPage() {
       if (!mounted.current) return;
       setMessage(errorMessage(error));
       setStatus("ERROR");
+    } finally {
+      operationInFlight.current = false;
+      if (mounted.current) {
+        initialLoadDone.current = true;
+        setBusy(false);
+      }
     }
   }
 
   async function submit() {
-    if (busy || receipt) return;
+    if (operationInFlight.current || busy || receipt) return;
     if (!hasRoleAccess(inviteSession.snapshot, "PARENT")) {
       void Taro.redirectTo({ url: "/pages/auth/login/index" });
       return;
     }
+    operationInFlight.current = true;
     setBusy(true);
     try {
       const next = await submitParentBinding(
@@ -121,16 +142,18 @@ export default function ParentBindingPage() {
       if (!mounted.current) return;
       setMessage(errorMessage(error));
     } finally {
+      operationInFlight.current = false;
       if (mounted.current) setBusy(false);
     }
   }
 
   async function releaseRelationship(relationship: ParentGuardianRelationship) {
-    if (busy || relationship.status !== "ACTIVE") return;
+    if (operationInFlight.current || busy || relationship.status !== "ACTIVE") return;
     if (!hasRoleAccess(inviteSession.snapshot, "PARENT")) {
       void Taro.redirectTo({ url: "/pages/auth/login/index" });
       return;
     }
+    operationInFlight.current = true;
     setBusy(true);
     try {
       const confirmation = await Taro.showModal({
@@ -156,6 +179,7 @@ export default function ParentBindingPage() {
     } catch (error) {
       if (mounted.current) setMessage(errorMessage(error));
     } finally {
+      operationInFlight.current = false;
       if (mounted.current) setBusy(false);
     }
   }
@@ -212,6 +236,13 @@ export default function ParentBindingPage() {
 
       <View className="binding-card binding-relationships">
         <Text className="binding-section-title">监护关系</Text>
+        <Button
+          className="binding-secondary-button"
+          disabled={busy}
+          onClick={() => void loadOptions()}
+        >
+          刷新状态
+        </Button>
         {status === "LOADING" ? (
           <Text className="binding-message">正在读取已审核的关系…</Text>
         ) : null}
