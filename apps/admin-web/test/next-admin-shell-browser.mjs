@@ -173,10 +173,12 @@ test("invited login returns reviewers to the original page and rejects unsafe de
   const notice = "/admin/notice-review";
   const transfer = "/admin/student-transfers";
   const homeContent = "/admin/home-content";
-  for (const [requested, expected] of [
-    [notice, notice],
-    [transfer, transfer],
-    [homeContent, homeContent],
+  const account = "/admin/account";
+  for (const [requested, expected, loginLink] of [
+    [notice, notice, "前往管理端登录"],
+    [transfer, transfer, "重新登录"],
+    [homeContent, homeContent, "前往管理端登录"],
+    [account, account, "前往登录"],
     ["/admin/unknown", fallback],
     ["//external.invalid", fallback],
   ]) {
@@ -197,6 +199,18 @@ test("invited login returns reviewers to the original page and rejects unsafe de
             return route.fulfill({ json: { data: {} } });
           }
           if (!logins || expected === fallback) return route.fulfill({ status: 401, json: {} });
+          if (url.pathname === "/api/admin/identity/account")
+            return route.fulfill({
+              json: {
+                data: {
+                  actor_id: "synthetic-reviewer",
+                  username: "reviewer-demo",
+                  display_name: "合成审核员",
+                  account_status: "ACTIVE",
+                  memberships: [],
+                },
+              },
+            });
           if (url.pathname === "/api/admin/student-transfers")
             return route.fulfill({
               json: {
@@ -228,7 +242,7 @@ test("invited login returns reviewers to the original page and rejects unsafe de
           await page.goto(baseUrl + requested);
           await page
             .getByRole("link", {
-              name: requested === notice || requested === homeContent ? "前往管理端登录" : "重新登录",
+              name: loginLink,
               exact: true,
             })
             .click();
@@ -241,7 +255,10 @@ test("invited login returns reviewers to the original page and rejects unsafe de
         await page.waitForURL((url) => url.pathname !== "/admin/login");
         assert.equal(page.url(), baseUrl + expected);
         if (expected !== fallback) {
-          if (expected === homeContent) {
+          if (expected === account) {
+            await page.getByRole("heading", { name: "我的账号", exact: true }).waitFor();
+            await page.getByText("reviewer-demo", { exact: true }).waitFor();
+          } else if (expected === homeContent) {
             await page.getByRole("heading", { name: "首页内容管理", exact: true }).waitFor();
           } else {
             const state =

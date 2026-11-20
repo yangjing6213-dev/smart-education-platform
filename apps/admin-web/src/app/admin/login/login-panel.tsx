@@ -45,6 +45,7 @@ export function AdminLoginPanel() {
       setPassword("");
       const requested = new URLSearchParams(window.location.search).get("next");
       const nextPath =
+        requested === "/admin/account" ||
         requested === "/admin/home-content" ||
         requested === "/admin/institution" ||
         requested === "/admin/staff-daily-review" ||
