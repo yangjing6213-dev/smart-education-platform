@@ -68,11 +68,17 @@ test("prebuilt API and Next start with isolated sessions, both clocks, and owned
       });
       await navigate(page, baseUrl + "/web/visitor/home", "document.querySelector('h1')");
       assert.equal(
-        await evaluate(page, "document.querySelector('[data-official-institution-profile] h1').textContent.trim()"),
+        await evaluate(
+          page,
+          "document.querySelector('[data-official-institution-profile] h1').textContent.trim()",
+        ),
         "做有温度的教育，温暖孩子成长路。",
       );
       assert.equal(
-        await evaluate(page, 'document.querySelectorAll(\'main #visitor-public-content-heading, main a[href^="/visitor/content/"]\').length'),
+        await evaluate(
+          page,
+          "document.querySelectorAll('main #visitor-public-content-heading, main a[href^=\"/visitor/content/\"]').length",
+        ),
         0,
         "Without a public-content backend, the homepage must not show a published feed or article links",
       );
