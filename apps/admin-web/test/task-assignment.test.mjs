@@ -66,7 +66,7 @@ test("Admin task form uses fixed categories, authorized targets, and no free tex
   assert.match(html, /任务类别/u);
   assert.match(html, /示例东校区教师/u);
   assert.match(html, /示例学生甲/u);
-  assert.match(html, /2026-10/u);
+  assert.match(html, /name="dueDate"[^>]*value="[0-9]{4}-[0-9]{2}-[0-9]{2}"/u);
   assert.match(html, /独立检查/u);
   assert.doesNotMatch(html, /<textarea|姓名输入|真实学生/u);
 });

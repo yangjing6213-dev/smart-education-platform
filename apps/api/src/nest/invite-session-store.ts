@@ -8,6 +8,7 @@ export interface InviteSessionStore {
   create(session: InviteSession): Promise<boolean>;
   find(tokenHash: string): Promise<InviteSession | undefined>;
   delete(tokenHash: string): Promise<void>;
+  deleteByActor?(actorId: string): Promise<void>;
   deleteExpired(expiresAtOrBefore: Date): Promise<void>;
 }
 
@@ -25,6 +26,12 @@ export class InMemoryInviteSessionStore implements InviteSessionStore {
 
   public async delete(tokenHash: string): Promise<void> {
     this.sessions.delete(tokenHash);
+  }
+
+  public async deleteByActor(actorId: string): Promise<void> {
+    for (const [tokenHash, session] of this.sessions) {
+      if (session.actorId === actorId) this.sessions.delete(tokenHash);
+    }
   }
 
   public async deleteExpired(expiresAtOrBefore: Date): Promise<void> {

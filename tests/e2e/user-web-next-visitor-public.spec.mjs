@@ -1,5 +1,6 @@
 /* global Buffer, fetch, Intl */
 import assert from "node:assert/strict";
+import { createServer } from "node:http";
 import { mkdir } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -38,6 +39,74 @@ assert.ok(evidenceRelative && !evidenceRelative.startsWith(".."));
 const tenantId = "00000000-0000-4000-8000-000000000001";
 const campusId = "00000000-0000-4000-8000-000000000002";
 const publicRef = "synthetic-visitor-campus-a1300";
+
+async function createRoleApi(t) {
+  const server = createServer(async (request, response) => {
+    const chunks = [];
+    for await (const chunk of request) chunks.push(chunk);
+    const body = chunks.length ? JSON.parse(Buffer.concat(chunks).toString("utf8")) : undefined;
+    const token = request.headers.authorization?.replace(/^Bearer /u, "");
+    const reply = (status, value) => {
+      response.writeHead(status, { "content-type": "application/json; charset=utf-8" });
+      response.end(JSON.stringify(value));
+    };
+    if (request.url === "/identity/login" && request.method === "POST") {
+      const role =
+        body?.username === "parent-a1582" && body.password === "synthetic-password"
+          ? "parent"
+          : body?.username === "staff-a1582" && body.password === "synthetic-password"
+            ? "staff"
+            : undefined;
+      if (!role) return reply(401, { error: { code: "INVALID_CREDENTIALS" } });
+      return reply(200, {
+        data: {
+          token_type: "Bearer",
+          access_token: `${role}-a1582-access-token-0000000000000000000000000000000000`,
+          expires_at: "2099-01-01T00:00:00.000Z",
+        },
+      });
+    }
+    if (request.url === "/identity/logout" && request.method === "POST")
+      return reply(200, { data: { logged_out: true } });
+    const role = token?.startsWith("parent-a1582-")
+      ? "parent"
+      : token?.startsWith("staff-a1582-")
+        ? "staff"
+        : undefined;
+    if (request.url === "/me" && request.method === "GET" && role) {
+      return reply(200, {
+        data: {
+          actor_id:
+            role === "parent"
+              ? "00000000-0000-4000-8000-000000000201"
+              : "00000000-0000-4000-8000-000000000202",
+          display_name: role === "parent" ? "合成家长" : "合成员工",
+          memberships: [
+            {
+              status: "ACTIVE",
+              capabilities:
+                role === "parent"
+                  ? ["care:read", "binding:read", "binding:apply"]
+                  : ["task:read", "binding:review", "care:write", "care:review", "daily:read"],
+            },
+          ],
+        },
+      });
+    }
+    return reply(401, { error: { code: "UNAUTHENTICATED" } });
+  });
+  await new Promise((resolvePromise, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", resolvePromise);
+  });
+  t.after(
+    async () =>
+      new Promise((resolvePromise, reject) => {
+        server.close((error) => (error ? reject(error) : resolvePromise()));
+      }),
+  );
+  return `http://127.0.0.1:${server.address().port}`;
+}
 
 async function seedTodayDraft(apiBaseUrl, date) {
   const owner = await createLocalProfile(apiBaseUrl, "owner-east");
@@ -124,8 +193,12 @@ test("visitor public pages, contact intent, public meals, and responsive layout"
   process.env.PUBLIC_API_BASE_URL = publicApiUrl;
   process.env.PUBLIC_CAMPUS_REF = publicRef;
   let runtime;
+  const roleApiUrl = await createRoleApi(t);
   try {
-    runtime = await startNextBrowser(t, { repositoryRoot });
+    runtime = await startNextBrowser(t, {
+      repositoryRoot,
+      startInviteApi: async () => roleApiUrl,
+    });
   } finally {
     if (oldApi === undefined) delete process.env.PUBLIC_API_BASE_URL;
     else process.env.PUBLIC_API_BASE_URL = oldApi;
@@ -133,6 +206,144 @@ test("visitor public pages, contact intent, public meals, and responsive layout"
     else process.env.PUBLIC_CAMPUS_REF = oldRef;
   }
   const { baseUrl, apiBaseUrl } = runtime;
+  const requests = [];
+  const pageErrors = [];
+  let adminSession = false;
+  let page;
+  page = await runtime.connectPage((method, params) => {
+    if (method === "Network.requestWillBeSent" && /^https?:/u.test(params.request.url)) {
+      requests.push({ url: params.request.url, headers: params.request.headers ?? {} });
+    }
+    if (
+      method === "Fetch.requestPaused" &&
+      new URL(params.request.url).pathname === "/api/admin/me"
+    ) {
+      const status = adminSession ? 200 : 401;
+      const payload = adminSession
+        ? {
+            data: {
+              actor_id: "00000000-0000-4000-8000-000000000203",
+              display_name: "合成机构管理员",
+              memberships: [{ status: "ACTIVE", capabilities: ["institution:read"] }],
+            },
+          }
+        : { error: { code: "UNAUTHENTICATED" } };
+      void page.send("Fetch.fulfillRequest", {
+        requestId: params.requestId,
+        responseCode: status,
+        responseHeaders: [{ name: "content-type", value: "application/json; charset=utf-8" }],
+        body: Buffer.from(JSON.stringify(payload)).toString("base64"),
+      });
+    }
+    if (method === "Runtime.exceptionThrown")
+      pageErrors.push(params.exceptionDetails?.text ?? "visitor page exception");
+  });
+  await page.send("Fetch.enable", {
+    patterns: [{ urlPattern: baseUrl + "/api/admin/me", requestStage: "Request" }],
+  });
+  const anonymousRoot = await fetch(baseUrl + "/", { redirect: "manual" });
+  assert.equal(anonymousRoot.status, 200, "根路由应先检查会话，再把匿名访客送到公开首页。");
+  await navigate(page, baseUrl + "/", "location.pathname === '/visitor'");
+  for (const [username, root] of [
+    ["parent-a1582", "/web/parent/home"],
+    ["staff-a1582", "/web/staff/workbench"],
+  ]) {
+    if (username === "staff-a1582")
+      await evaluate(
+        page,
+        "fetch('/api-local/identity/logout',{method:'POST',credentials:'same-origin'})",
+      );
+    const loginStatus = await evaluate(
+      page,
+      `fetch('/api-local/identity/login',{method:'POST',credentials:'same-origin',headers:{'content-type':'application/json'},body:JSON.stringify({username:${JSON.stringify(username)},password:'synthetic-password'})}).then(response=>response.status)`,
+    );
+    assert.equal(
+      loginStatus,
+      200,
+      `合成${username.startsWith("parent") ? "家长" : "员工"}会话应能登录。`,
+    );
+    await navigate(page, baseUrl + "/", `location.pathname === '${root}'`);
+    assert.notEqual(await evaluate(page, "location.pathname"), "/visitor");
+  }
+  await evaluate(
+    page,
+    "fetch('/api-local/identity/logout',{method:'POST',credentials:'same-origin'})",
+  );
+  const loginHtml = await (await fetch(baseUrl + "/web/login")).text();
+  const loginNavigation = loginHtml.match(/<nav id="site-navigation"[\s\S]*?<\/nav>/u)?.[0] ?? "";
+  assert.ok(
+    loginHtml.includes('class="brand" href="/web/login" aria-label="同芯学园账号登录"'),
+    "账号登录和服务选择页的品牌入口应留在账号区。",
+  );
+  assert.ok(
+    loginHtml.includes('class="header-action" href="/web/login"'),
+    "账号登录和服务选择页的主按钮应留在账号区。",
+  );
+  assert.ok(
+    loginHtml.includes('class="brand brand-footer" href="/web/login"'),
+    "账号登录和服务选择页的页脚品牌应留在账号区。",
+  );
+  assert.doesNotMatch(
+    loginNavigation,
+    /href="(?:\/visitor|\/web\/visitor)/u,
+    "账号登录和服务选择页的导航不得把用户送回访客内容区。",
+  );
+  const roleRoutes = [
+    ...["home", "learning", "binding", "fees", "monthly", "pickup", "leave"].map((page) => ({
+      path: `/web/parent/${page}`,
+      root: "/web/parent/home",
+      role: "家长",
+    })),
+    ...[
+      "workbench",
+      "binding",
+      "daily",
+      "care",
+      "care-review",
+      "monthly",
+      "child-monthly",
+      "leave",
+    ].map((page) => ({
+      path: `/web/staff/${page}`,
+      root: "/web/staff/workbench",
+      role: "员工",
+    })),
+  ];
+  for (const route of roleRoutes) {
+    const response = await fetch(baseUrl + route.path);
+    const body = await response.text();
+    assert.equal(response.status, 200, route.path + "\n" + runtime.nextOutput);
+    assert.ok(
+      body.includes(
+        `class="brand" href="${route.root}" aria-label="同芯学园${route.role}${route.role === "家长" ? "首页" : "工作台"}"`,
+      ),
+      `${route.path}: 品牌 Logo 应返回${route.role}工作区。`,
+    );
+    assert.ok(
+      body.includes(`class="header-action" href="${route.root}"`),
+      `${route.path}: 页头主按钮应留在${route.role}工作区。`,
+    );
+    assert.ok(body.includes(`href="${route.root}"`), `${route.path}: 导航应提供角色首页入口。`);
+    assert.ok(
+      body.includes(`class="brand brand-footer" href="${route.root}"`),
+      `${route.path}: 页脚 Logo 应返回${route.role}工作区。`,
+    );
+    assert.doesNotMatch(
+      body,
+      /href="(?:\/visitor(?:\/|#|")|\/web\/visitor\/home)/u,
+      `${route.path}: 已登录角色页面不应把导航指向访客首页。`,
+    );
+    if (route.role === "员工") {
+      assert.doesNotMatch(body, /href="\/web\/parent\//u, "员工导航不得跨到家长页面。");
+    } else {
+      assert.doesNotMatch(body, /href="\/web\/staff\//u, "家长导航不得跨到员工页面。");
+    }
+    if (route.path === "/web/parent/home" || route.path === "/web/staff/workbench") {
+      assert.doesNotMatch(body, /返回访客首页/u, `${route.path}: 工作台根页面不应返回访客首页。`);
+    }
+  }
+  const guestHome = await (await fetch(baseUrl + "/web/visitor/home")).text();
+  assert.match(guestHome, /class="brand" href="\/visitor" aria-label="同芯学园访客首页"/u);
   for (const path of [
     "/visitor",
     "/web/visitor/home",
@@ -160,15 +371,31 @@ test("visitor public pages, contact intent, public meals, and responsive layout"
   assert.equal(missing.status, 404, "当前配置的公开接口应隐藏未发布内容。");
   assert.doesNotMatch(await missing.text(), /合成访客动态|A1\.300 private institution note/u);
 
-  const requests = [];
-  const pageErrors = [];
-  const page = await runtime.connectPage((method, params) => {
-    if (method === "Network.requestWillBeSent" && /^https?:/u.test(params.request.url)) {
-      requests.push({ url: params.request.url, headers: params.request.headers ?? {} });
-    }
-    if (method === "Runtime.exceptionThrown")
-      pageErrors.push(params.exceptionDetails?.text ?? "visitor page exception");
-  });
+  await navigate(
+    page,
+    baseUrl + "/web/parent/learning",
+    "document.querySelector('.site-header .brand')",
+  );
+  await evaluate(page, "document.querySelector('.site-header .brand').click()");
+  await waitForExpression(
+    page,
+    "location.pathname === '/web/parent/home'",
+    "家长页头品牌点击后没有返回家长首页。",
+  );
+  await navigate(page, baseUrl + "/web/staff/leave", "document.querySelector('.header-action')");
+  await evaluate(page, "document.querySelector('.header-action').click()");
+  await waitForExpression(
+    page,
+    "location.pathname === '/web/staff/workbench'",
+    "员工页头主按钮点击后没有返回工作台。",
+  );
+  await navigate(page, baseUrl + "/web/parent/leave", "document.querySelector('.brand-footer')");
+  await evaluate(page, "document.querySelector('.brand-footer').click()");
+  await waitForExpression(
+    page,
+    "location.pathname === '/web/parent/home'",
+    "家长页脚品牌点击后没有返回家长首页。",
+  );
   await navigate(
     page,
     baseUrl + "/web/visitor/home",
@@ -341,4 +568,12 @@ test("visitor public pages, contact intent, public meals, and responsive layout"
   assert.deepEqual(pageErrors, []);
   await publicApi.close();
   publicApiClosed = true;
+
+  adminSession = true;
+  await navigate(page, baseUrl + "/", "location.pathname !== '/' ");
+  assert.equal(
+    await evaluate(page, "location.pathname"),
+    "/admin/institution",
+    "已登录管理员从网站根地址应进入管理端机构概览，不应落到访客空状态。",
+  );
 });
