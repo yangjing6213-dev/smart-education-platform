@@ -67,13 +67,15 @@ test("prebuilt API and Next start with isolated sessions, both clocks, and owned
         if (method === "Runtime.exceptionThrown") errors.push(method);
       });
       await navigate(page, baseUrl + "/web/visitor/home", "document.querySelector('h1')");
-      // This startup fixture intentionally has no public-content backend configuration.
-      // Check the explicit safe empty state, not merely that some heading rendered.
-      assert.match(
-        await evaluate(page, "document.querySelector('h1').textContent.trim()"),
-        /访客公开内容暂不可用/,
+      assert.equal(
+        await evaluate(page, "document.querySelector('[data-official-institution-profile] h1').textContent.trim()"),
+        "做有温度的教育，温暖孩子成长路。",
       );
-      assert.match(await evaluate(page, "document.body.textContent"), /公开机构资料尚未配置/);
+      assert.equal(
+        await evaluate(page, 'document.querySelectorAll(\'main #visitor-public-content-heading, main a[href^="/visitor/content/"]\').length'),
+        0,
+        "Without a public-content backend, the homepage must not show a published feed or article links",
+      );
       assert.deepEqual(errors, []);
       await mkdir(artifactRoot, { recursive: true });
       await capture(page, resolve(artifactRoot, `startup-${mode}.png`));
