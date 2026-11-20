@@ -68,7 +68,7 @@ test("monthly route preserves every existing route and provides a permission-gat
   ];
   assert.deepEqual(
     [...paths].sort(),
-    [...previous, "staff/monthly", "staff/child-monthly", "parent/child-monthly"]
+    [...previous, "staff/monthly", "staff/child-monthly", "parent/child-monthly", "account"]
       .map((path) => `pages/${path}/index`)
       .sort(),
   );

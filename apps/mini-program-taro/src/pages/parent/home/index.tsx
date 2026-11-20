@@ -572,6 +572,12 @@ export default function ParentHomePage() {
       </Button>
       <Button
         className="parent-button parent-button-secondary"
+        onClick={() => void Taro.navigateTo({ url: "/pages/account/index" })}
+      >
+        我的账号
+      </Button>
+      <Button
+        className="parent-button parent-button-secondary"
         onClick={() => void switchAccount()}
       >
         切换账号

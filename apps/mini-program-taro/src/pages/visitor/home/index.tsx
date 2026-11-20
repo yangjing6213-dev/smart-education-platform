@@ -3,6 +3,7 @@ import { Button, Image, Text, View } from "@tarojs/components";
 import institutionActivityPhoto from "../../../assets/institution-activity-visit.jpg";
 import teacherTeamCampus from "../../../assets/teacher-team-campus.jpg";
 import teacherTeamOutdoor from "../../../assets/teacher-team-outdoor.jpg";
+import { INSTITUTION_INTRODUCTION } from "../../../public/institution-profile";
 import "./index.css";
 
 export default function VisitorHome() {
@@ -17,23 +18,15 @@ export default function VisitorHome() {
       </View>
 
       <View className="hero-card">
-        <Text className="eyebrow">用心陪伴 · 看见成长</Text>
-        <Text className="headline">放学之后，</Text>
-        <Text className="headline headline-accent">安心成长</Text>
-        <Text className="description">
-          课后托管、兴趣探索与温暖陪伴，让每一段放学时光更有意义。
-        </Text>
+        <Text className="headline">做有温度的教育，</Text>
+        <Text className="headline headline-accent">温暖孩子成长路。</Text>
+        <Text className="description">{INSTITUTION_INTRODUCTION}</Text>
         <Image
           className="institution-activity-photo"
           src={institutionActivityPhoto}
           mode="aspectFill"
           ariaLabel="同芯学园校园活动现场"
         />
-        <View className="hero-note">
-          <Text>温暖相伴</Text>
-          <Text className="note-dot">·</Text>
-          <Text>快乐成长</Text>
-        </View>
       </View>
 
       <Button

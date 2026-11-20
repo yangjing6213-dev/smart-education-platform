@@ -76,16 +76,6 @@ test("published public content works through Nest; drafts, private and other sco
     assert.equal(service.createHomeDraft(context, key, { ...payload, visibility }).ok, true);
     if (publish) assert.equal(service.publishHome(context, key, 1).ok, true);
   }
-  const tenantOwner = { ...owner, scope: { tenantId } };
-  assert.equal(
-    service.createInstitutionDraft(tenantOwner, "synthetic-profile", {
-      ...payload,
-      type: "INSTITUTION",
-      title: "合成机构资料",
-    }).ok,
-    true,
-  );
-  assert.equal(service.publishInstitution(tenantOwner, "synthetic-profile", 1).ok, true);
   const api = await createApiApp({
     institutionService: service,
     getPublicInstitutionScope: (request, kind) =>
@@ -117,6 +107,12 @@ test("published public content works through Nest; drafts, private and other sco
   const response = await fetch(runtime.baseUrl + "/visitor");
   assert.equal(response.status, 200);
   const home = await response.text();
+  assert.match(home, /了解同芯学园的机构介绍、教育理念与公开服务信息/u);
+  assert.doesNotMatch(home, /页面内容均为模拟数据/u);
+  assert.match(
+    home,
+    /一家和别的学习机构不一样、崇尚个性化的学习中心。我们注重培养孩子的学习能力、学习习惯与学习兴趣，做有温度的教育，温暖孩子成长之路。/u,
+  );
   assert.match(home, /合成公开活动/);
   assert.doesNotMatch(
     home,
@@ -126,7 +122,19 @@ test("published public content works through Nest; drafts, private and other sco
   const institution = await fetch(runtime.baseUrl + "/web/visitor/institution");
   assert.equal(institution.status, 200);
   const institutionBody = await institution.text();
-  assert.match(institutionBody, /合成机构资料/);
+  assert.match(institutionBody, /了解同芯学园的机构介绍、教育理念与公开服务信息/u);
+  assert.match(institutionBody, /机构介绍与企业文化采用机构提供的正式资料/u);
+  assert.doesNotMatch(institutionBody, /页面中的机构、人员、菜单和流程均为虚构示例/u);
+  assert.match(
+    institutionBody,
+    /一家和别的学习机构不一样、崇尚个性化的学习中心。我们注重培养孩子的学习能力、学习习惯与学习兴趣，做有温度的教育，温暖孩子成长之路。/u,
+  );
+  assert.match(institutionBody, /做家长最信任的托育平台/u);
+  assert.match(institutionBody, /做有温度的教育，温暖孩子成长路。/u);
+  assert.match(institutionBody, /让每一个家庭因为我们的存在变得更加幸福和快乐/u);
+  assert.match(institutionBody, /向善向上，学生至上/u);
+  assert.doesNotMatch(institutionBody, /合成机构资料|模拟数据|暂不可用/u);
+  assert.doesNotMatch(institutionBody, /\b1[3-9]\d{9}\b/u);
   assert.doesNotMatch(institutionBody, /EDITOR_NOTE_MUST_STAY_PRIVATE/);
 
   for (const key of [
@@ -160,6 +168,35 @@ test("published public content works through Nest; drafts, private and other sco
   const page = await runtime.connectPage((method) => {
     if (method === "Runtime.exceptionThrown") errors.push(method);
   });
+  await mkdir(evidence, { recursive: true });
+  await navigate(
+    page,
+    runtime.baseUrl + "/web/visitor/institution",
+    "document.querySelector('[data-official-institution-profile]')",
+  );
+  const visibleInstitution = await evaluate(
+    page,
+    "document.querySelector('main')?.innerText ?? ''",
+  );
+  assert.match(visibleInstitution, /机构介绍/u);
+  assert.match(visibleInstitution, /做家长最信任的托育平台/u);
+  assert.match(visibleInstitution, /创新协作，修己达人/u);
+  assert.doesNotMatch(visibleInstitution, /1[3-9]\d{9}/u);
+  await page.send("Emulation.setDeviceMetricsOverride", {
+    width: 1365,
+    height: 900,
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
+  await capture(page, resolve(evidence, "institution-official-copy-desktop.png"));
+  await page.send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  assert.equal(await evaluate(page, "document.documentElement.scrollWidth <= innerWidth"), true);
+  await capture(page, resolve(evidence, "institution-official-copy-mobile.png"));
   await navigate(
     page,
     runtime.baseUrl + "/visitor",
@@ -190,6 +227,16 @@ test("published public content works through Nest; drafts, private and other sco
 
   await api.close();
   closed = true;
+  const offlineInstitution = await fetch(runtime.baseUrl + "/web/visitor/institution", {
+    signal: AbortSignal.timeout(5000),
+  });
+  assert.equal(offlineInstitution.status, 200);
+  assert.match(await offlineInstitution.text(), /做有温度的教育，温暖孩子成长路。/u);
+  const offlineHome = await fetch(runtime.baseUrl + "/visitor", {
+    signal: AbortSignal.timeout(5000),
+  });
+  assert.equal(offlineHome.status, 200);
+  assert.match(await offlineHome.text(), /崇尚个性化的学习中心/u);
   const unavailable = await fetch(runtime.baseUrl + "/visitor/content/synthetic-public", {
     signal: AbortSignal.timeout(5000),
   });

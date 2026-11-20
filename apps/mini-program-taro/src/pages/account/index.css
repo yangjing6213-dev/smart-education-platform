@@ -1,0 +1,22 @@
+.account-page { min-height: 100vh; padding: 36rpx 30rpx 70rpx; background: #f5f8ec; color: #244b32; }
+.account-brand { display: grid; gap: 3rpx; margin: 10rpx 8rpx 26rpx; }
+.account-brand-name { color: #8fc735; font-size: 38rpx; font-weight: 800; letter-spacing: 5rpx; }
+.account-brand-subtitle { color: #75a932; font-size: 16rpx; font-weight: 700; letter-spacing: 2rpx; }
+.account-card { display: grid; gap: 20rpx; margin-bottom: 22rpx; padding: 30rpx; border: 1rpx solid rgba(255,255,255,.94); border-radius: 28rpx; background: rgba(255,255,255,.86); box-shadow: 0 14rpx 36rpx rgba(75,105,47,.08); }
+.account-heading { border-left: 8rpx solid #9bcf42; }
+.account-eyebrow { color: #79a936; font-size: 21rpx; font-weight: 700; }
+.account-title { color: #244b32; font-size: 42rpx; font-weight: 800; }
+.account-message, .account-copy { color: #71806c; font-size: 23rpx; line-height: 1.65; }
+.account-section-title { color: #31583a; font-size: 29rpx; font-weight: 800; }
+.account-detail { display: flex; justify-content: space-between; gap: 16rpx; padding: 12rpx 0; border-bottom: 1rpx solid #edf1e9; font-size: 22rpx; }
+.account-detail Text:first-child { color: #71806c; }
+.account-detail Text:last-child { max-width: 65%; overflow-wrap: anywhere; text-align: right; font-weight: 600; }
+.account-label { color: #31583a; font-size: 22rpx; font-weight: 700; }
+.account-form { display: grid; gap: 13rpx; padding: 20rpx 0; border-top: 1rpx solid #edf1e9; }
+.account-input { width: 100%; min-height: 82rpx; box-sizing: border-box; padding: 0 22rpx; border: 1rpx solid #d4e1c9; border-radius: 16rpx; background: #fbfcf8; color: #183c28; font-size: 24rpx; }
+.account-picker { display: flex; min-height: 82rpx; align-items: center; justify-content: space-between; padding: 0 22rpx; border: 1rpx solid #d4e1c9; border-radius: 16rpx; background: #fbfcf8; color: #31583a; font-size: 23rpx; }
+.account-primary, .account-secondary { width: 100%; min-height: 84rpx; border-radius: 18rpx; font-size: 25rpx; font-weight: 700; line-height: 84rpx; }
+.account-primary { border: 0; background: #78a832; color: #fff; }
+.account-secondary { border: 1rpx solid #d5e2ca; background: #f6f9f1; color: #31533a; }
+.account-home { margin-top: 8rpx; }
+.account-primary::after, .account-secondary::after { border: 0; }

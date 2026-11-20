@@ -620,7 +620,7 @@ test("invited parent and staff complete relationship review and task lifecycle i
   assert.ok(
     await evaluate(
       instrumented,
-      "Boolean(document.querySelector('a[href=\"/web/staff/binding\"]'))",
+      "Boolean(document.querySelector('[data-staff-workbench-state=READY] a[href=\"/web/staff/binding\"]'))",
     ),
     "有审核权限的员工应看到关系审核入口。",
   );
@@ -644,7 +644,10 @@ test("invited parent and staff complete relationship review and task lifecycle i
     "员工应能提交固定选项完成结果。",
   );
 
-  await clickParentControl(instrumented, 'a[href="/web/staff/binding"]');
+  await clickParentControl(
+    instrumented,
+    '[data-staff-workbench-state=READY] a[href="/web/staff/binding"]',
+  );
   await waitForExpression(
     instrumented,
     "location.pathname==='/web/staff/binding'&&document.querySelector('[data-staff-binding-state=READY]')",

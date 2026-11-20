@@ -19,7 +19,7 @@
     "test:child-monthly-proxy": "node --test --test-concurrency=1 test/child-monthly-invite-proxy.test.mjs"
   },
   "dependencies": {
-    "next": "16.4.2",
+    "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "@student-care/contracts": "workspace:*"

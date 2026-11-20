@@ -8,6 +8,7 @@ export default defineAppConfig({
     "pages/visitor/activities/index",
     "pages/visitor/activity-detail/index",
     "pages/auth/login/index",
+    "pages/account/index",
     "pages/parent/home/index",
     "pages/parent/notices/index",
     "pages/parent/fees/index",

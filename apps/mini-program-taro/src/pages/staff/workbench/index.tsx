@@ -274,6 +274,12 @@ export default function StaffWorkbenchPage() {
         >
           返回访客首页
         </Button>
+        <Button
+          className="staff-secondary-button"
+          onClick={() => void Taro.navigateTo({ url: "/pages/account/index" })}
+        >
+          我的账号
+        </Button>
       </View>
       <Text className="staff-footnote">
         本页只展示机构服务返回的待审申请；无服务连接时不会生成模拟审核结果。

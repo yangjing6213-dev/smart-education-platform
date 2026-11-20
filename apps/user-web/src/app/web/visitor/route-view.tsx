@@ -15,6 +15,15 @@ import { PublicMealsPanel } from "./public-meals-panel";
 import { SiteFooter, SiteHeader, type VisitorSection } from "./site-header";
 
 const publicVerticals = createSyntheticPublicVerticalResponse();
+const officialInstitution = {
+  introduction:
+    "一家和别的学习机构不一样、崇尚个性化的学习中心。我们注重培养孩子的学习能力、学习习惯与学习兴趣，做有温度的教育，温暖孩子成长之路。",
+  vision: "做家长最信任的托育平台，成为最有爱最具影响力的教育企业。",
+  idea: "做有温度的教育，温暖孩子成长路。",
+  mission:
+    "成就每一个同芯学园人精神和物质双向幸福的同时，为更多学子成长赋能，让每一个家庭因为我们的存在变得更加幸福和快乐！",
+  values: "向善向上，学生至上。至诚守信，谦虚感恩。创新协作，修己达人。",
+} as const;
 
 function unavailableMessage(state: PublicInstitutionReadState): string {
   if (state === "NOT_CONFIGURED") return "公开机构资料尚未配置，暂时无法展示。";
@@ -76,7 +85,57 @@ function publicContentPage(
   );
 }
 
-function publicHomePage(items: readonly PublicInstitutionVisitorItem[]): ReactNode {
+function officialInstitutionPage(): ReactNode {
+  return (
+    <main
+      id="main-content"
+      className="visitor-main public-vertical-main"
+      aria-labelledby="official-institution-heading"
+      data-official-institution-profile
+    >
+      <section className="public-vertical-hero" aria-labelledby="official-institution-heading">
+        <p className="visitor-section-kicker">同芯学园 · 机构介绍</p>
+        <h1 id="official-institution-heading">机构介绍</h1>
+        <p className="public-vertical-lede">{officialInstitution.introduction}</p>
+      </section>
+      <section
+        id="institution-culture"
+        className="public-vertical-section"
+        aria-labelledby="official-culture-heading"
+      >
+        <div className="visitor-section-heading">
+          <div>
+            <p className="visitor-section-kicker">同芯学园 · 企业文化</p>
+            <h2 id="official-culture-heading">做有温度的教育</h2>
+          </div>
+        </div>
+        <div className="public-vertical-grid">
+          <article className="public-vertical-card">
+            <p className="visitor-section-kicker">愿景</p>
+            <p>{officialInstitution.vision}</p>
+          </article>
+          <article className="public-vertical-card">
+            <p className="visitor-section-kicker">理念</p>
+            <p>{officialInstitution.idea}</p>
+          </article>
+          <article className="public-vertical-card">
+            <p className="visitor-section-kicker">使命</p>
+            <p>{officialInstitution.mission}</p>
+          </article>
+          <article className="public-vertical-card">
+            <p className="visitor-section-kicker">价值观</p>
+            <p>{officialInstitution.values}</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function publicHomePage(
+  items: readonly PublicInstitutionVisitorItem[],
+  dynamicState: PublicInstitutionReadState,
+): ReactNode {
   return (
     <main
       id="main-content"
@@ -86,37 +145,47 @@ function publicHomePage(items: readonly PublicInstitutionVisitorItem[]): ReactNo
       <section
         className="public-vertical-hero"
         aria-labelledby="visitor-home-heading"
-        data-synthetic="true"
+        data-official-institution-profile
       >
-        <p className="visitor-section-kicker">同芯学园 · 已发布公开信息 · 合成数据</p>
-        <h1 id="visitor-home-heading">课后成长与校园动态</h1>
-        <p className="public-vertical-lede">以下内容来自当前校区已发布且可公开的机构资料。</p>
+        <p className="visitor-section-kicker">同芯学园 · 机构介绍</p>
+        <h1 id="visitor-home-heading">做有温度的教育，温暖孩子成长路。</h1>
+        <p className="public-vertical-lede">{officialInstitution.introduction}</p>
+        <a className="button button-dark" href="/web/visitor/institution">
+          了解同芯学园 <span aria-hidden="true">→</span>
+        </a>
       </section>
-      <section
-        className="public-vertical-section"
-        aria-labelledby="visitor-public-content-heading"
-        data-synthetic="true"
-      >
-        <div className="visitor-section-heading">
-          <div>
-            <p className="visitor-section-kicker">公开内容</p>
-            <h2 id="visitor-public-content-heading">机构动态</h2>
+      {dynamicState === "ERROR" ? (
+        <p className="status-message" role="status" aria-live="polite">
+          校园动态暂时无法读取，机构介绍仍可浏览。
+        </p>
+      ) : null}
+      {items.length > 0 ? (
+        <section
+          className="public-vertical-section"
+          aria-labelledby="visitor-public-content-heading"
+          data-synthetic="true"
+        >
+          <div className="visitor-section-heading">
+            <div>
+              <p className="visitor-section-kicker">公开内容</p>
+              <h2 id="visitor-public-content-heading">机构动态</h2>
+            </div>
+            <p className="section-note">仅展示已审核发布的内容。</p>
           </div>
-          <p className="section-note">仅展示已审核发布的合成内容。</p>
-        </div>
-        <div className="visitor-update-grid">
-          {items.map((item) => (
-            <article className="content-card" data-synthetic="true" key={item.slug}>
-              <p className="eyebrow">公开内容 · 模拟数据</p>
-              <h3>{item.title}</h3>
-              <p className="content-card-summary">{item.summary}</p>
-              <a className="text-link" href={`/visitor/content/${encodeURIComponent(item.slug)}`}>
-                查看内容 <span aria-hidden="true">→</span>
-              </a>
-            </article>
-          ))}
-        </div>
-      </section>
+          <div className="visitor-update-grid">
+            {items.map((item) => (
+              <article className="content-card" data-synthetic="true" key={item.slug}>
+                <p className="eyebrow">公开内容 · 模拟数据</p>
+                <h3>{item.title}</h3>
+                <p className="content-card-summary">{item.summary}</p>
+                <a className="text-link" href={`/visitor/content/${encodeURIComponent(item.slug)}`}>
+                  查看内容 <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
       <section
         className="public-vertical-section visitor-home-activity-section"
         aria-labelledby="visitor-home-activity-heading"
@@ -217,18 +286,9 @@ export async function VisitorRouteView({
         : unavailablePage("访客内容暂不可用", result.state);
   } else if (section === "home") {
     const result = await institutionClient.list("home");
-    if (result.state === "READY" && result.items.length > 0) {
-      content = publicHomePage(result.items);
-    } else {
-      content = unavailablePage("访客公开内容暂不可用", result.state);
-    }
+    content = publicHomePage(result.state === "READY" ? result.items : [], result.state);
   } else if (section === "institution") {
-    const result = await institutionClient.list("profile");
-    const institution = result.items[0];
-    content =
-      result.state === "READY" && institution !== undefined
-        ? publicContentPage(institution.title, institution.summary, institution.body)
-        : unavailablePage("机构介绍暂不可用", result.state);
+    content = officialInstitutionPage();
   } else {
     const result = resolvePublicVertical(publicVerticals, "dayFlow", "PUBLISHED", isPublicDayFlow);
     const flow = result.value;

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: "同芯学园访客首页",
     template: "%s | 同芯学园",
   },
-  description: "查看同芯学园的课后成长服务公开信息。页面内容均为模拟数据。",
+  description: "了解同芯学园的机构介绍、教育理念与公开服务信息。",
   icons: { icon: "/assets/tongxin-logo.png" },
 };
 

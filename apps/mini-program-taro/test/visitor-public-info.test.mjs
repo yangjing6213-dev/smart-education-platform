@@ -31,7 +31,36 @@ test("Taro visitor home exposes institution and home-school public pages", async
   assert.match(homeStyle, /service-card-link[\s\S]*?text-align:\s*left/u);
 });
 
-test("public detail pages keep synthetic content local and return to visitor home", async () => {
+test("both visitor pages show the institution's approved introduction and culture", async () => {
+  const home = await read("../src/pages/visitor/home/index.tsx");
+  const institution = await read("../src/pages/visitor/institution/index.tsx");
+  for (const page of [home, institution]) {
+    assert.match(page, /\{INSTITUTION_INTRODUCTION\}/u);
+    assert.doesNotMatch(page, /机构介绍示例|课后托管、兴趣探索与温暖陪伴/u);
+  }
+  const { INSTITUTION_INTRODUCTION, INSTITUTION_CULTURE } =
+    await import("../src/public/institution-profile.ts");
+  assert.equal(
+    INSTITUTION_INTRODUCTION,
+    "一家和别的学习机构不一样、崇尚个性化的学习中心。我们注重培养孩子的学习能力、学习习惯与学习兴趣，做有温度的教育，温暖孩子成长之路。",
+  );
+  assert.deepEqual(INSTITUTION_CULTURE, [
+    { title: "愿景", description: "做家长最信任的托育平台，成为最有爱最具影响力的教育企业。" },
+    { title: "理念", description: "做有温度的教育，温暖孩子成长路。" },
+    {
+      title: "使命",
+      description:
+        "成就每一个同芯学园人精神和物质双向幸福的同时，为更多学子成长赋能，让每一个家庭因为我们的存在变得更加幸福和快乐！",
+    },
+    {
+      title: "价值观",
+      description: "向善向上，学生至上。至诚守信，谦虚感恩。创新协作，修己达人。",
+    },
+  ]);
+  assert.match(institution, /INSTITUTION_CULTURE\.map\(/u);
+});
+
+test("public detail pages keep local navigation and mark the home-school example", async () => {
   const files = await Promise.all([
     read("../src/pages/visitor/institution/index.tsx"),
     read("../src/pages/visitor/institution/index.css"),
@@ -54,8 +83,8 @@ test("public detail pages keep synthetic content local and return to visitor hom
   const styles = `${institutionStyle}${homeSchoolStyle}${sharedStyle}`;
 
   assert.match(institution, /机构介绍/u);
-  assert.match(institution, /服务原则/u);
-  assert.match(institution, /模拟数据/u);
+  assert.match(institution, /企业文化/u);
+  assert.doesNotMatch(institution, /模拟数据|访客介绍示例/u);
   assert.match(institutionConfig, /navigationBarTitleText:\s*["']机构介绍/u);
   assert.match(homeSchool, /家校共育/u);
   assert.match(homeSchool, /沟通方式/u);
