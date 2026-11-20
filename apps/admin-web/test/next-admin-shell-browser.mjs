@@ -2796,10 +2796,9 @@ test("Next admin serves the left navigation, right content, and mobile drawer", 
   if (process.env.ADMIN_NEXT_EVIDENCE_DIR) {
     const evidenceDir = resolve(process.env.ADMIN_NEXT_EVIDENCE_DIR);
     await mkdir(evidenceDir, { recursive: true });
+    // Capture both responsive layouts on the same document so viewport-triggered prefetches can finish.
+    assert.equal(new URL(page.url()).pathname, "/admin/institution");
     await page.setViewportSize({ width: 1365, height: 900 });
-    await page.goto(`${baseUrl}/admin/institution`, {
-      waitUntil: "networkidle",
-    });
     await page.evaluate(() => {
       if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
       window.scrollTo(0, 0);
@@ -2810,9 +2809,6 @@ test("Next admin serves the left navigation, right content, and mobile drawer", 
       fullPage: true,
     });
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`${baseUrl}/admin/institution`, {
-      waitUntil: "networkidle",
-    });
     await page.evaluate(() => {
       if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
       window.scrollTo(0, 0);
