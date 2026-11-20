@@ -115,12 +115,6 @@ export function StaffNavigation({
       >
         请假审核
       </Link>
-      <Link href="/web/parent/home" prefetch={false}>
-        家长首页
-      </Link>
-      <Link href="/web/visitor/home" prefetch={false}>
-        访客首页
-      </Link>
     </nav>
   );
 }

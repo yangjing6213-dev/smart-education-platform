@@ -17,9 +17,6 @@ export default function ParentHomePage() {
       <SiteHeader active="parent-home" />
       <main className={sharedStyles.main} id="main-content">
         <div className={sharedStyles.container}>
-          <a className={sharedStyles.backLink} href="/web/visitor/home">
-            返回访客首页
-          </a>
           <p className={sharedStyles.eyebrow}>家长服务 · 本机合成数据</p>
           <h1>家长首页</h1>
           <p className={sharedStyles.intro}>
