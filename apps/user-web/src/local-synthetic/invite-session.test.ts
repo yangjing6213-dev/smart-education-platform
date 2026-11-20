@@ -383,6 +383,23 @@ test("staff monthly destination accepts active feedback read without granting wr
   assert.equal(inviteNextPath("/web/staff/child-monthly?role=STAFF"), null);
 });
 
+test("staff pickup destination follows the active attendance writer permission", async () => {
+  for (const [status, capabilities, expected] of [
+    ["ACTIVE", ["attendance:write"], [{ href: "/web/staff/pickup", label: "接送核验" }]],
+    ["ACTIVE", ["task:read"], [{ href: "/web/staff/workbench", label: "员工工作台" }]],
+    ["SUSPENDED", ["attendance:write"], []],
+  ] as const) {
+    const client = new InviteSessionClient({
+      baseUrl: "http://127.0.0.1:3000",
+      fetcher: async () => success(identity([{ status, capabilities }])),
+    });
+    await client.restore();
+    assert.deepEqual(client.snapshot.services, expected);
+  }
+  assert.equal(inviteNextPath("/web/staff/pickup"), "/web/staff/pickup");
+  assert.equal(inviteNextPath("/web/staff/pickup?role=STAFF"), null);
+});
+
 test("navigation uses the shared identity projection and hides monthly links without active read access", () => {
   for (const [status, capabilities, allowed] of [
     ["ACTIVE", ["feedback:read"], true],

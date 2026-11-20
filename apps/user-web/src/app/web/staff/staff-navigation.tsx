@@ -16,17 +16,20 @@ export function StaffNavigation({
     | "daily"
     | "monthly"
     | "child-monthly"
-    | "binding";
+    | "binding"
+    | "pickup";
 }) {
-  const [monthlyAccess, setMonthlyAccess] = useState<{
+  const [navigationAccess, setNavigationAccess] = useState<{
     page: typeof active;
-    allowed: boolean;
+    monthly: boolean;
+    pickup: boolean;
   } | null>(null);
   useEffect(() => {
     let disposed = false;
     const controller = new AbortController();
     async function readAccess(): Promise<void> {
-      let allowed = false;
+      let monthly = false;
+      let pickup = false;
       try {
         const response = await fetch("/api-local/me", {
           credentials: "same-origin",
@@ -38,13 +41,15 @@ export function StaffNavigation({
         const payload: unknown = await response.json();
         if (typeof payload !== "object" || payload === null || !("data" in payload))
           throw new Error("Identity unavailable");
-        allowed = projectIdentity(payload.data).services.some(
-          (service) => service.href === "/web/staff/monthly",
+        const hrefs = new Set(
+          projectIdentity(payload.data).services.map((service) => service.href),
         );
+        monthly = hrefs.has("/web/staff/monthly");
+        pickup = hrefs.has("/web/staff/pickup");
       } catch {
         // Navigation stays closed without changing the user's login state.
       }
-      if (!disposed) setMonthlyAccess({ page: active, allowed });
+      if (!disposed) setNavigationAccess({ page: active, monthly, pickup });
     }
     void readAccess();
     return () => {
@@ -76,7 +81,7 @@ export function StaffNavigation({
       >
         工作日报
       </Link>
-      {monthlyAccess?.page === active && monthlyAccess.allowed ? (
+      {navigationAccess?.page === active && navigationAccess.monthly ? (
         <Link
           aria-current={active === "monthly" ? "page" : undefined}
           href="/web/staff/monthly"
@@ -85,7 +90,7 @@ export function StaffNavigation({
           班级月度总结
         </Link>
       ) : null}
-      {monthlyAccess?.page === active && monthlyAccess.allowed ? (
+      {navigationAccess?.page === active && navigationAccess.monthly ? (
         <Link
           aria-current={active === "child-monthly" ? "page" : undefined}
           href="/web/staff/child-monthly"
@@ -115,6 +120,16 @@ export function StaffNavigation({
       >
         请假审核
       </Link>
+      {navigationAccess?.page === active && navigationAccess.pickup ? (
+        <Link
+          aria-current={active === "pickup" ? "page" : undefined}
+          data-staff-pickup-navigation
+          href="/web/staff/pickup"
+          prefetch={false}
+        >
+          接送核验
+        </Link>
+      ) : null}
     </nav>
   );
 }

@@ -177,6 +177,15 @@ export function StaffWorkbenchPanel() {
             班级月度总结
           </a>
         ) : null}
+        {services.includes("/web/staff/pickup") ? (
+          <a
+            className={`${sharedStyles.secondaryButton} ${styles.actionButton}`}
+            data-staff-pickup-entry
+            href="/web/staff/pickup"
+          >
+            接送核验
+          </a>
+        ) : null}
         <button
           className={`${sharedStyles.secondaryButton} ${styles.actionButton}`}
           data-staff-workbench-refresh

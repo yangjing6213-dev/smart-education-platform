@@ -129,6 +129,8 @@ function allowed(method: string, segments: readonly string[]): boolean {
     return method === "POST";
   if (path === "/guardian-binding/applications") return method === "GET" || method === "POST";
   if (path === "/staff/tasks") return method === "GET";
+  if (path === "/staff/pickup/credentials/preview" || path === "/staff/pickup/credentials/confirm")
+    return method === "POST";
   if (path === "/staff/child-monthly-reports") return method === "GET" || method === "POST";
   if (
     segments[0] === "staff" &&

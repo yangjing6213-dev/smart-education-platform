@@ -14,7 +14,8 @@ export type InviteService = {
     | "/web/staff/care-review"
     | "/web/staff/daily"
     | "/web/staff/monthly"
-    | "/web/staff/child-monthly";
+    | "/web/staff/child-monthly"
+    | "/web/staff/pickup";
   readonly label: string;
 };
 export type InviteSessionSnapshot = {
@@ -55,6 +56,11 @@ const destinations = [
   },
   { href: "/web/staff/monthly", label: "班级月度总结", capabilities: ["feedback:read"] },
   { href: "/web/staff/child-monthly", label: "孩子个人月报", capabilities: ["feedback:read"] },
+  {
+    href: "/web/staff/pickup",
+    label: "接送核验",
+    capabilities: ["attendance:write"],
+  },
 ] as const;
 const empty: InviteSessionSnapshot = {
   status: "IDLE",
