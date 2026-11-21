@@ -1,5 +1,6 @@
 /* global document, fetch, process, window */
 import assert from "node:assert/strict";
+import { mkdirSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { setTimeout, clearTimeout } from "node:timers";
@@ -7,6 +8,8 @@ import { fileURLToPath, pathToFileURL, URL } from "node:url";
 import { chromium } from "playwright";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
+const screenshotDirectory = process.env.STAFF_LIBRARY_SCREENSHOT_DIR;
+if (screenshotDirectory) mkdirSync(screenshotDirectory, { recursive: true });
 const { buildLocalSyntheticServer } = await import(
   pathToFileURL(resolve(root, "apps/api/dist/src/local-synthetic/server.js")).href
 );
@@ -40,7 +43,7 @@ try {
     });
   });
 
-  browser = await chromium.launch({ headless: true });
+  browser = await chromium.launch({ headless: true, executablePath: process.env.ADMIN_WEB_BROWSER });
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   page.setDefaultTimeout(8000);
   const pageErrors = [];
@@ -66,12 +69,24 @@ try {
   const catalogue = page.locator('[data-resource-collection="search"]');
   await catalogue.getByText("示例数学活动卡").waitFor();
   await catalogue.getByText("示例阅读引导单").waitFor();
-  await page.setViewportSize({ width: 390, height: 844 });
-  assert.equal(
-    await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
-    false,
-    "User Web resource page should fit a phone viewport",
-  );
+  for (const [width, label] of [
+    [1280, "desktop"],
+    [390, "mobile"],
+    [320, "narrow"],
+  ]) {
+    await page.setViewportSize({ width, height: 844 });
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
+      false,
+      `Resource library should fit the ${width}px viewport`,
+    );
+    if (screenshotDirectory) {
+      await page.screenshot({
+        path: resolve(screenshotDirectory, `resource-library-${label}.png`),
+        fullPage: true,
+      });
+    }
+  }
   await page.setViewportSize({ width: 1280, height: 900 });
   assert.equal(await page.getByText("其他机构示例练习", { exact: false }).count(), 0);
   assert.equal(await page.getByText("已过期示例练习", { exact: false }).count(), 0);
@@ -92,6 +107,17 @@ try {
   await page.locator("[data-resource-detail]").getByText("先提出一个开放问题").waitFor();
   await page.locator('[data-resource-detail] [data-resource-action="use"]').click();
   await page.locator('[data-resource-collection="recent"]').getByText("示例阅读引导单").waitFor();
+
+  await page.locator('[data-resource-search] button[data-resource-action="clear"]').click();
+  await page.locator("[data-resource-status]").getByText("资源已按当前身份范围加载。").waitFor();
+  await page.locator('[data-resource-search] select[name="tag"]').selectOption("两位数加法与进位");
+  await page.locator('[data-resource-search] button[type="submit"]').click();
+  await page.waitForFunction(
+    () => document.querySelectorAll('[data-resource-collection="search"] article').length === 2,
+  );
+  await catalogue.getByText("两位数加法分步学习卡", { exact: false }).waitFor();
+  await catalogue.getByText("两位数加法练习卡", { exact: false }).waitFor();
+  assert.equal(await catalogue.getByText("示例数学活动卡", { exact: false }).count(), 0);
 
   await page.locator('[data-resource-search] button[data-resource-action="clear"]').click();
   const resetCatalogue = page.locator('[data-resource-collection="search"]');

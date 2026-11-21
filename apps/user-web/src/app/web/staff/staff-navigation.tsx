@@ -17,12 +17,15 @@ export function StaffNavigation({
     | "monthly"
     | "child-monthly"
     | "binding"
+    | "resources"
+    | "guides"
     | "pickup";
 }) {
   const [navigationAccess, setNavigationAccess] = useState<{
     page: typeof active;
     monthly: boolean;
     pickup: boolean;
+    library: boolean;
   } | null>(null);
   useEffect(() => {
     let disposed = false;
@@ -30,6 +33,7 @@ export function StaffNavigation({
     async function readAccess(): Promise<void> {
       let monthly = false;
       let pickup = false;
+      let library = false;
       try {
         const response = await fetch("/api-local/me", {
           credentials: "same-origin",
@@ -46,10 +50,11 @@ export function StaffNavigation({
         );
         monthly = hrefs.has("/web/staff/monthly");
         pickup = hrefs.has("/web/staff/pickup");
+        library = hrefs.has("/web/staff/resources");
       } catch {
         // Navigation stays closed without changing the user's login state.
       }
-      if (!disposed) setNavigationAccess({ page: active, monthly, pickup });
+      if (!disposed) setNavigationAccess({ page: active, monthly, pickup, library });
     }
     void readAccess();
     return () => {
@@ -57,6 +62,39 @@ export function StaffNavigation({
       controller.abort();
     };
   }, [active]);
+  const libraryLinks =
+    navigationAccess?.page === active && navigationAccess.library ? (
+      <>
+        <Link
+          href="/web/staff/resources"
+          prefetch={false}
+          aria-current={active === "resources" ? "page" : undefined}
+        >
+          教学资源
+        </Link>
+        <Link
+          href="/web/staff/guides"
+          prefetch={false}
+          aria-current={active === "guides" ? "page" : undefined}
+        >
+          新员工指南
+        </Link>
+      </>
+    ) : null;
+  if (active === "resources" || active === "guides") {
+    return (
+      libraryLinks && (
+        <nav
+          className={styles.sidebar}
+          aria-label="员工服务"
+          style={{ gridTemplateColumns: "repeat(auto-fit,minmax(100px,1fr))" }}
+        >
+          <p style={{ gridColumn: "1 / -1" }}>员工资料</p>
+          {libraryLinks}
+        </nav>
+      )
+    );
+  }
   return (
     <nav className={styles.sidebar} aria-label="员工服务">
       <p>本机演示服务</p>
@@ -130,6 +168,7 @@ export function StaffNavigation({
           接送核验
         </Link>
       ) : null}
+      {libraryLinks}
     </nav>
   );
 }

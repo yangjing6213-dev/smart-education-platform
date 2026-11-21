@@ -9,6 +9,7 @@ import { PrismaStaffDailyService } from "../modules/staff-daily/prisma-staff-dai
 import { PrismaMonthlyFeedbackService } from "../modules/monthly-feedback/prisma-monthly-feedback.service.js";
 import { PrismaChildMonthlyService } from "../modules/monthly-feedback/prisma-child-monthly.service.js";
 import { PrismaStaffTaskWorkbenchService } from "../modules/tasks/prisma-staff-task-workbench.service.js";
+import { PrismaStaffLibraryOperations } from "../modules/staff-library/prisma-staff-library.js";
 import { PrismaNoticeService } from "../modules/notices/prisma-notice.service.js";
 import { PrismaParentLearningSummaryService } from "../modules/learning/prisma-parent-learning-summary.service.js";
 import { PrismaLearningInstitutionSettingService } from "../modules/learning/prisma-learning-institution-setting.service.js";
@@ -58,6 +59,7 @@ export function createProductionApiOptions(
       prisma,
       inviteAccounts.map(({ identity, memberships }) => ({ identity, memberships })),
     ),
+    staffLibraryOperations: new PrismaStaffLibraryOperations(prisma),
     staffDailyOperations: new PrismaStaffDailyService(
       prisma,
       new Map(

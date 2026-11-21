@@ -77,6 +77,71 @@ test("OpenAPI exposes scoped student transfer creation and independent review", 
   assert.equal(review.properties.expected_version.minimum, 1);
 });
 
+test("OpenAPI specifies tenant-scoped library routes, exact mutation inputs and audience projections", () => {
+  const document = JSON.parse(readFileSync(openApiDocumentUrl, "utf8"));
+  const expected = [
+    ["/staff/library/resources", "get", "library:read", null, "LibraryStaffList"],
+    ["/staff/library/resources/{id}", "get", "library:read", null, "LibraryStaffDetail"],
+    [
+      "/staff/library/resources/{id}/favorite",
+      "post",
+      "library:read",
+      "LibraryFavoriteInput",
+      "LibraryReceipt",
+    ],
+    [
+      "/staff/library/resources/{id}/use",
+      "post",
+      "library:read",
+      "LibraryVersionInput",
+      "LibraryReceipt",
+    ],
+    ["/staff/library/guides", "get", "library:read", null, "LibraryStaffList"],
+    ["/staff/library/guides/{id}", "get", "library:read", null, "LibraryStaffDetail"],
+    ["/admin/library/items", "get", "library:manage", null, "LibraryManagedList"],
+    ["/admin/library/items", "post", "library:manage", "LibraryCreateInput", "LibraryReceipt"],
+    [
+      "/admin/library/items/{id}",
+      "patch",
+      "library:manage",
+      "LibraryUpdateInput",
+      "LibraryReceipt",
+    ],
+    [
+      "/admin/library/items/{id}/revoke",
+      "post",
+      "library:manage",
+      "LibraryVersionInput",
+      "LibraryReceipt",
+    ],
+    ["/admin/library/summary", "get", "library:summary", null, "LibrarySummary"],
+  ] as const;
+  for (const [path, method, capability, input, output] of expected) {
+    const operation = document.paths[path]?.[method];
+    assert.ok(operation, method + " " + path);
+    assert.deepEqual(operation.security, [{ bearerAuth: [] }]);
+    assert.equal(operation["x-required-capability"], capability);
+    assert.equal(operation["x-scope-required"], true);
+    assert.equal(
+      operation.responses["200"].content["application/json"].schema.$ref,
+      "#/components/schemas/" + output + "Envelope",
+    );
+    if (input) {
+      assert.equal(
+        operation.requestBody.content["application/json"].schema.$ref,
+        "#/components/schemas/" + input,
+      );
+      assert.equal(document.components.schemas[input].additionalProperties, false);
+    }
+  }
+  const schemas = document.components.schemas;
+  assert.equal(schemas.LibraryStaffItem.properties.body, undefined);
+  assert.equal(schemas.LibraryStaffDetail.properties.body.maxLength, 8000);
+  assert.equal(schemas.LibraryManagedItem.properties.favorite, undefined);
+  assert.equal(schemas.LibraryManagedItem.properties.lastUsedAt, undefined);
+  assert.deepEqual(schemas.LibrarySummary.required, ["total", "published", "revoked", "expired"]);
+});
+
 test("OpenAPI exposes nine child monthly report operations with scoped envelopes", () => {
   const document = JSON.parse(readFileSync(openApiDocumentUrl, "utf8"));
   const expected = [
@@ -792,6 +857,10 @@ test("OpenAPI document matches the shared identity and error enums", () => {
     "/admin/institution/{kind}/{contentKey}/publish",
     "/admin/institution/{kind}/{contentKey}/unpublish",
     "/admin/learning-institution-setting",
+    "/admin/library/items",
+    "/admin/library/items/{id}",
+    "/admin/library/items/{id}/revoke",
+    "/admin/library/summary",
     "/admin/meals",
     "/admin/meals/{mealId}/draft",
     "/admin/meals/{mealId}/publish",
@@ -886,6 +955,12 @@ test("OpenAPI document matches the shared identity and error enums", () => {
     "/staff/learning-summaries",
     "/staff/leave-requests",
     "/staff/leave-requests/{requestId}/review",
+    "/staff/library/guides",
+    "/staff/library/guides/{id}",
+    "/staff/library/resources",
+    "/staff/library/resources/{id}",
+    "/staff/library/resources/{id}/favorite",
+    "/staff/library/resources/{id}/use",
     "/staff/monthly-feedback",
     "/staff/monthly-feedback/{id}",
     "/staff/monthly-feedback/{id}/submit",

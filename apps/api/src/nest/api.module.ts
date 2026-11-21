@@ -25,6 +25,7 @@ import { LeaveModule } from "./leave.module.js";
 import { ParentGovernanceModule } from "./parent-governance.module.js";
 import { ParentPickupModule } from "./parent-pickup.module.js";
 import { StaffTaskWorkbenchModule } from "./staff-task-workbench.module.js";
+import { StaffLibraryModule } from "./staff-library.module.js";
 import { StaffHealthIncidentReviewModule } from "./staff-health-incident-review.module.js";
 import { StaffDailyModule } from "./staff-daily.module.js";
 import { MonthlyFeedbackModule } from "./monthly-feedback.module.js";
@@ -101,6 +102,7 @@ export class ApiModule {
         PublicTeachersModule.register(authOptions),
         StaffGuidesModule.register(authOptions),
         StaffResourcesModule.register(authOptions),
+        ...(authOptions.staffLibraryOperations ? [StaffLibraryModule.register(authOptions)] : []),
         FilesModule.register(fileOptions),
         PartnerLinksModule.register(partnerLinkOptions),
         GuardianBindingModule.register(authOptions),

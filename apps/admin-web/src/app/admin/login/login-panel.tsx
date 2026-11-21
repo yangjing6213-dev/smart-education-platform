@@ -59,7 +59,9 @@ export function AdminLoginPanel() {
         requested === "/admin/meals" ||
         requested === "/admin/fees" ||
         requested === "/admin/leave-review" ||
-        requested === "/admin/health-incident-review"
+        requested === "/admin/health-incident-review" ||
+        requested === "/admin/resources" ||
+        requested === "/admin/guides"
           ? requested
           : "/admin/binding-review";
       window.location.replace(nextPath);

@@ -64,7 +64,14 @@ const ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 const GRADES = new Set(["三年级", "四年级"]);
 const SUBJECTS = new Set(["数学", "语文", "科学", "综合实践"]);
-const TAGS = new Set(["小组活动", "课堂探索", "阅读引导", "课堂分享", "数感练习"]);
+const TAGS = new Set([
+  "小组活动",
+  "课堂探索",
+  "阅读引导",
+  "课堂分享",
+  "数感练习",
+  "两位数加法与进位",
+]);
 const emptyFilters = (): ResourceLibraryFilters => ({ query: "", grade: "", subject: "", tag: "" });
 
 function object(value: unknown): value is Record<string, unknown> {
@@ -392,10 +399,7 @@ export function renderResourceLibraryPage(snapshot: ResourceLibrarySnapshot): st
       .join("")}`;
   const gradeOptions = options(["三年级", "四年级"], snapshot.filters.grade);
   const subjectOptions = options(["数学", "语文", "科学", "综合实践"], snapshot.filters.subject);
-  const tagOptions = options(
-    ["小组活动", "课堂探索", "阅读引导", "课堂分享", "数感练习"],
-    snapshot.filters.tag,
-  );
+  const tagOptions = options([...TAGS], snapshot.filters.tag);
   return `<main class="internal-main shared-main resource-library-main staff-daily-panel" data-resource-library>
     <p><a class="button button-light" href="/staff/workbench?mode=shared&profile=${encodeURIComponent(snapshot.profile ?? "teacher-east")}">返回工作台</a></p>
     <header class="internal-page-heading"><p class="section-kicker">员工端 · 教学资源</p><h1>教学资源</h1><p>资源仅按当前登录身份和校区范围显示，所有内容均为合成示例。</p></header>

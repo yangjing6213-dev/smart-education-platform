@@ -1,4 +1,5 @@
 import type { TrustedAuthResult } from "@student-care/auth";
+import type { StaffLibraryOperations } from "../modules/staff-library/operations.js";
 import type { StudentTransferOperations } from "../modules/student-transfers/student-transfer.service.js";
 import type { StaffDailyAuditEvent } from "@student-care/contracts";
 import type { ScopeContext } from "@student-care/tenant";
@@ -35,6 +36,7 @@ export const PUBLIC_MEAL_SCOPE_PROVIDER = Symbol("PUBLIC_MEAL_SCOPE_PROVIDER");
 export const PUBLIC_TEACHER_SCOPE_PROVIDER = Symbol("PUBLIC_TEACHER_SCOPE_PROVIDER");
 export const TEACHER_PROFILE_SERVICE = Symbol("TEACHER_PROFILE_SERVICE");
 export const TRUSTED_AUTH_PROVIDER = Symbol("TRUSTED_AUTH_PROVIDER");
+export const STAFF_LIBRARY_OPERATIONS = Symbol("STAFF_LIBRARY_OPERATIONS");
 export const MONTHLY_FEEDBACK_OPERATIONS = Symbol("MONTHLY_FEEDBACK_OPERATIONS");
 export const CHILD_MONTHLY_OPERATIONS = Symbol("CHILD_MONTHLY_OPERATIONS");
 export type ChildMonthlyOperations = Pick<
@@ -615,6 +617,7 @@ export interface ApiAppOptions {
   readonly staffNoticeOperations?: StaffNoticeOperations;
   readonly parentNoticeOperations?: ParentNoticeOperations;
   readonly staffTaskWorkbenchOperations?: StaffTaskWorkbenchOperations;
+  readonly staffLibraryOperations?: StaffLibraryOperations;
   readonly staffHealthIncidentReviewOperations?: StaffHealthIncidentReviewOperations;
   readonly staffDailyOperations?: StaffDailyOperations;
   readonly monthlyFeedbackOperations?: MonthlyFeedbackOperations;

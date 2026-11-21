@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  ResourceLibraryClient,
   renderResourceLibraryPage,
   type ResourceLibrarySnapshot,
 } from "../local-synthetic/resource-library.js";
@@ -58,6 +59,40 @@ test("resource detail shows the current version and safe content with return and
   assert.match(html, /data-resource-action="return"/u);
   assert.match(html, /data-resource-action="use"/u);
   assert.match(html, /先观察纸张/u);
+});
+
+test("resource client accepts and exposes an approved learning-source tag", async () => {
+  const item = {
+    ...active.resources[0]!,
+    id: "00000000-0000-4000-8000-000000000390",
+    title: "两位数加法学习卡",
+    tags: ["两位数加法与进位"],
+    favorite: false,
+  };
+  const transport: typeof fetch = async (input) => {
+    const url = input instanceof Request ? input.url : input.toString();
+    const path = new URL(url, "http://local.test").pathname;
+    const body =
+      path === "/local/sessions"
+        ? { handle: "x".repeat(43) }
+        : path === "/local/session"
+          ? { profile: "teacher-east", actions: ["resource:read"] }
+          : path === "/local/resources"
+            ? [item]
+            : path === "/local/resources-favorites" || path === "/local/resources-recent"
+              ? []
+              : { error: "unexpected path" };
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  const client = new ResourceLibraryClient(transport);
+  await client.connect("teacher-east");
+
+  assert.equal(client.snapshot.status, "READY");
+  assert.equal(client.snapshot.resources[0]?.tags[0], "两位数加法与进位");
+  assert.match(renderResourceLibraryPage(client.snapshot), /<option value="两位数加法与进位"/u);
 });
 
 test("resource page escapes service content and denies a disconnected projection", () => {

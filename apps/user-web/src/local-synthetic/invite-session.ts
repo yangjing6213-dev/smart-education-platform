@@ -15,6 +15,8 @@ export type InviteService = {
     | "/web/staff/daily"
     | "/web/staff/monthly"
     | "/web/staff/child-monthly"
+    | "/web/staff/resources"
+    | "/web/staff/guides"
     | "/web/staff/pickup";
   readonly label: string;
 };
@@ -46,6 +48,8 @@ const destinations = [
   },
   { href: "/web/staff/leave", label: "请假审核", capabilities: ["leave:review"] },
   { href: "/web/staff/workbench", label: "员工工作台", capabilities: ["task:read"] },
+  { href: "/web/staff/resources", label: "教学资源", capabilities: ["library:read"] },
+  { href: "/web/staff/guides", label: "新员工指南", capabilities: ["library:read"] },
   { href: "/web/staff/binding", label: "关系审核", capabilities: ["binding:review"] },
   { href: "/web/staff/care", label: "成长记录", capabilities: ["care:write"] },
   { href: "/web/staff/care-review", label: "成长记录审核", capabilities: ["care:review"] },

@@ -128,6 +128,21 @@ function allowed(method: string, segments: readonly string[]): boolean {
   )
     return method === "POST";
   if (path === "/guardian-binding/applications") return method === "GET" || method === "POST";
+  if (
+    segments[0] === "staff" &&
+    segments[1] === "library" &&
+    ["resources", "guides"].includes(segments[2] ?? "")
+  ) {
+    if (segments.length === 3) return method === "GET";
+    if (!UUID.test(segments[3] ?? "")) return false;
+    if (segments.length === 4) return method === "GET";
+    return (
+      segments.length === 5 &&
+      segments[2] === "resources" &&
+      ["favorite", "use"].includes(segments[4] ?? "") &&
+      method === "POST"
+    );
+  }
   if (path === "/staff/tasks") return method === "GET";
   if (path === "/staff/pickup/credentials/preview" || path === "/staff/pickup/credentials/confirm")
     return method === "POST";
@@ -277,6 +292,15 @@ const MONTHLY_STATUSES = [
   "REVIEW_REQUIRED",
 ];
 const MONTHLY_ACTIONS = ["edit", "submit", "confirm", "return", "publish"];
+
+function libraryText(value: unknown, max: number, optional = false): value is string {
+  return (
+    typeof value === "string" &&
+    value.length <= max &&
+    (optional || !!value.trim()) &&
+    !/(?:https?:\/\/|www\.|javascript:|data:)/iu.test(value)
+  );
+}
 
 function positiveVersion(value: unknown): boolean {
   return typeof value === "number" && Number.isSafeInteger(value) && value > 0;
@@ -571,11 +595,12 @@ async function handle(request: Request, context: RouteContext): Promise<Response
   }
   const method = request.method.toUpperCase();
   if (!allowed(method, path)) return error(404, "NOT_FOUND");
+  const isLibrary = path[0] === "staff" && path[1] === "library";
   const isChildMonthly =
     (path[0] === "staff" && path[1] === "child-monthly-reports") ||
     (path[0] === "parent" && path[1] === "relationships" && path[3] === "monthly-reports");
   if (
-    isChildMonthly &&
+    (isChildMonthly || isLibrary) &&
     ["x-tenant-id", "x-campus-id", "x-user-id", "x-member-id", "x-actor-id", "x-role"].some(
       (header) => request.headers.has(header),
     )
@@ -606,6 +631,17 @@ async function handle(request: Request, context: RouteContext): Promise<Response
 
   const body = method === "GET" ? { ok: true as const } : await readJsonBody(request);
   if (!body.ok) return body.response;
+  if (isLibrary && method === "POST") {
+    const value = body.value;
+    const favorite = path[4] === "favorite";
+    if (
+      !isRecord(value) ||
+      !positiveVersion(value.version) ||
+      Object.keys(value).length !== (favorite ? 2 : 1) ||
+      (favorite && typeof value.favorite !== "boolean")
+    )
+      return error(400, "INVALID_LIBRARY_ACTION");
+  }
   const isMonthly = path[0] === "staff" && path[1] === "monthly-feedback";
   if (isMonthly && method !== "GET" && !validMonthlyBody(path, body.value))
     return error(400, "INVALID_MONTHLY_INPUT");
@@ -622,7 +658,7 @@ async function handle(request: Request, context: RouteContext): Promise<Response
       headers,
       cache: "no-store",
       redirect: "error",
-      ...(isMonthly || isChildMonthly ? { signal: AbortSignal.timeout(8000) } : {}),
+      ...(isMonthly || isChildMonthly || isLibrary ? { signal: AbortSignal.timeout(8000) } : {}),
       ...(body.value === undefined ? {} : { body: JSON.stringify(body.value) }),
     });
     const payload: unknown = await response.json().catch(() => undefined);
@@ -633,6 +669,84 @@ async function handle(request: Request, context: RouteContext): Promise<Response
         401,
         responseHeaders,
       );
+    }
+    if (isLibrary) {
+      if (!response.ok)
+        return error(response.status >= 400 ? response.status : 502, "LIBRARY_REQUEST_FAILED");
+      if (!isRecord(payload) || !isRecord(payload.data))
+        return error(502, "INVALID_LIBRARY_RESPONSE");
+      if (method === "POST") {
+        const { id, version } = payload.data;
+        if (id !== path[3] || !positiveVersion(version))
+          return error(502, "INVALID_LIBRARY_RESPONSE");
+        return json({ data: { id, version } }, response.status);
+      }
+      const detail = path.length === 4;
+      const rows = detail ? [payload.data] : payload.data.items;
+      if (!Array.isArray(rows)) return error(502, "INVALID_LIBRARY_RESPONSE");
+      const items = [];
+      const seenIds = new Set<string>();
+      for (const row of rows) {
+        if (
+          !isRecord(row) ||
+          typeof row.id !== "string" ||
+          !UUID.test(row.id) ||
+          row.kind !== (path[2] === "resources" ? "RESOURCE" : "GUIDE") ||
+          seenIds.has(row.id) ||
+          !libraryText(row.title, 120) ||
+          !libraryText(row.summary, 500) ||
+          !libraryText(row.category, 80) ||
+          !libraryText(row.subject, 80, true) ||
+          !libraryText(row.grade, 80, true) ||
+          !Array.isArray(row.tags) ||
+          row.tags.length > 12 ||
+          new Set(row.tags).size !== row.tags.length ||
+          row.tags.some((tag) => !libraryText(tag, 80)) ||
+          !["CLASS", "CAMPUS"].includes(String(row.scope)) ||
+          typeof row.expiresOn !== "string" ||
+          !/^\d{4}-\d{2}-\d{2}$/u.test(row.expiresOn) ||
+          !Number.isFinite(Date.parse(row.expiresOn)) ||
+          !positiveVersion(row.version) ||
+          typeof row.favorite !== "boolean" ||
+          (row.lastUsedAt !== null &&
+            (typeof row.lastUsedAt !== "string" || !Number.isFinite(Date.parse(row.lastUsedAt)))) ||
+          (detail && (row.id !== path[3] || !libraryText(row.body, 8000)))
+        )
+          return error(502, "INVALID_LIBRARY_RESPONSE");
+        seenIds.add(row.id);
+        const {
+          id,
+          kind,
+          title,
+          summary,
+          category,
+          grade,
+          subject,
+          tags,
+          scope,
+          expiresOn,
+          version,
+          favorite,
+          lastUsedAt,
+        } = row;
+        items.push({
+          id,
+          kind,
+          title,
+          summary,
+          category,
+          grade,
+          subject,
+          tags,
+          scope,
+          expiresOn,
+          version,
+          favorite,
+          lastUsedAt,
+          ...(detail ? { body: row.body } : {}),
+        });
+      }
+      return json({ data: detail ? items[0] : { items } });
     }
     if (isMonthly || isChildMonthly) {
       if (!response.ok) {

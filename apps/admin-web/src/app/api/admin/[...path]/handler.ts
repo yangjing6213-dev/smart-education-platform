@@ -130,7 +130,120 @@ function apiOrigin(): URL | undefined {
   }
 }
 
+function libraryRoute(method: string, path: readonly string[]) {
+  if (path.length === 2 && path[1] === "summary") return method === "GET";
+  if (path[1] !== "items") return false;
+  if (path.length === 2) return method === "GET" || method === "POST";
+  if (!UUID.test(path[2] ?? "")) return false;
+  return (
+    (path.length === 3 && method === "PATCH") ||
+    (path.length === 4 && path[3] === "revoke" && method === "POST")
+  );
+}
+
+function libraryText(v: unknown, max: number, allowEmpty = false) {
+  return typeof v === "string" && v.length <= max && (allowEmpty || !!v.trim());
+}
+function libraryVersion(v: unknown) {
+  return Number.isSafeInteger(v) && Number(v) > 0;
+}
+function libraryVisibility(v: Record<string, unknown>) {
+  return (
+    calendarDate(v.expiresOn) &&
+    ((v.scope === "CLASS" && libraryText(v.classId, 80)) ||
+      (v.scope === "CAMPUS" && v.classId === null))
+  );
+}
+function libraryFields(v: Record<string, unknown>) {
+  return (
+    ["GUIDE", "RESOURCE"].includes(String(v.kind)) &&
+    libraryText(v.title, 120) &&
+    libraryText(v.summary, 500) &&
+    libraryText(v.category, 80) &&
+    libraryText(v.grade, 80, true) &&
+    libraryText(v.subject, 80, true) &&
+    Array.isArray(v.tags) &&
+    v.tags.length <= 12 &&
+    v.tags.every((t) => libraryText(t, 80)) &&
+    libraryVisibility(v)
+  );
+}
+function libraryBody(path: readonly string[], v: Record<string, unknown>, method: string) {
+  const keys = Object.keys(v);
+  if (path.length === 2) return keys.length === 11 && libraryFields(v) && libraryText(v.body, 8000);
+  if (!libraryVersion(v.version)) return false;
+  if (method === "PATCH") return keys.length === 4 && libraryVisibility(v);
+  return keys.length === 1 && path[3] === "revoke";
+}
+function projectLibraryResponse(v: unknown, method: string, endpoint: string | undefined) {
+  if (!isRecord(v)) return;
+  if (method !== "GET")
+    return typeof v.id === "string" && UUID.test(v.id) && libraryVersion(v.version)
+      ? { id: v.id, version: v.version }
+      : undefined;
+  if (endpoint === "summary") {
+    if (
+      !["published", "expired", "revoked", "total"].every(
+        (k) => Number.isSafeInteger(v[k]) && Number(v[k]) >= 0,
+      ) ||
+      v.total !== Number(v.published) + Number(v.revoked) + Number(v.expired)
+    )
+      return;
+    return { published: v.published, expired: v.expired, revoked: v.revoked, total: v.total };
+  }
+  if (
+    !Array.isArray(v.items) ||
+    !Array.isArray(v.classIds) ||
+    !v.classIds.every((id) => libraryText(id, 80))
+  )
+    return;
+  const items = [];
+  for (const row of v.items) {
+    if (
+      !isRecord(row) ||
+      !libraryFields(row) ||
+      !libraryVersion(row.version) ||
+      typeof row.id !== "string" ||
+      !UUID.test(row.id) ||
+      !["REVOKED", "PUBLISHED"].includes(String(row.status))
+    )
+      return;
+    const {
+      id,
+      kind,
+      title,
+      summary,
+      category,
+      grade,
+      subject,
+      tags,
+      scope,
+      classId,
+      expiresOn,
+      version,
+      status,
+    } = row;
+    items.push({
+      id,
+      kind,
+      title,
+      summary,
+      category,
+      grade,
+      subject,
+      tags,
+      scope,
+      classId,
+      expiresOn,
+      version,
+      status,
+    });
+  }
+  return { items, classIds: v.classIds };
+}
+
 function allowed(method: string, path: readonly string[]): boolean {
+  if(path[0]==="library") return libraryRoute(method,path);
   const joined = "/" + path.join("/");
   if (
     path.length === 4 &&
@@ -330,6 +443,7 @@ async function readJsonBody(request: Request): Promise<JsonBody> {
 
 function validBody(path: readonly string[], value: unknown, method: string): boolean {
   if (!isRecord(value)) return false;
+  if(path[0]==="library") return libraryBody(path,value,method);
   const keys = Object.keys(value);
   const joined = "/" + path.join("/");
   if (
@@ -1651,6 +1765,7 @@ async function handle(request: Request, context: RouteContext): Promise<Response
   if (token) headers.set("authorization", "Bearer " + token);
   const target = new URL(
     ([
+      "library",
       "institution",
       "meals",
       "daily-reports",
@@ -1674,6 +1789,7 @@ async function handle(request: Request, context: RouteContext): Promise<Response
       cache: "no-store",
       redirect: "error",
       ...([
+        "library",
         "institution",
         "learning-institution-setting",
         "monthly-feedback",
@@ -1770,6 +1886,11 @@ async function handle(request: Request, context: RouteContext): Promise<Response
       upstream.status,
       responseHeaders,
     );
+  }
+
+  if(path[0]==="library"){
+    const data=projectLibraryResponse(payload.data,method,path[1]);
+    return data===undefined ? error(502,"INVALID_API_RESPONSE","资料库返回了无效结果。") : json({data},upstream.status,responseHeaders);
   }
 
   if (path[0] === "tasks") {

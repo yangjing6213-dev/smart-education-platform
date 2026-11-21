@@ -7381,6 +7381,527 @@
           }
         ]
       }
+    },
+    "/staff/library/resources": {
+      "get": {
+        "operationId": "listStaffLibraryResources",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryStaffListEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          }
+        }
+      }
+    },
+    "/staff/library/resources/{id}": {
+      "get": {
+        "operationId": "readStaffLibraryResource",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryStaffDetailEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundScoped"
+          }
+        }
+      }
+    },
+    "/staff/library/resources/{id}/favorite": {
+      "post": {
+        "operationId": "favoriteStaffLibraryResource",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryFavoriteInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundScoped"
+          },
+          "409": {
+            "$ref": "#/components/responses/ContentConflict"
+          }
+        }
+      }
+    },
+    "/staff/library/resources/{id}/use": {
+      "post": {
+        "operationId": "useStaffLibraryResource",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryVersionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundScoped"
+          },
+          "409": {
+            "$ref": "#/components/responses/ContentConflict"
+          }
+        }
+      }
+    },
+    "/staff/library/guides": {
+      "get": {
+        "operationId": "listStaffLibraryGuides",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryStaffListEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          }
+        }
+      }
+    },
+    "/staff/library/guides/{id}": {
+      "get": {
+        "operationId": "readStaffLibraryGuide",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryStaffDetailEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundScoped"
+          }
+        }
+      }
+    },
+    "/admin/library/items": {
+      "get": {
+        "operationId": "listManagedLibraryItems",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:manage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryManagedListEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createManagedLibraryItem",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:manage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryCreateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "409": {
+            "$ref": "#/components/responses/ContentConflict"
+          }
+        }
+      }
+    },
+    "/admin/library/items/{id}": {
+      "patch": {
+        "operationId": "updateManagedLibraryItem",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:manage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryUpdateInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundScoped"
+          },
+          "409": {
+            "$ref": "#/components/responses/ContentConflict"
+          }
+        }
+      }
+    },
+    "/admin/library/items/{id}/revoke": {
+      "post": {
+        "operationId": "revokeManagedLibraryItem",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:manage",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryVersionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibraryReceiptEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFoundScoped"
+          },
+          "409": {
+            "$ref": "#/components/responses/ContentConflict"
+          }
+        }
+      }
+    },
+    "/admin/library/summary": {
+      "get": {
+        "operationId": "getLibrarySummary",
+        "x-auth-required": true,
+        "x-scope-required": true,
+        "x-required-capability": "library:summary",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authorized response within the current membership scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LibrarySummaryEnvelope"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationFailed"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthenticated"
+          },
+          "403": {
+            "$ref": "#/components/responses/ForbiddenScope"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -9280,6 +9801,9 @@
           "students:transfer:request",
           "students:transfer:review",
           "task:read",
+          "library:read",
+          "library:manage",
+          "library:summary",
           "task:assign",
           "task:claim",
           "task:start",
@@ -13358,6 +13882,659 @@
         "properties": {
           "data": {
             "$ref": "#/components/schemas/StudentTransferListing"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LibraryStaffItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "summary",
+          "category",
+          "grade",
+          "subject",
+          "tags",
+          "scope",
+          "expiresOn",
+          "version",
+          "favorite",
+          "lastUsedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "RESOURCE",
+              "GUIDE"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "grade": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "maxItems": 12,
+            "uniqueItems": true
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "CAMPUS",
+              "CLASS"
+            ]
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "favorite": {
+            "type": "boolean"
+          },
+          "lastUsedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "LibraryStaffDetail": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "summary",
+          "category",
+          "grade",
+          "subject",
+          "tags",
+          "scope",
+          "expiresOn",
+          "version",
+          "favorite",
+          "lastUsedAt",
+          "body"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "RESOURCE",
+              "GUIDE"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "grade": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "maxItems": 12,
+            "uniqueItems": true
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "CAMPUS",
+              "CLASS"
+            ]
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "favorite": {
+            "type": "boolean"
+          },
+          "lastUsedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          }
+        }
+      },
+      "LibraryManagedItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "summary",
+          "category",
+          "grade",
+          "subject",
+          "tags",
+          "scope",
+          "expiresOn",
+          "version",
+          "status",
+          "classId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "RESOURCE",
+              "GUIDE"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "grade": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "maxItems": 12,
+            "uniqueItems": true
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "CAMPUS",
+              "CLASS"
+            ]
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PUBLISHED",
+              "REVOKED"
+            ]
+          },
+          "classId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 80
+          }
+        }
+      },
+      "LibraryCreateInput": {
+        "type": "object",
+        "description": "The server verifies the assigned class and trims text. Enter plain text without external links.",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "title",
+          "summary",
+          "category",
+          "grade",
+          "subject",
+          "tags",
+          "body",
+          "scope",
+          "classId",
+          "expiresOn"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "RESOURCE",
+              "GUIDE"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "grade": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "subject": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "maxItems": 12,
+            "uniqueItems": true
+          },
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 8000
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "CAMPUS",
+              "CLASS"
+            ]
+          },
+          "classId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "if": {
+          "properties": {
+            "scope": {
+              "const": "CAMPUS"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "classId": {
+              "type": "null"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "classId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          }
+        }
+      },
+      "LibraryUpdateInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "scope",
+          "classId",
+          "expiresOn"
+        ],
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "CAMPUS",
+              "CLASS"
+            ]
+          },
+          "classId": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "expiresOn": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "if": {
+          "properties": {
+            "scope": {
+              "const": "CAMPUS"
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "classId": {
+              "type": "null"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "classId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          }
+        }
+      },
+      "LibraryFavoriteInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "favorite"
+        ],
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "favorite": {
+            "type": "boolean"
+          }
+        }
+      },
+      "LibraryVersionInput": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version"
+        ],
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "LibraryStaffList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LibraryStaffItem"
+            }
+          }
+        }
+      },
+      "LibraryManagedList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "classIds"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LibraryManagedItem"
+            }
+          },
+          "classIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          }
+        }
+      },
+      "LibrarySummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "total",
+          "published",
+          "revoked",
+          "expired"
+        ],
+        "properties": {
+          "total": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "published": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "revoked": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "expired": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "LibraryReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "version"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        }
+      },
+      "LibraryStaffListEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LibraryStaffList"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LibraryStaffDetailEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LibraryStaffDetail"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LibraryReceiptEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LibraryReceipt"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LibraryManagedListEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LibraryManagedList"
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "LibrarySummaryEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "request_id"
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LibrarySummary"
           },
           "request_id": {
             "type": "string",

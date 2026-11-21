@@ -177,6 +177,16 @@ export function StaffWorkbenchPanel() {
             班级月度总结
           </a>
         ) : null}
+        {services.includes("/web/staff/resources") && (
+          <a className={sharedStyles.secondaryButton} href="/web/staff/resources">
+            教学资源
+          </a>
+        )}
+        {services.includes("/web/staff/guides") && (
+          <a className={sharedStyles.secondaryButton} href="/web/staff/guides">
+            新员工指南
+          </a>
+        )}
         {services.includes("/web/staff/pickup") ? (
           <a
             className={`${sharedStyles.secondaryButton} ${styles.actionButton}`}

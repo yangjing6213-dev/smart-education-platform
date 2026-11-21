@@ -7,6 +7,46 @@ datasource db {
   provider = "postgresql"
 }
 
+model StaffLibraryItem {
+  tenantId   String   @map("tenant_id") @db.Uuid
+  campusId   String   @map("campus_id") @db.Uuid
+  id         String   @default(uuid()) @db.Uuid
+  kind       String   @db.VarChar(8)
+  title      String   @db.VarChar(120)
+  summary    String   @db.VarChar(500)
+  body       String
+  category   String   @db.VarChar(80)
+  grade      String   @db.VarChar(80)
+  subject    String   @db.VarChar(80)
+  tags       String[]
+  scope      String   @db.VarChar(6)
+  classId    String?  @map("class_ref") @db.VarChar(80)
+  expiresOn  DateTime @map("expires_on") @db.Date
+  status     String   @default("PUBLISHED") @db.VarChar(10)
+  version    Int      @default(1)
+  campus     Campus   @relation(fields: [tenantId, campusId], references: [tenantId, id], onDelete: Restrict, onUpdate: Cascade, map: "staff_library_item_campus_fk")
+  activities StaffLibraryActivity[]
+
+  @@id([tenantId, campusId, id])
+  @@index([tenantId, campusId, kind, status, expiresOn], map: "staff_library_item_list_idx")
+  @@map("staff_library_items")
+}
+
+model StaffLibraryActivity {
+  tenantId         String @map("tenant_id") @db.Uuid
+  campusId         String @map("campus_id") @db.Uuid
+  itemId           String @map("item_id") @db.Uuid
+  membershipId     String @map("membership_id") @db.Uuid
+  favorite         Boolean @default(false)
+  lastUsedAt       DateTime? @map("last_used_at") @db.Timestamptz(6)
+  item             StaffLibraryItem @relation(fields: [tenantId, campusId, itemId], references: [tenantId, campusId, id], onDelete: Cascade, onUpdate: Cascade, map: "staff_library_activity_item_fk")
+  membershipCampus MembershipCampus @relation(fields: [tenantId, membershipId, campusId], references: [tenantId, membershipId, campusId], onDelete: Cascade, onUpdate: Cascade, map: "staff_library_activity_member_fk")
+
+  @@id([tenantId, campusId, itemId, membershipId])
+  @@index([tenantId, campusId, membershipId], map: "staff_library_activity_member_idx")
+  @@map("staff_library_activity")
+}
+
 enum MembershipStatus {
   ACTIVE
   SUSPENDED
@@ -514,6 +554,7 @@ model Tenant {
 }
 
 model Campus {
+  staffLibraryItems StaffLibraryItem[]
   tenantId                            String                               @map("tenant_id") @db.Uuid
   id                                  String                               @default(uuid()) @db.Uuid
   name                                String
@@ -700,6 +741,7 @@ model Membership {
 }
 
 model MembershipCampus {
+  staffLibraryActivity StaffLibraryActivity[]
   tenantId                        String                           @map("tenant_id") @db.Uuid
   membershipId                    String                           @map("membership_id") @db.Uuid
   campusId                        String                           @map("campus_id") @db.Uuid

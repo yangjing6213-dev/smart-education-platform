@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { registerHooks } from "node:module";
 import { resolve } from "node:path";
 import test from "node:test";
-import { fileURLToPath, pathToFileURL, URL } from "node:url";
+import { pathToFileURL } from "node:url";
 
 function findWorkspaceRoot(start = process.cwd()): string {
   let current = resolve(start);
